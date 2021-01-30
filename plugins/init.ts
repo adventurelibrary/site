@@ -1,4 +1,4 @@
-import {setBaseURL} from "adventurelibrary/build/api";
+import {setBaseURL} from "adventurelibrary/dist/api";
 
 export default function () {
 	console.log('doin it to', process.env.ADVL_BASE_URL)

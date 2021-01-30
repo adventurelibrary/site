@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
-import {Asset} from "adventurelibrary/build/assets/asset-types";
+import {Asset} from "adventurelibrary/dist/assets/asset-types";
 import {getFeaturedAssets} from "adventurelibrary/dist/assets/asset-api";
 import {Context} from "@nuxt/types";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
