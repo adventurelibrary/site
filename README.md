@@ -22,6 +22,8 @@ npm init
 cd /where/you/have/nuxt-site
 npm link adventurelibrary
 cd /where/you/have/jslib
+
+# This will rebuild the exported JS when you modify the TS
 npm run watch
 ```
 
