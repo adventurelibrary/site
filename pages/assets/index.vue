@@ -98,7 +98,6 @@ class AssetsIndexPage extends Vue {
 	}
 
   submit (options: AssetSearchOptions) {
-		console.log('go to a page with these', options)
 		this.$router.push({
 			name: 'assets',
 			query: assetSearchOptionsToQuery(options)

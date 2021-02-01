@@ -4,7 +4,7 @@
       <input placeholder="Search" type="text" v-model="query" @change="changeSearch" @keypress.enter="submit" />
     </div>
     <div>
-      <Checklist :options="typeOptions" :checked="types" v-on:changed="typesChanged" />
+      <Checklist :options="typeOptions" :checked="types" v-on:changed="typesChanged" classes="inline" />
     </div>
 		<div>
 			<button>Submit</button>
@@ -17,7 +17,6 @@ import {Component, Prop} from "nuxt-property-decorator"
 import {AssetSearchOptions} from "adventurelibrary/dist/assets/asset-types";
 import {AssetTypeOptions} from "adventurelibrary/dist/assets/asset-consts";
 import Checklist from "~/components/Checklist.vue";
-import {keyBoolToArray} from "adventurelibrary/dist/helpers";
 
 @Component({
   components: {

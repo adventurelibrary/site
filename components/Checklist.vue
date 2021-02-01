@@ -1,5 +1,5 @@
 <template>
-  <ol>
+  <ol class="checklist" :class="classes">
     <li v-for="opt in options" :key="opt.value">
       <label>
         <input
@@ -32,6 +32,8 @@ export default class Checklist extends Vue implements CheckListI {
   public checkedMap : Record<string, boolean> = {}
   @Prop() options : CheckOption[] // Our array of options to show. EG: [{value: 'CA', label: 'Canada'}]
   @Prop() checked : string[] // Our array of selected options. They should match 'value' of options. EG: ['CA']
+	@Prop({type: String, default: ''})
+	classes : string
 
 	// When a value is changed we emit to parent component so it can update
 	// Vue doesn't do two way data binding between child/parent components
@@ -72,5 +74,9 @@ ol {
 }
 ol li {
 	list-style: none;
+}
+
+ol.inline li {
+	display: inline;
 }
 </style>
