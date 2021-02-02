@@ -8,7 +8,7 @@
       />
     </div>
     <div>
-      Pagination here
+      <Pagination :active-page="activePage" :to="paginationTo" :items-per-page="50" :total-items="totalAssets" />
     </div>
     <div>
       <div v-if="assetsAjax.loading">LOADING</div>
@@ -31,20 +31,26 @@ import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "adventurelibrary/dist/assets/asset-types";
 import {assetSearchOptionsToQuery, typeKeysCommaList} from "adventurelibrary/dist/assets/asset-helpers";
 import {newAssetsAjax, searchAssets} from "adventurelibrary/dist/assets/asset-api";
-import {Ajax, computeAjaxList, doAjax, newAjax} from "adventurelibrary/dist/ajax";
+import {Ajax, computeAjaxList, doAjax} from "adventurelibrary/dist/ajax";
 import {Route} from "vue-router"
-import {commaAndJoin} from "adventurelibrary/dist/helpers";
 import AssetListing from "~/modules/assets/components/AssetListing.vue";
+import PaginationMixin from "~/mixins/PaginationMixin.vue";
 
 @Component({
   components: {
     AssetSearch,
-		AssetListing
-  }
+		AssetListing,
+  },
+	mixins: [PaginationMixin]
 })
 class AssetsIndexPage extends Vue {
   public search : AssetSearchOptions
 	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
+
+	paginationTo : any = {
+  	name: 'assets',
+		query: {}
+	}
 
 	head () {
   	return {
@@ -67,6 +73,14 @@ class AssetsIndexPage extends Vue {
 
   get assets () : any[] {
   	return computeAjaxList(this.assetsAjax)
+	}
+
+	get totalAssets () : number {
+  	return 100
+  	if (!this.assetsAjax.data) {
+  		return 0
+		}
+  	return this.assetsAjax.data.total || 0
 	}
 
 	getPageTitle () {
@@ -94,7 +108,6 @@ class AssetsIndexPage extends Vue {
 		}
 		await doAjax<AssetsResponse>(this.assetsAjax, fn)
 		const t = this.getPageTitle()
-		console.log('new title pls', t)
 	}
 
   submit (options: AssetSearchOptions) {
