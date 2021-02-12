@@ -76,7 +76,6 @@ class AssetsIndexPage extends Vue {
 	}
 
 	get totalAssets () : number {
-  	return 100
   	if (!this.assetsAjax.data) {
   		return 0
 		}

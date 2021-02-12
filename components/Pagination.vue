@@ -18,11 +18,11 @@ import PaginationLink, {PaginationLinkType} from "~/components/PaginationLink.vu
 })
 export default class Pagination extends Vue {
 	@Prop()
-	totalItems : Number
+	totalItems : number
 	@Prop()
-	itemsPerPage : Number
+	itemsPerPage : number
 	@Prop()
-	activePage : Number
+	activePage : number
 	@Prop()
 	to : any
 
