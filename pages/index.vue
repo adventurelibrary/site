@@ -62,7 +62,7 @@ export default HomePage
 <style>
 .asset-search {
 	margin: 1em;
-	padding: 3em;
+	padding: 1em;
 	border: 1px solid #ccc;
 	background: #E0E0E0;
 }
