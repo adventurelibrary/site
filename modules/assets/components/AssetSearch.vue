@@ -14,7 +14,7 @@
 		</div>
     <div class="search-filters">
       <SearchFilter
-        v-for="(filter, idx) in filters" :key="idx"
+        v-for="(filter, idx) in searchFilters" :key="idx"
         :filter="filter"
         @click="() => removeFilter(idx)"
       />
@@ -64,6 +64,10 @@ class AssetSearch extends Vue {
   typeClicked (assetType: AssetType) {
 		console.log('asset type', assetType)
   }
+
+	removeFilter (idx: number) {
+		this.searchFilters.splice(idx, 1)
+	}
 }
 export default AssetSearch
 </script>
