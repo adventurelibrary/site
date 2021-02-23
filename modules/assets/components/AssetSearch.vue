@@ -5,17 +5,20 @@
 			<a style="" @click="showAdvanced = !showAdvanced">Advanced Search</a>
 		</div>
 		<div v-show="showAdvanced" class="advanced-search">
-			<div class="filter-container">
-				<label>Types</label>
-				<Checklist :options="typeOptions" :checked="types" v-on:changed="typesChanged" classes="inline" />
-			</div>
-			<div class="filter-container">
-				<label>Tags</label>
-				<div>{{existingTags}}</div>
-				<div>{{selectedTags}}</div>
-				<TagSearch v-model="selectedTags" :existing-tags="existingTags" :typeahead="true" />
-			</div>
+			<div class="filter-container" :class="{active: activeChild === 'type'}">
+        <TypeSearch :query="trimmedQuery" @click="typeClicked" />
+      </div>
+      <div class="filter-container" :class="{active: activeChild === 'tag'}">
+        <TagSearch :query="trimmedQuery" @clickTag="tagClicked" />
+      </div>
 		</div>
+    <div class="search-filters">
+      <SearchFilter
+        v-for="(filter, idx) in filters" :key="idx"
+        :filter="filter"
+        @click="() => removeFilter(idx)"
+      />
+    </div>
 		<div class="submit-container">
 			<button>Submit</button>
 		</div>
@@ -24,63 +27,42 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator"
-import {AssetSearchOptions} from "adventurelibrary/dist/assets/asset-types";
-import {AssetTagOptions, AssetTags, AssetTypeOptions} from "adventurelibrary/dist/assets/asset-consts";
+import {AssetSearchOptions, AssetTag, AssetType} from "adventurelibrary/dist/assets/asset-types";
 import Checklist from "~/components/Checklist.vue";
-import TagSearch from "~/components/TagsSearch.vue"
+import TagSearch from "~/modules/tags/TagSearch.vue";
+import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
 
 @Component({
   components: {
+    TagSearch,
     Checklist: Checklist,
-		TagSearch,
-  }
+  },
 })
 class AssetSearch extends Vue {
-  query : string = ''
-	types : string[] = []
-	tags : string[] = []
 	showAdvanced : boolean = true
-	existingTags : any[] = [
-		{key: 'winter', value: 'Winter'}
-	]
-	selectedTags : any[] = []
+  searchFilters : AssetSearchFilter[] = []
+  query : string = ''
+	activeChild : string = ''
 
 	@Prop() options : AssetSearchOptions
 
-  data () {
-    return {
-      query: this.options.query,
-			types: this.options.types,
-			tags: this.options.tags,
-			typeOptions: AssetTypeOptions,
-			tagOptions: AssetTagOptions
-    }
-  }
-
-	getSearchOptions () {
-    return {
-      query: this.query,
-			types: this.types,
-    }
-  }
-
   submit (e : any) {
-  	if (e) {
-  		e.preventDefault()
+    if (e) {
+      e.preventDefault()
 		}
-    this.$emit('submit', this.getSearchOptions())
+    this.$emit('submit', this.searchFilters)
   }
 
-	typesChanged (checked : string[]) {
-		this.types = checked
-	}
+  get trimmedQuery() : string {
+    return this.query
+  }
 
-	tagsChanged (checked : string[]) {
-		this.tags = checked
-	}
+  tagClicked (tag: AssetTag) {
+    console.log('tag', tag)
+  }
 
-  changeSearch (e: any) {
-    this.$emit('changed', this.getSearchOptions())
+  typeClicked (assetType: AssetType) {
+		console.log('asset type', assetType)
   }
 }
 export default AssetSearch

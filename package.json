@@ -14,13 +14,13 @@
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/dotenv": "^1.4.1",
-    "@voerro/vue-tagsinput": "^2.4.3",
     "adventurelibrary": "git+ssh://git@github.com/adventurelibrary/jslib.git",
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "nuxt-property-decorator": "^2.9.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "7.12.17",
     "@nuxt/types": "^2.14.6",
     "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/eslint-config-typescript": "^3.0.0",
@@ -28,5 +28,18 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
     "eslint-plugin-nuxt": "^1.0.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "modules": "commonjs",
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
   }
 }
