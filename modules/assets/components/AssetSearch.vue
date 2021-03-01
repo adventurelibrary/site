@@ -17,6 +17,8 @@
 						@keydown.left="selectPrevious"
 						@keydown.right="selectNext"
 						@keydown.down="selectNext"
+						@keydown.delete="deleteKey"
+						@keydown.backspace="deleteKey"
 			/>
 		</div>
 		<div v-show="showAdvanced" class="advanced-search">
@@ -67,7 +69,6 @@ class AssetSearch extends Vue {
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
-	activeChild : string = ''
 	bus : Vue = new Vue()
 
 	@Prop() options : AssetSearchOptions
@@ -164,19 +165,41 @@ class AssetSearch extends Vue {
 		this.bus.$emit(direction)
 	}
 
+	deleteKey (e : any) {
+		// If they're typing then delete and backspace work as normal
+		if (this.query.length > 0) {
+			return
+		}
+		// If they have an active search filter then we're deleting that one
+		if (this.activeFilter >= 0) {
+			e.preventDefault()
+			this.searchFilters.splice(this.activeFilter, 1)
+			this.activeFilter--
+		}
+	}
+
 	selectNext (e: any) {
 		this.selectEvent(e, 'next')
 	}
 
 	selectPrevious (e: any) {
+		console.log('select prev', this.action)
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
-		if (this.activeChild == '') {
-			if (this.activeFilter == -1) {
+		if (!this.action) {
+			console.log('no active child')
+			e.preventDefault()
+			if (this.activeFilter === -1) {
 				this.activeFilter = this.searchFilters.length - 1
+			} else {
+				this.activeFilter--
+				if (this.activeFilter === -1) {
+					this.activeFilter = this.searchFilters.length - 1
+				}
 			}
 			return
 		}
+		e.preventDefault()
 		this.selectEvent(e, 'prev')
 	}
 }

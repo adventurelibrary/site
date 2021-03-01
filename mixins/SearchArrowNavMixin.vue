@@ -14,12 +14,16 @@ export default class SearchArrowNavMixin extends Vue{
 	@Prop() filters : AssetSearchFilter[]
 
 	selectItem (idx: number) {
+		console.log('idx', idx)
 		throw new Error('This method needs to be extended by the child class')
 	}
 
 	created () {
+		console.log('created for search arrow')
 		this.bus.$on('next', () => {
+			console.log('next in search arrow')
 			if (!this.active) {
+				console.log('not active')
 				return
 			}
 			this.activeItem++
