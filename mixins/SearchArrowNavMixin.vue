@@ -4,13 +4,18 @@ import Vue from "vue"
 import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
 
 @Component
-export default class SearchArrowNavMixin extends Vue {
+export default class SearchArrowNavMixin extends Vue{
 	activeItem : number = -1
+	items : any[] = []
 
 	@Prop() bus : Vue
 	@Prop() active : boolean
 	@Prop() query : string
-	@Prop() filters : AssetSearchFilter
+	@Prop() filters : AssetSearchFilter[]
+
+	selectItem (idx: number) {
+		throw new Error('This method needs to be extended by the child class')
+	}
 
 	created () {
 		this.bus.$on('next', () => {

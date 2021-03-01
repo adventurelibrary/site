@@ -21,7 +21,7 @@ import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 @Component({
 	mixins: [SearchArrowNavMixin]
 })
-export default class TypeSelector extends Vue {
+export default class TypeSelector extends SearchArrowNavMixin {
 	items : AssetType[] = AssetTypes
 
 	@Watch('query')

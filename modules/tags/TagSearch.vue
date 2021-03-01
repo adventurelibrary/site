@@ -16,7 +16,6 @@
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
-import Vue from "vue"
 import {AssetTag} from "adventurelibrary/dist/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 
@@ -32,7 +31,7 @@ const tags : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Archer,Priest,B
 @Component({
 	mixins: [SearchArrowNavMixin]
 })
-export default class TagSearch extends Vue {
+export default class TagSearch extends SearchArrowNavMixin {
 	error : string = '';
 	items : AssetTag[] = [];
 
