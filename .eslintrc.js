@@ -16,7 +16,7 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": [
       "error"
     ],
-    "index": ["tab"]
+    //"index": ["tab"]
   },
   parserOptions: {
     parser: '@typescript-eslint/parser'

@@ -38,6 +38,9 @@ export default {
     transpile: ['adventurelibrary'],
     extend (config) {
       config.resolve.alias['@assets'] = 'modules/assets'
-    }
-  }
+    },
+  },
+  css: [
+    'styles/styles.scss'
+  ]
 }
