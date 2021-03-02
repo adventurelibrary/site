@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<style>
+<!--style>
 body {
   padding: 0px;
   margin: 0px;
@@ -71,4 +71,4 @@ ul, ol {
   max-width: 1020px;
   margin: 0 auto;
 }
-</style>
+</style-->
