@@ -10,6 +10,16 @@ npm install
 npm run dev
 ```
 
+### `npm error` with jslib.git
+If you are not able to install because of errors with the jslib repository then you can do the following: 
+- delete the line with "adventurelibrary": "git..." from package.json
+- run npm install to make sure that's the only blocker
+- cd into the director you cloned jslib to
+- run npm link
+- cd back to advl-nuxt directory
+- run npm link adventurelibrary
+- run npm run dev
+
 ## Developers FAQ
 
 ### How can I develop the `jslib` library alongside this?
