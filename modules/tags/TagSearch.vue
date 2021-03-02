@@ -62,7 +62,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 	selectItem (idx: number) {
 		console.log('select item tag search', idx)
-		this.clickTag(this.items[idx])
+		this.clickTag(this.shownResults[idx])
 	}
 
 	get shownResults () : AssetTag[] {

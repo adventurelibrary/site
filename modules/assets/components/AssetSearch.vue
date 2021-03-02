@@ -1,11 +1,16 @@
 <template>
 	<form @submit="submit" class="asset-search">
+		<div v-if="true">
+			<div>Filters: {{searchFilters}}</div>
+			<div>Active Filter: {{activeFilter}}</div>
+			<div>Action: {{action}}</div>
+		</div>
 		<div class="query-container d-flex">
 			<div class="search-filters">
 				<SearchFilter
 						v-for="(filter, idx) in searchFilters" :key="idx"
 						:filter="filter"
-						:active="idx == activeFilter"
+						:active="idx === activeFilter"
 						@remove="() => removeFilter(idx)"
 				/>
 			</div>
@@ -13,12 +18,11 @@
 						type="text"
 						v-model="query"
 						@keypress.enter="enter"
-						@keydown.up="selectPrevious"
-						@keydown.left="selectPrevious"
-						@keydown.right="selectNext"
-						@keydown.down="selectNext"
+						@keydown.up="keyUpLeftArrow"
+						@keydown.left="keyUpLeftArrow"
+						@keydown.right="keyDownRightArrow"
+						@keydown.down="keyDownRightArrow"
 						@keydown.delete="deleteKey"
-						@keydown.backspace="deleteKey"
 			/>
 		</div>
 		<div v-show="showAdvanced" class="advanced-search">
@@ -116,6 +120,7 @@ class AssetSearch extends Vue {
 	}
 
 	tagClicked (tag: AssetTag) {
+		console.log('tag', tag)
 		const filter = tagToFilter(tag)
 		this.toggleFilter(filter)
 	}
@@ -128,7 +133,7 @@ class AssetSearch extends Vue {
 
 	toggleFilter (filter: AssetSearchFilter) {
 		const idx = this.findFilter(filter)
-		console.log('idx', idx)
+		console.log('toggling a filter')
 		if (idx == -1) {
 			this.addFilter(filter)
 		} else {
@@ -148,21 +153,19 @@ class AssetSearch extends Vue {
 	}
 
 	removeFilter (idx: number) {
-		console.log('removing!')
+		console.log('removing!', idx)
 		this.searchFilters.splice(idx, 1)
 	}
 
 	@Watch('query')
 	queryWatch (newVal: string) {
 		console.log('new val', newVal)
-	}
 
-	selectEvent (e : any, direction: string) {
-		console.log('go ' + direction)
-		if (e) {
-			e.preventDefault()
+		// When they start typing something, we deselect the filter
+		// that might've been highlighted by keyboard controls
+		if (this.query.length) {
+			this.activeFilter = -1
 		}
-		this.bus.$emit(direction)
 	}
 
 	deleteKey (e : any) {
@@ -170,37 +173,62 @@ class AssetSearch extends Vue {
 		if (this.query.length > 0) {
 			return
 		}
+
+		// If you hit backspace with an empty text box while you have
+		// filters in your list, this will select the most recent filter
+		// as the active one
+		// This allows you to hit backspace a bunch of times to delete all your filters
+		if (this.activeFilter == -1 && this.searchFilters.length) {
+			e.preventDefault()
+			this.activeFilter = this.searchFilters.length - 1
+			return
+		}
+
 		// If they have an active search filter then we're deleting that one
 		if (this.activeFilter >= 0) {
 			e.preventDefault()
 			this.searchFilters.splice(this.activeFilter, 1)
-			this.activeFilter--
+			this.activeFilter = -1
 		}
 	}
 
-	selectNext (e: any) {
-		this.selectEvent(e, 'next')
-	}
-
-	selectPrevious (e: any) {
-		console.log('select prev', this.action)
+	keyDownRightArrow (e: any) {
+		e.preventDefault()
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
 		if (!this.action) {
-			console.log('no active child')
-			e.preventDefault()
-			if (this.activeFilter === -1) {
-				this.activeFilter = this.searchFilters.length - 1
-			} else {
-				this.activeFilter--
-				if (this.activeFilter === -1) {
-					this.activeFilter = this.searchFilters.length - 1
-				}
-			}
+			this.selectNextFilter()
 			return
 		}
+		this.bus.$emit('next')
+	}
+
+	keyUpLeftArrow (e: any) {
 		e.preventDefault()
-		this.selectEvent(e, 'prev')
+		// With no children active, this event is for filtering through this
+		// parent componenent's lists of filters
+		if (!this.action) {
+			this.selectPreviousFilter()
+			return
+		}
+		this.bus.$emit('prev')
+	}
+
+	selectAdjacentFilter (direction : 1 | -1) {
+		this.activeFilter += direction
+		if (this.activeFilter <= -1) {
+			this.activeFilter = this.searchFilters.length - 1
+		} else if (this.activeFilter >= this.searchFilters.length) {
+			this.activeFilter = 0
+		}
+	}
+
+	selectNextFilter () {
+		this.selectAdjacentFilter(1)
+	}
+
+	selectPreviousFilter () {
+		this.selectAdjacentFilter(-1)
 	}
 }
 export default AssetSearch
