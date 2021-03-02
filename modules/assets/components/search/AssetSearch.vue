@@ -1,9 +1,12 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div v-if="true">
-			<div>Filters: {{searchFilters}}</div>
-			<div>Active Filter: {{activeFilter}}</div>
-			<div>Action: {{action}}</div>
+			<pre>
+Filters: {{searchFilters}}
+Active Filter: {{activeFilter}}
+Action: {{action}}
+Show Actions: {{showActions}}
+			</pre>
 		</div>
 		<div class="query-container d-flex">
 			<div class="search-filters">
@@ -17,6 +20,7 @@
 			<input placeholder="Search"
 						type="text"
 						v-model="query"
+						role="query"
 						@keypress.enter="enter"
 						@keydown.up="keyUpLeftArrow"
 						@keydown.left="keyUpLeftArrow"
@@ -25,7 +29,17 @@
 						@keydown.delete="deleteKey"
 			/>
 		</div>
-		<div v-show="showAdvanced" class="advanced-search">
+		<div v-show="showAdvanced" class="actions">
+			<div class="filter-container" v-show="showActions">
+				<SearchActions
+					:bus="bus"
+					:filters="searchFilters"
+					:query="trimmedQuery"
+					:active="showActions"
+					@action:clicked="actionClicked"
+					@prevBeyond="selectPreviousFilter"
+				/>
+			</div>
 			<div class="filter-container" v-show="action === 'type'">
 				<label>Types</label>
 				<TypeSelector
@@ -53,11 +67,12 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchOptions, AssetTag, AssetType} from "adventurelibrary/dist/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "adventurelibrary/dist/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
 import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "adventurelibrary/dist/assets/search-filters";
-import TypeSelector from "~/modules/assets/components/TypeSelector.vue";
-import SearchFilter from "~/modules/assets/components/SearchFilter.vue";
+import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
+import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
+import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 
 const actions = ['tag', 'creator', 'type']
 
@@ -66,14 +81,30 @@ const actions = ['tag', 'creator', 'type']
 		TagSearch,
 		TypeSelector,
 		SearchFilter: SearchFilter,
+		SearchActions: SearchActions,
 	},
 })
 class AssetSearch extends Vue {
 	showAdvanced : boolean = true
-	searchFilters : AssetSearchFilter[] = []
+	searchFilters : AssetSearchFilter[] = [{
+		type: 'tag',
+		label: 'Winter',
+		value: 'winter'
+	}, {
+		type: 'tag',
+		label: 'Summer',
+		value: 'summer'
+	}, {
+		type: 'type',
+		label: 'Map',
+		value: 'map'
+	}]
 	activeFilter : number = -1
 	query : string = ''
 	bus : Vue = new Vue()
+
+	// The index of the active highlighted item from the child component
+	activeChildActiveItem : number
 
 	@Prop() options : AssetSearchOptions
 
@@ -96,6 +127,23 @@ class AssetSearch extends Vue {
 		this.bus.$on('submit', () => {
 			console.log('a child component has said to submit')
 		})
+
+		// Child components can pass up their active item index
+		// as the user cycles through them with their keyboard
+		// We generally don't care about this in the parent component,
+		// because we just let the child component cycle through its
+		// options however it wants
+		// One exception is when we have the SearchActions open and the
+		// user hits the up arrow, we want that to start highlighting filters
+		// if there are any, instead of looping back down to the last
+		// child option
+		this.bus.$on('setActiveItem', (idx: number) => {
+			this.activeChildActiveItem = idx
+		})
+	}
+
+	get showActions () : boolean {
+		return this.query.length === 0
 	}
 
 	get action() : string | null {
@@ -119,6 +167,12 @@ class AssetSearch extends Vue {
 		return this.query
 	}
 
+	actionClicked (action: AssetSearchAction) {
+		console.log('action', action)
+		this.query = action.prefix + ':'
+		this.focusInput()
+	}
+
 	tagClicked (tag: AssetTag) {
 		console.log('tag', tag)
 		const filter = tagToFilter(tag)
@@ -133,11 +187,17 @@ class AssetSearch extends Vue {
 
 	toggleFilter (filter: AssetSearchFilter) {
 		const idx = this.findFilter(filter)
-		console.log('toggling a filter')
 		if (idx == -1) {
 			this.addFilter(filter)
 		} else {
 			this.removeFilter(idx)
+		}
+	}
+
+	focusInput () {
+		const input = this.$el.querySelector<HTMLInputElement>('input[role=query]')
+		if (input) {
+			input.focus()
 		}
 	}
 
@@ -196,10 +256,12 @@ class AssetSearch extends Vue {
 		e.preventDefault()
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
-		if (!this.action) {
+		if (!this.action && this.activeFilter >= 0) {
+			console.log('select next')
 			this.selectNextFilter()
 			return
 		}
+		console.log('emit next')
 		this.bus.$emit('next')
 	}
 

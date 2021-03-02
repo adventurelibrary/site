@@ -43,10 +43,27 @@ export default class TagSearch extends SearchArrowNavMixin {
 		this.searchTags()
 	}
 
+	// Featured tags are shown as suggestiosn when the user has only
+	// typed in "tag:"
+	// Right now it's just grabbing the first four, but in the future
+	// we can prioritize based on which tags are most popular
+	getFeaturedTags () : AssetTag[] {
+		const clone = tags.slice()
+		const maxLen = Math.min(clone.length, 4)
+		return clone.splice(0, maxLen)
+	}
+
 	async searchTags () {
+		// If query is blank we want to show suggestions
 		if (this.query == '') {
-			this.activeItem = -1
-			this.items = []
+			this.items = this.getFeaturedTags()
+
+			if (this.items.length == 0) {
+				this.activeItem = -1
+			} else {
+				this.activeItem = 0
+			}
+
 			return
 		}
 		this.items = tags.filter((tag: AssetTag) : boolean => {
@@ -61,10 +78,11 @@ export default class TagSearch extends SearchArrowNavMixin {
 	}
 
 	selectItem (idx: number) {
-		console.log('select item tag search', idx)
 		this.clickTag(this.shownResults[idx])
 	}
 
+	// The shown results are the filtered tags, which have been search through
+	// MINUS the tags that are already in our list of filters
 	get shownResults () : AssetTag[] {
 		const filtered = this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {

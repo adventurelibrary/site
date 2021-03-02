@@ -33,7 +33,6 @@ class AssetListing extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		console.log('asset type', this.asset.type)
 		this.type = getAssetType(this.asset.type)
 	}
 }
