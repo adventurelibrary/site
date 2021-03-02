@@ -6,6 +6,7 @@
         <ul>
           <li><nuxt-link :to="{name: 'assets'}">Assets</nuxt-link></li>
           <li><nuxt-link :to="'/'">Creators</nuxt-link></li>
+          <li><NuxtLink to="/mockups/filler">Adventure!</NuxtLink></li>
         </ul>
       </nav>
     </div>
