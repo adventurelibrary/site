@@ -25,7 +25,7 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Watch} from "nuxt-property-decorator"
-import AssetSearch from "~/modules/assets/components/AssetSearch.vue";
+import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getAssetSearch} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "adventurelibrary/dist/assets/asset-types";

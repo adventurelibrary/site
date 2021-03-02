@@ -23,7 +23,7 @@ import {Asset, AssetSearchOptions} from "adventurelibrary/dist/assets/asset-type
 import {getFeaturedAssets} from "adventurelibrary/dist/assets/asset-api";
 import {Context} from "@nuxt/types";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
-import AssetSearch from "~/modules/assets/components/AssetSearch.vue";
+import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {assetSearchOptionsToQuery, newSearchOptions} from "adventurelibrary/dist/assets/asset-helpers";
 
 @Component({
