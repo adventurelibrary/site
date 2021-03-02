@@ -40,5 +40,7 @@ export default {
       config.resolve.alias['@assets'] = 'modules/assets'
     },
   },
-
+  css: [
+    'styles/styles.scss'
+  ]
 }
