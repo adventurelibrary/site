@@ -41,6 +41,8 @@ export default {
     },
   },
   css: [
+    'styles/color.scss',
+    'styles/layout.scss',
     'styles/styles.scss'
   ]
 }
