@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="body">
     <header class="site-header">
       <figure class="logo">
         <NuxtLink class="brand" :to="{name: 'index'}">Adventure Library</NuxtLink>
@@ -16,7 +16,8 @@
         <ul>
           <li><a href="">About Us</a></li>
           <li><a href="">Purchase Coins</a></li>
-          <li><NuxtLink to="/mockups/filler">Filler</NuxtLink></li>
+          <li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
+          <li><NuxtLink to="/mockups/search">Searchbar Mockup</NuxtLink></li>
         </ul>
       </nav>
     </header>
