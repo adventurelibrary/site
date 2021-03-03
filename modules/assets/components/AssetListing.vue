@@ -5,9 +5,13 @@
 		</div>
 		<div class="meta">
 			<h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
-			<h6 v-if="type">{{type.singular}}</h6>
 			<div>
 				{{asset.description}}
+			</div>
+			<div>
+				<span class="badge badge-primary">{{type.singular}}</span><span class="badge badge-success ml-1" v-for="(tag, idx) in asset.tags">
+					{{tag.label}}
+				</span>
 			</div>
 		</div>
 	</div>
