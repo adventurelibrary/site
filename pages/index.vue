@@ -39,9 +39,6 @@ class HomePage extends Vue {
 
   async asyncData(_ctx: Context) {
     const assetsRes = await getFeaturedAssets()
-    setTimeout(() => {
-      console.log('hi')
-    }, 100)
     return {
       numFeatured: assetsRes.total,
       featured: assetsRes.results

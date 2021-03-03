@@ -18,15 +18,7 @@
 import {Component, Watch} from "nuxt-property-decorator";
 import {AssetTag} from "adventurelibrary/dist/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
-
-const tags : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Archer,Priest,Barbarian,Town,Village,Castle`
-	.split(',')
-	.map((label: string) => {
-		return {
-			label: label,
-			key: label.toLocaleLowerCase(),
-		}
-	})
+import {AssetTags} from "adventurelibrary/dist/assets/asset-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
@@ -48,7 +40,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 	// Right now it's just grabbing the first four, but in the future
 	// we can prioritize based on which tags are most popular
 	getFeaturedTags () : AssetTag[] {
-		const clone = tags.slice()
+		const clone = AssetTags.slice()
 		const maxLen = Math.min(clone.length, 4)
 		return clone.splice(0, maxLen)
 	}
@@ -66,7 +58,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 			return
 		}
-		this.items = tags.filter((tag: AssetTag) : boolean => {
+		this.items = AssetTags.filter((tag: AssetTag) : boolean => {
 			return tag.label.toLowerCase().indexOf(this.query.toLowerCase()) >= 0
 		})
 

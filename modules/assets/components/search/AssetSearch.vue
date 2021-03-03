@@ -1,13 +1,5 @@
 <template>
 	<form @submit="submit" class="asset-search">
-		<div v-if="true">
-			<pre>
-Filters: {{searchFilters}}
-Active Filter: {{activeFilter}}
-Action: {{action}}
-Show Actions: {{showActions}}
-			</pre>
-		</div>
 		<div class="query-container d-flex">
 			<div class="search-filters">
 				<SearchFilter
@@ -62,6 +54,15 @@ Show Actions: {{showActions}}
 		<div class="submit-container">
 			<button>Submit</button>
 		</div>
+		<!-- This is here for easier debugging. It will be removed before launch. -->
+		<div v-if="false">
+			<pre>
+Filters: {{searchFilters}}
+Active Filter: {{activeFilter}}
+Action: {{action}}
+Show Actions: {{showActions}}
+			</pre>
+		</div>
 	</form>
 </template>
 <script lang="ts">
@@ -86,19 +87,7 @@ const actions = ['tag', 'creator', 'type']
 })
 class AssetSearch extends Vue {
 	showAdvanced : boolean = true
-	searchFilters : AssetSearchFilter[] = [{
-		type: 'tag',
-		label: 'Winter',
-		value: 'winter'
-	}, {
-		type: 'tag',
-		label: 'Summer',
-		value: 'summer'
-	}, {
-		type: 'type',
-		label: 'Map',
-		value: 'map'
-	}]
+	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
 	bus : Vue = new Vue()
@@ -112,20 +101,44 @@ class AssetSearch extends Vue {
 		if (e) {
 			e.preventDefault()
 		}
-		console.log('enter!')
+
+		if (this.action === null) {
+			if (this.query.length > 0) {
+				this.addTextFilter()
+				this.emitSubmit()
+			}
+		}
+
 		this.bus.$emit('enter')
 	}
 
+	// Our submit just emits the filters up
+	// Whichever page is using this component can decide what to do with them
+	// EG: redirect to a new page, do a query on the page
 	submit (e : any) {
 		if (e) {
 			e.preventDefault()
 		}
-		this.$emit('submit', this.searchFilters)
+		this.emitSubmit()
+	}
+
+	emitSubmit () {
+		this.$emit('submit', this.getSearchOptions())
+	}
+
+	getSearchOptions () : AssetSearchOptions {
+		return {
+			query: this.query.trim(),
+			filters: this.searchFilters,
+		}
 	}
 
 	created () {
+		this.searchFilters = this.options.filters
+		this.query = this.options.query
+
 		this.bus.$on('submit', () => {
-			console.log('a child component has said to submit')
+			this.emitSubmit()
 		})
 
 		// Child components can pass up their active item index
@@ -168,13 +181,11 @@ class AssetSearch extends Vue {
 	}
 
 	actionClicked (action: AssetSearchAction) {
-		console.log('action', action)
 		this.query = action.prefix + ':'
 		this.focusInput()
 	}
 
 	tagClicked (tag: AssetTag) {
-		console.log('tag', tag)
 		const filter = tagToFilter(tag)
 		this.toggleFilter(filter)
 	}
@@ -201,6 +212,11 @@ class AssetSearch extends Vue {
 		}
 	}
 
+	addTextFilter () {
+		const query = this.query.trim()
+		this.searchFilters.push()
+	}
+
 	addFilter (filter: AssetSearchFilter) {
 		this.searchFilters.push(filter)
 		this.query = ''
@@ -213,13 +229,11 @@ class AssetSearch extends Vue {
 	}
 
 	removeFilter (idx: number) {
-		console.log('removing!', idx)
 		this.searchFilters.splice(idx, 1)
 	}
 
 	@Watch('query')
 	queryWatch (newVal: string) {
-		console.log('new val', newVal)
 
 		// When they start typing something, we deselect the filter
 		// that might've been highlighted by keyboard controls
@@ -257,11 +271,9 @@ class AssetSearch extends Vue {
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
 		if (!this.action && this.activeFilter >= 0) {
-			console.log('select next')
 			this.selectNextFilter()
 			return
 		}
-		console.log('emit next')
 		this.bus.$emit('next')
 	}
 
@@ -281,7 +293,7 @@ class AssetSearch extends Vue {
 		if (this.activeFilter <= -1) {
 			this.activeFilter = this.searchFilters.length - 1
 		} else if (this.activeFilter >= this.searchFilters.length) {
-			this.activeFilter = 0
+			this.activeFilter = -1
 		}
 	}
 

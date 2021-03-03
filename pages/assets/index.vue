@@ -3,7 +3,8 @@
     <h1>Search Assets</h1>
     <div v-if="search">
       Search for: "{{search.query}}"
-      <AssetSearch :options="search"
+      <AssetSearch
+				:options="search"
 				v-on:submit="submit"
       />
     </div>
@@ -26,15 +27,17 @@
 import Vue from "vue"
 import {Component, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
-import {getAssetSearch} from "~/modules/assets/helpers";
+import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "adventurelibrary/dist/assets/asset-types";
-import {assetSearchOptionsToQuery, typeKeysCommaList} from "adventurelibrary/dist/assets/asset-helpers";
+import {assetSearchOptionsToQuery} from "adventurelibrary/dist/assets/asset-helpers";
 import {newAssetsAjax, searchAssets} from "adventurelibrary/dist/assets/asset-api";
 import {Ajax, computeAjaxList, doAjax} from "adventurelibrary/dist/ajax";
 import {Route} from "vue-router"
 import AssetListing from "~/modules/assets/components/AssetListing.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
+import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
+import {commaAndJoin} from "adventurelibrary/dist/helpers";
 
 @Component({
   components: {
@@ -59,7 +62,7 @@ class AssetsIndexPage extends Vue {
 	}
 
   async asyncData (ctx: Context) {
-		const search = getAssetSearch(ctx.route)
+		const search = getRouteAssetSearchOptions(ctx.route)
 		const fn = async () => {
 			return await searchAssets(search)
 		}
@@ -86,8 +89,11 @@ class AssetsIndexPage extends Vue {
 		let title = ''
 		let searchingFor = 'Assets'
 
-		if (this.search.types.length) {
-			searchingFor = typeKeysCommaList(this.search.types)
+		if (this.search.filters.length) {
+			let filters : string[] = this.search.filters.map((filter: AssetSearchFilter) => {
+				return filter.type + ': ' + filter.label
+			})
+			searchingFor = commaAndJoin(filters)
 		}
 
 		if (this.search.query) {
@@ -100,7 +106,7 @@ class AssetsIndexPage extends Vue {
 
   @Watch('$route')
 	async routeChanged (newRoute: Route) {
-		const search = getAssetSearch(newRoute)
+		const search = getRouteAssetSearchOptions(newRoute)
 		this.search = search
 		const fn = async () => {
   		return await searchAssets(search)
@@ -110,9 +116,10 @@ class AssetsIndexPage extends Vue {
 	}
 
   submit (options: AssetSearchOptions) {
+  	const query = assetSearchOptionsToQuery(options)
 		this.$router.push({
 			name: 'assets',
-			query: assetSearchOptionsToQuery(options)
+			query: query
 		})
 	}
 }
