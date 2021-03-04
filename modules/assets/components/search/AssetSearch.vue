@@ -26,7 +26,7 @@
 				<SearchActions
 					:bus="bus"
 					:filters="searchFilters"
-					:query="trimmedQuery"
+					:query="actionQuery"
 					:active="showActions"
 					@action:clicked="actionClicked"
 					@prevBeyond="selectPreviousFilter"
@@ -37,7 +37,7 @@
 				<TypeSelector
 					:bus="bus"
           :filters="searchFilters"
-					:query="trimmedQuery"
+					:query="actionQuery"
 					:active="action === 'type'"
 					@type:clicked="typeClicked" />
 			</div>
@@ -46,7 +46,7 @@
 				<TagSearch
 					:bus="bus"
 					:filters="searchFilters"
-					:query="trimmedQuery"
+					:query="actionQuery"
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
@@ -60,6 +60,7 @@
 Filters: {{searchFilters}}
 Active Filter: {{activeFilter}}
 Action: {{action}}
+Action Query: {{actionQuery}}
 Show Actions: {{showActions}}
 			</pre>
 		</div>
@@ -164,6 +165,11 @@ class AssetSearch extends Vue {
 		for(let i = 0; i < actions.length; i++) {
 			const action = actions[i]
 			const prefix = action + ':'
+
+			if (trimmed.match(new RegExp('\s?' + prefix + ''))) {
+				return action
+			}
+
 			if (trimmed.toLowerCase().substr(0, prefix.length) === prefix) {
 				return trimmed.substr(0, action.length)
 			}
@@ -171,10 +177,12 @@ class AssetSearch extends Vue {
 		return null
 	}
 
-	get trimmedQuery() : string {
+	get actionQuery() : string {
 		const action = this.action
 		if (action !== null) {
-			return this.query.trim().substr(action.length+1).trim() // +1 for the :
+			const prefixStart = this.query.indexOf(action + ':')
+			const query = this.query.substr(prefixStart + action.length + 1)
+			return query
 		}
 
 		return this.query
@@ -219,7 +227,9 @@ class AssetSearch extends Vue {
 
 	addFilter (filter: AssetSearchFilter) {
 		this.searchFilters.push(filter)
-		this.query = ''
+		const find = filter.type + ':'
+		const idx = this.query.indexOf(find)
+		this.query = this.query.substr(0, idx-1) + ' '
 	}
 
 	findFilter(filter: AssetSearchFilter) : number {
@@ -243,8 +253,9 @@ class AssetSearch extends Vue {
 	}
 
 	deleteKey (e : any) {
+		console.log('delete key')
 		// If they're typing then delete and backspace work as normal
-		if (this.query.length > 0) {
+		if (this.query.length > 0 && this.activeFilter == -1) {
 			return
 		}
 
@@ -260,13 +271,20 @@ class AssetSearch extends Vue {
 
 		// If they have an active search filter then we're deleting that one
 		if (this.activeFilter >= 0) {
+			console.log('delete and delete')
 			e.preventDefault()
-			this.searchFilters.splice(this.activeFilter, 1)
-			this.activeFilter = -1
+			Vue.delete(this.searchFilters, this.activeFilter)
+			if (this.activeFilter >= this.searchFilters.length) {
+				this.activeFilter = -1
+			}
 		}
 	}
 
 	keyDownRightArrow (e: any) {
+		if (this.query.length && e.target.selectionStart < this.query.length && this.activeFilter == -1) {
+			return
+		}
+
 		e.preventDefault()
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
@@ -274,24 +292,29 @@ class AssetSearch extends Vue {
 			this.selectNextFilter()
 			return
 		}
+		this.activeFilter = -1
 		this.bus.$emit('next')
 	}
 
 	keyUpLeftArrow (e: any) {
-		e.preventDefault()
+		if (this.query.length && e.target.selectionStart > 0) {
+			return
+		}
+
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
 		if (!this.action) {
 			this.selectPreviousFilter()
 			return
 		}
+		e.preventDefault()
 		this.bus.$emit('prev')
 	}
 
 	selectAdjacentFilter (direction : 1 | -1) {
 		this.activeFilter += direction
 		if (this.activeFilter <= -1) {
-			this.activeFilter = this.searchFilters.length - 1
+			this.activeFilter = 0
 		} else if (this.activeFilter >= this.searchFilters.length) {
 			this.activeFilter = -1
 		}
@@ -302,14 +325,30 @@ class AssetSearch extends Vue {
 	}
 
 	selectPreviousFilter () {
+		if (this.activeFilter == -1) {
+			this.activeFilter = this.searchFilters.length - 1
+			return
+		}
 		this.selectAdjacentFilter(-1)
 	}
 }
 export default AssetSearch
 </script>
 <style>
+.query-container {
+	padding: 3px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background: white;
+}
+
 .query-container input {
 	padding: 0.5em;
+	border: none;
+	background: none;
+}
+.query-container input:focus {
+	outline: none;
 }
 .submit-container {
 	padding-top: 1em;

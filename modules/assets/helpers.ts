@@ -1,6 +1,7 @@
-import {Asset, AssetSearchOptions} from "adventurelibrary/dist/assets/asset-types";
+import {Asset, AssetSearchOptions, AssetTag} from "adventurelibrary/dist/assets/asset-types";
 import {newSearchOptions} from "adventurelibrary/dist/assets/asset-helpers";
 import {AssetSearchFilter, stringToFilterType} from "adventurelibrary/dist/assets/search-filters";
+import {AssetTags} from "adventurelibrary/dist/assets/asset-consts";
 
 export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	if (!$route) {
@@ -10,7 +11,6 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	let filters = []
 	if ($route.query.filters && $route.query.filters.length) {
 		const str = $route.query.filters.toString()
-		console.log('str', str)
 		filters = str.split(',').reduce((list : AssetSearchFilter[], text : string) : AssetSearchFilter[] => {
 			let parts = text.split('_')
 			let prefix : string
@@ -37,8 +37,19 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 				return list
 			}
 
+			let label = suffix
+
+			if (type === 'tag') {
+				const tag = AssetTags.find((x : AssetTag) => {
+					return x.key === suffix
+				})
+				if (tag) {
+					label = tag.label
+				}
+			}
+
 			list.push({
-				label: suffix,
+				label: label,
 				type: type,
 				value: suffix
 			})

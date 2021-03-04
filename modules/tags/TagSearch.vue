@@ -1,7 +1,8 @@
 <template>
 	<div class="tag-search">
 		<div v-if="shownResults.length == 0">
-			Type to search for tags
+			<div v-if="query.length">Can't find any tags</div>
+			<div v-else>Type to search for tags</div>
 		</div>
 		<div class="items">
 			<div v-for="(tag, idx) in shownResults"

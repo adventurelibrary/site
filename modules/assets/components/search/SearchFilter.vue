@@ -1,5 +1,5 @@
 <template>
-	<div class="" :class="classes" style="padding: 4px 8px;">
+	<div class="" :class="classes" style="padding: 10px 8px;">
 		{{filter.label}}
 		<a class="p-0" style="color: black; margin-left: 3px;" @click="remove">
 			x
@@ -32,7 +32,6 @@ export default class SearchFilter extends Vue {
 	}
 
 	remove () {
-		console.log('remove it')
 		this.$emit('remove')
 	}
 }
@@ -42,7 +41,11 @@ a {
 	cursor: pointer;
 }
 
+.badge {
+	border: 2px solid transparent
+}
+
 .badge.active {
-	border: 1px solid red;
+	border-color: red;
 }
 </style>
