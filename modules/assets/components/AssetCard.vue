@@ -1,7 +1,6 @@
 <template>
 	<div class="asset">
-		<div class="thumbnail">
-
+		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
 		<div class="meta">
 			<h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
@@ -28,7 +27,7 @@ import {getAssetType} from "adventurelibrary/dist/assets/asset-helpers";
 		AssetLink: AssetLink
 	}
 })
-class AssetListing extends Vue {
+class AssetCard extends Vue {
 	type : AssetType | null
 
 	@Prop() asset : Asset
@@ -40,7 +39,7 @@ class AssetListing extends Vue {
 		this.type = getAssetType(this.asset.type)
 	}
 }
-export default AssetListing
+export default AssetCard
 </script>
 <style>
 .asset {
@@ -56,6 +55,8 @@ export default AssetListing
 	width: 100px;
 	height: 100px;
 	flex: 0 0 100px;
+	background-size: cover;
+	background-position: center;
 }
 
 .asset .meta {

@@ -1,7 +1,7 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div class="query-container d-flex">
-			<div class="search-filters">
+			<div class="search-filters d-flex">
 				<SearchFilter
 						v-for="(filter, idx) in searchFilters" :key="idx"
 						:filter="filter"

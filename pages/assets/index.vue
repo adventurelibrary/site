@@ -12,7 +12,7 @@
       <div v-if="assetsAjax.loading">LOADING</div>
 			<div v-else>
 				Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span>
-				<AssetListing v-for="asset in assets" :key="asset.id" :asset="asset"></AssetListing>
+				<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
 			</div>
     </div>
   </div>
@@ -28,7 +28,7 @@ import {assetSearchOptionsToQuery} from "adventurelibrary/dist/assets/asset-help
 import {newAssetsAjax, searchAssets} from "adventurelibrary/dist/assets/asset-api";
 import {Ajax, computeAjaxList, doAjax} from "adventurelibrary/dist/ajax";
 import {Route} from "vue-router"
-import AssetListing from "~/modules/assets/components/AssetListing.vue";
+import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
 import {commaAndJoin} from "adventurelibrary/dist/helpers";
@@ -36,7 +36,7 @@ import {commaAndJoin} from "adventurelibrary/dist/helpers";
 @Component({
   components: {
     AssetSearch,
-		AssetListing,
+		AssetCard,
   },
 	mixins: [PaginationMixin]
 })
