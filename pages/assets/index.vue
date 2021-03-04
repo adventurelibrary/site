@@ -9,17 +9,11 @@
       />
     </div>
     <div>
-      <Pagination :active-page="activePage" :to="paginationTo" :items-per-page="50" :total-items="totalAssets" />
-    </div>
-    <div>
       <div v-if="assetsAjax.loading">LOADING</div>
 			<div v-else>
-				Showing {{assets.length}} assets
+				Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span>
 				<AssetListing v-for="asset in assets" :key="asset.id" :asset="asset"></AssetListing>
 			</div>
-    </div>
-    <div>
-      Pagination here
     </div>
   </div>
 </template>

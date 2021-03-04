@@ -253,9 +253,14 @@ class AssetSearch extends Vue {
 	}
 
 	deleteKey (e : any) {
-		console.log('delete key')
 		// If they're typing then delete and backspace work as normal
 		if (this.query.length > 0 && this.activeFilter == -1) {
+
+			// Except if they are at the start of the input box AND have filters, then we want backspace
+			// to select their most recent item
+			if (e.target.selectionStart == 0 && this.searchFilters.length) {
+				this.activeFilter = this.searchFilters.length - 1
+			}
 			return
 		}
 
@@ -271,7 +276,6 @@ class AssetSearch extends Vue {
 
 		// If they have an active search filter then we're deleting that one
 		if (this.activeFilter >= 0) {
-			console.log('delete and delete')
 			e.preventDefault()
 			Vue.delete(this.searchFilters, this.activeFilter)
 			if (this.activeFilter >= this.searchFilters.length) {
