@@ -1,14 +1,6 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div class="query-container d-flex">
-			<div class="search-filters d-flex">
-				<SearchFilter
-						v-for="(filter, idx) in searchFilters" :key="idx"
-						:filter="filter"
-						:active="idx === activeFilter"
-						@remove="() => removeFilter(idx)"
-				/>
-			</div>
 			<input placeholder="Search"
 						type="text"
 						v-model="query"
@@ -19,15 +11,26 @@
 						@keydown.right="keyDownRightArrow"
 						@keydown.down="keyDownRightArrow"
 						@keydown.delete="deleteKey"
+						@focus="inputFocused = true"
+						@blur="inputFocused = false"
 			/>
+			<select v-model="sortField">
+				<option value="title">Title</option>
+				<option value="date">Date</option>
+			</select>
+			<select v-model="sortDirection">
+				<option value="asc">Asc</option>
+				<option value="desc">Desc</option>
+			</select>
+			<button>Go</button>
 		</div>
-		<div v-show="showAdvanced" class="actions">
-			<div class="filter-container" v-show="showActions">
+		<div v-show="showDropdown" class="actions">
+			<div class="filter-container" v-show="showActionSuggestions">
 				<SearchActions
 					:bus="bus"
 					:filters="searchFilters"
 					:query="actionQuery"
-					:active="showActions"
+					:active="showActionSuggestions"
 					@action:clicked="actionClicked"
 					@prevBeyond="selectPreviousFilter"
 				/>
@@ -51,8 +54,13 @@
 					@clickTag="tagClicked" />
 			</div>
 		</div>
-		<div class="submit-container">
-			<button>Submit</button>
+		<div class="search-filters d-flex">
+			<SearchFilter
+					v-for="(filter, idx) in searchFilters" :key="idx"
+					:filter="filter"
+					:active="idx === activeFilter"
+					@remove="() => removeFilter(idx)"
+			/>
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -61,7 +69,7 @@ Filters: {{searchFilters}}
 Active Filter: {{activeFilter}}
 Action: {{action}}
 Action Query: {{actionQuery}}
-Show Actions: {{showActions}}
+Show Actions: {{showActionSuggestions}}
 			</pre>
 		</div>
 	</form>
@@ -75,6 +83,7 @@ import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "adventurelibrar
 import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
+import {stringToSortDirection} from "../../../../../library/src/assets/asset-helpers";
 
 const actions = ['tag', 'creator', 'type']
 
@@ -91,7 +100,10 @@ class AssetSearch extends Vue {
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
+	sortField : string;
+	sortDirection : string;
 	bus : Vue = new Vue()
+	inputFocused = false;
 
 	// The index of the active highlighted item from the child component
 	activeChildActiveItem : number
@@ -105,7 +117,6 @@ class AssetSearch extends Vue {
 
 		if (this.action === null) {
 			if (this.query.length > 0) {
-				this.addTextFilter()
 				this.emitSubmit()
 			}
 		}
@@ -131,12 +142,16 @@ class AssetSearch extends Vue {
 		return {
 			query: this.query.trim(),
 			filters: this.searchFilters,
+			sortField: this.sortField,
+			sortDirection: stringToSortDirection(this.sortDirection)
 		}
 	}
 
 	created () {
 		this.searchFilters = this.options.filters
 		this.query = this.options.query
+		this.sortField = this.options.sortField
+		this.sortDirection = this.options.sortDirection
 
 		this.bus.$on('submit', () => {
 			this.emitSubmit()
@@ -156,7 +171,11 @@ class AssetSearch extends Vue {
 		})
 	}
 
-	get showActions () : boolean {
+	get showDropdown () : boolean {
+		return this.inputFocused && (this.showActionSuggestions || this.action !== null)
+	}
+
+	get showActionSuggestions () : boolean {
 		return this.query.length === 0
 	}
 
@@ -166,7 +185,7 @@ class AssetSearch extends Vue {
 			const action = actions[i]
 			const prefix = action + ':'
 
-			if (trimmed.match(new RegExp('\s?' + prefix + ''))) {
+			if (trimmed.match(new RegExp('\\s' + prefix))) {
 				return action
 			}
 
@@ -220,10 +239,13 @@ class AssetSearch extends Vue {
 		}
 	}
 
-	addTextFilter () {
+	/*addTextFilter () {
 		const query = this.query.trim()
-		this.searchFilters.push()
-	}
+		this.searchFilters.push({
+			type: 'query',
+			value: query
+		})
+	}*/
 
 	addFilter (filter: AssetSearchFilter) {
 		this.searchFilters.push(filter)
@@ -243,8 +265,7 @@ class AssetSearch extends Vue {
 	}
 
 	@Watch('query')
-	queryWatch (newVal: string) {
-
+	queryWatch () {
 		// When they start typing something, we deselect the filter
 		// that might've been highlighted by keyboard controls
 		if (this.query.length) {
@@ -340,27 +361,33 @@ export default AssetSearch
 </script>
 <style>
 .query-container {
+}
+
+.asset-search {
+	position: relative;
+}
+
+.actions {
+	position: absolute;
+	width: 90%;
+	top: 43px;
+	background: #ccc;
+	border: 1px solid #333;
+	padding: 10px;
+}
+
+.query-container input {
 	padding: 3px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background: white;
-}
-
-.query-container input {
-	padding: 0.5em;
-	border: none;
-	background: none;
+	margin: 0 5px 0 0;
 }
 .query-container input:focus {
 	outline: none;
 }
 .submit-container {
 	padding-top: 1em;
-}
-.filter-container {
-	margin-top: 0.5em;
-	padding-top: 0.5em;
-	border-top: 1px solid #ccc;
 }
 .filter-container > label {
 	font-weight: bold;

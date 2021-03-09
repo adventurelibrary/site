@@ -37,7 +37,7 @@ class HomePage extends Vue {
   public numFeatured : number
 	public searchOptions : AssetSearchOptions = newSearchOptions()
 
-  async asyncData(_ctx: Context) {
+  async asyncData() {
     const assetsRes = await getFeaturedAssets()
     return {
       numFeatured: assetsRes.total,

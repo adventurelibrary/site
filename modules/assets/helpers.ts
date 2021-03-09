@@ -1,5 +1,5 @@
 import {Asset, AssetSearchOptions, AssetTag} from "adventurelibrary/dist/assets/asset-types";
-import {newSearchOptions} from "adventurelibrary/dist/assets/asset-helpers";
+import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "adventurelibrary/dist/assets/asset-helpers";
 import {AssetSearchFilter, stringToFilterType} from "adventurelibrary/dist/assets/search-filters";
 import {AssetTags} from "adventurelibrary/dist/assets/asset-consts";
 
@@ -57,8 +57,23 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 		}, [])
 	}
 
+	let sortField = SORT_FIELD_DEFAULT
+	let sortDirection = SORT_DIR_DEFAULT
+	const querySort = $route.query.sort
+	if (querySort) {
+		if (querySort.substr(0, 1)) {
+			sortDirection = 'desc'
+			sortField = querySort.substr(1)
+		} else {
+			sortDirection = 'asc'
+			sortField = querySort
+		}
+	}
+
 	return {
 		query: $route.query.search || '',
-		filters: filters
+		filters: filters,
+		sortField: sortField,
+		sortDirection: sortDirection
 	}
 }
