@@ -39,7 +39,6 @@ body {
 	height: fit-content;
 	min-height: 100vh;
 	display: grid;
-	align-items: center;
 	justify-items: center;
 
 	grid-template-rows: var(--header-height) 1fr min-content;
