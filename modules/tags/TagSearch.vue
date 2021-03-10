@@ -1,7 +1,8 @@
 <template>
 	<div class="tag-search">
 		<div v-if="shownResults.length == 0">
-			Type to search for tags
+			<div v-if="query.length">Can't find any tags</div>
+			<div v-else>Type to search for tags</div>
 		</div>
 		<div class="items">
 			<div v-for="(tag, idx) in shownResults"
@@ -18,15 +19,7 @@
 import {Component, Watch} from "nuxt-property-decorator";
 import {AssetTag} from "adventurelibrary/dist/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
-
-const tags : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Archer,Priest,Barbarian,Town,Village,Castle`
-	.split(',')
-	.map((label: string) => {
-		return {
-			label: label,
-			key: label.toLocaleLowerCase(),
-		}
-	})
+import {AssetTags} from "adventurelibrary/dist/assets/asset-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
@@ -43,13 +36,30 @@ export default class TagSearch extends SearchArrowNavMixin {
 		this.searchTags()
 	}
 
+	// Featured tags are shown as suggestiosn when the user has only
+	// typed in "tag:"
+	// Right now it's just grabbing the first four, but in the future
+	// we can prioritize based on which tags are most popular
+	getFeaturedTags () : AssetTag[] {
+		const clone = AssetTags.slice()
+		const maxLen = Math.min(clone.length, 4)
+		return clone.splice(0, maxLen)
+	}
+
 	async searchTags () {
+		// If query is blank we want to show suggestions
 		if (this.query == '') {
-			this.activeItem = -1
-			this.items = []
+			this.items = this.getFeaturedTags()
+
+			if (this.items.length == 0) {
+				this.activeItem = -1
+			} else {
+				this.activeItem = 0
+			}
+
 			return
 		}
-		this.items = tags.filter((tag: AssetTag) : boolean => {
+		this.items = AssetTags.filter((tag: AssetTag) : boolean => {
 			return tag.label.toLowerCase().indexOf(this.query.toLowerCase()) >= 0
 		})
 
@@ -61,10 +71,11 @@ export default class TagSearch extends SearchArrowNavMixin {
 	}
 
 	selectItem (idx: number) {
-		console.log('select item tag search', idx)
 		this.clickTag(this.shownResults[idx])
 	}
 
+	// The shown results are the filtered tags, which have been search through
+	// MINUS the tags that are already in our list of filters
 	get shownResults () : AssetTag[] {
 		const filtered = this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {

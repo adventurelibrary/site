@@ -33,9 +33,6 @@ export default class Pagination extends Vue {
 
 		const links : PaginationLinkType[] = []
 		const numPages = Math.ceil(this.totalItems / this.itemsPerPage)
-		console.log('numPages', numPages)
-		console.log('totalItems', this.totalItems)
-		console.log('per page', this.itemsPerPage)
 		for(let i = 1; i <= numPages; i++) {
 			let query = Object.assign({}, this.to.query || {}, {
 				page: i

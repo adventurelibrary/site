@@ -1,0 +1,395 @@
+<template>
+	<form @submit="submit" class="asset-search">
+		<div class="query-container d-flex">
+			<input placeholder="Search"
+						type="text"
+						v-model="query"
+						role="query"
+						@keypress.enter="enter"
+						@keydown.up="keyUpLeftArrow"
+						@keydown.left="keyUpLeftArrow"
+						@keydown.right="keyDownRightArrow"
+						@keydown.down="keyDownRightArrow"
+						@keydown.delete="deleteKey"
+						@focus="inputFocused = true"
+						@blur="inputFocused = false"
+			/>
+			<select v-model="sortField">
+				<option value="title">Title</option>
+				<option value="date">Date</option>
+			</select>
+			<select v-model="sortDirection">
+				<option value="asc">Asc</option>
+				<option value="desc">Desc</option>
+			</select>
+			<button>Go</button>
+		</div>
+		<div v-show="showDropdown" class="actions">
+			<div class="filter-container" v-show="showActionSuggestions">
+				<SearchActions
+					:bus="bus"
+					:filters="searchFilters"
+					:query="actionQuery"
+					:active="showActionSuggestions"
+					@action:clicked="actionClicked"
+					@prevBeyond="selectPreviousFilter"
+				/>
+			</div>
+			<div class="filter-container" v-show="action === 'type'">
+				<label>Types</label>
+				<TypeSelector
+					:bus="bus"
+          :filters="searchFilters"
+					:query="actionQuery"
+					:active="action === 'type'"
+					@type:clicked="typeClicked" />
+			</div>
+			<div class="filter-container" v-show="action === 'tag'">
+				<label>Tags</label>
+				<TagSearch
+					:bus="bus"
+					:filters="searchFilters"
+					:query="actionQuery"
+					:active="action === 'tag'"
+					@clickTag="tagClicked" />
+			</div>
+		</div>
+		<div class="search-filters d-flex">
+			<SearchFilter
+					v-for="(filter, idx) in searchFilters" :key="idx"
+					:filter="filter"
+					:active="idx === activeFilter"
+					@remove="() => removeFilter(idx)"
+			/>
+		</div>
+		<!-- This is here for easier debugging. It will be removed before launch. -->
+		<div v-if="false">
+			<pre>
+Filters: {{searchFilters}}
+Active Filter: {{activeFilter}}
+Action: {{action}}
+Action Query: {{actionQuery}}
+Show Actions: {{showActionSuggestions}}
+			</pre>
+		</div>
+	</form>
+</template>
+<script lang="ts">
+import Vue from "vue"
+import {Component, Prop, Watch} from "nuxt-property-decorator"
+import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "adventurelibrary/dist/assets/asset-types";
+import TagSearch from "~/modules/tags/TagSearch.vue";
+import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "adventurelibrary/dist/assets/search-filters";
+import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
+import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
+import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
+import {stringToSortDirection} from "../../../../../library/src/assets/asset-helpers";
+
+const actions = ['tag', 'creator', 'type']
+
+@Component({
+	components: {
+		TagSearch,
+		TypeSelector,
+		SearchFilter: SearchFilter,
+		SearchActions: SearchActions,
+	},
+})
+class AssetSearch extends Vue {
+	showAdvanced : boolean = true
+	searchFilters : AssetSearchFilter[] = []
+	activeFilter : number = -1
+	query : string = ''
+	sortField : string;
+	sortDirection : string;
+	bus : Vue = new Vue()
+	inputFocused = false;
+
+	// The index of the active highlighted item from the child component
+	activeChildActiveItem : number
+
+	@Prop() options : AssetSearchOptions
+
+	enter (e : any) {
+		if (e) {
+			e.preventDefault()
+		}
+
+		if (this.action === null) {
+			if (this.query.length > 0) {
+				this.emitSubmit()
+			}
+		}
+
+		this.bus.$emit('enter')
+	}
+
+	// Our submit just emits the filters up
+	// Whichever page is using this component can decide what to do with them
+	// EG: redirect to a new page, do a query on the page
+	submit (e : any) {
+		if (e) {
+			e.preventDefault()
+		}
+		this.emitSubmit()
+	}
+
+	emitSubmit () {
+		this.$emit('submit', this.getSearchOptions())
+	}
+
+	getSearchOptions () : AssetSearchOptions {
+		return {
+			query: this.query.trim(),
+			filters: this.searchFilters,
+			sortField: this.sortField,
+			sortDirection: stringToSortDirection(this.sortDirection)
+		}
+	}
+
+	created () {
+		this.searchFilters = this.options.filters
+		this.query = this.options.query
+		this.sortField = this.options.sortField
+		this.sortDirection = this.options.sortDirection
+
+		this.bus.$on('submit', () => {
+			this.emitSubmit()
+		})
+
+		// Child components can pass up their active item index
+		// as the user cycles through them with their keyboard
+		// We generally don't care about this in the parent component,
+		// because we just let the child component cycle through its
+		// options however it wants
+		// One exception is when we have the SearchActions open and the
+		// user hits the up arrow, we want that to start highlighting filters
+		// if there are any, instead of looping back down to the last
+		// child option
+		this.bus.$on('setActiveItem', (idx: number) => {
+			this.activeChildActiveItem = idx
+		})
+	}
+
+	get showDropdown () : boolean {
+		return this.inputFocused && (this.showActionSuggestions || this.action !== null)
+	}
+
+	get showActionSuggestions () : boolean {
+		return this.query.length === 0
+	}
+
+	get action() : string | null {
+		let trimmed = this.query.trim()
+		for(let i = 0; i < actions.length; i++) {
+			const action = actions[i]
+			const prefix = action + ':'
+
+			if (trimmed.match(new RegExp('\\s' + prefix))) {
+				return action
+			}
+
+			if (trimmed.toLowerCase().substr(0, prefix.length) === prefix) {
+				return trimmed.substr(0, action.length)
+			}
+		}
+		return null
+	}
+
+	get actionQuery() : string {
+		const action = this.action
+		if (action !== null) {
+			const prefixStart = this.query.indexOf(action + ':')
+			const query = this.query.substr(prefixStart + action.length + 1)
+			return query
+		}
+
+		return this.query
+	}
+
+	actionClicked (action: AssetSearchAction) {
+		this.query = action.prefix + ':'
+		this.focusInput()
+	}
+
+	tagClicked (tag: AssetTag) {
+		const filter = tagToFilter(tag)
+		this.toggleFilter(filter)
+	}
+
+	// User has clicked on one of the types
+	typeClicked (assetType: AssetType) {
+		const filter = assetTypeToFilter(assetType)
+		this.toggleFilter(filter)
+	}
+
+	toggleFilter (filter: AssetSearchFilter) {
+		const idx = this.findFilter(filter)
+		if (idx == -1) {
+			this.addFilter(filter)
+		} else {
+			this.removeFilter(idx)
+		}
+	}
+
+	focusInput () {
+		const input = this.$el.querySelector<HTMLInputElement>('input[role=query]')
+		if (input) {
+			input.focus()
+		}
+	}
+
+	/*addTextFilter () {
+		const query = this.query.trim()
+		this.searchFilters.push({
+			type: 'query',
+			value: query
+		})
+	}*/
+
+	addFilter (filter: AssetSearchFilter) {
+		this.searchFilters.push(filter)
+		const find = filter.type + ':'
+		const idx = this.query.indexOf(find)
+		this.query = this.query.substr(0, idx-1) + ' '
+	}
+
+	findFilter(filter: AssetSearchFilter) : number {
+		return this.searchFilters.findIndex((sf: AssetSearchFilter) => {
+			return sf.value == filter.value && sf.type == filter.type
+		})
+	}
+
+	removeFilter (idx: number) {
+		this.searchFilters.splice(idx, 1)
+	}
+
+	@Watch('query')
+	queryWatch () {
+		// When they start typing something, we deselect the filter
+		// that might've been highlighted by keyboard controls
+		if (this.query.length) {
+			this.activeFilter = -1
+		}
+	}
+
+	deleteKey (e : any) {
+		// If they're typing then delete and backspace work as normal
+		if (this.query.length > 0 && this.activeFilter == -1) {
+
+			// Except if they are at the start of the input box AND have filters, then we want backspace
+			// to select their most recent item
+			if (e.target.selectionStart == 0 && this.searchFilters.length) {
+				this.activeFilter = this.searchFilters.length - 1
+			}
+			return
+		}
+
+		// If you hit backspace with an empty text box while you have
+		// filters in your list, this will select the most recent filter
+		// as the active one
+		// This allows you to hit backspace a bunch of times to delete all your filters
+		if (this.activeFilter == -1 && this.searchFilters.length) {
+			e.preventDefault()
+			this.activeFilter = this.searchFilters.length - 1
+			return
+		}
+
+		// If they have an active search filter then we're deleting that one
+		if (this.activeFilter >= 0) {
+			e.preventDefault()
+			Vue.delete(this.searchFilters, this.activeFilter)
+			if (this.activeFilter >= this.searchFilters.length) {
+				this.activeFilter = -1
+			}
+		}
+	}
+
+	keyDownRightArrow (e: any) {
+		if (this.query.length && e.target.selectionStart < this.query.length && this.activeFilter == -1) {
+			return
+		}
+
+		e.preventDefault()
+		// With no children active, this event is for filtering through this
+		// parent componenent's lists of filters
+		if (!this.action && this.activeFilter >= 0) {
+			this.selectNextFilter()
+			return
+		}
+		this.activeFilter = -1
+		this.bus.$emit('next')
+	}
+
+	keyUpLeftArrow (e: any) {
+		if (this.query.length && e.target.selectionStart > 0) {
+			return
+		}
+
+		// With no children active, this event is for filtering through this
+		// parent componenent's lists of filters
+		if (!this.action) {
+			this.selectPreviousFilter()
+			return
+		}
+		e.preventDefault()
+		this.bus.$emit('prev')
+	}
+
+	selectAdjacentFilter (direction : 1 | -1) {
+		this.activeFilter += direction
+		if (this.activeFilter <= -1) {
+			this.activeFilter = 0
+		} else if (this.activeFilter >= this.searchFilters.length) {
+			this.activeFilter = -1
+		}
+	}
+
+	selectNextFilter () {
+		this.selectAdjacentFilter(1)
+	}
+
+	selectPreviousFilter () {
+		if (this.activeFilter == -1) {
+			this.activeFilter = this.searchFilters.length - 1
+			return
+		}
+		this.selectAdjacentFilter(-1)
+	}
+}
+export default AssetSearch
+</script>
+<style>
+.query-container {
+}
+
+.asset-search {
+	position: relative;
+}
+
+.actions {
+	position: absolute;
+	width: 90%;
+	top: 43px;
+	background: #ccc;
+	border: 1px solid #333;
+	padding: 10px;
+}
+
+.query-container input {
+	padding: 3px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background: white;
+	margin: 0 5px 0 0;
+}
+.query-container input:focus {
+	outline: none;
+}
+.submit-container {
+	padding-top: 1em;
+}
+.filter-container > label {
+	font-weight: bold;
+}
+</style>

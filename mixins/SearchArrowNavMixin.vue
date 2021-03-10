@@ -13,33 +13,42 @@ export default class SearchArrowNavMixin extends Vue{
 	@Prop() query : string
 	@Prop() filters : AssetSearchFilter[]
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	selectItem (idx: number) {
-		console.log('idx', idx)
 		throw new Error('This method needs to be extended by the child class')
 	}
 
+	setActiveItem (idx: number) {
+		this.activeItem = idx
+		this.bus.$emit('setActiveItem', idx)
+	}
+
+	onNext () {
+		if (!this.active) {
+			return
+		}
+		let newIdx = this.activeItem + 1
+		if (newIdx > this.items.length - 1) {
+			newIdx = 0
+		}
+		this.setActiveItem(newIdx)
+	}
+
+	onPrev () {
+		console.log('onPrev')
+		if (!this.active) {
+			return
+		}
+		let newIdx = this.activeItem - 1
+		if (this.activeItem < 0) {
+			newIdx = this.items.length - 1
+		}
+		this.setActiveItem(newIdx)
+	}
+
 	created () {
-		console.log('created for search arrow')
-		this.bus.$on('next', () => {
-			console.log('next in search arrow')
-			if (!this.active) {
-				console.log('not active')
-				return
-			}
-			this.activeItem++
-			if (this.activeItem > this.items.length - 1) {
-				this.activeItem = 0
-			}
-		})
-		this.bus.$on('prev', () => {
-			if (!this.active) {
-				return
-			}
-			this.activeItem--
-			if (this.activeItem < 0) {
-				this.activeItem = this.items.length - 1
-			}
-		})
+		this.bus.$on('next', this.onNext)
+		this.bus.$on('prev', this.onPrev)
 		this.bus.$on('enter', () => {
 			if (!this.active) {
 				return

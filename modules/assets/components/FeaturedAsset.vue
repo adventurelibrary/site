@@ -1,8 +1,5 @@
 <template>
   <div class="asset featured">
-    <div class="thumbnail">
-
-    </div>
     <div class="meta">
       <h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
       <div>

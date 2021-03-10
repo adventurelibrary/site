@@ -15,7 +15,6 @@
 import {Component, Watch} from "nuxt-property-decorator";
 import {AssetType} from "adventurelibrary/dist/assets/asset-types";
 import {AssetTypes} from "adventurelibrary/dist/assets/asset-consts";
-import Vue from "vue";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 
 @Component({
@@ -29,14 +28,10 @@ export default class TypeSelector extends SearchArrowNavMixin {
 		if (!this.active) {
 			return
 		}
-		console.log('query', this.query)
 		for (let i = 0; i < this.items.length; i++) {
 			const type = this.items[i]
-			console.log('type', type)
 			const searchIn = type.plural.toLowerCase()
-			console.log('searchin', searchIn)
 			if (searchIn.indexOf(this.query) >= 0) {
-				console.log('FOUND IT', i, searchIn)
 				this.activeItem = i;
 				break;
 			}
@@ -45,7 +40,6 @@ export default class TypeSelector extends SearchArrowNavMixin {
 
 
 	created () {
-		console.log('items', AssetTypes)
 		this.activeItem = 0
 	}
 
