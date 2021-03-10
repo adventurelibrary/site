@@ -21,7 +21,7 @@
         </ul>
       </nav>
     </header>
-    <main>
+    <main class="site-body">
       <header class="page-header">
         <h1>Page Title</h1>
         <h2>Page call to action / subtitle.</h2>
@@ -30,9 +30,9 @@
         <Nuxt />
       </main>
     </main>
-    <footer>
-      <h1>Adventure Library</h1>
-      <p>Copyright text</p>
+    <footer class="site-footer">
+      <h1 class="footer-heading">Adventure Library</h1>
+      <p class="copyright-notice">Copyright text</p>
       <nav class="footer-links">
         <ul>
           <li><a href="">Link 1</a></li>
