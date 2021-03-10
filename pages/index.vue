@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
+	<section class="container">
 		<section class="hero">
 			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
 		</section>
-    <section class="featured-assets">
-      <h3>Featured Assets ({{numFeatured}})</h3>
-      <div>
-        <FeaturedAsset v-for="asset in featured" :asset="asset" :key="asset.slug" />
-      </div>
-    </section>
-  </div>
+		<section class="featured-assets">
+			<h3>Featured Assets ({{numFeatured}})</h3>
+			<div>
+				<FeaturedAsset v-for="asset in featured" :asset="asset" :key="asset.slug" />
+			</div>
+		</section>
+	</section>
 </template>
 
 <script lang="ts">
@@ -23,23 +23,23 @@ import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {assetSearchOptionsToQuery, newSearchOptions} from "adventurelibrary/dist/assets/asset-helpers";
 
 @Component({
-  components: {
-    FeaturedAsset,
+	components: {
+		FeaturedAsset,
 		AssetSearch,
-  }
+	}
 })
 class HomePage extends Vue {
-  public featured: Asset[]
-  public numFeatured : number
+	public featured: Asset[]
+	public numFeatured : number
 	public searchOptions : AssetSearchOptions = newSearchOptions()
 
-  async asyncData() {
-    const assetsRes = await getFeaturedAssets()
-    return {
-      numFeatured: assetsRes.total,
-      featured: assetsRes.results
-    }
-  }
+	async asyncData() {
+		const assetsRes = await getFeaturedAssets()
+		return {
+			numFeatured: assetsRes.total,
+			featured: assetsRes.results
+		}
+	}
 
 	submitSearch (options: AssetSearchOptions) {
 		this.$router.push({
