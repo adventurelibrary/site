@@ -83,7 +83,7 @@ import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "adventurelibrar
 import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
-import {stringToSortDirection} from "../../../../../library/src/assets/asset-helpers";
+import {stringToSortDirection} from "adventurelibrary/dist/assets/asset-helpers";
 
 const actions = ['tag', 'creator', 'type']
 
