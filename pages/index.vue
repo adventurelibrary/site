@@ -1,10 +1,6 @@
 <template>
   <div class="container">
 		<section class="hero">
-    	<div class="titles">
-				<h1>Adventure Library</h1>
-				<h3>Tabletop RPG maps, tokens, portraits, and more.</h3>
-			</div>
 			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
 		</section>
     <section class="featured-assets">
