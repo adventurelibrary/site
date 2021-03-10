@@ -1,74 +1,54 @@
 <template>
-  <div>
-    <div id="header">
-      <NuxtLink class="brand" :to="{name: 'index'}">Adventure Library</NuxtLink>
-      <nav>
-        <ul>
-          <li><nuxt-link :to="{name: 'assets'}">Assets</nuxt-link></li>
-          <li><nuxt-link :to="'/'">Creators</nuxt-link></li>
-          <li><NuxtLink to="/mockups/filler">Adventure!</NuxtLink></li>
-        </ul>
-      </nav>
-    </div>
-    <div id="content">
-      <Nuxt />
-    </div>
-  </div>
+	<main class="body">
+		<header class="site-header">
+			<figure class="logo">
+				<NuxtLink class="brand" :to="{name: 'index'}">Adventure Library</NuxtLink>
+			</figure>
+			<div class="searchbar">
+				<input type="text" name="serach">
+			</div>
+			<div class="account-actions">
+				<a class="logout-button">Logout</a>
+				<figure class="member-avatar"></figure>
+				<a class="account-link">My Account</a>
+			</div>
+			<nav class="main-navigation">
+				<ul>
+					<li><a href="">About Us</a></li>
+					<li><a href="">Purchase Coins</a></li>
+					<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
+					<li><NuxtLink to="/mockups/search">Searchbar Mockup</NuxtLink></li>
+				</ul>
+			</nav>
+		</header>
+		<main class="site-body">
+			<header class="page-header">
+				<h1>Page Title</h1>
+				<h2>Page call to action / subtitle.</h2>
+			</header>
+			<main class="page-body">
+				<Nuxt />
+			</main>
+		</main>
+		<footer class="site-footer">
+			<h1 class="footer-heading">Adventure Library</h1>
+			<p class="copyright-notice">Copyright text</p>
+			<nav class="footer-links">
+				<ul>
+					<li><a href="">Link 1</a></li>
+					<li><a href="">Link 2</a></li>
+					<li><a href="">Link 3</a></li>
+					<li><a href="">Link 4</a></li>
+					<li><a href="">Link 5</a></li>
+				</ul>
+			</nav>
+			<section class="social-media">
+				<ul>
+					<li><a href=""><img src="" alt="Facebook"></a></li>
+					<li><a href=""><img src="" alt="Twitter"></a></li>
+					<li><a href=""><img src="" alt="Instagram"></a></li>
+				</ul>
+			</section>
+		</footer>
+	</main>
 </template>
-
-<!--style>
-body {
-  padding: 0px;
-  margin: 0px;
-  font-family: Arial, sans-serif;
-	line-height: 1.4;
-	font-size: 14px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	margin: 0px;
-	padding: 0px;
-}
-
-ul, ol {
-	margin: 0px;
-	padding: 0px;
-}
-
-#header {
-  padding: 0em;
-  background: #333;
-  display: flex;
-  align-items: center;
-}
-
-#header a {
-  color: #fff;
-  text-decoration: none;
-}
-
-#header a.brand {
-  font-size: 18px;
-  color: #ff4500;
-  margin-right: 10px;
-  padding: 1em;
-}
-
-#header nav ul {
-  padding: 0px;
-  margin: 0px;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#header nav ul li a {
-  padding: 0.5em 1em;
-}
-
-#content .container {
-  max-width: 1020px;
-  margin: 0 auto;
-}
-</style-->
