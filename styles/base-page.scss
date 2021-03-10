@@ -1,0 +1,18 @@
+.site-body {
+	display: grid;
+	grid-template-rows: 25em 1fr;
+
+	.page-header {
+		display: grid;
+		justify-items: center;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+
+		gap: 1em;
+
+		> * {
+			margin: 0;
+		}
+	}
+}
