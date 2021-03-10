@@ -43,6 +43,7 @@ export default {
   css: [
     'styles/color.scss',
     'styles/layout.scss',
+    'styles/base-page.scss',
     'styles/styles.scss'
   ]
 }
