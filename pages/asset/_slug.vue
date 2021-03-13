@@ -11,8 +11,8 @@ import { Context } from '@nuxt/types'
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
-import {Asset} from "adventurelibrary/dist/assets/asset-types";
-import {getAsset} from "adventurelibrary/dist/assets/asset-api";
+import {Asset} from "~/lib/assets/asset-types";
+import {getAsset} from "~/lib/assets/asset-api";
 
 
 @Component

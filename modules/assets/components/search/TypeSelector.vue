@@ -13,8 +13,8 @@
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
-import {AssetType} from "adventurelibrary/dist/assets/asset-types";
-import {AssetTypes} from "adventurelibrary/dist/assets/asset-consts";
+import {AssetType} from "~/lib/assets/asset-types";
+import {AssetTypes} from "~/lib/assets/asset-consts";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 
 @Component({

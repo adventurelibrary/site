@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {keyBoolToArray} from "adventurelibrary/dist/helpers";
+import {keyBoolToArray} from "~/lib/helpers";
 
 interface CheckOption {
   value: string
