@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
+import {AssetSearchFilter} from "~/lib/assets/search-filters";
 
 @Component
 export default class SearchFilter extends Vue {

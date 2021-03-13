@@ -4,7 +4,7 @@
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset} from "adventurelibrary/dist/assets/asset-types";
+import {Asset} from "~/lib/assets/asset-types";
 
 @Component
 class AssetLink extends Vue {

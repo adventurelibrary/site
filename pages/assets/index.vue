@@ -23,15 +23,15 @@ import {Component, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
-import {AssetSearchOptions, AssetsResponse} from "adventurelibrary/dist/assets/asset-types";
-import {assetSearchOptionsToQuery} from "adventurelibrary/dist/assets/asset-helpers";
-import {newAssetsAjax, searchAssets} from "adventurelibrary/dist/assets/asset-api";
-import {Ajax, computeAjaxList, doAjax} from "adventurelibrary/dist/ajax";
+import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
+import {assetSearchOptionsToQuery} from "~/lib/assets/asset-helpers";
+import {newAssetsAjax, searchAssets} from "~/lib/assets/asset-api";
+import {Ajax, computeAjaxList, doAjax} from "~/lib/ajax";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
-import {AssetSearchFilter} from "adventurelibrary/dist/assets/search-filters";
-import {commaAndJoin} from "adventurelibrary/dist/helpers";
+import {AssetSearchFilter} from "~/lib/assets/search-filters";
+import {commaAndJoin} from "~/lib/helpers";
 
 @Component({
   components: {

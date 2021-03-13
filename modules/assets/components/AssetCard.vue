@@ -18,9 +18,9 @@
 <script lang="ts">
 import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset, AssetType} from "adventurelibrary/dist/assets/asset-types";
+import {Asset, AssetType} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getAssetType} from "adventurelibrary/dist/assets/asset-helpers";
+import {getAssetType} from "~/lib/assets/asset-helpers";
 
 @Component({
 	components: {

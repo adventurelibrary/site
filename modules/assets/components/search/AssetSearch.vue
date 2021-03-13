@@ -77,13 +77,13 @@ Show Actions: {{showActionSuggestions}}
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "adventurelibrary/dist/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "~/lib/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "adventurelibrary/dist/assets/search-filters";
+import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "~/lib/assets/search-filters";
 import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
-import {stringToSortDirection} from "adventurelibrary/dist/assets/asset-helpers";
+import {stringToSortDirection} from "~/lib/assets/asset-helpers";
 
 const actions = ['tag', 'creator', 'type']
 

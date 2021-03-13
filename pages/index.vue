@@ -4,7 +4,7 @@
 			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
 		</section>
 		<section class="featured-assets">
-			<h3>Featured Assets ({{numFeatured}})</h3>
+			<h3>Featured Assets!!! ({{numFeatured}})</h3>
 			<div>
 				<FeaturedAsset v-for="asset in featured" :asset="asset" :key="asset.slug" />
 			</div>
@@ -15,12 +15,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
-import {Asset, AssetSearchOptions} from "adventurelibrary/dist/assets/asset-types";
-import {getFeaturedAssets} from "adventurelibrary/dist/assets/asset-api";
+import {Asset, AssetSearchOptions} from "~/lib/assets/asset-types";
+import {getFeaturedAssets} from "~/lib/assets/asset-api";
 import {Context} from "@nuxt/types";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
-import {assetSearchOptionsToQuery, newSearchOptions} from "adventurelibrary/dist/assets/asset-helpers";
+import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
 
 @Component({
 	components: {

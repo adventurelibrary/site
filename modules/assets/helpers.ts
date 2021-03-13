@@ -1,7 +1,7 @@
-import {Asset, AssetSearchOptions, AssetTag} from "adventurelibrary/dist/assets/asset-types";
-import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "adventurelibrary/dist/assets/asset-helpers";
-import {AssetSearchFilter, stringToFilterType} from "adventurelibrary/dist/assets/search-filters";
-import {AssetTags} from "adventurelibrary/dist/assets/asset-consts";
+import {Asset, AssetSearchOptions, AssetTag} from "~/lib/assets/asset-types";
+import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
+import {AssetSearchFilter, stringToFilterType} from "~/lib/assets/search-filters";
+import {AssetTags} from "~/lib/assets/asset-consts";
 
 export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	if (!$route) {
