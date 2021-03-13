@@ -7,6 +7,7 @@ console.log('isAdmin', isAdmin)
 const ignore = []
 if (!isAdmin) {
   ignore.push('pages/admin/*.vue')
+  ignore.push('layouts/admin.vue')
 }
 
 export default {
