@@ -1,5 +1,4 @@
-import {NewAsset} from "./asset-types";
-import {sleep} from "../helpers";
+import {AssetFormData, NewAsset} from "./asset-types";
 
 export type UploadStatus = 'waiting' | 'signing' | 'signed' | 'uploading' | 'error' | 'complete'
 
@@ -9,7 +8,8 @@ export type ActiveUpload = {
 	progress: number,
 	error: string,
 	signature: string,
-	key: any
+	key: any,
+	asset: AssetFormData
 }
 
 export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveUpload[] {
@@ -20,7 +20,8 @@ export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveU
 			progress: 0,
 			error: '',
 			signature: '',
-			key: idx
+			key: idx,
+			asset: na.asset,
 		}
 	})
 }

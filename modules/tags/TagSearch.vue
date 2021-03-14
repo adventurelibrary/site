@@ -16,7 +16,7 @@
 	</div>
 </template>
 <script lang="ts">
-import {Component, Watch} from "nuxt-property-decorator";
+import {Component, Watch, Prop} from "nuxt-property-decorator";
 import {AssetTag} from "~/lib/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 import {AssetTags} from "~/lib/assets/asset-consts";
@@ -27,6 +27,9 @@ import {AssetTags} from "~/lib/assets/asset-consts";
 export default class TagSearch extends SearchArrowNavMixin {
 	error : string = '';
 	items : AssetTag[] = [];
+
+	@Prop()
+	exclude : string[];
 
 	@Watch('query')
 	queryWatch () {
@@ -77,16 +80,18 @@ export default class TagSearch extends SearchArrowNavMixin {
 	// The shown results are the filtered tags, which have been search through
 	// MINUS the tags that are already in our list of filters
 	get shownResults () : AssetTag[] {
-		const filtered = this.items.filter((tag: AssetTag) => {
+		return this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]
 				if (f.type === 'tag' && f.value === tag.key) {
 					return false
 				}
 			}
+			if (this.exclude.indexOf(tag.key) >= 0) {
+				return false
+			}
 			return true
 		})
-		return filtered
 	}
 }
 </script>

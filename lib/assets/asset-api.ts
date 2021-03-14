@@ -1,6 +1,15 @@
-import {Asset, AssetFormData, AssetPayload, AssetResponse, AssetSearchOptions, AssetsResponse} from "./asset-types";
+import {
+	Asset,
+	AssetFields, AssetFormData,
+	AssetPayload,
+	AssetResponse,
+	AssetSearchOptions,
+	AssetSignatureResponse,
+	AssetsResponse, AssetTag
+} from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {AssetTags} from "./asset-consts";
+import {ActiveUpload} from "~/lib/assets/asset-uploads";
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = {
@@ -70,12 +79,29 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		})
 	}
 
-
 	return new Promise<AssetsResponse>((res) => {
 		setTimeout(() => {
 			res({
 				total: assets.length,
 				results: assets
+			})
+		}, 220)
+	})
+}
+
+export const signActiveUpload = async (au : ActiveUpload) => {
+	const res = await createAssetSignature(au.asset)
+	au.signature = res.signature
+	au.status = 'signed'
+}
+
+export const createAssetSignature = async (fields: AssetFormData) : Promise<AssetSignatureResponse> => {
+	const data = assetFormDataToPayload(fields)
+	console.log('sending this payload', data)
+	return new Promise<AssetSignatureResponse>((res) => {
+		setTimeout(() => {
+			res({
+				signature: btoa(fields.title + new Date().getTime().toString())
 			})
 		}, 220)
 	})
@@ -153,7 +179,6 @@ export const newAssetAjax = () : Ajax<AssetResponse> => {
 	})
 }
 
-
 export const saveAsset = async (id: string, data: AssetFormData) => {
 	return new Promise((res, rej) => {
 		setTimeout(() => {
@@ -166,12 +191,21 @@ export const saveAsset = async (id: string, data: AssetFormData) => {
 	})
 }
 
+// This function is used to take what the server gives us for an asset,
+// and convert it into the data format that our forms use
+// For example if the server returns {creator: {id: '123', name: 'Jill'}...}
+// we might want our form data to have {creatorId: '123'}. The form doesn't care
+// about the name of the creator, just its id
 export const assetResponseToFormData = (resp: AssetResponse) : AssetFormData => {
 	return resp.asset
 }
 
 export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
-	return {
-		asset: data
+	const payload  : AssetPayload = {
+		asset: {}
 	}
+	payload.asset.tags = data.tags.map((at: AssetTag) : string => {
+		return at.key
+	})
+	return payload
 }

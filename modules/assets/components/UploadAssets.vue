@@ -3,9 +3,10 @@
 		<div v-show="stage === 'adding'">
 			<div v-show="newAssets.length !== 0">
 				Here are your files
+				<div>{{newAssets}}</div>
 				<NewAssetComponent
 						v-for="(asset, idx) in newAssets"
-						:asset="asset"
+						:new-asset="asset"
 						:key="idx"
 						v-on:addFile="addFile"
 						v-on:updateFile="(file) => updateFile(idx, file)"
@@ -39,6 +40,7 @@ import {fieldNames} from "./AssetFields.vue";
 import ActiveUploadComponent from "./ActiveUpload.vue";
 import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-uploads";
 import {sleep} from "~/lib/helpers";
+import {signActiveUpload} from "~/lib/assets/asset-api";
 
 type Stage = 'adding' | 'uploading' | 'done'
 
@@ -89,8 +91,7 @@ export default Vue.extend({
 		},
 
 		async  signUpload (upload: ActiveUpload) {
-			upload.signature = btoa(upload.title + new Date().getTime().toString())
-			upload.status = 'signed'
+			await signActiveUpload(upload)
 			await sleep(500)
 		},
 
@@ -101,10 +102,8 @@ export default Vue.extend({
 					upload.progress = i
 					await sleep(25)
 				}
-				console.log('done the loop')
 				upload.status = 'complete'
 			} catch (ex) {
-				console.log('coatched errr', ex)
 				upload.status = 'error'
 				upload.error = ex.toString()
 			}

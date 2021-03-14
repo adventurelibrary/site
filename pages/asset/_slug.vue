@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <h1>{{asset.title}}</h1>
-    <div>
-      {{asset.description}}
-    </div>
+		<AssetDetails :asset="asset" />
   </div>
 </template>
 <script lang="ts">
@@ -13,7 +10,6 @@ import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/lib/assets/asset-types";
 import {getAsset} from "~/lib/assets/asset-api";
-
 
 @Component
 class AssetPage extends Vue {
@@ -29,7 +25,6 @@ class AssetPage extends Vue {
 
   async asyncData (ctx: Context) {
     const assetRes = await getAsset(ctx.params.slug)
-    console.log('assetRes', assetRes)
     return {
       asset: assetRes.asset
     }
