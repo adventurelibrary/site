@@ -35,7 +35,6 @@ export default class SearchArrowNavMixin extends Vue{
 	}
 
 	onPrev () {
-		console.log('onPrev')
 		if (!this.active) {
 			return
 		}

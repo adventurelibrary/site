@@ -4,10 +4,18 @@ const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
 console.log('isAdmin', isAdmin)
 
+const css = [
+  'styles/color.scss',
+  'styles/layout.scss',
+  'styles/base-page.scss',
+  'styles/styles.scss'
+]
 const ignore = []
 if (!isAdmin) {
   ignore.push('pages/admin/*.vue')
   ignore.push('layouts/admin.vue')
+} else {
+  css.push('styles/admin.scss')
 }
 
 export default {
@@ -49,12 +57,7 @@ export default {
     },
     analyze: true
   },
-  css: [
-    'styles/color.scss',
-    'styles/layout.scss',
-    'styles/base-page.scss',
-    'styles/styles.scss'
-  ],
+  css: css,
 
   ignore: ignore
 }

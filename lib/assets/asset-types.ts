@@ -9,7 +9,7 @@ export type AssetFields = {
 	tags: AssetTag[]
 }
 
-export type Asset  = AssetFields & {
+export type Asset = AssetFields & {
 	id: string
 	thumbnailSrc: string
 	slug: string
@@ -20,7 +20,7 @@ export type NewAsset = {
 	file: File
 }
 
-export interface AssetFormData extends Asset {
+export interface AssetFormData extends AssetFields {
 	// Extra fields that the form might have, but that aren't specifically tied to the asset
 	// will go here
 	// EG: a boolean that says "email my followers about this asset"
@@ -30,7 +30,7 @@ export interface AssetFormData extends Asset {
 
 // Data sent by browser to the server to create/update an asset
 export type AssetPayload = {
-	asset: Asset
+	asset: any
 }
 
 // Data returned by the server about a specific asset
@@ -76,8 +76,6 @@ export type AssetSearchAction = {
 	description: string
 }
 
-// Putting this here causes the proper files to be rebuilt when you save this file
-// so that nuxt will properly rebuild if a type is changed
-export const fake2 = () => {
-	return
+export type AssetSignatureResponse = {
+	signature: string
 }

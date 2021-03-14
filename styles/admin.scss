@@ -1,0 +1,37 @@
+.form-group {
+  margin: 0 0 1em 0;
+
+  label {
+    font-weight: bold;
+    display: block;
+  }
+
+  input, textarea {
+    padding: 0.5em 1em;
+    border: 1px solid #ccc;
+    display: block;
+  }
+
+  .tags-input {
+    position: relative;
+
+    .tag-search {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 5px;
+      top: 20px;
+      left: 0px;
+      width: 100%;
+
+      .btn {
+        padding: 2px 3px;
+      }
+
+      .btn.btn-primary {
+        color: var(--color-accent);
+        background: var(--color-background);
+      }
+    }
+  }
+
+}

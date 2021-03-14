@@ -2,12 +2,12 @@
 	<div class="d-flex">
 		<form ref="fileform" class="p-2" style="flex: 0 0 50%;">
 			<input type="file" multiple @change="fileInputChanged" />
-      <AssetFilePreview :file="asset.file" />
-			<div class="drop-files" style="border: 1px solid #ccc; padding: 5em; text-align: center;">Current file: {{asset.file.name}} {{asset.file.size}}<br />Drop Here to replace</div>
+      <AssetFilePreview :file="newAsset.file" />
+			<div class="drop-files" style="border: 1px solid #ccc; padding: 5em; text-align: center;">Current file: {{newAsset.file.name}} {{newAsset.file.size}}<br />Drop Here to replace</div>
 		</form>
 		<div class="p-2" style="flex: 0 0 50%;">
 			<AssetFields
-					:asset="asset"
+					:asset="newAsset.asset"
 					v-on:assetChanged="assetChanged"
 			/>
 		</div>
@@ -23,7 +23,7 @@ import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
 export default Vue.extend({
 	name: 'NewAsset',
 	props: {
-		asset: {
+		newAsset: {
 			type: Object as PropType<NewAsset>,
 			required: true
 		}
@@ -39,7 +39,7 @@ export default Vue.extend({
 		fileform.addEventListener('drop', (e: any) => {
 			this.changeFiles(e.dataTransfer.files)
 		})
-    console.log('this asset file', this.asset.file)
+    console.log('this asset file', this.newAsset.file)
 	},
 	methods: {
 		updateFile (file: any) {
