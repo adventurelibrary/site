@@ -15,8 +15,8 @@
 						@blur="inputFocused = false"
 			/>
 			<select v-model="sortField">
-				<option value="title">Title</option>
-				<option value="date">Date</option>
+				<option :value="'title'">Title</option>
+				<option :value="'date'">Date</option>
 			</select>
 			<select v-model="sortDirection">
 				<option value="asc">Asc</option>

@@ -7,6 +7,7 @@ import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue"
 import {Component} from "nuxt-property-decorator";
 import {AssetSearchOptions} from "~/lib/assets/asset-types";
 import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
+import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 
 @Component({
 	components: {
@@ -15,6 +16,10 @@ import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-he
 })
 export default class AssetSearchRouter extends Vue {
 	public searchOptions : AssetSearchOptions = newSearchOptions()
+
+	created () {
+		this.searchOptions = getRouteAssetSearchOptions(this.$route)
+	}
 
 	submitSearch (options: AssetSearchOptions) {
 		this.$router.push({
