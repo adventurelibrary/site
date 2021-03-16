@@ -5,6 +5,7 @@
 				<NuxtLink class="brand" :to="{name: 'index'}">Adventure Library</NuxtLink>
 			</figure>
 			<div class="searchbar">
+				<AssetSearchRouter />
 				<input type="text" name="serach">
 			</div>
 			<div class="account-actions">
@@ -52,3 +53,16 @@
 		</footer>
 	</main>
 </template>
+<script lang="ts">
+import Vue from "vue"
+import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRouter.vue";
+import {Component} from "nuxt-property-decorator";
+@Component({
+	components: {
+		AssetSearchRouter: AssetSearchRouter,
+	}
+})
+export default class Default extends Vue {
+
+}
+</script>

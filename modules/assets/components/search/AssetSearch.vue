@@ -148,6 +148,9 @@ class AssetSearch extends Vue {
 	}
 
 	created () {
+		if (!this.options) {
+			return
+		}
 		this.searchFilters = this.options.filters
 		this.query = this.options.query
 		this.sortField = this.options.sortField

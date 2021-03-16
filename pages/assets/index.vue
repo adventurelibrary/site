@@ -1,21 +1,21 @@
 <template>
-  <div class="container">
-    <h1>Search Assets</h1>
-    <div v-if="search">
-      Search for: "{{search.query}}"
-      <AssetSearch
+	<div class="container">
+		<h1>Search Assets</h1>
+		<div v-if="search">
+			Search for: "{{search.query}}"
+			<AssetSearch
 				:options="search"
 				v-on:submit="submit"
-      />
-    </div>
-    <div>
-      <div v-if="assetsAjax.loading">LOADING</div>
+			/>
+		</div>
+		<div>
+			<div v-if="assetsAjax.loading">LOADING</div>
 			<div v-else>
 				Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span>
 				<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
 			</div>
-    </div>
-  </div>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import Vue from "vue"
@@ -34,28 +34,28 @@ import {AssetSearchFilter} from "~/lib/assets/search-filters";
 import {commaAndJoin} from "~/lib/helpers";
 
 @Component({
-  components: {
-    AssetSearch,
+	components: {
+		AssetSearch,
 		AssetCard,
-  },
+	},
 	mixins: [PaginationMixin]
 })
 class AssetsIndexPage extends Vue {
-  public search : AssetSearchOptions
+	public search : AssetSearchOptions
 	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
 
 	paginationTo : any = {
-  	name: 'assets',
+		name: 'assets',
 		query: {}
 	}
 
 	head () {
-  	return {
-  		title: this.getPageTitle()
+		return {
+			title: this.getPageTitle()
 		}
 	}
 
-  async asyncData (ctx: Context) {
+	async asyncData (ctx: Context) {
 		const search = getRouteAssetSearchOptions(ctx.route)
 		const fn = async () => {
 			return await searchAssets(search)
@@ -66,17 +66,17 @@ class AssetsIndexPage extends Vue {
 			search: search,
 			assetsAjax
 		}
-  }
+	}
 
-  get assets () : any[] {
-  	return computeAjaxList(this.assetsAjax)
+	get assets () : any[] {
+		return computeAjaxList(this.assetsAjax)
 	}
 
 	get totalAssets () : number {
-  	if (!this.assetsAjax.data) {
-  		return 0
+		if (!this.assetsAjax.data) {
+			return 0
 		}
-  	return this.assetsAjax.data.total || 0
+		return this.assetsAjax.data.total || 0
 	}
 
 	getPageTitle () {
@@ -98,19 +98,19 @@ class AssetsIndexPage extends Vue {
 		return title
 	}
 
-  @Watch('$route')
+	@Watch('$route')
 	async routeChanged (newRoute: Route) {
 		const search = getRouteAssetSearchOptions(newRoute)
 		this.search = search
 		const fn = async () => {
-  		return await searchAssets(search)
+			return await searchAssets(search)
 		}
 		await doAjax<AssetsResponse>(this.assetsAjax, fn)
 		const t = this.getPageTitle()
 	}
 
-  submit (options: AssetSearchOptions) {
-  	const query = assetSearchOptionsToQuery(options)
+	submit (options: AssetSearchOptions) {
+		const query = assetSearchOptionsToQuery(options)
 		this.$router.push({
 			name: 'assets',
 			query: query
