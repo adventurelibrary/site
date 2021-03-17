@@ -2,7 +2,7 @@ const path = require('path')
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
-console.log('isAdmin', isAdmin)
+const analyze = process.env.ANALYZE === '1'
 
 const css = [
   'styles/color.scss',
@@ -48,6 +48,10 @@ export default {
     '@nuxtjs/dotenv'
   ],
 
+  router: {
+    base: '/dev/'
+  },
+
     // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extend (config) {
@@ -55,7 +59,7 @@ export default {
       config.resolve.alias['@assets'] = 'modules/assets'
       config.resolve.alias['vue$'] = vue$
     },
-    analyze: true
+    analyze: analyze
   },
   css: css,
 
