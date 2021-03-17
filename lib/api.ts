@@ -1,10 +1,10 @@
 import axios from 'axios'
 
-export let api = {}
-export const setBaseURL = function (url: string) {
-	api = axios.create({
-		baseURL: url
-	})
-}
+const base = <string>process.env.ADVL_BASE_URL
 
+console.log('base', base)
+
+export const api = axios.create({
+	baseURL: base
+})
 export default api

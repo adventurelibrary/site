@@ -1,15 +1,16 @@
 import {
 	Asset,
-	AssetFields, AssetFormData,
+	AssetFormData,
 	AssetPayload,
 	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag
+	AssetsResponse, AssetTag, AssetUploadResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {AssetTags} from "./asset-consts";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
+import api from "~/lib/api"
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = {
@@ -90,21 +91,36 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 }
 
 export const signActiveUpload = async (au : ActiveUpload) => {
-	const res = await createAssetSignature(au.asset)
+	const res = await createAssetSignature(au.file.name, au.asset)
 	au.signature = res.signature
 	au.status = 'signed'
+	au.params = res.params
 }
 
-export const createAssetSignature = async (fields: AssetFormData) : Promise<AssetSignatureResponse> => {
+export const createAssetSignature = async (filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
 	const data = assetFormDataToPayload(fields)
-	console.log('sending this payload', data)
-	return new Promise<AssetSignatureResponse>((res) => {
-		setTimeout(() => {
-			res({
-				signature: btoa(fields.title + new Date().getTime().toString())
-			})
-		}, 220)
+	const res = await api.post<AssetSignatureResponse>('assets/get_signature', {
+		fileName: filename,
+		userName: 'site',
+		assetData: data
 	})
+	return res.data
+}
+
+export const uploadAsset = async (file : File, signature: string, params: any) : Promise<AssetUploadResponse> => {
+	const form = new FormData()
+	form.append('file', file)
+	form.append('params', params)
+	form.append('signature', signature)
+	const res = await api.request<AssetUploadResponse>({
+		url: 'https://api2.transloadit.com/assemblies',
+		method: 'post',
+		headers: {
+
+		},
+		data: form
+	})
+	return res.data
 }
 
 export const getFeaturedAssets = async () : Promise<AssetsResponse> => {

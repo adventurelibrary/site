@@ -18,7 +18,7 @@
 				<div class="drop-files" style="border: 1px solid #ccc; padding: 5em; text-align: center;">Drag new assets here</div>
 			</form>
 			<div v-if="newAssets.length">
-				<button type="button" @click="beginUploads">Upload {{newAssets.length}} File(s)</button>
+				<button type="button" @click="beginUploads" style="padding: 20px 40px">Upload {{newAssets.length}} File(s)</button>
 			</div>
 		</div>
 		<div v-if="stage === 'uploading'">
@@ -40,7 +40,7 @@ import {fieldNames} from "./AssetFields.vue";
 import ActiveUploadComponent from "./ActiveUpload.vue";
 import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-uploads";
 import {sleep} from "~/lib/helpers";
-import {signActiveUpload} from "~/lib/assets/asset-api";
+import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
 
 type Stage = 'adding' | 'uploading' | 'done'
 
@@ -87,21 +87,17 @@ export default Vue.extend({
 
 		async beginUpload (upload: ActiveUpload) {
       await this.signUpload(upload)
-      await this.uploadFile(upload)
+      await this.uploadAsset(upload)
 		},
 
 		async  signUpload (upload: ActiveUpload) {
 			await signActiveUpload(upload)
-			await sleep(500)
 		},
 
-		async  uploadFile(upload: ActiveUpload) {
+		async  uploadAsset(upload: ActiveUpload) {
 			upload.status = 'uploading'
 			try {
-				for (let i = 0; i <= 100; i++) {
-					upload.progress = i
-					await sleep(25)
-				}
+				await uploadAsset(upload.file, upload.signature, upload.params)
 				upload.status = 'complete'
 			} catch (ex) {
 				upload.status = 'error'

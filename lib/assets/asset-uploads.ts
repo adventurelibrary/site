@@ -9,6 +9,8 @@ export type ActiveUpload = {
 	error: string,
 	signature: string,
 	key: any,
+	file: File,
+	params: any,
 	asset: AssetFormData
 }
 
@@ -22,6 +24,8 @@ export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveU
 			signature: '',
 			key: idx,
 			asset: na.asset,
+			file: na.file,
+			params: {}
 		}
 	})
 }

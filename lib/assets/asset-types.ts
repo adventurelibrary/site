@@ -77,5 +77,10 @@ export type AssetSearchAction = {
 }
 
 export type AssetSignatureResponse = {
-	signature: string
+	signature: string,
+	params: any
+}
+
+export type AssetUploadResponse = {
+
 }
