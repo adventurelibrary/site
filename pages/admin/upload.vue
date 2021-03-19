@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="upload-page">
 	<h1>Upload Assets</h1>
 	<div>
 		<UploadAssets />
@@ -25,3 +25,15 @@ class Upload extends Vue {
 
 export default Upload
 </script>
+<style>
+.upload-page {
+	max-width: 960px;
+	margin: 0 auto;
+}
+
+.drop-files {
+	border: 1px dashed #ccc;
+	padding: 5em;
+	text-align: center;
+}
+</style>

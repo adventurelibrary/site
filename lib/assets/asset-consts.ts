@@ -55,3 +55,5 @@ export const AssetTagOptions : SelectOption[] = AssetTags.map((type: AssetTag) :
 		label: type.label
 	}
 })
+
+export const ACCEPTED_IMAGE_TYPES = 'image/png, image/jpg, image/jpeg'

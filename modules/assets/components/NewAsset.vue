@@ -1,11 +1,13 @@
 <template>
-	<div class="d-flex">
-		<form ref="fileform" class="p-2" style="flex: 0 0 50%;">
-			<input type="file" multiple @change="fileInputChanged" />
-      <AssetFilePreview :file="newAsset.file" />
-			<div class="drop-files" style="border: 1px solid #ccc; padding: 5em; text-align: center;">Current file: {{newAsset.file.name}} {{newAsset.file.size}}<br />Drop Here to replace</div>
+	<div class="new-asset">
+		<form ref="fileform" class="new-asset-file">
+      <div class="preview">
+				<AssetFilePreview :file="newAsset.file" />
+			</div>
+			<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
+			<div class="drop-files">Drop here to replace</div>
 		</form>
-		<div class="p-2" style="flex: 0 0 50%;">
+		<div class="new-asset-fields">
 			<AssetFields
 					:asset="newAsset.asset"
 					v-on:assetChanged="assetChanged"
@@ -19,6 +21,7 @@ import {stopEvents} from "~/lib/file-helpers";
 import {NewAsset} from "~/lib/assets/asset-types";
 import AssetFields from "./AssetFields.vue";
 import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
+import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
 
 export default Vue.extend({
 	name: 'NewAsset',
@@ -32,7 +35,11 @@ export default Vue.extend({
     AssetFilePreview,
 		AssetFields: AssetFields,
 	},
-
+	data () {
+		return {
+			acceptedImageTypes: ACCEPTED_IMAGE_TYPES
+		}
+	},
 	mounted () {
 		const fileform = this.$refs.fileform as any
 		stopEvents(fileform)
@@ -67,3 +74,35 @@ export default Vue.extend({
 	},
 })
 </script>
+<style>
+.new-asset {
+	display: flex;
+	flex-direction: row;
+	padding-bottom: 2em;
+	margin-bottom: 2em;
+	border-bottom: 1px solid #333;
+}
+
+.new-asset-file,
+.new-asset-fields {
+	flex: 0 0 50%;
+}
+
+.new-asset-fields {
+	padding-left: 1em;
+}
+
+.new-asset-file {
+	padding-right: 1em;
+	text-align: center;
+}
+
+.new-asset-file img {
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.new-asset-file .drop-files {
+	padding: 1em;
+}
+</style>
