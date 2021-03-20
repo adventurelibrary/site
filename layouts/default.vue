@@ -23,10 +23,6 @@
 			</nav>
 		</header>
 		<main class="site-body">
-			<header class="page-header">
-				<h1>Page Title</h1>
-				<h2>Page call to action / subtitle.</h2>
-			</header>
 			<main class="page-body">
 				<Nuxt />
 			</main>

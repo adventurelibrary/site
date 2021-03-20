@@ -17,6 +17,7 @@ export const newAjax= <T>(data: T) : Ajax<T> =>{
 	}
 }
 
+// Performs an async and updates the obj passed in as it goes
 export const doAjax = async <T>(obj: Ajax<T>, fn: () => Promise<T>, skipLoading = false) => {
 	obj.loading = !skipLoading
 	obj.error = ''
@@ -29,6 +30,7 @@ export const doAjax = async <T>(obj: Ajax<T>, fn: () => Promise<T>, skipLoading 
 	obj.loading = false
 	return obj
 }
+
 
 // This helper is used in components to create an easy-to-use array variable for the template
 // This is so you can do <strong>There are {{items.length}} items</strong>

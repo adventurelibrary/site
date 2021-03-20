@@ -151,6 +151,33 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 	})
 }
 
+export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> => {
+	const ajax = newAssetAjax()
+	try {
+		const asset = await getAsset(slug)
+		ajax.data = asset
+	} catch (ex) {
+		ajax.error = ex.toString()
+	}
+
+	ajax.loading = false
+	return ajax
+}
+
+export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>> => {
+	console.log('getAssetAjaxById id', id)
+	const ajax = newAssetAjax()
+	try {
+		const asset = await getAssetById(id)
+		ajax.data = asset
+	} catch (ex) {
+		ajax.error = ex.toString()
+	}
+
+	ajax.loading = false
+	return ajax
+}
+
 export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 	return new Promise<AssetResponse>((res, rej) => {
 		setTimeout(() => {
@@ -165,6 +192,17 @@ export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 				asset: Object.assign({}, asset)
 			})
 		}, 100)
+	})
+}
+
+export async function getAssets() : Promise<AssetsResponse> {
+	return new Promise<AssetsResponse>((res) => {
+		setTimeout(() => {
+			res({
+				results: ASSETS_LIST,
+				total: ASSETS_LIST.length
+			})
+		}, 200)
 	})
 }
 
@@ -220,6 +258,9 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 	const payload  : AssetPayload = {
 		asset: {}
 	}
+	payload.asset.title = data.title
+	payload.asset.description = data.description
+	payload.asset.type = data.type
 	payload.asset.tags = data.tags.map((at: AssetTag) : string => {
 		return at.key
 	})
