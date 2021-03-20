@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+	<div class="container">
 		<AssetDetails :asset="asset" />
-  </div>
+	</div>
 </template>
 <script lang="ts">
 import { Context } from '@nuxt/types'
@@ -9,26 +9,41 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/lib/assets/asset-types";
-import {getAsset} from "~/lib/assets/asset-api";
+import { getAssetAjax} from "~/lib/assets/asset-api";
+import {Ajax} from "~/lib/ajax";
 
 @Component
 class AssetPage extends Vue {
-  public asset : Asset
+	public assetAjax : Ajax<Asset>
 
-  head () {
-    const asset = this.asset
-    return {
-      title: asset.title + ' - Asset',
-      description: asset.description
-    }
-  }
+	head () {
+		const asset = this.asset
+		if (asset == null) {
+			return {
+				title: '404 Asset',
+				description: ''
+			}
+		}
+		return {
+			title: asset.title + ' - Asset',
+			description: asset.description
+		}
+	}
 
-  async asyncData (ctx: Context) {
-    const assetRes = await getAsset(ctx.params.slug)
-    return {
-      asset: assetRes.asset
-    }
-  }
+	get asset () : Asset | null {
+		if (this.assetAjax.loading || this.assetAjax.error || !this.assetAjax.data) {
+			return null
+		}
+
+		return this.assetAjax.data
+	}
+
+	async asyncData (ctx: Context) {
+		const assetRes = await getAssetAjax(ctx.params.slug)
+		return {
+			assetAjax: assetRes
+		}
+	}
 }
 
 export default AssetPage
