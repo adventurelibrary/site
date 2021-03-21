@@ -17,7 +17,6 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 import {Asset, AssetSearchOptions} from "~/lib/assets/asset-types";
 import {getFeaturedAssets} from "~/lib/assets/asset-api";
-import {Context} from "@nuxt/types";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";

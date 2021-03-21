@@ -4,7 +4,7 @@
 		<form @submit="saveAsset">
 			<AssetFields :asset="data" />
 			<div>
-				<button>Submit</button>
+				<CButton color="primary">Submit</CButton>
 			</div>
 		</form>
 	</LoadingContainer>

@@ -1,10 +1,6 @@
 <template>
 	<div class="tags-input">
-		<div>
-			<div v-for="(tag, idx) in tagsLocal" :key="tag.key">
-				{{tag.label}}
-				<button @click="() => removeTag(idx)">X</button>
-			</div>
+		<div class="">
 			<input class="form-control"
 				v-model="query"
 				@keypress.enter="enter"
@@ -22,6 +18,9 @@
 			:active="true"
 			@clickTag="tagClicked"
 		/>
+		<div>
+			<span v-for="(tag, idx) in tagsLocal" :key="tag.key">{{tag.label}}&nbsp;<button @click="() => removeTag(idx)">X</button></span>
+		</div>
 	</div>
 </template>
 <script lang="ts">

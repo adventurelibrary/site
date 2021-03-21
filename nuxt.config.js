@@ -11,11 +11,20 @@ const css = [
   'styles/styles.scss'
 ]
 const ignore = []
+const plugins = [
+  'mixins/global.ts'
+]
+
 if (!isAdmin) {
   ignore.push('pages/admin/*.vue')
   ignore.push('layouts/admin.vue')
 } else {
   css.push('styles/admin.scss')
+  css.push('@coreui/coreui/scss/coreui.scss')
+  plugins.push({
+    src: 'plugins/admin',
+    mode: 'client'
+  })
 }
 
 export default {
@@ -58,6 +67,6 @@ export default {
     analyze: true
   },
   css: css,
-
-  ignore: ignore
+  plugins: plugins,
+  ignore: ignore,
 }

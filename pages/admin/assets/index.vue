@@ -1,28 +1,17 @@
 <template>
 	<div>
-		<table width="100%">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Type</th>
-					<th>Tags</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="assets.length == 0">
-					<td colspan="2">No assets</td>
-				</tr>
-				<tr v-for="asset in assets" :key="asset.id">
-					<td>
-						<AssetEditLink :asset="asset">{{asset.title}}</AssetEditLink>
-					</td>
-					<td>{{asset.type}}</td>
-					<td>
-						<TagList :tags="asset.tags" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<CDataTable :items="assets" :fields="['title', 'type', 'tags']">
+			<template #title="{item}">
+				<td>
+					<AssetEditLink :asset="item">{{item.title}}</AssetEditLink>
+				</td>
+			</template>
+			<template #tags="item">
+				<td>
+					<TagList :tags="item.tags" />
+				</td>
+			</template>
+		</CDataTable>
 	</div>
 </template>
 <script lang="ts">
@@ -54,6 +43,13 @@ export default class AssetsIndex extends AdminPage {
 		return {
 			assetsAjax
 		}
+	}
+
+	mounted () {
+		this.notifySuccess('Successfully showed this message')
+		setTimeout(() => {
+			this.notifyError('Now an error')
+		}, 1500)
 	}
 
 	get assets () : Asset[] {
