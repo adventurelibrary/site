@@ -1,10 +1,9 @@
-// 1. Make sure to import 'vue' before declaring augmented types
-import Vue from 'vue'
+// For any extra functionality that our mixins add to the Vue object
+// we have to add the definition here, otherwise TypeScript won't know
+// that our classes that extend Vue have these functions
+// So anything global, we have to add here
 
-// 2. Specify a file with the types you want to augment
-//    Vue has the constructor type in types/vue.d.ts
 declare module 'vue/types/vue' {
-	// 3. Declare augmentation for Vue
 	interface Vue {
 		notifySuccess (arg: string) : void
 		notifyError (arg: string) : void

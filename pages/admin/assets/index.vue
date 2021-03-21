@@ -45,6 +45,7 @@ export default class AssetsIndex extends AdminPage {
 		}
 	}
 
+	// This is just some testing and demonstration, it will be removed later
 	mounted () {
 		this.notifySuccess('Successfully showed this message')
 		setTimeout(() => {
