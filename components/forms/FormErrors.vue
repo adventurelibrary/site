@@ -8,7 +8,7 @@ import Vue from "vue"
 export default Vue.extend({
 	name: 'FormErrors',
 	props: ['error'],
-	computed: {
+/*	computed: {
 		showError () {
 			return this.messages && this.messages.length > 0
 		},
@@ -27,6 +27,6 @@ export default Vue.extend({
 
 			return [this.error.toString()]
 		}
-	}
+	}*/
 })
 </script>

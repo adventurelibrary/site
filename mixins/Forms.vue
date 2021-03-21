@@ -1,5 +1,6 @@
 <script lang="ts">
 import FormErrors from "~/components/forms/FormErrors.vue";
+import Vue from "vue"
 
 export const newForm = (data = {}) => {
 	return {
@@ -9,7 +10,7 @@ export const newForm = (data = {}) => {
 	}
 }
 
-export const FormMixin = {
+export const FormMixin = Vue.extend({
 	components: {
 		FormErrors: FormErrors
 	},
@@ -19,7 +20,14 @@ export const FormMixin = {
 		}
 	},
 	methods: {
-		async submit(e) {
+		success () {
+			// do a success thing
+		},
+		validate () : string {
+			// do some validation
+			return ''
+		},
+		/*async submit(e: any) {
 			if (e) {
 				e.preventDefault()
 			}
@@ -33,22 +41,20 @@ export const FormMixin = {
 			this.form.submitting = true
 			this.form.error = ''
 			let result
-			try {
+			/!*try {
 				result = await this.action()
 				this.form.submitting = false
 				if (this.success) {
 					this.success()
-				} else if (this.successMessage) {
-					this.notifySuccess(this.successMessage)
 				}
 			} catch (ex) {
 				this.form.error = ex
 				this.form.submitting = false
-				this.notifyError('Error submitting the form')
-			}
+				//this.notifyError('Error submitting the form')
+			}*!/
 
 			return result
-		}
+		}*/
 	}
-}
+})
 </script>
