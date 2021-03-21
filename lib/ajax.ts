@@ -17,6 +17,14 @@ export const newAjax= <T>(data: T) : Ajax<T> =>{
 	}
 }
 
+export const getAjaxData = <T>(ajax: Ajax<T>) : T | null => {
+	if (ajax.loading || ajax.error || !ajax.data) {
+		return null
+	}
+
+	return ajax.data
+}
+
 // Performs an async and updates the obj passed in as it goes
 export const doAjax = async <T>(obj: Ajax<T>, fn: () => Promise<T>, skipLoading = false) => {
 	obj.loading = !skipLoading

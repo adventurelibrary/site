@@ -33,14 +33,14 @@ export type AssetPayload = {
 	asset: any
 }
 
+export type Creator = {
+	name: string
+}
+
 // Data returned by the server about a specific asset
 export type AssetResponse = {
 	asset: Asset
 	creator: Creator
-}
-
-export type Creator = {
-	name : string
 }
 
 export type AssetTypeKey = 'map' | 'token' | 'portrait'
