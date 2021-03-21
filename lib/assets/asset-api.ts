@@ -15,13 +15,13 @@ import api from "~/lib/api"
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = {
 	'a-town':  {
-		id: '324432',
+		id: '324432',		
 		description: 'A lovely little town',
 		thumbnailSrc: 'https://i.imgur.com/1oVr25o.jpg',
 		slug: 'a-town',
 		title: 'A Town',
 		type: 'map',
-		tags: [AssetTags[0], AssetTags[1]]
+		tags: [AssetTags[0], AssetTags[1]],
 	},
 	'cool-token': {
 		id: '321421',
@@ -145,7 +145,8 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 			}
 
 			res({
-				asset: Object.assign({}, asset)
+				asset: Object.assign({}, asset),
+				creator: {name: 'fubar artist'}	
 			})
 		}, 100)
 	})
@@ -189,7 +190,8 @@ export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 			}
 
 			res({
-				asset: Object.assign({}, asset)
+				asset: Object.assign({}, asset),
+				creator: {name: 'fubar artist'}
 			})
 		}, 100)
 	})
@@ -229,7 +231,8 @@ export const newAssetsAjax = () : Ajax<AssetsResponse> => {
 
 export const newAssetAjax = () : Ajax<AssetResponse> => {
 	return newAjax<AssetResponse>({
-		asset: newAsset()
+		asset: newAsset(),
+		creator: {name : ''}
 	})
 }
 

@@ -36,6 +36,11 @@ export type AssetPayload = {
 // Data returned by the server about a specific asset
 export type AssetResponse = {
 	asset: Asset
+	creator: Creator
+}
+
+export type Creator = {
+	name : string
 }
 
 export type AssetTypeKey = 'map' | 'token' | 'portrait'
