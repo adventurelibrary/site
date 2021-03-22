@@ -36,6 +36,7 @@
 		</div>
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
+				<h3>Filter Options</h3>
 				<SearchActions
 					:bus="bus"
 					:filters="searchFilters"
@@ -46,7 +47,7 @@
 				/>
 			</div>
 			<div class="filter-container" v-show="action === 'type'">
-				<label>Types</label>
+				<h3>Types</h3>
 				<TypeSelector
 					:bus="bus"
 					:filters="searchFilters"
@@ -55,7 +56,7 @@
 					@type:clicked="typeClicked" />
 			</div>
 			<div class="filter-container" v-show="action === 'tag'">
-				<label>Tags</label>
+				<h3>Tags</h3>
 				<TagSearch
 					:bus="bus"
 					:filters="searchFilters"
