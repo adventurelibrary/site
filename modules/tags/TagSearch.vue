@@ -8,7 +8,7 @@
 			<li v-for="(tag, idx) in shownResults"
 				:key="tag.key"
 				class="action"
-				:class="{'btn-primary': activeItem === idx}"
+				:class="{'active': activeItem === idx}"
 				@click="() => clickTag(tag)">
 				{{tag.label}}
 			</li>
