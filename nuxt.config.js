@@ -8,6 +8,7 @@ const css = [
   'styles/color.scss',
   'styles/layout.scss',
   'styles/base-page.scss',
+  'styles/search.scss',
   'styles/styles.scss'
 ]
 const ignore = []
