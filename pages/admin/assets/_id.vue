@@ -1,22 +1,25 @@
 <template>
 	<LoadingContainer :loading="assetAjax.loading" :error="assetAjax.error">
 		Edit this asset
-		<form @submit="saveAsset">
-			<AssetFields :asset="data" />
+		<form @submit="submit">
+			<FormErrors :error="form.error" />
+			<AssetFields :asset="data" @assetChanged="dataChanged" />
 			<div>
-				<CButton color="primary">Submit</CButton>
+				<CButton type="submit" color="primary">Submit</CButton>
 			</div>
 		</form>
 	</LoadingContainer>
 </template>
 <script lang="ts">
-import {Component} from "nuxt-property-decorator";
+import {Component, mixins} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import AdminPage from "~/admin/admin-page";
 import {Asset, AssetFormData} from "~/lib/assets/asset-types";
 import {assetFormDataToPayload, assetResponseToFormData, getAssetAjaxById, newAssetAjax} from "~/lib/assets/asset-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import AssetFields from "~/modules/assets/components/AssetFields.vue";
+import FormMixin from "~/mixins/Forms.vue";
+
 
 @Component({
 	components: {
@@ -24,7 +27,7 @@ import AssetFields from "~/modules/assets/components/AssetFields.vue";
 		AssetFields: AssetFields
 	}
 })
-export default class EditAssetPage extends AdminPage {
+export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 	public assetAjax = newAssetAjax()
 	public data : AssetFormData
 
@@ -50,11 +53,16 @@ export default class EditAssetPage extends AdminPage {
 		return this.assetAjax.data.asset
 	}
 
-	async saveAsset (e: any) {
-		e.preventDefault()
-		console.log('save this')
+	validateForm(): string {
+    if (!this.data.title || this.data.title === '') {
+      return 'Title is required'
+    }
+    return ''
+  }
+
+  async formAction () {
 		const data = assetFormDataToPayload(this.data)
-		console.log('data', data)
+		console.log('do some saving of this data', data)
 	}
 
 	async asyncData (ctx: Context) {
@@ -67,6 +75,10 @@ export default class EditAssetPage extends AdminPage {
 			assetAjax: assetRes,
 			data: data
 		}
+	}
+
+	dataChanged (data: any) {
+		this.data = data
 	}
 }
 </script>

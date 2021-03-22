@@ -166,7 +166,6 @@ export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> =
 }
 
 export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>> => {
-	console.log('getAssetAjaxById id', id)
 	const ajax = newAssetAjax()
 	try {
 		const asset = await getAssetById(id)

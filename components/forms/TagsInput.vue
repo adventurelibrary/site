@@ -19,7 +19,7 @@
 			@clickTag="tagClicked"
 		/>
 		<div>
-			<span v-for="(tag, idx) in tagsLocal" :key="tag.key">{{tag.label}}&nbsp;<button @click="() => removeTag(idx)">X</button></span>
+			<span v-for="(tag, idx) in tagsLocal" :key="tag.key">{{tag.label}}&nbsp;<button type="button" @click="() => removeTag(idx)">X</button></span>
 		</div>
 	</div>
 </template>
@@ -51,6 +51,9 @@ export default class TagsInput extends Vue {
 
 	get excluded () : string[] {
 		return this.tagsLocal.map((t) => {
+			if (!t) {
+				throw new Error('Invalid tag in tagsLocal')
+			}
 			return t.key
 		})
 	}
@@ -64,10 +67,10 @@ export default class TagsInput extends Vue {
 		this.emitChanged()
 	}
 
-	enter () {
+	enter (e: any) {
+		e.preventDefault()
 		this.bus.$emit('enter')
 	}
-
 
 	keyDownRightArrow (e: any) {
 		if (this.query.length && e.target.selectionStart < this.query.length) {

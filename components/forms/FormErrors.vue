@@ -5,28 +5,27 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-export default Vue.extend({
-	name: 'FormErrors',
-	props: ['error'],
-/*	computed: {
-		showError () {
-			return this.messages && this.messages.length > 0
-		},
-		messages () {
-			if (!this.error) {
-				return []
-			}
+import {Component, Prop} from "nuxt-property-decorator";
 
-			if (this.error.errors) {
-				const msgs = this.error.errors.map((error) => {
-					return error.Message
-				})
-				return msgs
-			} else {
-			}
+@Component
+export default class FormErrors extends Vue {
+	@Prop() error : string
 
-			return [this.error.toString()]
+	get showError () : boolean {
+		return this.messages && this.messages.length > 0
+	}
+
+	// TODO: Create an error object that can hold multiple error messages within it
+	// This will allow us to display infinite validation errors on forms
+	// Simple: {messages: ['Title is required', 'Name is required']}
+	// A more advanced structure will be needed later with field names that have errors
+	// so that we can highlight those fields
+	get messages () : string[] {
+		if (!this.error) {
+			return []
 		}
-	}*/
-})
+
+		return [this.error.toString()]
+	}
+}
 </script>
