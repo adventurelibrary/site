@@ -1,15 +1,13 @@
 <template>
-	<div>
-		<a
-				v-for="(type, idx) in items"
-				:key="type.key"
-				@click="() => { clickType(type) }"
-				class="btn btn-sm mr-1"
+	<ul class="action-list">
+		<li class="action" v-for="(type, idx) in items" :key="type.key">
+			<a @click="() => { clickType(type) }"
 				:class="{'btn-primary': activeItem === idx}"
-		>
-			{{type.plural}}
-		</a>
-	</div>
+			>
+				{{type.plural}}
+			</a>
+		</li>
+	</ul>
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
