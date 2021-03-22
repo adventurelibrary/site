@@ -13,7 +13,7 @@
 	grid-template-columns: 3em fit-content(0px) 1fr 6ch 6ch;
 	gap: .5ch;
 
-	.search-tags {
+	.search-filters {
 		grid-column: 2;
 		display: grid;
 		gap: .5ch;
@@ -31,12 +31,12 @@
 			display: block;
 			white-space: nowrap;
 		}
-		.tag-type {
+		.filter-type {
 			&::after {
 				content: ":";
 			}
 		}
-		.tag-delete {
+		.filter-delete {
 			display: inline-block;
 			width: 1ch;
 			height: 1em;

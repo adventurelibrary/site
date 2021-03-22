@@ -1,10 +1,9 @@
 <template>
-	<div class="" :class="classes" style="padding: 10px 8px;">
-		{{filter.label}}
-		<a class="p-0" style="color: black; margin-left: 3px;" @click="remove">
-			x
-		</a>
-	</div>
+	<li class="" :class="classes">
+		<span class="filter-type">Tag Type</span>
+		<span class="filter-value">{{filter.label}}</span>
+		<a class="filter-delete" @click="remove"></a>
+	</li>
 </template>
 <script lang="ts">
 import Vue from "vue"
@@ -24,15 +23,15 @@ export default class SearchFilter extends Vue {
 	}
 
 	get classes () {
-		const classes = ['search-filter badge mr-1', this.badgeColor]
+		const classes = ["search-filter", this.badgeColor]
 		if (this.active) {
-			classes.push('active')
+			classes.push("active")
 		}
 		return classes
 	}
 
 	remove () {
-		this.$emit('remove')
+		this.$emit("remove")
 	}
 }
 </script>

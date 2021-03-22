@@ -1,17 +1,14 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div class="query-container">
-			<ul class="search-tags">
-				<li>
-					<span class="tag-type">Tag</span>
-					<span class="tag-value">1</span>
-					<a class="tag-delete"></a>
-				</li>
-				<li>
-					<span class="tag-type">Tag</span>
-					<span class="tag-value">2</span>
-					<a class="tag-delete"></a>
-				</li>
+			
+			<ul class="search-filters">
+				<SearchFilter
+					v-for="(filter, idx) in searchFilters" :key="idx"
+					:filter="filter"
+					:active="idx === activeFilter"
+					@remove="() => removeFilter(idx)"
+				/>
 			</ul>
 			<input placeholder="Search"
 				class="search-input"
@@ -67,13 +64,8 @@
 					@clickTag="tagClicked" />
 			</div>
 		</div>
-		<div class="search-filters d-flex">
-			<SearchFilter
-					v-for="(filter, idx) in searchFilters" :key="idx"
-					:filter="filter"
-					:active="idx === activeFilter"
-					@remove="() => removeFilter(idx)"
-			/>
+		<div class="search-filters">
+			
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
