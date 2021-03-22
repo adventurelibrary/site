@@ -6,7 +6,6 @@
 			</figure>
 			<div class="searchbar">
 				<AssetSearchRouter />
-				<input type="text" name="serach">
 			</div>
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>

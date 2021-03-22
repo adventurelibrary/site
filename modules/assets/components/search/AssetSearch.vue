@@ -362,37 +362,3 @@ class AssetSearch extends Vue {
 }
 export default AssetSearch
 </script>
-<style>
-.query-container {
-}
-
-.asset-search {
-	position: relative;
-}
-
-.actions {
-	position: absolute;
-	width: 90%;
-	top: 43px;
-	background: #ccc;
-	border: 1px solid #333;
-	padding: 10px;
-}
-
-.query-container input {
-	padding: 3px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background: white;
-	margin: 0 5px 0 0;
-}
-.query-container input:focus {
-	outline: none;
-}
-.submit-container {
-	padding-top: 1em;
-}
-.filter-container > label {
-	font-weight: bold;
-}
-</style>
