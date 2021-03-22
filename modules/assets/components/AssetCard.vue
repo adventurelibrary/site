@@ -1,5 +1,5 @@
 <template>
-	<div class="asset">
+	<div class="asset-card">
 		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
 		<div class="meta">

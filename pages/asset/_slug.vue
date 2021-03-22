@@ -1,99 +1,30 @@
 <template>
 	<div class="container">
 
-		<!-- maps -->
-		<div v-if="asset.type == 'map'" class="container">
-			-- fetch asset details from db via api
-			<img :src="asset.thumbnailSrc">
+		<img :src="asset.thumbnailSrc">
 
-			<div>
-			{{asset.type}}
-				<h1>{{asset.name}}</h1>
-				By [user icon] {{assetAjax.data.creator.name}}
-			</div>
-			<div>
-				<select name="assetFile" id="assetFile">
-					<option value="-">Select Size</option>
-					<option value="original">Small</option>
-				</select>
+		<div>
+			<h1>{{asset.name}}</h1>
+			By [user icon] {{creator.name}}
+		</div>
+		<div>
+			<select name="assetFile">
+				<option value="-">Select Size</option>
+				<option value="original">Small</option>
+			</select>
 
-				<button type="button">Unlock for {{asset.cost}}</button>
-				{{asset.downloads}}
-			</div>
-
-			<div>
-			{{asset.description}}
-			</div>
-
-			<div>
-				Similar assets
-				[links : use code from front page within particular search terms]
-			</div>
-
+			<button type="button">Unlock for {{asset.cost}}</button>
+			{{asset.downloads}}
 		</div>
 
-		<!-- tokens -->
-		<div v-if="asset.type == 'token'" class="container">
-			-- fetch asset details from db via api
-			<img :src="asset.thumbnailSrc">
-
-			<div>
-			{{asset.type}}
-				<h1>{{asset.name}}</h1>
-				By [user icon] {{creator.name}}
-			</div>
-			<div>
-				<select name="assetFile" id="assetFile">
-					<option value="-">Select Size</option>
-					<option value="original">Small</option>
-				</select>
-
-				<button type="button">Unlock for {{asset.cost}}</button>
-				{{asset.downloads}}
-			</div>
-
-			<div>
+		<div>
 			{{asset.description}}
-			</div>
-
-			<div>
-				Similar assets
-				[links : use code from front page within particular search terms]
-			</div>
-
 		</div>
 
-		<!-- portraits -->
-		<div v-if="asset.type == 'portrait'" class="container">
-			-- fetch asset details from db via api
-			<img :src="asset.thumbnailSrc">
-
-			<div>
-			{{asset.type}}
-				<h1>{{asset.name}}</h1>
-				By [user icon] {{creator.name}}
-			</div>
-			<div>
-				<select name="assetFile" id="assetFile">
-					<option value="-">Select Size</option>
-					<option value="original">Small</option>
-				</select>
-
-				<button type="button">Unlock for {{asset.cost}}</button>
-				{{asset.downloads}}
-			</div>
-
-			<div>
-			{{asset.description}}
-			</div>
-
-			<div>
-				Similar assets
-				[links : use code from front page within particular search terms]
-			</div>
-
+		<div>
+			Similar assets
+			[links : use code from front page within particular search terms]
 		</div>
-
 	</div>
 </template>
 <script lang="ts">
