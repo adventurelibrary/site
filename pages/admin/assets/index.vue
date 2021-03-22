@@ -4,7 +4,7 @@
 			Assets
 		</CCardHeader>
 		<CCardBody>
-			<Pagination :to="{name: 'admin-assets-index'}" items-per-page="50" total-items="252" />
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
 			<CDataTable :items="assets" :fields="['title', 'type', 'tags']">
 				<template #title="{item}">
 					<td>
@@ -17,7 +17,7 @@
 					</td>
 				</template>
 			</CDataTable>
-			<Pagination :to="{name: 'admin-assets-index'}" items-per-page="50" total-items="252" />
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
 		</CCardBody>
 	</CCard>
 </template>
