@@ -1,6 +1,18 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div class="query-container">
+			<ul class="search-tags">
+				<li>
+					<span class="tag-type">Tag</span>
+					<span class="tag-value">1</span>
+					<a class="tag-delete"></a>
+				</li>
+				<li>
+					<span class="tag-type">Tag</span>
+					<span class="tag-value">2</span>
+					<a class="tag-delete"></a>
+				</li>
+			</ul>
 			<input placeholder="Search"
 				class="search-input"
 				type="text"
