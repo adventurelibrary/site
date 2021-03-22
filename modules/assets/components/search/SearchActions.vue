@@ -1,14 +1,15 @@
 <template>
-	<div>
-		<a v-for="(action, idx) in items"
-			@click="() => clickAction(action)" :key="action.key"
-			class="d-block btn text-left mb-1"
-			:class="{'btn-primary': idx === activeItem, 'btn-secondary': idx !== activeItem}"
-		>
-			<span class="action-prefix">{{action.prefix}}:</span>
-			<span class="action-description">{{action.description}}</span>
-		</a>
-	</div>
+	<ul class="action-list">
+		<li class="action" v-for="(action, idx) in items" :key="action.key">
+			<a @click="() => clickAction(action)"
+				class="d-block btn text-left mb-1"
+				:class="{'btn-primary': idx === activeItem, 'btn-secondary': idx !== activeItem}"
+			>
+				<span class="action-prefix">{{action.prefix}}:</span>
+				<span class="action-description">{{action.description}}</span>
+			</a>
+		</li>
+	</ul>
 </template>
 <script lang="ts">
 import {Component} from "nuxt-property-decorator";
