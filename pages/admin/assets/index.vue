@@ -1,18 +1,25 @@
 <template>
-	<div>
-		<CDataTable :items="assets" :fields="['title', 'type', 'tags']">
-			<template #title="{item}">
-				<td>
-					<AssetEditLink :asset="item">{{item.title}}</AssetEditLink>
-				</td>
-			</template>
-			<template #tags="item">
-				<td>
-					<TagList :tags="item.tags" />
-				</td>
-			</template>
-		</CDataTable>
-	</div>
+	<CCard>
+		<CCardHeader>
+			Assets
+		</CCardHeader>
+		<CCardBody>
+			<Pagination :to="{name: 'admin-assets-index'}" items-per-page="50" total-items="252" />
+			<CDataTable :items="assets" :fields="['title', 'type', 'tags']">
+				<template #title="{item}">
+					<td>
+						<AssetEditLink :asset="item">{{item.title}}</AssetEditLink>
+					</td>
+				</template>
+				<template #tags="item">
+					<td>
+						<TagList :tags="item.tags" />
+					</td>
+				</template>
+			</CDataTable>
+			<Pagination :to="{name: 'admin-assets-index'}" items-per-page="50" total-items="252" />
+		</CCardBody>
+	</CCard>
 </template>
 <script lang="ts">
 import {Component} from "nuxt-property-decorator";
