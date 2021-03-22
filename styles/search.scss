@@ -30,24 +30,23 @@
 			border-radius: .3em;
 			display: block;
 			white-space: nowrap;
-			
-			.tag-type {
-				&::after {
-					content: ":";
-				}
+		}
+		.tag-type {
+			&::after {
+				content: ":";
 			}
-			.tag-delete {
-				display: inline-block;
-				width: 1ch;
-				height: 1em;
-				margin-left: .5ch;
+		}
+		.tag-delete {
+			display: inline-block;
+			width: 1ch;
+			height: 1em;
+			margin-left: .5ch;
 
-				&:hover {
-					text-shadow: 0 0 3px currentColor;
-				}
-				&::before {
-					content: "x";
-				}
+			&:hover {
+				text-shadow: 0 0 3px currentColor;
+			}
+			&::before {
+				content: "x";
 			}
 		}
 	}
