@@ -50,29 +50,3 @@ class HomePage extends Vue {
 
 export default HomePage
 </script>
-
-<style>
-.asset-search {
-	margin: 1em;
-	padding: 1em;
-	border: 1px solid #ccc;
-	background: #E0E0E0;
-}
-
-.hero {
-	padding: 2em 0;
-}
-
-.hero .titles {
-	text-align: center;
-}
-
-.titles h1 {
-	font-size: 36px;
-}
-
-.titles h2 {
-	font-size: 26px;
-}
-
-</style>
