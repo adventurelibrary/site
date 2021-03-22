@@ -1,7 +1,7 @@
 <template>
 	<form @submit="submit" class="asset-search">
 		<div class="query-container">
-			
+
 			<ul class="search-filters">
 				<SearchFilter
 					v-for="(filter, idx) in searchFilters" :key="idx"
@@ -59,14 +59,15 @@
 				<h3>Tags</h3>
 				<TagSearch
 					:bus="bus"
-					:filters="searchFilters"
+					:filters="[]"
+					:exclude="excludedTags"
 					:query="actionQuery"
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
 		</div>
 		<div class="search-filters">
-			
+
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -102,7 +103,6 @@ const actions = ['tag', 'creator', 'type']
 	},
 })
 class AssetSearch extends Vue {
-	showAdvanced : boolean = true
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
@@ -214,6 +214,17 @@ class AssetSearch extends Vue {
 		}
 
 		return this.query
+	}
+
+	get excludedTags () : string[] {
+		const tags : string[] = []
+		this.searchFilters.forEach((sf) => {
+			if (sf.type === 'tag') {
+				tags.push(sf.value)
+			}
+		})
+
+		return tags;
 	}
 
 	actionClicked (action: AssetSearchAction) {

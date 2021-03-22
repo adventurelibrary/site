@@ -67,7 +67,7 @@ export default {
       config.resolve.alias['@assets'] = 'modules/assets'
       config.resolve.alias['vue$'] = vue$
     },
-    analyze: true
+    analyze: false
   },
   css: css,
   plugins: plugins,
