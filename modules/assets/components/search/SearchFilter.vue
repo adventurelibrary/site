@@ -1,6 +1,6 @@
 <template>
 	<li class="" :class="classes">
-		<span class="filter-type">Tag Type</span>
+		<span class="filter-type">{{filter.type}}</span>
 		<span class="filter-value">{{filter.label}}</span>
 		<a class="filter-delete" @click="remove"></a>
 	</li>
