@@ -1,28 +1,29 @@
 <template>
 	<form @submit="submit" class="asset-search">
-		<div class="query-container d-flex">
+		<div class="query-container">
 			<input placeholder="Search"
-						type="text"
-						v-model="query"
-						role="query"
-						@keypress.enter="enter"
-						@keydown.up="keyUpLeftArrow"
-						@keydown.left="keyUpLeftArrow"
-						@keydown.right="keyDownRightArrow"
-						@keydown.down="keyDownRightArrow"
-						@keydown.delete="deleteKey"
-						@focus="inputFocused = true"
-						@blur="inputFocused = false"
+				class="search-input"
+				type="text"
+				v-model="query"
+				role="query"
+				@keypress.enter="enter"
+				@keydown.up="keyUpLeftArrow"
+				@keydown.left="keyUpLeftArrow"
+				@keydown.right="keyDownRightArrow"
+				@keydown.down="keyDownRightArrow"
+				@keydown.delete="deleteKey"
+				@focus="inputFocused = true"
+				@blur="inputFocused = false"
 			/>
-			<select v-model="sortField">
+			<select v-model="sortField" class="filter-select sort-select">
 				<option :value="'title'">Title</option>
 				<option :value="'date'">Date</option>
 			</select>
-			<select v-model="sortDirection">
+			<select v-model="sortDirection" class="filter-select order-select">
 				<option value="asc">Asc</option>
 				<option value="desc">Desc</option>
 			</select>
-			<button>Go</button>
+			<button class="search-trigger">Go</button>
 		</div>
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
@@ -39,7 +40,7 @@
 				<label>Types</label>
 				<TypeSelector
 					:bus="bus"
-          :filters="searchFilters"
+					:filters="searchFilters"
 					:query="actionQuery"
 					:active="action === 'type'"
 					@type:clicked="typeClicked" />
