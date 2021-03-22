@@ -1,7 +1,7 @@
 <template>
   <div class="asset featured">
     <div class="meta">
-      <h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
+      <h3><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
       <div>
         {{asset.description}}
       </div>

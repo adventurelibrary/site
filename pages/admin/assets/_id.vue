@@ -46,7 +46,7 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 			}
 		}
 		return {
-			title: asset.title + ' - Asset',
+			title: asset.name + ' - Asset',
 			description: asset.description
 		}
 	}
@@ -60,7 +60,7 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 	}
 
 	validateForm(): string {
-    if (!this.data.title || this.data.title === '') {
+    if (!this.data.name || this.data.name === '') {
       return 'Title is required'
     }
     return ''

@@ -8,7 +8,7 @@
 
 			<div>
 			{{asset.type}}
-				<h1>{{asset.title}}</h1>
+				<h1>{{asset.name}}</h1>
 				By [user icon] {{assetAjax.data.creator.name}}
 			</div>
 			<div>
@@ -39,7 +39,7 @@
 
 			<div>
 			{{asset.type}}
-				<h1>{{asset.title}}</h1>
+				<h1>{{asset.name}}</h1>
 				By [user icon] {{creator.name}}
 			</div>
 			<div>
@@ -70,7 +70,7 @@
 
 			<div>
 			{{asset.type}}
-				<h1>{{asset.title}}</h1>
+				<h1>{{asset.name}}</h1>
 				By [user icon] {{creator.name}}
 			</div>
 			<div>
@@ -118,7 +118,7 @@ class AssetPage extends Vue {
 			}
 		}
 		return {
-			title: asset.title + ' - Asset',
+			title: asset.name + ' - Asset',
 			description: asset.description
 		}
 	}

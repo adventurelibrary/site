@@ -17,7 +17,7 @@ export type ActiveUpload = {
 export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveUpload[] {
 	return newAssets.map((na: NewAsset, idx: number) : ActiveUpload => {
 		return {
-			title: na.asset.title,
+			title: na.asset.name,
 			status: 'waiting',
 			progress: 0,
 			error: '',

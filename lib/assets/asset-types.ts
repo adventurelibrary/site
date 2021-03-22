@@ -4,7 +4,7 @@ import {AssetSearchFilter} from "./search-filters";
 // that the user is about to upload
 export type AssetFields = {
 	description: string
-	title: string
+	name: string
 	type: AssetTypeKey
 	tags: AssetTag[]
 }
