@@ -117,7 +117,7 @@ export default Vue.extend({
 			this.newAssets.push({
 				asset: {
 					description: '',
-					title: title,
+					name: title,
 					type: filenameGuessType(file.name),
 					tags: []
 				},
