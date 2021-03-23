@@ -12,6 +12,9 @@
 			
 			<AssetSearchRouter />
 
+			<button class="search-button">Search</button>
+			<button class="menu-button">Menu</button>
+
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>
 				<figure class="member-avatar"></figure>
