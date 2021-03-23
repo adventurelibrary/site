@@ -77,9 +77,16 @@ body {
 		}
 	}
 
-	.searchbar {
-		display: grid;
-		align-content: center;
+	> button {
+		background: none;
+		border: none;
+		color: white;
+		cursor: pointer;
+
+		&:hover {
+			filter: drop-shadow(0 0 2px white);
+		}
+	}
 	}
 
 	.main-navigation {
