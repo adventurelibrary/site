@@ -40,8 +40,11 @@ body {
 	min-height: 100vh;
 	display: grid;
 	justify-items: center;
-
 	grid-template-rows: var(--header-height) 1fr min-content;
+	grid-template-areas:
+		"header"
+		"body"
+		"footer";
 
 	background-color: var(--color-background);
 	color: white;
@@ -49,18 +52,18 @@ body {
 }
 
 .site-header {
-	grid-row: 1;
+	grid-area: header;
 	background-color: var(--color-primary);
 	display: grid;
 	width: 100%;
-	height: 100%;
-	padding: .1em calc(calc(100% - var(--header-width)) / 2);
-	grid-template-rows: 1fr 1fr;
-	grid-template-columns: 3em 1fr 20ch;
+	grid-template-areas: 
+		"branding name search-button menu-button";
+
 	column-gap: 1.2em;
 
 	.logo {
 		margin: 0;
+		grid-area: branding;
 
 		.brand {
 			// Temporary image, I'm not sure yet where we are storing layout assets
@@ -110,13 +113,13 @@ body {
 }
 
 .site-body {
-	grid-row: 2;
+	grid-area: body;
 	width: var(--body-width);
 }
 
 .site-footer {
 	display: grid;
-	grid-row: 3;
+	grid-area: footer;
 	background-color: var(--color-primary);
 	width: 100%;
 	padding: 0 calc(calc(100% - var(--body-width)) / 2);
