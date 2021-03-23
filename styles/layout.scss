@@ -1,25 +1,11 @@
-
 $media-medium: 700px;
 $media-large: 1220px;
 
 :root {
-	--header-width: 98vw;
+	--search-width: 100vw;
 	--header-height: 4.5em;
 	
 	--body-width: 92vw;
-}
-
-@media (min-width: $media-medium) {
-	:root {
-		--header-height: 9em;
-	}
-}
-@media (min-width: $media-large) {
-	:root {
-		--header-width: 1200px;
-
-		--body-width: 1110px;
-	}
 }
 
 body {
@@ -56,6 +42,11 @@ body {
 	background-color: var(--color-primary);
 	display: grid;
 	width: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: .1em 2.5em;
+	grid-template-rows: 1fr;
+	grid-template-columns: 3em 1fr 3em 3em;
 	grid-template-areas: 
 		"branding name search-button menu-button";
 
@@ -79,6 +70,19 @@ body {
 			}
 		}
 	}
+	.site-name {
+		grid-area: name;
+		margin: 0;
+	}
+
+	.asset-search {
+		display: none;
+		width: var(--search-width);
+		height: 4.5em;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
 
 	> button {
 		background: none;
@@ -90,24 +94,35 @@ body {
 			filter: drop-shadow(0 0 2px white);
 		}
 	}
+
+	.account-actions {
+		display: none;
 	}
 
 	.main-navigation {
-		ul {
-			display: grid;
-			grid-auto-flow: column;
-			gap: 2em;
-			padding: 0;
+		display: none;
 
-			li {
-				display: block;
-				white-space: nowrap;
-			}
-			a {
-				color: var(--heading-color);
-				text-transform: uppercase;
-				text-decoration: none;
-			}
+		grid-auto-flow: column;
+		gap: 2em;
+		padding: 0;
+
+		li {
+			display: block;
+			white-space: nowrap;
+		}
+		a {
+			color: var(--heading-color);
+			text-transform: uppercase;
+			text-decoration: none;
+		}
+	}
+
+	&.menu-active {
+		.account-actions {
+			display: grid;
+		}
+		.main-navigation {
+			display: grid;
 		}
 	}
 }
@@ -139,5 +154,50 @@ body {
 		li {
 			display: block;
 		}
+	}
+}
+
+
+@media (min-width: $media-medium) {
+	:root {
+		--header-height: 9em;
+		--search-width: 55em;
+	}
+	.site-header {
+		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 3em minmax(auto, var(--search-width)) 20ch;
+		grid-template-areas: 
+			"branding     search      account"
+			"navigation navigation navigation";
+
+		.site-name {
+			display: none;
+		}
+		.asset-search {
+			display: grid;
+			position: initial;
+			grid-area: search;
+			height: 2.6em;
+			width: unset;
+		}
+		.account-actions {
+			grid-area: account;
+			display: grid;
+			grid-auto-flow: column;
+			white-space: nowrap;
+		}
+		> button {
+			display: none;
+		}
+		.main-navigation {
+			display: grid;
+			grid-area: navigation;
+			justify-self: start;
+		}
+	}
+}
+@media (min-width: $media-large) {
+	:root {
+		--body-width: 1110px;
 	}
 }
