@@ -8,27 +8,24 @@
 						>
 				</NuxtLink>
 			</figure>
-			<div class="searchbar">
-				<AssetSearchRouter />
-			</div>
+			<h1 class="site-name">Adventure Library</h1>
+			
+			<AssetSearchRouter />
+
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>
 				<figure class="member-avatar"></figure>
 				<a class="account-link">My Account</a>
 			</div>
-			<nav class="main-navigation">
-				<ul>
-					<li><a href="">About Us</a></li>
-					<li><a href="">Purchase Coins</a></li>
-					<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
-					<li><NuxtLink to="/mockups/search">Searchbar Mockup</NuxtLink></li>
-				</ul>
-			</nav>
+			<ul class="main-navigation">
+				<li><a href="">About Us</a></li>
+				<li><a href="">Purchase Coins</a></li>
+				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
+				<li><NuxtLink to="/mockups/search">Searchbar Mockup</NuxtLink></li>
+			</ul>
 		</header>
 		<main class="site-body">
-			<main class="page-body">
-				<Nuxt />
-			</main>
+			<Nuxt />
 		</main>
 		<footer class="site-footer">
 			<h1 class="footer-heading">Adventure Library</h1>
