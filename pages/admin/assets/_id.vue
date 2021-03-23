@@ -9,6 +9,7 @@
 					<FormErrors :error="form.error" />
 					<AssetFields :asset="data" @assetChanged="dataChanged" />
 					<div>
+						<CButton type="button" color="danger" style="float: right;" @click="deleteAsset">Delete</CButton>
 						<CButton type="submit" color="primary">Submit</CButton>
 					</div>
 				</form>
@@ -81,6 +82,14 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 			assetAjax: assetRes,
 			data: data
 		}
+	}
+
+	deleteAsset () {
+		if (prompt('Type DELETE to delete asset') !== 'DELETE') {
+			return
+		}
+
+		this.notifySuccess('Asset deleted (but not really yet)')
 	}
 
 	dataChanged (data: any) {

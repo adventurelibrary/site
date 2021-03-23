@@ -5,10 +5,10 @@
 		</CCardHeader>
 		<CCardBody>
 			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
-			<CDataTable :items="assets" :fields="['title', 'type', 'tags']">
-				<template #title="{item}">
+			<CDataTable :items="assets" :fields="['name', 'type', 'tags']">
+				<template #name="{item}">
 					<td>
-						<AssetEditLink :asset="item">{{item.title}}</AssetEditLink>
+						<AssetEditLink :asset="item">{{item.name}}</AssetEditLink>
 					</td>
 				</template>
 				<template #tags="item">
