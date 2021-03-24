@@ -52,8 +52,6 @@ const ASSETS : Record<string, Asset> = {
 
 Generator as base: https://www.json-generator.com/
 
-
-
 [
   '{{repeat(1, 10000)}}',
   {
@@ -74,7 +72,7 @@ Generator as base: https://www.json-generator.com/
     fileType: '{{random("IMAGE", "PDF", "AUDIO")}}',
     slug: '{{lorem(3, "words")}}',
     thumbnailSrc: 'https://i.pinimg.com/originals/b7/a2/1b/b7a21b1531b4bd877adcaff4dcd3e80a.jpg',
-	title: '{{lorem(5, "words")}}',
+	  title: '{{lorem(5, "words")}}',
     type:  '{{random("map", "token", "portrait")}}'
   }
 ]
