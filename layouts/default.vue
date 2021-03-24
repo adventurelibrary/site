@@ -1,5 +1,9 @@
 <template>
 	<main class="body">
+		<div class="shade" 
+			:visible="this.shade"
+			v-on:click="hideOverlays()">
+		</div>
 		<header class="site-header">
 			<figure class="logo">
 				<NuxtLink class="brand" :to="{name: 'index'}">
@@ -10,17 +14,23 @@
 			</figure>
 			<h1 class="site-name">Adventure Library</h1>
 			
-			<AssetSearchRouter />
+			<AssetSearchRouter :visible="overlays.search"/>
 
-			<button class="search-button">Search</button>
-			<button class="menu-button">Menu</button>
+			<button class="search-button"
+				v-on:click="overlays.search = true">
+				Search
+			</button>
+			<button class="menu-button"
+				v-on:click="overlays.menu = true">
+				Menu
+			</button>
 
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>
 				<figure class="member-avatar"></figure>
 				<a class="account-link">My Account</a>
 			</div>
-			<ul class="main-navigation">
+			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li><a href="">About Us</a></li>
 				<li><a href="">Purchase Coins</a></li>
 				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
@@ -62,6 +72,20 @@ import {Component} from "nuxt-property-decorator";
 	}
 })
 export default class Default extends Vue {
+	overlays: { [s: string]: boolean; } = {
+		search: false,
+		menu: false
+	}
+	searchVisible = false;
+	menuVisible = false;
 
+	get shade() {
+		return Object.values(this.overlays).some(o => o);
+	}
+
+	hideOverlays() {
+		Object.keys(this.overlays).forEach(o => this.overlays[o] = false);
+		console.debug(this.overlays);
+	}
 }
 </script>
