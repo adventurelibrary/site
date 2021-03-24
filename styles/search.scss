@@ -1,8 +1,8 @@
 .asset-search {
-	&.visible {
+	&[visible] {
 		display: grid;
 	}
-	
+
 	position: relative;
 	background: var(--search-background-light);
 	grid-template-columns: 3em fit-content(0px) 1fr 6ch 6ch;
