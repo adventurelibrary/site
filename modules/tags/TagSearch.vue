@@ -1,18 +1,18 @@
 <template>
 	<div class="tag-search">
-		<div v-if="shownResults.length == 0">
-			<div v-if="query.length">Can't find any tags</div>
-			<div v-else>Type to search for tags</div>
-		</div>
-		<div class="items">
-			<div v-for="(tag, idx) in shownResults"
+		<h3 v-if="shownResults.length == 0">
+			<span v-if="query.length">Can't find any tags</span>
+			<span v-else>Type to search for tags</span>
+		</h3>
+		<ul class="action-list items">
+			<li v-for="(tag, idx) in shownResults"
 				:key="tag.key"
-				class="btn"
-				:class="{'btn-primary': activeItem === idx}"
+				class="action"
+				:class="{'active': activeItem === idx}"
 				@click="() => clickTag(tag)">
 				{{tag.label}}
-			</div>
-		</div>
+			</li>
+		</ul>
 	</div>
 </template>
 <script lang="ts">

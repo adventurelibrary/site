@@ -1,29 +1,25 @@
 <template>
-	<div>
-		<table width="100%">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Type</th>
-					<th>Tags</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="assets.length == 0">
-					<td colspan="2">No assets</td>
-				</tr>
-				<tr v-for="asset in assets" :key="asset.id">
+	<CCard>
+		<CCardHeader>
+			Assets
+		</CCardHeader>
+		<CCardBody>
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
+			<CDataTable :items="assets" :fields="['name', 'type', 'tags']">
+				<template #name="{item}">
 					<td>
-						<AssetEditLink :asset="asset">{{asset.title}}</AssetEditLink>
+						<AssetEditLink :asset="item">{{item.name}}</AssetEditLink>
 					</td>
-					<td>{{asset.type}}</td>
+				</template>
+				<template #tags="item">
 					<td>
-						<TagList :tags="asset.tags" />
+						<TagList :tags="item.tags" />
 					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+				</template>
+			</CDataTable>
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
+		</CCardBody>
+	</CCard>
 </template>
 <script lang="ts">
 import {Component} from "nuxt-property-decorator";
@@ -54,6 +50,14 @@ export default class AssetsIndex extends AdminPage {
 		return {
 			assetsAjax
 		}
+	}
+
+	// This is just some testing and demonstration, it will be removed later
+	mounted () {
+		this.notifySuccess('Successfully showed this message')
+		setTimeout(() => {
+			this.notifyError('Now an error')
+		}, 1500)
 	}
 
 	get assets () : Asset[] {

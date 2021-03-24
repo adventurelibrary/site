@@ -1,0 +1,134 @@
+.asset-search {
+	display: block;
+	height: 2.6em;
+	position: relative;
+}
+
+.query-container {
+	background: var(--search-background-light);
+	height: 100%;
+	width: 100%;
+
+	display: grid;
+	grid-template-columns: 3em fit-content(0px) 1fr 6ch 6ch;
+	gap: .5ch;
+
+	.search-filters {
+		grid-column: 2;
+		display: grid;
+		gap: .5ch;
+		grid-auto-flow: column;
+		padding: 0;
+		margin: 0;
+		align-items: center;
+
+		li {
+			font-size: .75em;
+			background-color: #1AA9C9;
+			padding: .3em .7em;
+			border-radius: .3em;
+			display: block;
+			white-space: nowrap;
+            &.active {
+              background-color: #106466;
+            }
+		}
+		.filter-type {
+			text-transform: capitalize;
+			color: #EEE;
+
+			&::after {
+				content: ":";
+			}
+		}
+		.filter-value {
+			text-transform: lowercase;
+			color: #DDD;
+		}
+		.filter-delete {
+			display: inline-block;
+			width: 1ch;
+			height: 1em;
+			margin-left: .5ch;
+
+			&:hover {
+				text-shadow: 0 0 3px currentColor;
+			}
+			&::before {
+				content: "x";
+			}
+		}
+	}
+	.search-input {
+		grid-column: 3;
+		border: none;
+		background: none;
+
+		&:focus, &:active {
+			outline: none;
+		}
+	}
+	.filter-select {
+		border: none;
+		background: none;
+
+		&:focus, &:active {
+			outline: none;
+		}
+
+		option {
+			background-color: var(--search-background-light);
+			border: none;
+		}
+	}
+	.search-trigger {
+		grid-row: 1;
+		grid-column: 1;
+
+		border: none;
+		background: none;
+
+		cursor: pointer;
+
+		&:hover {
+			box-shadow: 0 0 2px 0px black inset;
+		}
+	}
+}
+
+.actions {
+	position: absolute;
+	width: 100%;
+	top: 100%;
+	background: var(--search-filter-background-light);
+	padding: .6em 1.2em;
+	border-radius: 0 0 .25em .25em;
+	font-size: .8em;
+
+	h3 {
+		margin: 0 0 1em 0;
+		font-size: 1em;
+		text-transform: uppercase;
+		color: #C0C0C5;
+	}
+
+	.action-list {
+		display: grid;
+		grid-auto-flow: row;
+		padding: 0;
+		margin: 0;
+		gap: 1em;
+	}
+	.action {
+		display: block;
+        &.active {
+          color: #1AA9C9;
+        }
+	}
+	.action-prefix {
+		color: #C0C0C5;
+	}
+	.action-description {
+		color: #828282;
+	}
+}

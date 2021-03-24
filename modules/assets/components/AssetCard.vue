@@ -1,9 +1,9 @@
 <template>
-	<div class="asset">
+	<div class="asset-card">
 		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
 		<div class="meta">
-			<h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
+			<h3><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
 			<div>
 				{{asset.description}}
 			</div>

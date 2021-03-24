@@ -8,14 +8,24 @@ const css = [
   'styles/color.scss',
   'styles/layout.scss',
   'styles/base-page.scss',
+  'styles/search.scss',
   'styles/styles.scss'
 ]
 const ignore = []
+const plugins = [
+  'mixins/global.ts'
+]
+
 if (!isAdmin) {
   ignore.push('pages/admin/*.vue')
   ignore.push('layouts/admin.vue')
 } else {
   css.push('styles/admin.scss')
+  css.push('@coreui/coreui/scss/coreui.scss')
+  plugins.push({
+    src: 'plugins/admin',
+    mode: 'client'
+  })
 }
 
 export default {
@@ -28,7 +38,9 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
+      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' }
     ]
   },
 
@@ -55,9 +67,9 @@ export default {
       config.resolve.alias['@assets'] = 'modules/assets'
       config.resolve.alias['vue$'] = vue$
     },
-    analyze: true
+    analyze: false
   },
   css: css,
-
-  ignore: ignore
+  plugins: plugins,
+  ignore: ignore,
 }

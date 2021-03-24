@@ -2,11 +2,14 @@
 	<main class="body">
 		<header class="site-header">
 			<figure class="logo">
-				<NuxtLink class="brand" :to="{name: 'index'}">Adventure Library</NuxtLink>
+				<NuxtLink class="brand" :to="{name: 'index'}">
+					<img alt="Adventure Library"
+						src="https://cdn.discordapp.com/attachments/808965286915997726/822728272654630972/al-logo-white.png"
+						>
+				</NuxtLink>
 			</figure>
 			<div class="searchbar">
 				<AssetSearchRouter />
-				<input type="text" name="serach">
 			</div>
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>

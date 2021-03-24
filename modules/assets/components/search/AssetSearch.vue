@@ -1,31 +1,42 @@
 <template>
 	<form @submit="submit" class="asset-search">
-		<div class="query-container d-flex">
+		<div class="query-container">
+
+			<ul class="search-filters">
+				<SearchFilter
+					v-for="(filter, idx) in searchFilters" :key="idx"
+					:filter="filter"
+					:active="idx === activeFilter"
+					@remove="() => removeFilter(idx)"
+				/>
+			</ul>
 			<input placeholder="Search"
-						type="text"
-						v-model="query"
-						role="query"
-						@keypress.enter="enter"
-						@keydown.up="keyUpLeftArrow"
-						@keydown.left="keyUpLeftArrow"
-						@keydown.right="keyDownRightArrow"
-						@keydown.down="keyDownRightArrow"
-						@keydown.delete="deleteKey"
-						@focus="inputFocused = true"
-						@blur="inputFocused = false"
+				class="search-input"
+				type="text"
+				v-model="query"
+				role="query"
+				@keypress.enter="enter"
+				@keydown.up="keyUpLeftArrow"
+				@keydown.left="keyUpLeftArrow"
+				@keydown.right="keyDownRightArrow"
+				@keydown.down="keyDownRightArrow"
+				@keydown.delete="deleteKey"
+				@focus="inputFocused = true"
+				@blur="inputFocused = false"
 			/>
-			<select v-model="sortField">
+			<select v-model="sortField" class="filter-select sort-select">
 				<option :value="'title'">Title</option>
 				<option :value="'date'">Date</option>
 			</select>
-			<select v-model="sortDirection">
+			<select v-model="sortDirection" class="filter-select order-select">
 				<option value="asc">Asc</option>
 				<option value="desc">Desc</option>
 			</select>
-			<button>Go</button>
+			<button class="search-trigger">Go</button>
 		</div>
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
+				<h3>Filter Options</h3>
 				<SearchActions
 					:bus="bus"
 					:filters="searchFilters"
@@ -36,31 +47,27 @@
 				/>
 			</div>
 			<div class="filter-container" v-show="action === 'type'">
-				<label>Types</label>
+				<h3>Types</h3>
 				<TypeSelector
 					:bus="bus"
-          :filters="searchFilters"
+					:filters="searchFilters"
 					:query="actionQuery"
 					:active="action === 'type'"
 					@type:clicked="typeClicked" />
 			</div>
 			<div class="filter-container" v-show="action === 'tag'">
-				<label>Tags</label>
+				<h3>Tags</h3>
 				<TagSearch
 					:bus="bus"
-					:filters="searchFilters"
+					:filters="[]"
+					:exclude="excludedTags"
 					:query="actionQuery"
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
 		</div>
-		<div class="search-filters d-flex">
-			<SearchFilter
-					v-for="(filter, idx) in searchFilters" :key="idx"
-					:filter="filter"
-					:active="idx === activeFilter"
-					@remove="() => removeFilter(idx)"
-			/>
+		<div class="search-filters">
+
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -96,7 +103,6 @@ const actions = ['tag', 'creator', 'type']
 	},
 })
 class AssetSearch extends Vue {
-	showAdvanced : boolean = true
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
@@ -208,6 +214,17 @@ class AssetSearch extends Vue {
 		}
 
 		return this.query
+	}
+
+	get excludedTags () : string[] {
+		const tags : string[] = []
+		this.searchFilters.forEach((sf) => {
+			if (sf.type === 'tag') {
+				tags.push(sf.value)
+			}
+		})
+
+		return tags;
 	}
 
 	actionClicked (action: AssetSearchAction) {
@@ -362,37 +379,3 @@ class AssetSearch extends Vue {
 }
 export default AssetSearch
 </script>
-<style>
-.query-container {
-}
-
-.asset-search {
-	position: relative;
-}
-
-.actions {
-	position: absolute;
-	width: 90%;
-	top: 43px;
-	background: #ccc;
-	border: 1px solid #333;
-	padding: 10px;
-}
-
-.query-container input {
-	padding: 3px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background: white;
-	margin: 0 5px 0 0;
-}
-.query-container input:focus {
-	outline: none;
-}
-.submit-container {
-	padding-top: 1em;
-}
-.filter-container > label {
-	font-weight: bold;
-}
-</style>

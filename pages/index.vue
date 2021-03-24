@@ -4,9 +4,9 @@
 			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
 		</section>
 		<section class="featured-assets">
-			<h3>Featured Assets!!! ({{numFeatured}})</h3>
+			<h3>Featured Assets</h3>
 			<div>
-				<FeaturedAsset v-for="asset in featured" :asset="asset" :key="asset.slug" />
+				<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
 			</div>
 		</section>
 	</section>
@@ -17,15 +17,14 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 import {Asset, AssetSearchOptions} from "~/lib/assets/asset-types";
 import {getFeaturedAssets} from "~/lib/assets/asset-api";
-import {Context} from "@nuxt/types";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
-import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
+import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
 @Component({
 	components: {
 		FeaturedAsset,
-		AssetSearch,
+		AssetCard:AssetCard,
 	}
 })
 class HomePage extends Vue {
@@ -51,29 +50,3 @@ class HomePage extends Vue {
 
 export default HomePage
 </script>
-
-<style>
-.asset-search {
-	margin: 1em;
-	padding: 1em;
-	border: 1px solid #ccc;
-	background: #E0E0E0;
-}
-
-.hero {
-	padding: 2em 0;
-}
-
-.hero .titles {
-	text-align: center;
-}
-
-.titles h1 {
-	font-size: 36px;
-}
-
-.titles h2 {
-	font-size: 26px;
-}
-
-</style>

@@ -15,11 +15,11 @@ import api from "~/lib/api"
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = {
 	'a-town':  {
-		id: '324432',		
+		id: '324432',
 		description: 'A lovely little town',
 		thumbnailSrc: 'https://i.imgur.com/1oVr25o.jpg',
 		slug: 'a-town',
-		title: 'A Town',
+		name: 'A Town',
 		type: 'map',
 		tags: [AssetTags[0], AssetTags[1]],
 	},
@@ -28,7 +28,7 @@ const ASSETS : Record<string, Asset> = {
 		thumbnailSrc: 'https://i.imgur.com/yb7faCO.png',
 		slug: 'cool-token',
 		type: 'token',
-		title: 'Cool Token!',
+		name: 'Cool Token!',
 		description: "It's a neat looking token",
 		tags: [AssetTags[3]]
 	}
@@ -52,7 +52,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		// is returned
 		Object.values(ASSETS).forEach((asset: Asset) => {
 			let found = false
-			if (query.length && asset.title.toLowerCase().indexOf(query) >= 0) {
+			if (query.length && asset.name.toLowerCase().indexOf(query) >= 0) {
 				found = true
 			}
 			for (let i = 0; i < filters.length; i++) {
@@ -146,7 +146,7 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 
 			res({
 				asset: Object.assign({}, asset),
-				creator: {name: 'fubar artist'}	
+				creator: {name: 'fubar artist'}
 			})
 		}, 100)
 	})
@@ -166,7 +166,6 @@ export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> =
 }
 
 export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>> => {
-	console.log('getAssetAjaxById id', id)
 	const ajax = newAssetAjax()
 	try {
 		const asset = await getAssetById(id)
@@ -211,7 +210,7 @@ export async function getAssets() : Promise<AssetsResponse> {
 export const newAsset = () : Asset => {
 	return {
 		id: '',
-		title: '',
+		name: '',
 		description: '',
 		slug: '',
 		type: "map",
@@ -261,7 +260,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 	const payload  : AssetPayload = {
 		asset: {}
 	}
-	payload.asset.title = data.title
+	payload.asset.title = data.name
 	payload.asset.description = data.description
 	payload.asset.type = data.type
 	payload.asset.tags = data.tags.map((at: AssetTag) : string => {
