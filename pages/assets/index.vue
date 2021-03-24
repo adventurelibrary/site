@@ -1,13 +1,13 @@
 <template>
 	<div class="container">
 		<h1>Search Assets</h1>
-		<div v-if="search">
+		<!--div v-if="search">
 			Search for: "{{search.query}}"
 			<AssetSearch
 				:options="search"
 				v-on:submit="submit"
 			/>
-		</div>
+		</div-->
 		<div>
 			<div v-if="assetsAjax.loading">LOADING</div>
 			<div v-else>
