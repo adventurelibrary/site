@@ -11,7 +11,7 @@
 						<AssetEditLink :asset="item">{{item.name}}</AssetEditLink>
 					</td>
 				</template>
-				<template #tags="item">
+				<template #tags="{item}">
 					<td>
 						<TagList :tags="item.tags" />
 					</td>
