@@ -36,7 +36,7 @@ import {NewAsset} from "~/lib/assets/asset-types";
 import {fieldNames} from "./AssetFields.vue";
 import ActiveUploadComponent from "./ActiveUpload.vue";
 import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-uploads";
-import {filenameGuessType, filenameToTitle, sleep} from "~/lib/helpers";
+import {filenameGuessCategoryId, filenameToTitle, sleep} from "~/lib/helpers";
 import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
 import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
 
@@ -98,7 +98,7 @@ export default Vue.extend({
 		async  uploadAsset(upload: ActiveUpload) {
 			upload.status = 'uploading'
 			try {
-				const res = await uploadAsset(upload.file, upload.signature, upload.params)
+				await uploadAsset(upload.file, upload.signature, upload.params)
 				upload.status = 'complete'
 			} catch (ex) {
 				upload.status = 'error'
@@ -116,10 +116,10 @@ export default Vue.extend({
 
 			this.newAssets.push({
 				asset: {
+					tagIDs: {},
 					description: '',
 					name: title,
-					type: filenameGuessType(file.name),
-					tags: []
+					categoryID: filenameGuessCategoryId(file.name),
 				},
 				file: file,
 			})

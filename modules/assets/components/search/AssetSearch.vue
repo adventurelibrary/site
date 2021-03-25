@@ -84,7 +84,7 @@ Show Actions: {{showActionSuggestions}}
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "~/lib/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetCategory} from "~/lib/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
 import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "~/lib/assets/search-filters";
 import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
@@ -238,7 +238,7 @@ class AssetSearch extends Vue {
 	}
 
 	// User has clicked on one of the types
-	typeClicked (assetType: AssetType) {
+	typeClicked (assetType: AssetCategory) {
 		const filter = assetTypeToFilter(assetType)
 		this.toggleFilter(filter)
 	}

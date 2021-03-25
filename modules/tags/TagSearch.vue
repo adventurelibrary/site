@@ -19,7 +19,7 @@
 import {Component, Watch, Prop} from "nuxt-property-decorator";
 import {AssetTag} from "~/lib/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
-import {AssetTags} from "~/lib/assets/asset-consts";
+import {ASSET_TAGS} from "~/lib/assets/asset-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
@@ -44,7 +44,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 	// Right now it's just grabbing the first four, but in the future
 	// we can prioritize based on which tags are most popular
 	getFeaturedTags () : AssetTag[] {
-		const clone = AssetTags.slice()
+		const clone = ASSET_TAGS.slice()
 		const maxLen = Math.min(clone.length, 4)
 		return clone.splice(0, maxLen)
 	}
@@ -62,7 +62,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 			return
 		}
-		this.items = AssetTags.filter((tag: AssetTag) : boolean => {
+		this.items = ASSET_TAGS.filter((tag: AssetTag) : boolean => {
 			return tag.label.toLowerCase().indexOf(this.query.toLowerCase()) >= 0
 		})
 
@@ -83,11 +83,11 @@ export default class TagSearch extends SearchArrowNavMixin {
 		return this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]
-				if (f.type === 'tag' && f.value === tag.key) {
+				if (f.type === 'tag' && f.value === tag.id) {
 					return false
 				}
 			}
-			if (this.exclude.indexOf(tag.key) >= 0) {
+			if (this.exclude.indexOf(tag.id) >= 0) {
 				return false
 			}
 			return true

@@ -11,15 +11,15 @@
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
-import {AssetType} from "~/lib/assets/asset-types";
-import {AssetTypes} from "~/lib/assets/asset-consts";
+import {AssetCategory} from "~/lib/assets/asset-types";
+import {ASSET_CATEGORIES} from "~/lib/assets/asset-consts";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
 })
 export default class TypeSelector extends SearchArrowNavMixin {
-	items : AssetType[] = AssetTypes
+	items : AssetCategory[] = ASSET_CATEGORIES
 
 	@Watch('query')
 	queryWatch () {
@@ -41,7 +41,7 @@ export default class TypeSelector extends SearchArrowNavMixin {
 		this.activeItem = 0
 	}
 
-	clickType (type: AssetType) {
+	clickType (type: AssetCategory) {
 		this.$emit('type:clicked', type)
 	}
 

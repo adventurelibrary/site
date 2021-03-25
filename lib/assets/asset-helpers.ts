@@ -1,5 +1,5 @@
-import {AssetSearchOptions, AssetType, SortDirection} from "./asset-types";
-import {AssetTypes} from "./asset-consts";
+import {AssetSearchOptions, AssetCategory, SortDirection} from "./asset-types";
+import {ASSET_CATEGORIES} from "./asset-consts";
 import {commaAndJoin} from "../helpers";
 import {AssetSearchFilter} from "./search-filters";
 
@@ -48,20 +48,20 @@ export function assetSearchOptionsToQuery(options: AssetSearchOptions) : any {
 	return query
 }
 
-export function getAssetType(key: string) : (AssetType | null) {
-	for (let i = 0; i < AssetTypes.length; i++) {
-		if (AssetTypes[i].key == key) {
-			return AssetTypes[i]
+export function getAssetCategory(id: string) : (AssetCategory | null) {
+	for (let i = 0; i < ASSET_CATEGORIES.length; i++) {
+		if (ASSET_CATEGORIES[i].id == id) {
+			return ASSET_CATEGORIES[i]
 		}
 	}
 
 	return null
 }
 
-export function typeKeysToObjects (keys : string[]) : AssetType[] {
-	const types : AssetType[] = []
+export function typeKeysToObjects (keys : string[]) : AssetCategory[] {
+	const types : AssetCategory[] = []
 	keys.forEach((key: string) => {
-		const type = getAssetType(key)
+		const type = getAssetCategory(key)
 		if (type) {
 			types.push(type)
 		}
@@ -72,7 +72,7 @@ export function typeKeysToObjects (keys : string[]) : AssetType[] {
 export function typeKeysCommaList(keys : string[]) : string {
 	const types = typeKeysToObjects(keys)
 	const words : string[] = []
-	types.forEach((type: AssetType) => {
+	types.forEach((type: AssetCategory) => {
 		words.push(type.plural)
 	})
 
