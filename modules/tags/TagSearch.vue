@@ -1,9 +1,7 @@
 <template>
 	<div class="tag-search">
-		<h3 v-if="shownResults.length == 0">
-			<span v-if="query.length">Can't find any tags</span>
-			<span v-else>Type to search for tags</span>
-		</h3>
+		<span v-if="query.length">Can't find any tags</span>
+		<span v-else>Type to search for tags</span>
 		<ul class="action-list items">
 			<li v-for="(tag, idx) in shownResults"
 				:key="tag.key"
