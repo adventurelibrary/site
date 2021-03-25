@@ -1,6 +1,6 @@
 <template>
 	<ul class="action-list">
-		<li class="action" v-for="(type, idx) in items" :key="type.key">
+		<li class="action" v-for="(type, idx) in options" :key="type.key">
 			<a @click="() => { clickType(type) }"
 				:class="{'btn-primary': activeItem === idx}"
 			>
@@ -11,15 +11,15 @@
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
-import {AssetCategory} from "~/lib/assets/asset-types";
-import {ASSET_CATEGORIES} from "~/lib/assets/asset-consts";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
+import {SelectOption} from "~/lib/helpers";
+import {CategoryOptionsPlural} from "~/lib/categories/categories-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
 })
 export default class TypeSelector extends SearchArrowNavMixin {
-	items : AssetCategory[] = ASSET_CATEGORIES
+	options : SelectOption[] = CategoryOptionsPlural
 
 	@Watch('query')
 	queryWatch () {

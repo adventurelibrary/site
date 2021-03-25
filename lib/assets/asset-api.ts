@@ -12,35 +12,12 @@ import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
 
 // These are here so we don't have to have a server
-const ASSETS : Record<string, Asset> = {
-	'a-town':  {
-		id: '324432',
-		creatorName: 'Name',
-		creatorID: '',
-		description: 'A lovely little town',
-		thumbnailSrc: 'https://i.imgur.com/1oVr25o.jpg',
-		slug: 'a-town',
-		name: 'A Town',
-		categoryID: 'map',
-		tagIDs: {},
-		tags: []
-	},
-	'cool-token': {
-		id: '321421',
-		categoryID: 'token',
-		creatorName: 'Name',
-		creatorID: '',
-		description: "It's a neat looking token",
-		name: 'Cool Token!',
-		slug: 'cool-token',
-		tagIDs: {},
-		tags: [],
-		thumbnailSrc: 'https://i.imgur.com/yb7faCO.png',
-	}
-}
+const ASSETS : Record<string, Asset> = require('./assets-data.json')
 
 const ASSETS_LIST = Object.keys(ASSETS).map((key) => {
 	return ASSETS[key]
+}).sort((a,b) => {
+	return a.name > b.name ? 1 : -1
 })
 
 export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsResponse> => {
@@ -139,10 +116,12 @@ export const getFeaturedAssets = async () : Promise<AssetsResponse> => {
 	})
 }
 
-export const getAsset = async (slug: string) : Promise<AssetResponse> => {
+export const getAssetBySlug = async (slug: string) : Promise<AssetResponse> => {
 	return new Promise<AssetResponse>((res, rej) => {
 		setTimeout(() => {
-			const asset = ASSETS[slug]
+			const asset = ASSETS_LIST.find((a) => {
+				return a.slug == slug
+			})
 
 			if (!asset) {
 				rej(new Error('Cannot find that asset'))
@@ -160,7 +139,7 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> => {
 	const ajax = newAssetAjax()
 	try {
-		const asset = await getAsset(slug)
+		const asset = await getAssetBySlug(slug)
 		ajax.data = asset
 	} catch (ex) {
 		ajax.error = ex.toString()

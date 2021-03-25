@@ -56,6 +56,7 @@ class AssetPage extends Vue {
 
 	get asset () : Asset | null {
 		const res = getAjaxData<AssetResponse>(this.assetAjax)
+		console.log('res', res)
 		if (!res) {
 			return null
 		}

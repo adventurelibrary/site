@@ -5,10 +5,15 @@
 		</CCardHeader>
 		<CCardBody>
 			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
-			<CDataTable :items="assets" :fields="['name', 'type', 'tags']">
+			<CDataTable :items="assets" :fields="['name', 'categoryName', 'tags']">
 				<template #name="{item}">
 					<td>
 						<AssetEditLink :asset="item">{{item.name}}</AssetEditLink>
+					</td>
+				</template>
+				<template #categoryName="{item}">
+					<td>
+						<Category :category-id="item.categoryID" />
 					</td>
 				</template>
 				<template #tags="{item}">
@@ -31,10 +36,12 @@ import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import AdminPage from "~/admin/admin-page";
 import TagList from "~/modules/tags/TagList.vue";
 import AssetEditLink from "~/admin/components/AssetEditLink.vue";
+import Category from "~/modules/categories/components/Category.vue";
 @Component({
 	components: {
 		TagList,
-		AssetEditLink
+		AssetEditLink,
+		Category: Category
 	}
 })
 export default class AssetsIndex extends AdminPage {

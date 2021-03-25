@@ -1,4 +1,5 @@
-import {AssetTag, AssetCategory} from "./asset-types";
+import {AssetTag} from "./asset-types";
+import {Category} from "~/lib/categories/category-types";
 
 export type FilterType = 'tag' | 'creator' | 'price' | 'type'
 
@@ -15,7 +16,7 @@ export interface AssetSearchFilter {
 	value: string
 }
 
-export function assetTypeToFilter(type: AssetCategory) : AssetSearchFilter {
+export function assetTypeToFilter(type: Category) : AssetSearchFilter {
 	return  {
 		type: 'type',
 		label: type.plural,
