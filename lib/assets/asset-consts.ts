@@ -1,19 +1,5 @@
-import {AssetSearchAction, AssetTag, AssetCategory, AssetTypeOption} from "./asset-types";
-import {btoa, SelectOption} from "~/lib/helpers";
-
-export const ASSET_CATEGORIES : AssetCategory[] = [{
-	id: btoa('map'),
-	singular: 'Map',
-	plural: 'Maps'
-}, {
-	id: btoa('token'),
-	singular: 'Token',
-	plural: 'Tokens'
-}, {
-	id: btoa('portrait'),
-	singular: 'Portrait',
-	plural: 'Portraits'
-}]
+import {AssetSearchAction, AssetTag} from "./asset-types";
+import {SelectOption} from "~/lib/helpers";
 
 export const ASSET_TAGS : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Archer,Priest,Barbarian,Town,Village,Castle`
 .split(',')
@@ -21,7 +7,7 @@ export const ASSET_TAGS : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Ar
 .map((label: string) => {
 	return {
 		label: label,
-		id: btoa(label.toLocaleLowerCase()),
+		id: (label.toLocaleLowerCase()),
 	}
 })
 
@@ -35,21 +21,7 @@ export const AssetSearchActions : AssetSearchAction[] = [{
 	description: 'find assets with specific tags',
 }]
 
-export const AssetTypeOptions : AssetTypeOption[] = ASSET_CATEGORIES.map((type: AssetCategory) : AssetTypeOption => {
-	return {
-		value: type.id,
-		label: type.plural
-	}
-})
-
-export const AssetTypeOptionsSingular : AssetTypeOption[] = ASSET_CATEGORIES.map((type: AssetCategory) : AssetTypeOption => {
-	return {
-		value: type.id,
-		label: type.singular
-	}
-})
-
-export const AssetTagOptions : SelectOption[] = ASSET_TAGS.map((type: AssetTag) : SelectOption => {
+export const TagOptions : SelectOption[] = ASSET_TAGS.map((type: AssetTag) : SelectOption => {
 	return {
 		value: type.id,
 		label: type.label

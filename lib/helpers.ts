@@ -1,4 +1,4 @@
-import {ASSET_CATEGORIES} from "~/lib/assets/asset-consts";
+import {CATEGORIES} from "~/lib/categories/categories-consts";
 
 export interface SelectOption {
 	value: any,
@@ -58,14 +58,14 @@ function isKebabOrTitleCase (str: string) : boolean {
 		&& str.indexOf('_') == -1
 }
 
-export function btoa (str: string) : string {
-	return new Buffer(str).toString('base64')
+export function stringToFakeId (str: string) : string {
+	return str.repeat(2).toLowerCase().split(/\s/).join('')
 }
 
 export function filenameGuessCategoryId(filename: string) : string {
 	const lower = filename.toLowerCase()
-	for(let i = 0; i < ASSET_CATEGORIES.length; i++) {
-		const at = ASSET_CATEGORIES[i]
+	for(let i = 0; i < CATEGORIES.length; i++) {
+		const at = CATEGORIES[i]
 		if (lower.indexOf(at.id) >= 0) {
 			return at.id
 		}

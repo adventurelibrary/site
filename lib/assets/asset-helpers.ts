@@ -1,7 +1,7 @@
-import {AssetSearchOptions, AssetCategory, SortDirection} from "./asset-types";
-import {ASSET_CATEGORIES} from "./asset-consts";
+import {AssetSearchOptions, SortDirection} from "./asset-types";
 import {commaAndJoin} from "../helpers";
 import {AssetSearchFilter} from "./search-filters";
+import {getCategoryById} from "~/lib/categories/categories-api";
 
 export const SORT_FIELD_DEFAULT = 'date'
 export const SORT_DIR_DEFAULT : SortDirection = 'desc'
@@ -46,35 +46,4 @@ export function assetSearchOptionsToQuery(options: AssetSearchOptions) : any {
 	}
 
 	return query
-}
-
-export function getAssetCategory(id: string) : (AssetCategory | null) {
-	for (let i = 0; i < ASSET_CATEGORIES.length; i++) {
-		if (ASSET_CATEGORIES[i].id == id) {
-			return ASSET_CATEGORIES[i]
-		}
-	}
-
-	return null
-}
-
-export function typeKeysToObjects (keys : string[]) : AssetCategory[] {
-	const types : AssetCategory[] = []
-	keys.forEach((key: string) => {
-		const type = getAssetCategory(key)
-		if (type) {
-			types.push(type)
-		}
-	})
-	return types
-}
-
-export function typeKeysCommaList(keys : string[]) : string {
-	const types = typeKeysToObjects(keys)
-	const words : string[] = []
-	types.forEach((type: AssetCategory) => {
-		words.push(type.plural)
-	})
-
-	return commaAndJoin(words)
 }

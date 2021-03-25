@@ -63,17 +63,6 @@ export type AssetsResponse = {
 	total: number,
 }
 
-export type AssetTypeOption = {
-	value: string, // id
-	label: string
-}
-
-export type AssetCategory = {
-	id: string,
-	singular: string
-	plural: string
-}
-
 export type AssetTag = {
 	id: string,
 	label: string

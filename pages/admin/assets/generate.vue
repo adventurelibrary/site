@@ -1,18 +1,19 @@
 <template>
 	<div>
-		<textarea :value="assetsJSON"></textarea>
+		<textarea :style="{width: '100%', height: '50em'}" :value="assetsJSON"></textarea>
 	</div>
 </template>
 <script lang="ts">
 import {Asset} from "~/lib/assets/asset-types";
-import {ASSET_CATEGORIES, ASSET_TAGS} from "~/lib/assets/asset-consts";
+import {ASSET_TAGS} from "~/lib/assets/asset-consts";
 import {CREATORS} from "~/lib/creators/creator-consts";
 import AdminPage from "~/admin/admin-page";
 import {Component} from "nuxt-property-decorator";
+import {CATEGORIES} from "~/lib/categories/categories-consts";
 
-const prefixes = ['Sunny', 'Wartorn', 'Frozen', 'Ashen']
-const nouns = ['Town', 'Castle', 'Fort', 'Forest']
-const suffix = ['of Doom', 'of the Queen', 'of the King']
+const prefixes = ['Sunny', 'Wartorn', 'Frozen', 'Ashen', 'Windy', 'Holy', 'Knightly']
+const nouns = ['Town', 'Castle', 'Fort', 'Forest', 'Camp', 'Glade', 'Oasis', 'Fortress', 'Temple', 'Cathedral']
+const suffix = ['of Doom', 'of the Queen', 'of the King', 'of Fire', 'of Ice', 'of Orcs']
 const thumbnails = [
 	'https://i.imgur.com/PT9rhuR.jpg',
 	'https://i.imgur.com/QwJOh0m.jpg'
@@ -25,7 +26,7 @@ function random (items : any[]) : any {
 
 let id = 0
 function generateID () {
-	return btoa((++id + new Date().getTime()).toString())
+	return (++id + new Date().getTime()).toString()
 }
 
 function getRandomInt(min : number, max : number) : number {
@@ -33,16 +34,19 @@ function getRandomInt(min : number, max : number) : number {
 }
 
 let assets : Asset[] = []
-for (let i = 0; i <= 1000; i++) {
+const assetsHash : Record<any, any> = {}
+
+for (let i = 0; i <= 100; i++) {
 	const name = [random(prefixes), random(nouns), random(suffix)].join(' ')
 	const slug = name.split(' ').join('-').toLowerCase()
 	const id = generateID()
 
-	const numTags = getRandomInt(1, 5)
-	//const tags : Record<string, number> = {}
+	const dupe = assets.findIndex((ass) => {
+		return ass.slug === slug
+	})
 
-	for(let i = 0; i < numTags; i++) {
-		console.log('add a tag', i)
+	if (dupe >= 0) {
+		continue
 	}
 
 	let description = ''
@@ -60,7 +64,7 @@ for (let i = 0; i <= 1000; i++) {
 		description: description,
 		slug: slug,
 		thumbnailSrc: random(thumbnails),
-		categoryID: random(ASSET_CATEGORIES).id,
+		categoryID: random(CATEGORIES).id,
 		creatorName: creator.name,
 		creatorID: creator.id,
 		tagIDs: {
@@ -68,12 +72,16 @@ for (let i = 0; i <= 1000; i++) {
 		},
 		tags: []
 	})
+
+	assets.forEach((a) => {
+		assetsHash[a.id] = a
+	})
 }
 
 @Component
 export default class GenerateAssets extends AdminPage {
 	assets = assets
-	assetsJSON = JSON.stringify(assets)
+	assetsJSON = JSON.stringify(assetsHash, null, 2)
 }
 
 </script>

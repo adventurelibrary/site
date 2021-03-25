@@ -28,7 +28,7 @@ import Vue, {PropType} from "vue"
 import {Asset, AssetFormData} from "~/lib/assets/asset-types";
 import Input from "~/components/forms/Input.vue";
 import Textarea from "~/components/forms/Textarea.vue";
-import AssetTypeSelect from "./AssetTypeSelect.vue";
+import AssetTypeSelect from "../../categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
 

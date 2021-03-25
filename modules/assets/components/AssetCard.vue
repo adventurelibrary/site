@@ -8,7 +8,7 @@
 				{{asset.description}}
 			</div>
 			<div>
-				<span class="badge badge-primary">{{category.singular}}</span><span class="badge badge-success ml-1" v-for="(tag) in asset.tags" :key="tag.id">
+				<span class="badge badge-primary">{{category}}</span><span class="badge badge-success ml-1" v-for="(tag) in asset.tags" :key="tag.id">
 					{{tag.label}}
 				</span>
 			</div>
@@ -20,7 +20,7 @@ import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
 import {Asset, AssetCategory} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getAssetCategory} from "~/lib/assets/asset-helpers";
+import {getCategoryById} from "~/lib/categories/categories-api";
 
 @Component({
 	components: {
@@ -36,20 +36,20 @@ class AssetCard extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		this.category = getAssetCategory(this.asset.categoryID)
+		this.category = getCategoryById(this.asset.categoryID)
 	}
 }
 export default AssetCard
 </script>
 <style>
-.asset {
+.asset-card {
 	display: flex;
 	align-items: flex-start;
 	padding: 0.25em;
 	border: 1px solid #ccc;
 }
 
-.asset .thumbnail {
+.asset-card .thumbnail {
 	background: #ccc;
 	border: 1px solid #333;
 	width: 100px;
@@ -59,7 +59,7 @@ export default AssetCard
 	background-position: center;
 }
 
-.asset .meta {
+.asset-card .meta {
 	margin-left: 0.75em;
 }
 </style>
