@@ -18,7 +18,7 @@ import {CategoryOptionsPlural} from "~/lib/categories/categories-consts";
 @Component({
 	mixins: [SearchArrowNavMixin]
 })
-export default class TypeSelector extends SearchArrowNavMixin {
+export default class SearchCategorySelector extends SearchArrowNavMixin {
 	options : SelectOption[] = CategoryOptionsPlural
 
 	@Watch('query')

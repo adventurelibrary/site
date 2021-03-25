@@ -112,13 +112,13 @@ export default Vue.extend({
 			Vue.set(this.newAssets[idx], 'file', file)
 		},
 		addFile (file : File) {
-			const title = filenameToTitle(file.name)
+			const name = filenameToTitle(file.name)
 
 			this.newAssets.push({
 				asset: {
 					tagIDs: {},
 					description: '',
-					name: title,
+					name: name,
 					categoryID: filenameGuessCategoryId(file.name),
 				},
 				file: file,

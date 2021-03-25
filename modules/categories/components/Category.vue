@@ -4,7 +4,6 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {AssetCategory} from "~/lib/assets/asset-types";
 import {getCategoryById} from "~/lib/categories/categories-api";
 
 @Component

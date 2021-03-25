@@ -1,7 +1,7 @@
 <template>
 	<section class="container">
 		<section class="hero">
-			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
+			<AssetSearch />
 		</section>
 		<section class="featured-assets">
 			<h3>Featured Assets</h3>
@@ -20,10 +20,12 @@ import {getFeaturedAssets} from "~/lib/assets/asset-api";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
 import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRouter.vue";
 
 @Component({
 	components: {
 		FeaturedAsset,
+		AssetSearch: AssetSearchRouter,
 		AssetCard:AssetCard,
 	}
 })
