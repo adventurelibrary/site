@@ -5,12 +5,13 @@
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
 import {getCategoryById} from "~/lib/categories/categories-api";
+import {Category as CategoryType} from "~/lib/categories/categories-types";
 
 @Component
 export default class Category extends Vue {
 	@Prop() categoryId : string
 
-	get category () : AssetCategory | null {
+	get category () : CategoryType | null {
 		const cat = getCategoryById(this.categoryId)
 		return cat
 	}
