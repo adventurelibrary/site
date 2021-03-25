@@ -10,6 +10,7 @@ import {
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
+import {getTagById} from "~/lib/tags/tags-api";
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = require('./assets-data.json')
@@ -66,10 +67,22 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		setTimeout(() => {
 			res({
 				total: assets.length,
-				results: assets
+				results: assets.map(transformAsset)
 			})
 		}, 220)
 	})
+}
+
+// This function is used to cleanup any data that the server gives us
+export function transformAsset (asset: Asset) : Asset {
+	asset.tags = []
+	Object.keys(asset.tagIDs).forEach((tagId:string) => {
+		const tag = getTagById(tagId)
+		if (tag) {
+			asset.tags.push(tag)
+		}
+	})
+	return asset
 }
 
 export const signActiveUpload = async (au : ActiveUpload) => {
@@ -110,7 +123,7 @@ export const getFeaturedAssets = async () : Promise<AssetsResponse> => {
 		setTimeout(() => {
 			res({
 				total: Object.keys(ASSETS).length,
-				results: ASSETS_LIST
+				results: ASSETS_LIST.slice(0, 10).map(transformAsset)
 			})
 		}, 220)
 	})
@@ -173,7 +186,7 @@ export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 			}
 
 			res({
-				asset: Object.assign({}, asset),
+				asset: transformAsset(Object.assign({}, asset)),
 				creator: {name: 'fubar artist'}
 			})
 		}, 100)

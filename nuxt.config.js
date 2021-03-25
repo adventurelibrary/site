@@ -2,8 +2,6 @@ const path = require('path')
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
-console.log('isAdmin', isAdmin)
-
 const css = [
   'styles/color.scss',
   'styles/layout.scss',

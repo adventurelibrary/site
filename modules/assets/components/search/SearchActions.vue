@@ -35,7 +35,6 @@ export default class SearchActions extends SearchArrowNavMixin {
 	// Instead it sets that it has no activeItem and then emits
 	// an event to the parent component
 	onPrev () {
-		console.log('on prev for actions')
 		if (!this.active) {
 			return
 		}

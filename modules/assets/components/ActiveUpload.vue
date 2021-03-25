@@ -30,7 +30,6 @@ export default Vue.extend({
 	},
 	watch: {
 		'upload.status' () {
-			console.log('status changed')
 		}
 	},
 	computed: {

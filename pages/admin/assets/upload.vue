@@ -18,7 +18,6 @@ import UploadAssets from "~/modules/assets/components/UploadAssets.vue";
 })
 class Upload extends Vue {
   layout () {
-    console.log('use admin')
     return 'admin'
   }
 }

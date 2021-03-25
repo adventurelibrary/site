@@ -87,7 +87,7 @@ import {Component, Prop, Watch} from "nuxt-property-decorator"
 import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetCategory} from "~/lib/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
 import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "~/lib/assets/search-filters";
-import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
+import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 import {stringToSortDirection} from "~/lib/assets/asset-helpers";
@@ -97,7 +97,7 @@ const actions = ['tag', 'creator', 'type']
 @Component({
 	components: {
 		TagSearch,
-		TypeSelector,
+		TypeSelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
 	},

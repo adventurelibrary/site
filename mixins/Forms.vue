@@ -20,7 +20,6 @@ export default class FormMixin extends Vue {
   public form = newForm()
   public formSuccessMessage = 'Form submitted'
   validateForm () : string {
-		console.log('using super validate')
     return ''
   }
 
@@ -35,10 +34,8 @@ export default class FormMixin extends Vue {
   }
 
   async submit (e: any) {
-    console.log('submit')
     e.preventDefault()
     const err = this.validateForm()
-		console.log('err', err)
     if (err !== '') {
       this.form.error = err
       this.form.submitting = false
