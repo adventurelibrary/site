@@ -50,11 +50,11 @@ export default class TagsInput extends Vue {
 	}
 
 	get excluded () : string[] {
-		return this.tagsLocal.map((t) => {
+		return this.tagsLocal.map((t : AssetTag) => {
 			if (!t) {
 				throw new Error('Invalid tag in tagsLocal')
 			}
-			return t.key
+			return t.id
 		})
 	}
 

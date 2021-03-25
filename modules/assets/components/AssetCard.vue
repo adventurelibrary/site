@@ -8,7 +8,7 @@
 				{{asset.description}}
 			</div>
 			<div>
-				<span class="badge badge-primary">{{type.singular}}</span><span class="badge badge-success ml-1" v-for="(tag, idx) in asset.tags">
+				<span class="badge badge-primary">{{category.singular}}</span><span class="badge badge-success ml-1" v-for="(tag) in asset.tags" :key="tag.id">
 					{{tag.label}}
 				</span>
 			</div>
@@ -18,9 +18,9 @@
 <script lang="ts">
 import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset, AssetType} from "~/lib/assets/asset-types";
+import {Asset, AssetCategory} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getAssetType} from "~/lib/assets/asset-helpers";
+import {getAssetCategory} from "~/lib/assets/asset-helpers";
 
 @Component({
 	components: {
@@ -28,7 +28,7 @@ import {getAssetType} from "~/lib/assets/asset-helpers";
 	}
 })
 class AssetCard extends Vue {
-	type : AssetType | null
+	category : AssetCategory | null
 
 	@Prop() asset : Asset
 
@@ -36,7 +36,7 @@ class AssetCard extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		this.type = getAssetType(this.asset.type)
+		this.category = getAssetCategory(this.asset.categoryID)
 	}
 }
 export default AssetCard

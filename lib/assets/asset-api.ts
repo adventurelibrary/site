@@ -5,10 +5,9 @@ import {
 	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUploadResponse
+	AssetsResponse, AssetUploadResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
-import {AssetTags} from "./asset-consts";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
 
@@ -16,21 +15,27 @@ import api from "~/lib/api"
 const ASSETS : Record<string, Asset> = {
 	'a-town':  {
 		id: '324432',
+		creatorName: 'Name',
+		creatorID: '',
 		description: 'A lovely little town',
 		thumbnailSrc: 'https://i.imgur.com/1oVr25o.jpg',
 		slug: 'a-town',
 		name: 'A Town',
-		type: 'map',
-		tags: [AssetTags[0], AssetTags[1]],
+		categoryID: 'map',
+		tagIDs: {},
+		tags: []
 	},
 	'cool-token': {
 		id: '321421',
-		thumbnailSrc: 'https://i.imgur.com/yb7faCO.png',
-		slug: 'cool-token',
-		type: 'token',
-		name: 'Cool Token!',
+		categoryID: 'token',
+		creatorName: 'Name',
+		creatorID: '',
 		description: "It's a neat looking token",
-		tags: [AssetTags[3]]
+		name: 'Cool Token!',
+		slug: 'cool-token',
+		tagIDs: {},
+		tags: [],
+		thumbnailSrc: 'https://i.imgur.com/yb7faCO.png',
 	}
 }
 
@@ -58,7 +63,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 			for (let i = 0; i < filters.length; i++) {
 				const filter = filters[i]
 				if (filter.type == 'type') {
-					if (filter.value === asset.type) {
+					if (filter.value === asset.categoryID) {
 						found = true
 						break
 					}
@@ -66,7 +71,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 				if (filter.type == 'tag') {
 					for (let j = 0; j < asset.tags.length; j++) {
 						const tag = asset.tags[j]
-						if (tag.key === filter.value) {
+						if (tag.id === filter.value) {
 							found = true
 							break
 						}
@@ -210,10 +215,13 @@ export async function getAssets() : Promise<AssetsResponse> {
 export const newAsset = () : Asset => {
 	return {
 		id: '',
-		name: '',
+		categoryID: '',
+		creatorID: '',
+		creatorName: '',
 		description: '',
+		name: '',
 		slug: '',
-		type: "map",
+		tagIDs: {},
 		tags: [],
 		thumbnailSrc: ''
 	}
@@ -236,6 +244,7 @@ export const newAssetAjax = () : Ajax<AssetResponse> => {
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
+	console.log(id, data)
 	return new Promise((res, rej) => {
 		setTimeout(() => {
 			if (Math.random() < 0.5) {
@@ -260,11 +269,10 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 	const payload  : AssetPayload = {
 		asset: {}
 	}
+	// TODO: Get the tagIDs record from the form data
 	payload.asset.title = data.name
 	payload.asset.description = data.description
-	payload.asset.type = data.type
-	payload.asset.tags = data.tags.map((at: AssetTag) : string => {
-		return at.key
-	})
+	payload.asset.categoryID = data.categoryID
+	payload.asset.tagIDs = {}
 	return payload
 }
