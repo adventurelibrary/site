@@ -8,12 +8,9 @@
 			By [user icon] {{creator.name}}
 		</div>
 		<div>
-			<select name="assetFile">
-				<option value="-">Select Size</option>
-				<option value="original">Small</option>
-			</select>
-
-			<button type="button">Unlock for {{asset.cost}}</button>
+			<AssetDownload :asset="asset" />
+		</div>
+		<div>
 			{{asset.downloads}}
 		</div>
 
@@ -35,8 +32,13 @@ import {Component} from "nuxt-property-decorator";
 import {Asset, AssetResponse, Creator} from "~/lib/assets/asset-types";
 import { getAssetAjax} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
+import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 
-@Component
+@Component({
+	components: {
+		AssetDownload: AssetDownload
+	}
+})
 class AssetPage extends Vue {
 	public assetAjax : Ajax<AssetResponse>
 

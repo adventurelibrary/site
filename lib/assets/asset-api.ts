@@ -1,5 +1,5 @@
 import {
-	Asset,
+	Asset, AssetDownloadOptions, AssetDownloadResponse,
 	AssetFormData,
 	AssetPayload,
 	AssetResponse,
@@ -190,6 +190,16 @@ export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 				creator: {name: 'fubar artist'}
 			})
 		}, 100)
+	})
+}
+
+export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<AssetDownloadResponse> {
+	return new Promise<AssetDownloadResponse>((res) => {
+		setTimeout(() => {
+			res({
+				url: `https://assetlibrary.art/download/${id}?file=${options.file}`
+			})
+		}, 250)
 	})
 }
 

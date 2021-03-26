@@ -82,3 +82,11 @@ export type AssetSignatureResponse = {
 export type AssetUploadResponse = {
 
 }
+
+export type AssetDownloadResponse = {
+	url: string
+}
+
+export type AssetDownloadOptions = {
+	file: string
+}

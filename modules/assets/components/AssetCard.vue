@@ -11,6 +11,9 @@
 				<Category :category-id="asset.categoryID" />
 				<TagList :tags="asset.tags" />
 			</div>
+			<div>
+				<AssetDownload :asset="asset" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -23,12 +26,14 @@ import {getCategoryById} from "~/lib/categories/categories-api";
 import Category from "~/modules/categories/components/Category.vue";
 import TagList from "~/modules/tags/TagList.vue";
 import {Category as CategoryType} from "~/lib/categories/categories-types"
+import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 
 @Component({
 	components: {
 		AssetLink: AssetLink,
 		Category: Category,
-		TagList: TagList
+		TagList: TagList,
+		AssetDownload: AssetDownload
 	}
 })
 class AssetCard extends Vue {
