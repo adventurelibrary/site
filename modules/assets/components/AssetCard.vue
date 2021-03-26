@@ -22,6 +22,7 @@ import AssetLink from "~/modules/assets/components/AssetLink.vue";
 import {getCategoryById} from "~/lib/categories/categories-api";
 import Category from "~/modules/categories/components/Category.vue";
 import TagList from "~/modules/tags/TagList.vue";
+import {Category as CategoryType} from "~/lib/categories/categories-types"
 
 @Component({
 	components: {
@@ -31,7 +32,7 @@ import TagList from "~/modules/tags/TagList.vue";
 	}
 })
 class AssetCard extends Vue {
-	category : AssetCategory | null
+	category : CategoryType | null
 
 	@Prop() asset : Asset
 

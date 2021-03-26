@@ -7,6 +7,7 @@ export type AssetFields = {
 	description: string
 	name: string
 	tagIDs: Record<string, number>
+	tags: AssetTag[]
 }
 
 // This is an asset that the server gives us
@@ -15,7 +16,6 @@ export type Asset = AssetFields & {
 	creatorName: string
 	creatorID: string
 	slug: string
-	tags: AssetTag[]
 	thumbnailSrc: string
 }
 

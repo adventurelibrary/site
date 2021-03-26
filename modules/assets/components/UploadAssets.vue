@@ -117,6 +117,7 @@ export default Vue.extend({
 			this.newAssets.push({
 				asset: {
 					tagIDs: {},
+					tags: [],
 					description: '',
 					name: name,
 					categoryID: filenameGuessCategoryId(file.name),

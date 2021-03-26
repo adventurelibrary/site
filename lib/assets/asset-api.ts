@@ -10,7 +10,7 @@ import {
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
-import {getTagById} from "~/lib/tags/tags-api";
+import {getTagById, tagListToMap} from "~/lib/tags/tags-api";
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = require('./assets-data.json')
@@ -40,7 +40,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 			}
 			for (let i = 0; i < filters.length; i++) {
 				const filter = filters[i]
-				if (filter.type == 'type') {
+				if (filter.type == 'category') {
 					if (filter.value === asset.categoryID) {
 						found = true
 						break
@@ -261,7 +261,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 	const payload  : AssetPayload = {
 		asset: {}
 	}
-	// TODO: Get the tagIDs record from the form data
+
 	payload.asset.name = data.name
 	payload.asset.description = data.description
 	payload.asset.categoryID = data.categoryID
