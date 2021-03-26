@@ -262,9 +262,9 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 		asset: {}
 	}
 	// TODO: Get the tagIDs record from the form data
-	payload.asset.title = data.name
+	payload.asset.name = data.name
 	payload.asset.description = data.description
 	payload.asset.categoryID = data.categoryID
-	payload.asset.tagIDs = {}
+	payload.asset.tagIDs = tagListToMap(data.tags)
 	return payload
 }
