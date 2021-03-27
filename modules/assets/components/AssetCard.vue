@@ -1,21 +1,34 @@
 <template>
-	<div class="asset-card">
+	<li class="asset-card">
 		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
 		<div class="meta">
-			<h3><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
-			<div>
+			<h3 class="title"><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
+			<!--div>
 				{{asset.description}}
-			</div>
-			<div>
+			</div-->
+			<!--div>
 				<Category :category-id="asset.categoryID" />
 				<TagList :tags="asset.tags" />
-			</div>
-			<div>
-				<AssetDownload :asset="asset" />
-			</div>
+			</div-->
+			<h4 class="author">
+				<label>by</label>
+				<span>
+					<!-- Should be a profile link -->
+					<a href="">{{asset.creatorName}}</a>
+				</span>
+			</h4>
+			<figure class="pricing">
+				<h4 class="coin-price">
+					<span class="amount"><!--{{asset.price}}-->$$</span>
+					<label class="currency">Coins</label>
+				</h4>
+			</figure>
 		</div>
-	</div>
+		<figure class="asset-action">
+			<AssetDownload :asset="asset" />
+		</figure>
+	</li>
 </template>
 <script lang="ts">
 import {Component, Prop, Watch} from "nuxt-property-decorator";
@@ -50,25 +63,3 @@ class AssetCard extends Vue {
 }
 export default AssetCard
 </script>
-<style>
-.asset-card {
-	display: flex;
-	align-items: flex-start;
-	padding: 0.25em;
-	border: 1px solid #ccc;
-}
-
-.asset-card .thumbnail {
-	background: #ccc;
-	border: 1px solid #333;
-	width: 100px;
-	height: 100px;
-	flex: 0 0 100px;
-	background-size: cover;
-	background-position: center;
-}
-
-.asset-card .meta {
-	margin-left: 0.75em;
-}
-</style>
