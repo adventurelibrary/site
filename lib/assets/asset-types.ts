@@ -3,18 +3,24 @@ import {AssetSearchFilter} from "./search-filters";
 // These fields exist on assets that are in our db AND in assets
 // that the user is about to upload
 export type AssetFields = {
+	categoryID: string
 	description: string
-	title: string
-	type: AssetTypeKey
+	name: string
+	tagIDs: Record<string, number>
 	tags: AssetTag[]
 }
 
+// This is an asset that the server gives us
 export type Asset = AssetFields & {
 	id: string
-	thumbnailSrc: string
+	creatorName: string
+	creatorID: string
 	slug: string
+	thumbnailSrc: string
 }
 
+// This is created when a user drags and drops a file or selects files
+// to upload
 export type NewAsset = {
 	asset: AssetFields,
 	file: File
@@ -25,7 +31,7 @@ export interface AssetFormData extends AssetFields {
 	// will go here
 	// EG: a boolean that says "email my followers about this asset"
 	// That would be here and not in Asset because it isn't data that is stored  in the asset, it's
-	// a flag to tell the server to perform another funtion
+	// a flag to tell the server to perform another function
 }
 
 // Data sent by browser to the server to create/update an asset
@@ -33,17 +39,15 @@ export type AssetPayload = {
 	asset: any
 }
 
+export type Creator = {
+	name: string
+}
+
 // Data returned by the server about a specific asset
 export type AssetResponse = {
 	asset: Asset
 	creator: Creator
 }
-
-export type Creator = {
-	name : string
-}
-
-export type AssetTypeKey = 'map' | 'token' | 'portrait'
 
 export type SortDirection = 'asc' | 'desc'
 
@@ -59,19 +63,8 @@ export type AssetsResponse = {
 	total: number,
 }
 
-export type AssetTypeOption = {
-	value: AssetTypeKey,
-	label: string
-}
-
-export type AssetType = {
-	key: AssetTypeKey,
-	singular: string
-	plural: string
-}
-
 export type AssetTag = {
-	key: string,
+	id: string,
 	label: string
 }
 
@@ -88,4 +81,12 @@ export type AssetSignatureResponse = {
 
 export type AssetUploadResponse = {
 
+}
+
+export type AssetDownloadResponse = {
+	url: string
+}
+
+export type AssetDownloadOptions = {
+	file: string
 }

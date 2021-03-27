@@ -2,8 +2,6 @@ const path = require('path')
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
-console.log('isAdmin', isAdmin)
-
 const css = [
   'styles/color.scss',
   'styles/layout.scss',
@@ -12,11 +10,20 @@ const css = [
   'styles/styles.scss'
 ]
 const ignore = []
+const plugins = [
+  'mixins/global.ts'
+]
+
 if (!isAdmin) {
   ignore.push('pages/admin/*.vue')
   ignore.push('layouts/admin.vue')
 } else {
   css.push('styles/admin.scss')
+  css.push('@coreui/coreui/scss/coreui.scss')
+  plugins.push({
+    src: 'plugins/admin',
+    mode: 'client'
+  })
 }
 
 export default {
@@ -61,6 +68,6 @@ export default {
     analyze: false
   },
   css: css,
-
-  ignore: ignore
+  plugins: plugins,
+  ignore: ignore,
 }

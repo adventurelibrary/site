@@ -1,6 +1,7 @@
 <script lang="ts">
 import FormErrors from "~/components/forms/FormErrors.vue";
 import Vue from "vue"
+import {Component} from "nuxt-property-decorator";
 
 export const newForm = (data = {}) => {
 	return {
@@ -10,51 +11,47 @@ export const newForm = (data = {}) => {
 	}
 }
 
-export const FormMixin = Vue.extend({
-	components: {
-		FormErrors: FormErrors
-	},
-	data () {
-		return {
-			form: newForm()
-		}
-	},
-	methods: {
-		success () {
-			// do a success thing
-		},
-		validate () : string {
-			// do some validation
-			return ''
-		},
-		/*async submit(e: any) {
-			if (e) {
-				e.preventDefault()
-			}
-			if (this.validate) {
-				const error = this.validate()
-				if (error) {
-					this.form.error = error
-				}
-				return
-			}
-			this.form.submitting = true
-			this.form.error = ''
-			let result
-			/!*try {
-				result = await this.action()
-				this.form.submitting = false
-				if (this.success) {
-					this.success()
-				}
-			} catch (ex) {
-				this.form.error = ex
-				this.form.submitting = false
-				//this.notifyError('Error submitting the form')
-			}*!/
-
-			return result
-		}*/
-	}
+@Component({
+  components: {
+    FormErrors: FormErrors
+  }
 })
+export default class FormMixin extends Vue {
+  public form = newForm()
+  public formSuccessMessage = 'Form submitted'
+  validateForm () : string {
+    return ''
+  }
+
+  // This should be overwritten by any component
+  // that implements this mixin
+  async formAction () {
+
+  }
+
+  async formSuccess () {
+    this.notifySuccess(this.formSuccessMessage)
+  }
+
+  async submit (e: any) {
+    e.preventDefault()
+    const err = this.validateForm()
+    if (err !== '') {
+      this.form.error = err
+      this.form.submitting = false
+			return
+    }
+    this.form.submitting = true
+    this.form.error = ''
+    try {
+      await this.formAction()
+      this.form.submitting = false
+      await this.formSuccess()
+    } catch (ex) {
+      this.form.error = ex.toString()
+      this.form.submitting = false
+      this.notifyError('Error submitting form:' + ex.toString())
+    }
+  }
+}
 </script>

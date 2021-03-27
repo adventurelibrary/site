@@ -1,41 +1,24 @@
 import {
-	Asset,
+	Asset, AssetDownloadOptions, AssetDownloadResponse,
 	AssetFormData,
 	AssetPayload,
 	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUploadResponse
+	AssetsResponse, AssetUploadResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
-import {AssetTags} from "./asset-consts";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
+import {getTagById, tagListToMap} from "~/lib/tags/tags-api";
 
 // These are here so we don't have to have a server
-const ASSETS : Record<string, Asset> = {
-	'a-town':  {
-		id: '324432',		
-		description: 'A lovely little town',
-		thumbnailSrc: 'https://i.imgur.com/1oVr25o.jpg',
-		slug: 'a-town',
-		title: 'A Town',
-		type: 'map',
-		tags: [AssetTags[0], AssetTags[1]],
-	},
-	'cool-token': {
-		id: '321421',
-		thumbnailSrc: 'https://i.imgur.com/yb7faCO.png',
-		slug: 'cool-token',
-		type: 'token',
-		title: 'Cool Token!',
-		description: "It's a neat looking token",
-		tags: [AssetTags[3]]
-	}
-}
+const ASSETS : Record<string, Asset> = require('./assets-data.json')
 
 const ASSETS_LIST = Object.keys(ASSETS).map((key) => {
 	return ASSETS[key]
+}).sort((a,b) => {
+	return a.name > b.name ? 1 : -1
 })
 
 export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsResponse> => {
@@ -52,13 +35,13 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		// is returned
 		Object.values(ASSETS).forEach((asset: Asset) => {
 			let found = false
-			if (query.length && asset.title.toLowerCase().indexOf(query) >= 0) {
+			if (query.length && asset.name.toLowerCase().indexOf(query) >= 0) {
 				found = true
 			}
 			for (let i = 0; i < filters.length; i++) {
 				const filter = filters[i]
-				if (filter.type == 'type') {
-					if (filter.value === asset.type) {
+				if (filter.type == 'category') {
+					if (filter.value === asset.categoryID) {
 						found = true
 						break
 					}
@@ -66,7 +49,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 				if (filter.type == 'tag') {
 					for (let j = 0; j < asset.tags.length; j++) {
 						const tag = asset.tags[j]
-						if (tag.key === filter.value) {
+						if (tag.id === filter.value) {
 							found = true
 							break
 						}
@@ -84,10 +67,22 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		setTimeout(() => {
 			res({
 				total: assets.length,
-				results: assets
+				results: assets.map(transformAsset)
 			})
 		}, 220)
 	})
+}
+
+// This function is used to cleanup any data that the server gives us
+export function transformAsset (asset: Asset) : Asset {
+	asset.tags = []
+	Object.keys(asset.tagIDs).forEach((tagId:string) => {
+		const tag = getTagById(tagId)
+		if (tag) {
+			asset.tags.push(tag)
+		}
+	})
+	return asset
 }
 
 export const signActiveUpload = async (au : ActiveUpload) => {
@@ -128,16 +123,18 @@ export const getFeaturedAssets = async () : Promise<AssetsResponse> => {
 		setTimeout(() => {
 			res({
 				total: Object.keys(ASSETS).length,
-				results: ASSETS_LIST
+				results: ASSETS_LIST.slice(0, 10).map(transformAsset)
 			})
 		}, 220)
 	})
 }
 
-export const getAsset = async (slug: string) : Promise<AssetResponse> => {
+export const getAssetBySlug = async (slug: string) : Promise<AssetResponse> => {
 	return new Promise<AssetResponse>((res, rej) => {
 		setTimeout(() => {
-			const asset = ASSETS[slug]
+			const asset = ASSETS_LIST.find((a) => {
+				return a.slug == slug
+			})
 
 			if (!asset) {
 				rej(new Error('Cannot find that asset'))
@@ -146,7 +143,7 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 
 			res({
 				asset: Object.assign({}, asset),
-				creator: {name: 'fubar artist'}	
+				creator: {name: 'fubar artist'}
 			})
 		}, 100)
 	})
@@ -155,7 +152,7 @@ export const getAsset = async (slug: string) : Promise<AssetResponse> => {
 export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> => {
 	const ajax = newAssetAjax()
 	try {
-		const asset = await getAsset(slug)
+		const asset = await getAssetBySlug(slug)
 		ajax.data = asset
 	} catch (ex) {
 		ajax.error = ex.toString()
@@ -166,7 +163,6 @@ export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> =
 }
 
 export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>> => {
-	console.log('getAssetAjaxById id', id)
 	const ajax = newAssetAjax()
 	try {
 		const asset = await getAssetById(id)
@@ -190,10 +186,20 @@ export const getAssetById = async (id: string) : Promise<AssetResponse> => {
 			}
 
 			res({
-				asset: Object.assign({}, asset),
+				asset: transformAsset(Object.assign({}, asset)),
 				creator: {name: 'fubar artist'}
 			})
 		}, 100)
+	})
+}
+
+export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<AssetDownloadResponse> {
+	return new Promise<AssetDownloadResponse>((res) => {
+		setTimeout(() => {
+			res({
+				url: `https://assetlibrary.art/download/${id}?file=${options.file}`
+			})
+		}, 250)
 	})
 }
 
@@ -211,10 +217,13 @@ export async function getAssets() : Promise<AssetsResponse> {
 export const newAsset = () : Asset => {
 	return {
 		id: '',
-		title: '',
+		categoryID: '',
+		creatorID: '',
+		creatorName: '',
 		description: '',
+		name: '',
 		slug: '',
-		type: "map",
+		tagIDs: {},
 		tags: [],
 		thumbnailSrc: ''
 	}
@@ -237,6 +246,7 @@ export const newAssetAjax = () : Ajax<AssetResponse> => {
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
+	console.log(id, data)
 	return new Promise((res, rej) => {
 		setTimeout(() => {
 			if (Math.random() < 0.5) {
@@ -261,11 +271,10 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 	const payload  : AssetPayload = {
 		asset: {}
 	}
-	payload.asset.title = data.title
+
+	payload.asset.name = data.name
 	payload.asset.description = data.description
-	payload.asset.type = data.type
-	payload.asset.tags = data.tags.map((at: AssetTag) : string => {
-		return at.key
-	})
+	payload.asset.categoryID = data.categoryID
+	payload.asset.tagIDs = tagListToMap(data.tags)
 	return payload
 }

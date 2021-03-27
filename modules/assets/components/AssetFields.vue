@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<Input
-				label="Title"
-				:value="copy.title"
-				v-on:input="(val) => fieldChanged('title', val)"
+				label="Name"
+				:value="copy.name"
+				v-on:input="(val) => fieldChanged('name', val)"
 		/>
 		<FormGroup label="Tags">
 			<TagsInput
@@ -15,20 +15,20 @@
 				:value="copy.description"
 				v-on:input="(val) => fieldChanged('description', val)"
 		/>
-		<TypeSelect
+		<CategorySelect
 				label="Type"
-				:value="copy.type"
-				v-on:input="(val) => fieldChanged('type', val)"
+				:value="copy.categoryID"
+				v-on:input="(val) => fieldChanged('categoryID', val)"
 		/>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue, {PropType} from "vue"
-import {Asset, AssetFormData} from "~/lib/assets/asset-types";
+import {AssetFormData} from "~/lib/assets/asset-types";
 import Input from "~/components/forms/Input.vue";
 import Textarea from "~/components/forms/Textarea.vue";
-import AssetTypeSelect from "./AssetTypeSelect.vue";
+import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
 
@@ -44,7 +44,7 @@ export default Vue.extend({
 	components: {
 		Input: Input,
 		Textarea: Textarea,
-		TypeSelect: AssetTypeSelect,
+		CategorySelect: AssetCategorySelect,
 		TagsInput: TagsInput,
 		FormGroup: FormGroup
 	},

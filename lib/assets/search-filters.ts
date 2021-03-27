@@ -1,12 +1,13 @@
-import {AssetTag, AssetType} from "./asset-types";
+import {AssetTag} from "./asset-types";
+import {Category} from "~/lib/categories/categories-types";
 
-export type FilterType = 'tag' | 'creator' | 'price' | 'type'
+export type FilterType = 'tag' | 'creator' | 'price' | 'category'
 
 const FilterTypeMap : Record<string, FilterType> = {
 	'tag': 'tag',
 	'creator': 'creator',
 	'price': 'price',
-	'type': 'type'
+	'type': 'category'
 }
 
 export interface AssetSearchFilter {
@@ -15,18 +16,18 @@ export interface AssetSearchFilter {
 	value: string
 }
 
-export function assetTypeToFilter(type: AssetType) : AssetSearchFilter {
+export function assetCategoryToFilter(category: Category) : AssetSearchFilter {
 	return  {
-		type: 'type',
-		label: type.plural,
-		value: type.key
+		type: 'category',
+		label: category.plural,
+		value: category.id
 	}
 }
 export function tagToFilter(tag: AssetTag) : AssetSearchFilter {
 	return {
 		type: 'tag',
 		label: tag.label,
-		value: tag.key
+		value: tag.id
 	}
 }
 

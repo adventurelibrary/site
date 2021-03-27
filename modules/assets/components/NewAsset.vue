@@ -46,7 +46,6 @@ export default Vue.extend({
 		fileform.addEventListener('drop', (e: any) => {
 			this.changeFiles(e.dataTransfer.files)
 		})
-    console.log('this asset file', this.newAsset.file)
 	},
 	methods: {
 		updateFile (file: any) {

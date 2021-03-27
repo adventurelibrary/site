@@ -1,5 +1,4 @@
-import {AssetType, AssetTypeKey} from "~/lib/assets/asset-types";
-import {AssetTypes} from "~/lib/assets/asset-consts";
+import {CATEGORIES} from "~/lib/categories/categories-consts";
 
 export interface SelectOption {
 	value: any,
@@ -59,16 +58,20 @@ function isKebabOrTitleCase (str: string) : boolean {
 		&& str.indexOf('_') == -1
 }
 
-export function filenameGuessType(filename: string) : AssetTypeKey {
+export function stringToFakeId (str: string) : string {
+	return str.repeat(2).toLowerCase().split(/\s/).join('')
+}
+
+export function filenameGuessCategoryId(filename: string) : string {
 	const lower = filename.toLowerCase()
-	for(let i = 0; i < AssetTypes.length; i++) {
-		const at = AssetTypes[i]
-		if (lower.indexOf(at.key) >= 0) {
-			return at.key
+	for(let i = 0; i < CATEGORIES.length; i++) {
+		const at = CATEGORIES[i]
+		if (lower.indexOf(at.id) >= 0) {
+			return at.id
 		}
 	}
 
-	return 'map'
+	return ''
 }
 
 export function filenameToTitle(filename: string) : string {

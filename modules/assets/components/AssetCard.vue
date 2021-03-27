@@ -1,16 +1,18 @@
 <template>
-	<div class="asset">
+	<div class="asset-card">
 		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
 		<div class="meta">
-			<h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
+			<h3><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
 			<div>
 				{{asset.description}}
 			</div>
 			<div>
-				<span class="badge badge-primary">{{type.singular}}</span><span class="badge badge-success ml-1" v-for="(tag, idx) in asset.tags">
-					{{tag.label}}
-				</span>
+				<Category :category-id="asset.categoryID" />
+				<TagList :tags="asset.tags" />
+			</div>
+			<div>
+				<AssetDownload :asset="asset" />
 			</div>
 		</div>
 	</div>
@@ -18,17 +20,24 @@
 <script lang="ts">
 import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset, AssetType} from "~/lib/assets/asset-types";
+import {Asset} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getAssetType} from "~/lib/assets/asset-helpers";
+import {getCategoryById} from "~/lib/categories/categories-api";
+import Category from "~/modules/categories/components/Category.vue";
+import TagList from "~/modules/tags/TagList.vue";
+import {Category as CategoryType} from "~/lib/categories/categories-types"
+import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 
 @Component({
 	components: {
-		AssetLink: AssetLink
+		AssetLink: AssetLink,
+		Category: Category,
+		TagList: TagList,
+		AssetDownload: AssetDownload
 	}
 })
 class AssetCard extends Vue {
-	type : AssetType | null
+	category : CategoryType | null
 
 	@Prop() asset : Asset
 
@@ -36,20 +45,20 @@ class AssetCard extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		this.type = getAssetType(this.asset.type)
+		this.category = getCategoryById(this.asset.categoryID)
 	}
 }
 export default AssetCard
 </script>
 <style>
-.asset {
+.asset-card {
 	display: flex;
 	align-items: flex-start;
 	padding: 0.25em;
 	border: 1px solid #ccc;
 }
 
-.asset .thumbnail {
+.asset-card .thumbnail {
 	background: #ccc;
 	border: 1px solid #333;
 	width: 100px;
@@ -59,7 +68,7 @@ export default AssetCard
 	background-position: center;
 }
 
-.asset .meta {
+.asset-card .meta {
 	margin-left: 0.75em;
 }
 </style>

@@ -1,10 +1,6 @@
 <template>
 	<div class="tags-input">
-		<div>
-			<div v-for="(tag, idx) in tagsLocal" :key="tag.key">
-				{{tag.label}}
-				<button @click="() => removeTag(idx)">X</button>
-			</div>
+		<div class="">
 			<input class="form-control"
 				v-model="query"
 				@keypress.enter="enter"
@@ -22,6 +18,9 @@
 			:active="true"
 			@clickTag="tagClicked"
 		/>
+		<div>
+			<span v-for="(tag, idx) in tagsLocal" :key="tag.key">{{tag.label}}&nbsp;<button type="button" @click="() => removeTag(idx)">X</button></span>
+		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -51,8 +50,11 @@ export default class TagsInput extends Vue {
 	}
 
 	get excluded () : string[] {
-		return this.tagsLocal.map((t) => {
-			return t.key
+		return this.tagsLocal.map((t : AssetTag) => {
+			if (!t) {
+				throw new Error('Invalid tag in tagsLocal')
+			}
+			return t.id
 		})
 	}
 
@@ -65,10 +67,10 @@ export default class TagsInput extends Vue {
 		this.emitChanged()
 	}
 
-	enter () {
+	enter (e: any) {
+		e.preventDefault()
 		this.bus.$emit('enter')
 	}
-
 
 	keyDownRightArrow (e: any) {
 		if (this.query.length && e.target.selectionStart < this.query.length) {

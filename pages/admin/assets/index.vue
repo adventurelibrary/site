@@ -1,29 +1,30 @@
 <template>
-	<div>
-		<table width="100%">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Type</th>
-					<th>Tags</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-if="assets.length == 0">
-					<td colspan="2">No assets</td>
-				</tr>
-				<tr v-for="asset in assets" :key="asset.id">
+	<CCard>
+		<CCardHeader>
+			Assets
+		</CCardHeader>
+		<CCardBody>
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
+			<CDataTable :items="assets" :fields="['name', 'categoryName', 'tags']">
+				<template #name="{item}">
 					<td>
-						<AssetEditLink :asset="asset">{{asset.title}}</AssetEditLink>
+						<AssetEditLink :asset="item">{{item.name}}</AssetEditLink>
 					</td>
-					<td>{{asset.type}}</td>
+				</template>
+				<template #categoryName="{item}">
 					<td>
-						<TagList :tags="asset.tags" />
+						<Category :category-id="item.categoryID" />
 					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+				</template>
+				<template #tags="{item}">
+					<td>
+						<TagList :tags="item.tags" />
+					</td>
+				</template>
+			</CDataTable>
+			<Pagination :to="{name: 'admin-assets'}" items-per-page="50" total-items="252" />
+		</CCardBody>
+	</CCard>
 </template>
 <script lang="ts">
 import {Component} from "nuxt-property-decorator";
@@ -35,10 +36,12 @@ import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import AdminPage from "~/admin/admin-page";
 import TagList from "~/modules/tags/TagList.vue";
 import AssetEditLink from "~/admin/components/AssetEditLink.vue";
+import Category from "~/modules/categories/components/Category.vue";
 @Component({
 	components: {
 		TagList,
-		AssetEditLink
+		AssetEditLink,
+		Category: Category
 	}
 })
 export default class AssetsIndex extends AdminPage {
@@ -54,6 +57,14 @@ export default class AssetsIndex extends AdminPage {
 		return {
 			assetsAjax
 		}
+	}
+
+	// This is just some testing and demonstration, it will be removed later
+	mounted () {
+		this.notifySuccess('Successfully showed this message')
+		setTimeout(() => {
+			this.notifyError('Now an error')
+		}, 1500)
 	}
 
 	get assets () : Asset[] {

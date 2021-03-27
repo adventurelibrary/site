@@ -27,6 +27,10 @@
 			display: block;
 			white-space: nowrap;
 			margin: .2em .25em;
+			
+			&.active {
+			  background-color: #106466;
+			}
 		}
 		.filter-type {
 			text-transform: capitalize;
@@ -118,6 +122,10 @@
 	}
 	.action {
 		display: block;
+		
+		&.active {
+		  color: #1AA9C9;
+		}
 	}
 	.action-prefix {
 		color: #C0C0C5;

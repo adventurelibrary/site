@@ -15,15 +15,8 @@ export default class SearchFilter extends Vue {
 	@Prop() filter : AssetSearchFilter
 	@Prop() active : boolean
 
-	get badgeColor() : string {
-		if (this.filter.type === 'tag') {
-			return 'badge-success'
-		}
-		return 'badge-primary'
-	}
-
 	get classes () {
-		const classes = ["search-filter", this.badgeColor]
+		const classes = ["search-filter", this.filter.type]
 		if (this.active) {
 			classes.push("active")
 		}

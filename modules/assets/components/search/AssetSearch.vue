@@ -51,7 +51,7 @@
 					:filters="searchFilters"
 					:query="actionQuery"
 					:active="action === 'type'"
-					@type:clicked="typeClicked" />
+					@category:clicked="categoryClicked" />
 			</div>
 			<div class="filter-container" v-show="action === 'tag'">
 				<h3>Tags</h3>
@@ -79,20 +79,21 @@ Show Actions: {{showActionSuggestions}}
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "~/lib/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/lib/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "~/lib/assets/search-filters";
-import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
+import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/lib/assets/search-filters";
+import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 import {stringToSortDirection} from "~/lib/assets/asset-helpers";
+import {Category} from "~/lib/categories/categories-types";
 
 const actions = ['tag', 'creator', 'type']
 
 @Component({
 	components: {
 		TagSearch,
-		TypeSelector,
+		TypeSelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
 	},
@@ -233,8 +234,8 @@ class AssetSearch extends Vue {
 	}
 
 	// User has clicked on one of the types
-	typeClicked (assetType: AssetType) {
-		const filter = assetTypeToFilter(assetType)
+	categoryClicked (cat: Category) {
+		const filter = assetCategoryToFilter(cat)
 		this.toggleFilter(filter)
 	}
 
