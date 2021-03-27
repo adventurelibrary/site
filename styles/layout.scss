@@ -27,7 +27,7 @@ body {
 	min-height: 100vh;
 	display: grid;
 	justify-items: center;
-	grid-template-rows: minmax(var(--header-height), auto) auto min-content;
+	grid-template-rows: minmax(var(--header-height), auto) 1fr min-content;
 	grid-template-areas:
 		"header"
 		"body"
@@ -212,6 +212,9 @@ body {
 			grid-area: navigation;
 			justify-self: start;
 		}
+	}
+	.shade[visible] {
+		display: none;
 	}
 }
 @media (min-width: $media-large) {
