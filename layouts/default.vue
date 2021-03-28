@@ -37,7 +37,6 @@
 				<li><a href="">About Us</a></li>
 				<li><a href="">Purchase Coins</a></li>
 				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
-				<li><NuxtLink to="/mockups/search">Searchbar Mockup</NuxtLink></li>
 			</ul>
 		</header>
 		<main class="site-body">
