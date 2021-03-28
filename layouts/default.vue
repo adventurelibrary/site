@@ -56,9 +56,21 @@
 			</nav>
 			<section class="social-media">
 				<ul>
-					<li><a href=""><img src="" alt="Facebook"></a></li>
-					<li><a href=""><img src="" alt="Twitter"></a></li>
-					<li><a href=""><img src="" alt="Instagram"></a></li>
+					<li>
+						<a href="">
+							<i class="ci-facebook"></i>
+						</a>
+					</li>
+					<li>
+						<a href="">
+							<i class="ci-twitter"></i>
+						</a>
+					</li>
+					<li>
+						<a href="">
+							<i class="ci-instagram"></i>
+						</a>
+					</li>
 				</ul>
 			</section>
 		</footer>
