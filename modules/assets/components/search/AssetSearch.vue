@@ -1,39 +1,37 @@
 <template>
 	<form @submit="submit" class="asset-search">
-		<div class="query-container">
-
-			<ul class="search-filters">
-				<SearchFilter
-					v-for="(filter, idx) in searchFilters" :key="idx"
-					:filter="filter"
-					:active="idx === activeFilter"
-					@remove="() => removeFilter(idx)"
-				/>
-			</ul>
-			<input placeholder="Search"
-				class="search-input"
-				type="text"
-				v-model="query"
-				role="query"
-				@keypress.enter="enter"
-				@keydown.up="keyUpLeftArrow"
-				@keydown.left="keyUpLeftArrow"
-				@keydown.right="keyDownRightArrow"
-				@keydown.down="keyDownRightArrow"
-				@keydown.delete="deleteKey"
-				@focus="inputFocused = true"
-				@blur="inputFocused = false"
+		<ul class="search-filters">
+			<SearchFilter
+				v-for="(filter, idx) in searchFilters" :key="idx"
+				:filter="filter"
+				:active="idx === activeFilter"
+				@remove="() => removeFilter(idx)"
 			/>
-			<select v-model="sortField" class="filter-select sort-select">
-				<option :value="'title'">Title</option>
-				<option :value="'date'">Date</option>
-			</select>
-			<select v-model="sortDirection" class="filter-select order-select">
-				<option value="asc">Asc</option>
-				<option value="desc">Desc</option>
-			</select>
-			<button class="search-trigger">Go</button>
-		</div>
+		</ul>
+		<input placeholder="Search"
+			class="search-input"
+			type="text"
+			v-model="query"
+			role="query"
+			@keypress.enter="enter"
+			@keydown.up="keyUpLeftArrow"
+			@keydown.left="keyUpLeftArrow"
+			@keydown.right="keyDownRightArrow"
+			@keydown.down="keyDownRightArrow"
+			@keydown.delete="deleteKey"
+			@focus="inputFocused = true"
+			@blur="inputFocused = false"
+		/>
+		<select v-model="sortField" class="filter-select sort-select">
+			<option :value="'title'">Title</option>
+			<option :value="'date'">Date</option>
+		</select>
+		<select v-model="sortDirection" class="filter-select order-select">
+			<option value="asc">Asc</option>
+			<option value="desc">Desc</option>
+		</select>
+		<button class="search-trigger">Go</button>
+
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
 				<h3>Filter Options</h3>
@@ -65,9 +63,6 @@
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
-		</div>
-		<div class="search-filters">
-
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">

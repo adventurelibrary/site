@@ -1,20 +1,26 @@
 <template>
-	<div class="container">
-		<h1>Search Assets</h1>
-		<div v-if="search">
-			Search for: "{{search.query}}"
-			<AssetSearch
-				:options="search"
-				v-on:submit="submit"
-			/>
-		</div>
-		<div>
-			<div v-if="assetsAjax.loading">LOADING</div>
-			<div v-else>
-				Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span>
-				<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-			</div>
-		</div>
+	<div class="page-content">
+		<header class="page-header">
+			<h1>Search Assets</h1>
+			<!--div v-if="search">
+				Search for: "{{search.query}}"
+				<AssetSearch
+					:options="search"
+					v-on:submit="submit"
+				/>
+			</div-->
+		</header>
+		<main class="page-body">
+			<section v-if="assetsAjax.loading">LOADING</section>
+			<section v-else>
+				<h3 class="results-count">
+					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span>
+				</h3>
+				<ul class="search-results">
+					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
+				</ul>
+			</section>
+		</main>
 	</div>
 </template>
 <script lang="ts">

@@ -1,8 +1,5 @@
 <template>
 	<section class="container">
-		<section class="hero">
-			<AssetSearch />
-		</section>
 		<section class="featured-assets">
 			<h3>Featured Assets</h3>
 			<div>

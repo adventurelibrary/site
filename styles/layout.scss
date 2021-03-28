@@ -1,25 +1,14 @@
-
+$media-small: 512px;
 $media-medium: 700px;
 $media-large: 1220px;
 
 :root {
-	--header-width: 98vw;
+	--search-width: 100vw;
 	--header-height: 4.5em;
 	
 	--body-width: 92vw;
-}
 
-@media (min-width: $media-medium) {
-	:root {
-		--header-height: 9em;
-	}
-}
-@media (min-width: $media-large) {
-	:root {
-		--header-width: 1200px;
-
-		--body-width: 1110px;
-	}
+	--search-tag-column-max: 1;
 }
 
 body {
@@ -40,8 +29,11 @@ body {
 	min-height: 100vh;
 	display: grid;
 	justify-items: center;
-
-	grid-template-rows: var(--header-height) 1fr min-content;
+	grid-template-rows: minmax(var(--header-height), auto) 1fr min-content;
+	grid-template-areas:
+		"header"
+		"body"
+		"footer";
 
 	background-color: var(--color-background);
 	color: white;
@@ -49,18 +41,24 @@ body {
 }
 
 .site-header {
-	grid-row: 1;
+	position: relative;
+	grid-area: header;
 	background-color: var(--color-primary);
 	display: grid;
 	width: 100%;
-	height: 100%;
-	padding: .1em calc(calc(100% - var(--header-width)) / 2);
-	grid-template-rows: 1fr 1fr;
-	grid-template-columns: 3em 1fr 20ch;
+	justify-content: center;
+	align-items: center;
+	padding: .1em 2.5em;
+	grid-template-rows: 1fr;
+	grid-template-columns: 3em 1fr 3em 3em;
+	grid-template-areas: 
+		"branding name search-button menu-button";
+
 	column-gap: 1.2em;
 
 	.logo {
 		margin: 0;
+		grid-area: branding;
 
 		.brand {
 			// Temporary image, I'm not sure yet where we are storing layout assets
@@ -76,40 +74,99 @@ body {
 			}
 		}
 	}
+	.site-name {
+		grid-area: name;
+		margin: 0;
+		font-size: 1em;
+	}
 
-	.searchbar {
-		display: grid;
-		align-content: center;
+	.asset-search {
+		display: none;
+		width: var(--search-width);
+		min-height: 4.5em;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		margin: .25em 0;
+	}
+
+	> button {
+		background: none;
+		border: none;
+		color: white;
+		cursor: pointer;
+
+		&:hover {
+			filter: drop-shadow(0 0 2px white);
+		}
+	}
+
+	.account-actions {
+		display: none;
 	}
 
 	.main-navigation {
-		ul {
-			display: grid;
-			grid-auto-flow: column;
-			gap: 2em;
-			padding: 0;
+		display: none;
 
-			li {
-				display: block;
-				white-space: nowrap;
-			}
-			a {
-				color: var(--heading-color);
-				text-transform: uppercase;
-				text-decoration: none;
-			}
+		&[visible] {
+			display: grid;
+		}
+
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100vw;
+		z-index: 1;
+
+		grid-auto-flow: row;
+		
+		column-gap: 2em;
+		row-gap: 1em;
+		margin: 0;
+		padding: 1em 2em;
+
+		background-color: inherit;
+
+		li {
+			display: block;
+			white-space: nowrap;
+		}
+		a {
+			color: var(--heading-color);
+			text-transform: uppercase;
+			text-decoration: none;
+		}
+	}
+
+	&.menu-active {
+		.account-actions {
+			display: grid;
+		}
+		.main-navigation {
+			display: grid;
 		}
 	}
 }
 
+.shade[visible] {
+	display: grid;
+	content: " ";
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, .5);
+}
+
 .site-body {
-	grid-row: 2;
+	grid-area: body;
 	width: var(--body-width);
 }
 
 .site-footer {
 	display: grid;
-	grid-row: 3;
+	grid-area: footer;
 	background-color: var(--color-primary);
 	width: 100%;
 	padding: 0 calc(calc(100% - var(--body-width)) / 2);
@@ -129,5 +186,66 @@ body {
 		li {
 			display: block;
 		}
+	}
+}
+
+@media (min-width: $media-small) {
+	:root {
+		--search-tag-column-max: 2;
+	}
+	.site-header .site-name {
+		font-size: 1.5em;
+	}
+}
+@media (min-width: $media-medium) {
+	:root {
+		--header-height: 9em;
+		--search-width: 55em;
+		--search-tag-column-max: 3;
+	}
+	.site-header {
+		grid-template-rows: minmax(1fr, auto) 1fr;
+		grid-template-columns: 3em minmax(auto, var(--search-width)) 20ch;
+		grid-template-areas: 
+			"branding     search      account"
+			"navigation navigation navigation";
+
+		.site-name {
+			display: none;
+		}
+		.asset-search {
+			display: grid;
+			position: relative;
+			grid-area: search;
+			min-height: 2.6em;
+			width: unset;
+		}
+		.account-actions {
+			grid-area: account;
+			display: grid;
+			grid-auto-flow: column;
+			white-space: nowrap;
+		}
+		> button {
+			display: none;
+		}
+		.main-navigation {
+			position: static;
+			display: grid;
+			grid-area: navigation;
+			justify-self: start;
+			grid-auto-flow: column;
+			z-index: 0;
+			width: unset;
+		}
+	}
+	.shade[visible] {
+		display: none;
+	}
+}
+@media (min-width: $media-large) {
+	:root {
+		--body-width: 1110px;
+		--search-tag-column-max: 4;
 	}
 }
