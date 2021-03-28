@@ -7,6 +7,8 @@ $media-large: 1220px;
 	--header-height: 4.5em;
 	
 	--body-width: 92vw;
+
+	--search-tag-column-max: 1;
 }
 
 body {
@@ -172,6 +174,9 @@ body {
 }
 
 @media (min-width: $media-small) {
+	:root {
+		--search-tag-column-max: 2;
+	}
 	.site-header .site-name {
 		font-size: 1.5em;
 	}
@@ -180,6 +185,7 @@ body {
 	:root {
 		--header-height: 9em;
 		--search-width: 55em;
+		--search-tag-column-max: 3;
 	}
 	.site-header {
 		grid-template-rows: minmax(1fr, auto) 1fr;
@@ -220,5 +226,6 @@ body {
 @media (min-width: $media-large) {
 	:root {
 		--body-width: 1110px;
+		--search-tag-column-max: 4;
 	}
 }
