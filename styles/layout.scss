@@ -41,6 +41,7 @@ body {
 }
 
 .site-header {
+	position: relative;
 	grid-area: header;
 	background-color: var(--color-primary);
 	display: grid;
@@ -76,7 +77,7 @@ body {
 	.site-name {
 		grid-area: name;
 		margin: 0;
-		font-size: 1.1em;
+		font-size: 1em;
 	}
 
 	.asset-search {
@@ -107,9 +108,24 @@ body {
 	.main-navigation {
 		display: none;
 
-		grid-auto-flow: column;
-		gap: 2em;
-		padding: 0;
+		&[visible] {
+			display: grid;
+		}
+
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100vw;
+		z-index: 1;
+
+		grid-auto-flow: row;
+		
+		column-gap: 2em;
+		row-gap: 1em;
+		margin: 0;
+		padding: 1em 2em;
+
+		background-color: inherit;
 
 		li {
 			display: block;
@@ -214,9 +230,13 @@ body {
 			display: none;
 		}
 		.main-navigation {
+			position: static;
 			display: grid;
 			grid-area: navigation;
 			justify-self: start;
+			grid-auto-flow: column;
+			z-index: 0;
+			width: unset;
 		}
 	}
 	.shade[visible] {
