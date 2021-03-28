@@ -103,6 +103,32 @@ body {
 
 	.account-actions {
 		display: none;
+
+		column-gap: 1ch;
+
+		.member-avatar {
+			display: grid;
+			place-items: center;
+			margin: 0;
+			width: 2.65em;
+			height: 2.65em;
+			border-radius: 50%;
+			background-color: #106466;
+			overflow: hidden;
+			grid-template: 
+				"icon" 2.65em / 2.65em;
+
+			.ci-user {
+				grid-area: icon;
+				font-size: 1.25em;
+			}
+			img {
+				width: 100%;
+				height: 100%;
+				grid-area: icon;
+				object-fit: cover;
+			}
+		}
 	}
 
 	.main-navigation {
@@ -225,6 +251,7 @@ body {
 			display: grid;
 			grid-auto-flow: column;
 			white-space: nowrap;
+			align-items: center;
 		}
 		> button {
 			display: none;

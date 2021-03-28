@@ -27,7 +27,10 @@
 
 			<div class="account-actions">
 				<a class="logout-button">Logout</a>
-				<figure class="member-avatar"></figure>
+				<figure class="member-avatar">
+					<i class="ci-user"></i>
+					<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
+				</figure>
 				<a class="account-link">My Account</a>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
