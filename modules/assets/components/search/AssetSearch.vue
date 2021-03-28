@@ -30,7 +30,9 @@
 			<option value="asc">Asc</option>
 			<option value="desc">Desc</option>
 		</select>
-		<button class="search-trigger">Go</button>
+		<button class="search-trigger">
+			<img src="~/assets/coolicons/svg/edit/search.svg" alt="Search Now">
+		</button>
 
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
