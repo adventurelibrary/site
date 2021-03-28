@@ -1,10 +1,12 @@
 <template>
 	<div class="asset-download">
 		<div v-if="canDownload">
-			<select v-model="fileType">
+			<select v-model="fileType" class="download-format">
 				<option v-for="option in fileOptions" :key="option.value" :value="option.value">{{option.label}}</option>
 			</select>
-			<a @click="download">Download</a>
+			<a @click="download">
+				<i class="ci-download"></i>
+			</a>
 		</div>
 		<div v-if="mustUnlock">
 			Unlock for {{asset.cost}}

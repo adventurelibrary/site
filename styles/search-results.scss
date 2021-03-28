@@ -89,5 +89,20 @@
 		background-color: rgba(0, 0, 0, 0.4);
 		border-radius: .3em;
 		padding: .3em;
+		line-height: 1em;
+
+		.download-format {
+			display: none;
+			background: none;
+			border: none;
+			color: currentColor;
+
+			option {
+				background: rgba(0, 0, 0, 0.4);
+			}
+		}
+		:hover .download-format {
+			display: inline-block;
+		}
 	}
 }
