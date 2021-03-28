@@ -3,7 +3,7 @@ const path = require('path')
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
 const css = [
-  'styles/coolicons/coolicons.css',
+  'assets/coolicons/coolicons.css',
   'styles/color.scss',
   'styles/layout.scss',
   'styles/base-page.scss',
