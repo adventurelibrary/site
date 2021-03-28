@@ -5,11 +5,13 @@
 
 	position: relative;
 	background: var(--search-background-light);
-	grid-template-columns: 3em minmax(min-content, max-content) minmax(16ch, 1fr) 6ch 6ch;
+	grid-template-columns: 2.6em minmax(min-content, max-content) minmax(16ch, 1fr) 6ch 6ch;
+	grid-template-areas: 
+		"button filters input sort order";
 	gap: .5ch;
 
 	.search-filters {
-		grid-column: 2;
+		grid-area: filters;
 		display: grid;
 		grid-auto-flow: row;
 		grid-template-columns: repeat(var(--search-tag-column-max), auto);
@@ -22,6 +24,10 @@
 		align-items: center;
 		padding: .25em 0;
 		margin: 0;
+
+		&:empty {
+			display: none;
+		}
 		
 
 		li {
@@ -63,7 +69,7 @@
 		}
 	}
 	.search-input {
-		grid-column: 3;
+		grid-area: input;
 		border: none;
 		background: none;
 		min-width: 0px;
@@ -72,6 +78,10 @@
 			outline: none;
 		}
 	}
+	
+	.sort-select { grid-area: sort; }
+	.order-select { grid-area: order; }
+
 	.filter-select {
 		border: none;
 		background: none;
@@ -86,17 +96,20 @@
 		}
 	}
 	.search-trigger {
-		grid-row: 1;
-		grid-column: 1;
+		grid-area: button;
 
 		place-self: stretch;
 		border: none;
 		background: none;
+		padding: 0;
+		display: grid;
+		place-items: center;
+		margin-left: .5em;
 
 		cursor: pointer;
 
 		&:hover {
-			box-shadow: 0 0 2px 0px black inset;
+			filter: drop-shadow(0 0 1px black);
 		}
 	}
 }

@@ -1,5 +1,8 @@
 <template>
 	<form @submit="submit" class="asset-search">
+		<button class="search-trigger">
+			<img src="~/assets/coolicons/svg/edit/search.svg" alt="Search Now">
+		</button>
 		<ul class="search-filters">
 			<SearchFilter
 				v-for="(filter, idx) in searchFilters" :key="idx"
@@ -30,9 +33,6 @@
 			<option value="asc">Asc</option>
 			<option value="desc">Desc</option>
 		</select>
-		<button class="search-trigger">
-			<img src="~/assets/coolicons/svg/edit/search.svg" alt="Search Now">
-		</button>
 
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
