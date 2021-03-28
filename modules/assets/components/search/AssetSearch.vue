@@ -25,15 +25,21 @@
 			@focus="inputFocused = true"
 			@blur="inputFocused = false"
 		/>
+		<figure class="order-select" title="Sort Order">
+			<button class="ascend"
+				@click="sortDirection = 'asc'">
+				<i class="ci-chevron_big_up"></i>
+			</button>
+			<button class="descend"
+				@click="sortDirection = 'desc'">
+				<i class="ci-chevron_big_down"></i>
+			</button>
+		</figure>
 		<select v-model="sortField" class="filter-select sort-select">
 			<option :value="'title'">Title</option>
 			<option :value="'date'">Date</option>
 		</select>
-		<select v-model="sortDirection" class="filter-select order-select">
-			<option value="asc">Asc</option>
-			<option value="desc">Desc</option>
-		</select>
-
+		
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
 				<h3>Filter Options</h3>

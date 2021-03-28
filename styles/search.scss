@@ -5,10 +5,28 @@
 
 	position: relative;
 	background: var(--search-background-light);
-	grid-template-columns: 2.6em minmax(min-content, max-content) minmax(16ch, 1fr) 6ch 6ch;
+	grid-template-columns: 2.6em minmax(min-content, max-content) minmax(16ch, 1fr) auto auto;
 	grid-template-areas: 
-		"button filters input sort order";
+		"button filters input order sort";
 	gap: .5ch;
+	padding: 0 .5em;
+
+	.search-trigger {
+		grid-area: button;
+
+		place-self: stretch;
+		border: none;
+		background: none;
+		padding: 0;
+		display: grid;
+		place-items: center;
+
+		cursor: pointer;
+
+		&:hover {
+			filter: drop-shadow(0 0 1px black);
+		}
+	}
 
 	.search-filters {
 		grid-area: filters;
@@ -80,7 +98,43 @@
 	}
 	
 	.sort-select { grid-area: sort; }
-	.order-select { grid-area: order; }
+
+	.order-select { 
+		grid-area: order;
+		margin: 0;
+		display: grid;
+		grid-template:
+			"ascend descend" auto
+			/ 1fr 1fr;
+
+		justify-items: center;
+		place-content: center;
+
+		column-gap: .125ch;
+
+		button {
+			font-size: 1.25em;
+			display: grid;
+			border: none;
+			background: none;
+			padding: 0;
+			place-items: center;
+			cursor: pointer;
+
+			&.active {
+				text-shadow: 0 0 2px currentColor;
+			}
+			:hover {
+				text-shadow: 0 0 4px currentColor;
+			}
+		}
+		.ascend {
+			grid-area: ascend;
+		}
+		.descend {
+			grid-area: descend;
+		}
+	}
 
 	.filter-select {
 		border: none;
@@ -93,23 +147,6 @@
 		option {
 			background-color: var(--search-background-light);
 			border: none;
-		}
-	}
-	.search-trigger {
-		grid-area: button;
-
-		place-self: stretch;
-		border: none;
-		background: none;
-		padding: 0;
-		display: grid;
-		place-items: center;
-		margin-left: .5em;
-
-		cursor: pointer;
-
-		&:hover {
-			filter: drop-shadow(0 0 1px black);
 		}
 	}
 }

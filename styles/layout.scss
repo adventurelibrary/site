@@ -26,7 +26,7 @@ body {
 
 .body {
 	height: fit-content;
-	min-height: 100vh;
+	min-height: 101vh;
 	display: grid;
 	justify-items: center;
 	grid-template-rows: minmax(var(--header-height), auto) 1fr min-content;
