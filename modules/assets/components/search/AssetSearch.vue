@@ -52,13 +52,13 @@
 					@prevBeyond="selectPreviousFilter"
 				/>
 			</div>
-			<div class="filter-container" v-show="action === 'type'">
-				<h3>Types</h3>
-				<TypeSelector
+			<div class="filter-container" v-show="action === 'category'">
+				<h3>Categories</h3>
+				<CategorySelector
 					:bus="bus"
 					:filters="searchFilters"
 					:query="actionQuery"
-					:active="action === 'type'"
+					:active="action === 'category'"
 					@category:clicked="categoryClicked" />
 			</div>
 			<div class="filter-container" v-show="action === 'tag'">
@@ -101,7 +101,7 @@ const actions = ['tag', 'creator', 'type']
 @Component({
 	components: {
 		TagSearch,
-		TypeSelector: SearchCategorySelector,
+		CategorySelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
 	},
