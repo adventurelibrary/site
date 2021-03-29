@@ -1,8 +1,8 @@
 import {AssetSearchAction} from "./asset-types";
 
 export const AssetSearchActions : AssetSearchAction[] = [{
-	key: 'type',
-	prefix: 'type',
+	key: 'category',
+	prefix: 'category',
 	description: 'filter by map, token, character',
 }, {
 	key: 'tag',

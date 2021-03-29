@@ -1,9 +1,11 @@
 <template>
 	<ul class="action-list">
-		<li class="action" v-for="(action, idx) in items" :key="action.key">
+		<li class="action" v-for="(action, idx) in items"
+				:key="action.key" @click="() => console.log('idx', idx)"
+				:class="{'active': idx === activeItem}"
+		>
 			<a @click="() => clickAction(action)"
 				class="d-block btn text-left mb-1"
-				:class="{'btn-primary': idx === activeItem, 'btn-secondary': idx !== activeItem}"
 			>
 				<span class="action-prefix">{{action.prefix}}:</span>
 				<span class="action-description">{{action.description}}</span>

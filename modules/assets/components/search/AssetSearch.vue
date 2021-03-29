@@ -39,7 +39,7 @@
 			<option :value="'title'">Title</option>
 			<option :value="'date'">Date</option>
 		</select>
-		
+
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
 				<h3>Filter Options</h3>
@@ -96,7 +96,7 @@ import SearchActions from "~/modules/assets/components/search/SearchActions.vue"
 import {stringToSortDirection} from "~/lib/assets/asset-helpers";
 import {Category} from "~/lib/categories/categories-types";
 
-const actions = ['tag', 'creator', 'type']
+const actions = ['category', 'creator', 'tag']
 
 @Component({
 	components: {
@@ -243,6 +243,9 @@ class AssetSearch extends Vue {
 
 	// User has clicked on one of the types
 	categoryClicked (cat: Category) {
+		if (!cat) {
+			throw new Error('Bad category')
+		}
 		const filter = assetCategoryToFilter(cat)
 		this.toggleFilter(filter)
 	}
@@ -275,7 +278,7 @@ class AssetSearch extends Vue {
 		this.searchFilters.push(filter)
 		const find = filter.type + ':'
 		const idx = this.query.indexOf(find)
-		this.query = this.query.substr(0, idx-1) + ' '
+		this.query = this.query.substr(0, idx-1)
 	}
 
 	findFilter(filter: AssetSearchFilter) : number {
@@ -347,6 +350,11 @@ class AssetSearch extends Vue {
 
 	keyUpLeftArrow (e: any) {
 		if (this.query.length && e.target.selectionStart > 0) {
+			// TODO: Check if they are at the first option in the child options
+			// If they are, then we can return and it will work like an up/left
+			// arrow in a text box
+			// If they are NOT, then we should stop the default and move up the list
+			// of child options
 			return
 		}
 

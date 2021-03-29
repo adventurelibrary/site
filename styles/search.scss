@@ -6,7 +6,7 @@
 	position: relative;
 	background: var(--search-background-light);
 	grid-template-columns: 2.6em minmax(min-content, max-content) minmax(16ch, 1fr) auto auto;
-	grid-template-areas: 
+	grid-template-areas:
 		"button filters input order sort";
 	gap: .5ch;
 	padding: 0 .5em;
@@ -46,7 +46,7 @@
 		&:empty {
 			display: none;
 		}
-		
+
 
 		li {
 			font-size: .75em;
@@ -55,7 +55,7 @@
 			border-radius: .3em;
 			display: block;
 			white-space: nowrap;
-			
+
 			&.active {
 			  background-color: #106466;
 			}
@@ -96,10 +96,10 @@
 			outline: none;
 		}
 	}
-	
+
 	.sort-select { grid-area: sort; }
 
-	.order-select { 
+	.order-select {
 		grid-area: order;
 		margin: 0;
 		display: grid;
@@ -176,8 +176,9 @@
 	}
 	.action {
 		display: block;
-		
-		&.active {
+
+		&.active,
+		&.active .action-prefix {
 		  color: #1AA9C9;
 		}
 	}

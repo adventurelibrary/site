@@ -2,9 +2,9 @@
 	<section class="container">
 		<section class="featured-assets">
 			<h3>Featured Assets</h3>
-			<div>
+			<ul class="search-results">
 				<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
-			</div>
+			</ul>
 		</section>
 	</section>
 </template>

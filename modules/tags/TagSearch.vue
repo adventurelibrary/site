@@ -1,8 +1,6 @@
 <template>
 	<div class="tag-search">
-		<span v-if="query.length">Can't find any tags</span>
-		<span v-else>Type to search for tags</span>
-		<ul class="action-list items">
+		<ul class="action-list items" v-if="shownResults.length">
 			<li v-for="(tag, idx) in shownResults"
 				:key="tag.key"
 				class="action"
@@ -11,6 +9,10 @@
 				{{tag.label}}
 			</li>
 		</ul>
+		<div v-else>
+			<span v-if="query.length">Can't find any tags</span>
+			<span v-else>Type to search for tags</span>
+		</div>
 	</div>
 </template>
 <script lang="ts">
