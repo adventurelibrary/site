@@ -25,6 +25,11 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 	let assets : Asset[] = []
 	const query = (opts.query || '').toLowerCase().trim()
 	const filters = opts.filters
+	let size = opts.size
+	let from = opts.from
+	if (size > 40) {
+		size = 40
+	}
 
 	if (!query.length && !filters.length) {
 		assets = ASSETS_LIST
@@ -63,13 +68,15 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		})
 	}
 
+	const results = assets.splice(from, size).map(transformAsset)
+
 	return new Promise<AssetsResponse>((res) => {
 		setTimeout(() => {
 			res({
 				total: assets.length,
-				results: assets.map(transformAsset)
+				results: results
 			})
-		}, 220)
+		}, 500)
 	})
 }
 

@@ -149,11 +149,14 @@ class AssetSearch extends Vue {
 	}
 
 	getSearchOptions () : AssetSearchOptions {
+		// TODO: Figure out if from/size are set here. They might be set in the parent component
 		return {
 			query: this.query.trim(),
 			filters: this.searchFilters,
 			sortField: this.sortField,
-			sortDirection: stringToSortDirection(this.sortDirection)
+			sortDirection: stringToSortDirection(this.sortDirection),
+			from: 0,
+			size: 0
 		}
 	}
 

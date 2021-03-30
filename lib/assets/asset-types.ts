@@ -56,6 +56,8 @@ export type AssetSearchOptions = {
 	query: string,
 	sortField: string,
 	sortDirection: SortDirection
+	from: number
+	size: number
 }
 
 export type AssetsResponse = {

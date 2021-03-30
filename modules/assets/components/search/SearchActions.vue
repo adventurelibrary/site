@@ -53,6 +53,7 @@ export default class SearchActions extends SearchArrowNavMixin {
 	}
 
 	clickAction (type: AssetSearchAction) {
+		console.log('type', type)
 		this.$emit('action:clicked', type)
 	}
 
