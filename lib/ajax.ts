@@ -52,3 +52,14 @@ export const computeAjaxList = (ajax: any) : any[] => {
 	}
 	return ajax.data.results
 }
+
+interface hasTotal  {
+	total: number
+}
+
+export function computeAjaxTotal (ajax : undefined | hasTotal) : number {
+	if (!ajax) {
+		return 0
+	}
+	return ajax.total || 0
+}

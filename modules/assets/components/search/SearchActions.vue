@@ -1,7 +1,7 @@
 <template>
 	<ul class="action-list">
 		<li class="action" v-for="(action, idx) in items"
-				:key="action.key" @click="() => console.log('idx', idx)"
+				:key="action.key"
 				:class="{'active': idx === activeItem}"
 		>
 			<a @click="() => clickAction(action)"
@@ -53,6 +53,7 @@ export default class SearchActions extends SearchArrowNavMixin {
 	}
 
 	clickAction (type: AssetSearchAction) {
+		console.log('type', type)
 		this.$emit('action:clicked', type)
 	}
 

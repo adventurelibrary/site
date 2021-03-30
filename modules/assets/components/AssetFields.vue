@@ -20,6 +20,11 @@
 				:value="copy.categoryID"
 				v-on:input="(val) => fieldChanged('categoryID', val)"
 		/>
+		<Select
+				:label="copy.visibility"
+				:options="visOptions"
+				:value="copy.visibility"
+				v-on:input="(val) => fieldChanged('visibility', val)" />
 	</div>
 </template>
 
@@ -31,6 +36,9 @@ import Textarea from "~/components/forms/Textarea.vue";
 import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
+import Select from "~/components/forms/Select.vue";
+import {VisibilityOptions} from "~/lib/assets/asset-consts";
+import {SelectOption} from "~/lib/helpers";
 
 export const fieldNames = ['title', 'description', 'type']
 
@@ -46,13 +54,16 @@ export default Vue.extend({
 		Textarea: Textarea,
 		CategorySelect: AssetCategorySelect,
 		TagsInput: TagsInput,
-		FormGroup: FormGroup
+		FormGroup: FormGroup,
+		Select: Select
 	},
 	data () : {
-		copy: any
+		copy: any,
+		visOptions: SelectOption[]
 	} {
 		return {
-			copy: {}
+			copy: {},
+			visOptions: VisibilityOptions
 		}
 	},
 	watch: {

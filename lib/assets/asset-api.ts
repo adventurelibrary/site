@@ -5,7 +5,7 @@ import {
 	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetUploadResponse
+	AssetsResponse, AssetUploadResponse, AssetVisibility
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
@@ -25,6 +25,12 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 	let assets : Asset[] = []
 	const query = (opts.query || '').toLowerCase().trim()
 	const filters = opts.filters
+	let size = opts.size
+	let from = opts.from
+	console.log('search from', from)
+	if (size > 40) {
+		size = 40
+	}
 
 	if (!query.length && !filters.length) {
 		assets = ASSETS_LIST
@@ -63,13 +69,15 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		})
 	}
 
+	const results = assets.slice(from, size+from).map(transformAsset)
+
 	return new Promise<AssetsResponse>((res) => {
 		setTimeout(() => {
 			res({
 				total: assets.length,
-				results: assets.map(transformAsset)
+				results: results
 			})
-		}, 220)
+		}, 500)
 	})
 }
 
@@ -214,6 +222,15 @@ export async function getAssets() : Promise<AssetsResponse> {
 	})
 }
 
+export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
+	console.log(ids, vis)
+	return new Promise((res) => {
+		setTimeout(() => {
+			res('hi')
+		}, 250)
+	})
+}
+
 export const newAsset = () : Asset => {
 	return {
 		id: '',
@@ -225,7 +242,8 @@ export const newAsset = () : Asset => {
 		slug: '',
 		tagIDs: {},
 		tags: [],
-		thumbnailSrc: ''
+		thumbnailSrc: '',
+		visibility: 'HIDDEN'
 	}
 }
 
@@ -264,6 +282,7 @@ export const saveAsset = async (id: string, data: AssetFormData) => {
 // we might want our form data to have {creatorId: '123'}. The form doesn't care
 // about the name of the creator, just its id
 export const assetResponseToFormData = (resp: AssetResponse) : AssetFormData => {
+	console.log('', resp.asset)
 	return resp.asset
 }
 

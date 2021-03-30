@@ -1,5 +1,7 @@
 import {AssetSearchFilter} from "./search-filters";
 
+export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
+
 // These fields exist on assets that are in our db AND in assets
 // that the user is about to upload
 export type AssetFields = {
@@ -17,6 +19,7 @@ export type Asset = AssetFields & {
 	creatorID: string
 	slug: string
 	thumbnailSrc: string
+	visibility: AssetVisibility
 }
 
 // This is created when a user drags and drops a file or selects files
@@ -56,6 +59,8 @@ export type AssetSearchOptions = {
 	query: string,
 	sortField: string,
 	sortDirection: SortDirection
+	from: number
+	size: number
 }
 
 export type AssetsResponse = {

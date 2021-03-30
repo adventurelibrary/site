@@ -1,4 +1,5 @@
 import {AssetSearchAction} from "./asset-types";
+import {SelectOption} from "~/lib/helpers";
 
 export const AssetSearchActions : AssetSearchAction[] = [{
 	key: 'category',
@@ -10,5 +11,16 @@ export const AssetSearchActions : AssetSearchAction[] = [{
 	description: 'find assets with specific tags',
 }]
 
+
+export const VisibilityOptions : SelectOption[] = [{
+	label: 'Hidden',
+	value: 'HIDDEN'
+}, {
+	label: 'Pending',
+	value: 'PENDING'
+}, {
+	label: 'Public',
+	value: 'PUBLIC'
+}]
 
 export const ACCEPTED_IMAGE_TYPES = 'image/png, image/jpg, image/jpeg'

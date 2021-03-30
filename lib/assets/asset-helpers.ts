@@ -1,17 +1,18 @@
 import {AssetSearchOptions, SortDirection} from "./asset-types";
-import {commaAndJoin} from "../helpers";
 import {AssetSearchFilter} from "./search-filters";
-import {getCategoryById} from "~/lib/categories/categories-api";
 
 export const SORT_FIELD_DEFAULT = 'date'
 export const SORT_DIR_DEFAULT : SortDirection = 'desc'
+export const SORT_DEFAULT_SIZE = 20 // how many assets to show on a page
 
 export const newSearchOptions = () : AssetSearchOptions => {
 	return {
 		query: '',
 		filters: [],
 		sortField: SORT_FIELD_DEFAULT,
-		sortDirection: SORT_DIR_DEFAULT
+		sortDirection: SORT_DIR_DEFAULT,
+		from: 0,
+		size: SORT_DEFAULT_SIZE,
 	}
 }
 

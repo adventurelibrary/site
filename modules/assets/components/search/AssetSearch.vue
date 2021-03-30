@@ -22,8 +22,8 @@
 			@keydown.right="keyDownRightArrow"
 			@keydown.down="keyDownRightArrow"
 			@keydown.delete="deleteKey"
-			@focus="inputFocused = true"
-			@blur="inputFocused = false"
+			@focus="onInputFocus"
+			@blur="onInputBlur"
 		/>
 		<figure class="order-select" title="Sort Order">
 			<button class="ascend"
@@ -114,6 +114,7 @@ class AssetSearch extends Vue {
 	sortDirection : string;
 	bus : Vue = new Vue()
 	inputFocused = false;
+	inputFocusTimeout : NodeJS.Timeout
 
 	// The index of the active highlighted item from the child component
 	activeChildActiveItem : number
@@ -149,11 +150,14 @@ class AssetSearch extends Vue {
 	}
 
 	getSearchOptions () : AssetSearchOptions {
+		// TODO: Figure out if from/size are set here. They might be set in the parent component
 		return {
 			query: this.query.trim(),
 			filters: this.searchFilters,
 			sortField: this.sortField,
-			sortDirection: stringToSortDirection(this.sortDirection)
+			sortDirection: stringToSortDirection(this.sortDirection),
+			from: 0,
+			size: 0
 		}
 	}
 
@@ -232,8 +236,20 @@ class AssetSearch extends Vue {
 	}
 
 	actionClicked (action: AssetSearchAction) {
+		console.log('action', action)
 		this.query = action.prefix + ':'
 		this.focusInput()
+	}
+
+	onInputFocus () {
+		clearTimeout(this.inputFocusTimeout)
+		this.inputFocused = true
+	}
+
+	onInputBlur () {
+		this.inputFocusTimeout = setTimeout(() => {
+			this.inputFocused = false
+		}, 100)
 	}
 
 	tagClicked (tag: AssetTag) {
