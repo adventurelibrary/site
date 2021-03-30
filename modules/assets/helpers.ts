@@ -71,7 +71,6 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	}
 
 	let pageS = $route.query.page
-	console.log('pageS', pageS)
 	let page = 1
 
 	if (pageS) {
@@ -82,7 +81,6 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	}
 	const size = SORT_DEFAULT_SIZE
 	const from = (page - 1) * size
-	console.log('from', from)
 
 	return {
 		query: $route.query.search || '',

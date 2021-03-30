@@ -1,7 +1,7 @@
 <template>
 	<ul class="action-list">
 		<li class="action" v-for="(action, idx) in items"
-				:key="action.key" @click="() => console.log('idx', idx)"
+				:key="action.key"
 				:class="{'active': idx === activeItem}"
 		>
 			<a @click="() => clickAction(action)"

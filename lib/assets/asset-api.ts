@@ -223,9 +223,10 @@ export async function getAssets() : Promise<AssetsResponse> {
 }
 
 export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
+	console.log(ids, vis)
 	return new Promise((res) => {
 		setTimeout(() => {
-			res()
+			res('hi')
 		}, 250)
 	})
 }
