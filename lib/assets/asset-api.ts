@@ -5,7 +5,7 @@ import {
 	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetUploadResponse
+	AssetsResponse, AssetUploadResponse, AssetVisibility
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
@@ -222,6 +222,14 @@ export async function getAssets() : Promise<AssetsResponse> {
 	})
 }
 
+export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
+	return new Promise((res) => {
+		setTimeout(() => {
+			res()
+		}, 250)
+	})
+}
+
 export const newAsset = () : Asset => {
 	return {
 		id: '',
@@ -233,7 +241,8 @@ export const newAsset = () : Asset => {
 		slug: '',
 		tagIDs: {},
 		tags: [],
-		thumbnailSrc: ''
+		thumbnailSrc: '',
+		visibility: 'HIDDEN'
 	}
 }
 
@@ -272,6 +281,7 @@ export const saveAsset = async (id: string, data: AssetFormData) => {
 // we might want our form data to have {creatorId: '123'}. The form doesn't care
 // about the name of the creator, just its id
 export const assetResponseToFormData = (resp: AssetResponse) : AssetFormData => {
+	console.log('', resp.asset)
 	return resp.asset
 }
 

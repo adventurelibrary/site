@@ -15,7 +15,7 @@
 						Delete
 					</button>
 				</div>
-				<CDataTable :items="assets" :fields="['select', 'name', 'categoryName', 'tags']" :clickable-rows="true" @row-clicked="rowClicked">
+				<CDataTable :items="assets" :fields="['select', 'name', 'categoryName', 'visibility', 'tags']" :clickable-rows="true" @row-clicked="rowClicked">
 					<template #select="{item}">
 						<td>
 							<input type="checkbox" :checked="selectedAssets[item.id]" />
@@ -46,7 +46,7 @@
 import Vue from "vue";
 import {Component, Watch} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
-import {newAssetsAjax, searchAssets} from "~/lib/assets/asset-api";
+import {newAssetsAjax, searchAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Asset, AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
@@ -56,6 +56,7 @@ import AssetEditLink from "~/admin/components/AssetEditLink.vue";
 import Category from "~/modules/categories/components/Category.vue";
 import {Route} from "vue-router";
 import LoadingContainer from "~/components/LoadingContainer.vue";
+import {keyBoolToArray} from "~/lib/helpers";
 @Component({
 	components: {
 		LoadingContainer,
@@ -107,10 +108,21 @@ export default class AssetsIndex extends AdminPage {
 		Vue.set(this.selectedAssets, item.id, !val)
 	}
 
-	publishSelected () {
+	async publishSelected () {
+		this.notifySuccess('publish #' + this.selectedAssetIds.length)
+		try {
+			await updateAssetsVisibilities(this.selectedAssetIds, 'VISIBLE')
+		} catch (ex) {
+			this.notifyError(ex.toString())
+		}
 	}
 
 	deleteSelected () {
+		alert('Not implemented')
+	}
+
+	get selectedAssetIds () : string[] {
+		return keyBoolToArray(this.selectedAssets)
 	}
 
 	get assets () : any[] {
