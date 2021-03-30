@@ -27,6 +27,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 	const filters = opts.filters
 	let size = opts.size
 	let from = opts.from
+	console.log('search from', from)
 	if (size > 40) {
 		size = 40
 	}
@@ -68,7 +69,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 		})
 	}
 
-	const results = assets.splice(from, size).map(transformAsset)
+	const results = assets.slice(from, size+from).map(transformAsset)
 
 	return new Promise<AssetsResponse>((res) => {
 		setTimeout(() => {

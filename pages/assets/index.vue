@@ -36,7 +36,7 @@ import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/lib/assets/asset-helpers";
 import {newAssetsAjax, searchAssets} from "~/lib/assets/asset-api";
-import {Ajax, computeAjaxList, doAjax} from "~/lib/ajax";
+import {Ajax, computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
@@ -122,10 +122,7 @@ class AssetsIndexPage extends Vue {
 	}
 
 	get totalAssets () : number {
-		if (!this.assetsAjax.data) {
-			return 0
-		}
-		return this.assetsAjax.data.total || 0
+		return computeAjaxTotal(this.assetsAjax.data)
 	}
 
 	getPageTitle () {
