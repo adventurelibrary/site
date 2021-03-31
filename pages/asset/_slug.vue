@@ -5,7 +5,7 @@
 
 		<div>
 			<h1>{{asset.name}}</h1>
-			By [user icon] {{creator.name}}
+			By [user icon] {{asset.creatorName}}
 		</div>
 		<div>
 			<AssetDownload :asset="asset" />
@@ -29,7 +29,7 @@ import { Context } from '@nuxt/types'
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
-import {Asset, AssetResponse, Creator} from "~/lib/assets/asset-types";
+import {Asset} from "~/lib/assets/asset-types";
 import { getAssetAjax} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
@@ -40,7 +40,7 @@ import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 	}
 })
 class AssetPage extends Vue {
-	public assetAjax : Ajax<AssetResponse>
+	public assetAjax : Ajax<Asset>
 
 	head () {
 		const asset = this.asset
@@ -57,20 +57,11 @@ class AssetPage extends Vue {
 	}
 
 	get asset () : Asset | null {
-		const res = getAjaxData<AssetResponse>(this.assetAjax)
+		const res = getAjaxData<Asset>(this.assetAjax)
 		if (!res) {
 			return null
 		}
-		return res.asset
-	}
-
-
-	get creator () : Creator | null {
-		const res = getAjaxData<AssetResponse>(this.assetAjax)
-		if (!res) {
-			return null
-		}
-		return res.creator
+		return res
 	}
 
 	async asyncData (ctx: Context) {

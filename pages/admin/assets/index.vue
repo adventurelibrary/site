@@ -103,7 +103,6 @@ export default class AssetsIndex extends AdminPage {
 	}
 
 	rowClicked (item: Asset) {
-		console.log('item', item)
 		const val = this.selectedAssets[item.id] ? true : false
 		Vue.set(this.selectedAssets, item.id, !val)
 	}
@@ -111,7 +110,7 @@ export default class AssetsIndex extends AdminPage {
 	async publishSelected () {
 		this.notifySuccess('publish #' + this.selectedAssetIds.length)
 		try {
-			await updateAssetsVisibilities(this.selectedAssetIds, 'VISIBLE')
+			await updateAssetsVisibilities(this.selectedAssetIds, 'PUBLIC')
 		} catch (ex) {
 			this.notifyError(ex.toString())
 		}

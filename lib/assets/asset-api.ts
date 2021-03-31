@@ -137,27 +137,18 @@ export const getFeaturedAssets = async () : Promise<AssetsResponse> => {
 	})
 }
 
-export const getAssetBySlug = async (slug: string) : Promise<AssetResponse> => {
-	return new Promise<AssetResponse>((res, rej) => {
-		setTimeout(() => {
-			const asset = ASSETS_LIST.find((a) => {
-				return a.slug == slug
-			})
-
-			if (!asset) {
-				rej(new Error('Cannot find that asset'))
-				return
-			}
-
-			res({
-				asset: Object.assign({}, asset),
-				creator: {name: 'fubar artist'}
-			})
-		}, 100)
-	})
+export async function getAssetByField(field: string, value: string) : Promise<Asset> {
+	const res = await api.get<Asset>(`/assets?${field}=${value}`)
+	return res.data
 }
 
-export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> => {
+export const getAssetBySlug = async (slug: string) : Promise<Asset> => {
+	const parts = slug.split('-')
+	const id = parts[parts.length-1]
+	return getAssetById(id)
+}
+
+export const getAssetAjax = async(slug: string) : Promise<Ajax<Asset>> => {
 	const ajax = newAssetAjax()
 	try {
 		const asset = await getAssetBySlug(slug)
@@ -170,7 +161,7 @@ export const getAssetAjax = async(slug: string) : Promise<Ajax<AssetResponse>> =
 	return ajax
 }
 
-export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>> => {
+export const getAssetAjaxById = async(id: string) : Promise<Ajax<Asset>> => {
 	const ajax = newAssetAjax()
 	try {
 		const asset = await getAssetById(id)
@@ -183,22 +174,8 @@ export const getAssetAjaxById = async(id: string) : Promise<Ajax<AssetResponse>>
 	return ajax
 }
 
-export const getAssetById = async (id: string) : Promise<AssetResponse> => {
-	return new Promise<AssetResponse>((res, rej) => {
-		setTimeout(() => {
-			const asset = ASSETS_LIST.find(x => x.id == id)
-
-			if (!asset) {
-				rej(new Error('Cannot find that asset'))
-				return
-			}
-
-			res({
-				asset: transformAsset(Object.assign({}, asset)),
-				creator: {name: 'fubar artist'}
-			})
-		}, 100)
-	})
+export const getAssetById = async (id: string) : Promise<Asset> => {
+	return await getAssetByField('id', id)
 }
 
 export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<AssetDownloadResponse> {
@@ -256,11 +233,8 @@ export const newAssetsAjax = () : Ajax<AssetsResponse> => {
 	})
 }
 
-export const newAssetAjax = () : Ajax<AssetResponse> => {
-	return newAjax<AssetResponse>({
-		asset: newAsset(),
-		creator: {name : ''}
-	})
+export const newAssetAjax = () : Ajax<Asset> => {
+	return newAjax<Asset>(newAsset())
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
@@ -281,9 +255,8 @@ export const saveAsset = async (id: string, data: AssetFormData) => {
 // For example if the server returns {creator: {id: '123', name: 'Jill'}...}
 // we might want our form data to have {creatorId: '123'}. The form doesn't care
 // about the name of the creator, just its id
-export const assetResponseToFormData = (resp: AssetResponse) : AssetFormData => {
-	console.log('', resp.asset)
-	return resp.asset
+export const assetToFormData = (asset: Asset) : AssetFormData => {
+	return Object.assign({}, asset)
 }
 
 export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {

@@ -22,7 +22,7 @@ import {Component, mixins} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import AdminPage from "~/admin/admin-page";
 import {Asset, AssetFormData} from "~/lib/assets/asset-types";
-import {assetFormDataToPayload, assetResponseToFormData, getAssetAjaxById, newAssetAjax} from "~/lib/assets/asset-api";
+import {assetFormDataToPayload, assetToFormData, getAssetAjaxById, newAssetAjax} from "~/lib/assets/asset-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import AssetFields from "~/modules/assets/components/AssetFields.vue";
 import FormMixin from "~/mixins/Forms.vue";
@@ -57,7 +57,7 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 			return null
 		}
 
-		return this.assetAjax.data.asset
+		return this.assetAjax.data
 	}
 
 	validateForm(): string {
@@ -76,7 +76,7 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 		const assetRes = await getAssetAjaxById(ctx.params.id)
 		let data = {}
 		if (assetRes.data) {
-			data = assetResponseToFormData(assetRes.data)
+			data = assetToFormData(assetRes.data)
 		}
 		return {
 			assetAjax: assetRes,
