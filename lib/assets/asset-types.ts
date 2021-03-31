@@ -18,7 +18,7 @@ export type Asset = AssetFields & {
 	creatorName: string
 	creatorID: string
 	slug: string
-	thumbnailSrc: string
+	thumbnail: string
 	visibility: AssetVisibility
 }
 

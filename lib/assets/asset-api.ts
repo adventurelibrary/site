@@ -219,7 +219,7 @@ export const newAsset = () : Asset => {
 		slug: '',
 		tagIDs: {},
 		tags: [],
-		thumbnailSrc: '',
+		thumbnail: '',
 		visibility: 'HIDDEN'
 	}
 }

@@ -1,10 +1,6 @@
 <template>
-	<li class="asset-card">		
-		<AssetLink :asset="asset" class="asset-thumb" :style="`background-image: url(${asset.thumbnailSrc});`"></AssetLink>
-		<!--
-		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
-		</div>
-		-->
+	<li class="asset-card">
+		<AssetLink :asset="asset" class="asset-thumb" :style="`background-image: url(${asset.thumbnail});`"></AssetLink>
 
 		<div class="meta">
 			<h3 class="title"><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>

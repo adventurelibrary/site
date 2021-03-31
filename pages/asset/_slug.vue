@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 
-		<img :src="asset.thumbnailSrc">
+		<img :src="asset.thumbnail" width="100%">
 
 		<div>
 			<h1>{{asset.name}}</h1>
