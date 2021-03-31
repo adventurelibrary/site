@@ -7,7 +7,7 @@ const FilterTypeMap : Record<string, FilterType> = {
 	'tag': 'tag',
 	'creator': 'creator',
 	'price': 'price',
-	'type': 'category'
+	'category': 'category'
 }
 
 export interface AssetSearchFilter {
@@ -20,7 +20,7 @@ export function assetCategoryToFilter(category: Category) : AssetSearchFilter {
 	return  {
 		type: 'category',
 		label: category.plural,
-		value: category.id
+		value: category.plural
 	}
 }
 export function tagToFilter(tag: AssetTag) : AssetSearchFilter {

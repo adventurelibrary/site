@@ -2,15 +2,16 @@ import {
 	Asset, AssetDownloadOptions, AssetDownloadResponse,
 	AssetFormData,
 	AssetPayload,
-	AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetUploadResponse, AssetVisibility
+	AssetsResponse, AssetUploadResponse, AssetVisibility, SortDirection
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
 import {getTagById, tagListToMap} from "~/lib/tags/tags-api";
+import {AssetSearchFilter} from "~/lib/assets/search-filters";
+import {SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = require('./assets-data.json')
@@ -21,13 +22,66 @@ const ASSETS_LIST = Object.keys(ASSETS).map((key) => {
 	return a.name > b.name ? 1 : -1
 })
 
+export function getSearchOptionsSortField (opts: AssetSearchOptions) : string {
+	return opts.sortField || SORT_FIELD_DEFAULT
+}
+
+export function getSearchOptionsSortDirection (opts: AssetSearchOptions) : SortDirection {
+	return opts.sortDirection || SORT_DIR_DEFAULT
+}
+
+// This function is used to create the object that our API expects to receive to search for assets
+export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record<string, string> => {
+	const search = (opts.query || '').toLowerCase().trim()
+	const filters = opts.filters
+	const tags : string[] = []
+	const categories : string[] = []
+
+	filters.forEach((filter: AssetSearchFilter) => {
+		if (filter.type === 'tag') {
+			tags.push(filter.value)
+			return
+		}
+		if (filter.type === 'category') {
+			categories.push(filter.value)
+			return
+		}
+	})
+	const query : Record<string, string> = {}
+	query.sort = getSearchOptionsSortField(opts)
+	query.sort_type = getSearchOptionsSortDirection(opts)
+	if (search && search.length) {
+		query.text = search
+	}
+	if (tags.length) {
+		query.tags = tags.join(',')
+	}
+	if (categories.length) {
+		query.category = categories.join(',')
+	}
+
+	let size = opts.size
+	let from = opts.from
+	if (size > 40 || isNaN(size) || size < 0) {
+		size = 40
+	}
+	if (isNaN(from) || from < 0) {
+		from = 0
+	}
+	query.size = size.toString()
+	query.from = from.toString()
+
+	return query
+}
+
 export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsResponse> => {
 	let assets : Asset[] = []
+	const apiQuery = assetSearchOptionsToAPIQuery(opts)
+	console.log('apiQuery', apiQuery)
 	const query = (opts.query || '').toLowerCase().trim()
 	const filters = opts.filters
 	let size = opts.size
 	let from = opts.from
-	console.log('search from', from)
 	if (size > 40) {
 		size = 40
 	}
