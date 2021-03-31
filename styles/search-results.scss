@@ -29,6 +29,9 @@
 		background-position: center;
 		pointer-events: none;
 	}
+	.thumbnail:hover {		
+		opacity: 0.8;	
+	}
 	.meta {
 		grid-area: meta;
 		padding: .1em 1.25em;
@@ -80,6 +83,14 @@
 				}
 			}
 		}
+	}
+	.meta:hover {		
+		background-color: gray;
+		.meta-full {display: inline;}
+		padding-bottom: 150px;
+	}
+	.meta-full {
+		display: none;
 	}
 	.asset-action {
 		position: absolute;

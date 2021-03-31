@@ -1,9 +1,30 @@
 <template>
-	<li class="asset-card">
-		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
-		</div>
+	<li class="asset-card">		
+		<AssetLink :asset="asset" :class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`"></AssetLink>
+
+
 		<div class="meta">
 			<h3 class="title"><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
+			<figure class="pricing">
+				<h4 class="coin-price">
+					<span class="amount"><!--{{asset.price}}-->$$</span>
+					<label class="currency">Coins</label>
+				</h4>
+			</figure>
+
+			<div class="meta-full">
+				<h4 class="author">
+					<label>by</label>
+					<span>
+						<!-- Should be a profile link -->
+						<a href="">{{asset.creatorName}}</a>
+					</span>
+				</h4>
+
+				<div>
+					{{asset.description}}
+				</div>
+			</div>
 			<!--div>
 				{{asset.description}}
 			</div-->
@@ -11,19 +32,8 @@
 				<Category :category-id="asset.categoryID" />
 				<TagList :tags="asset.tags" />
 			</div-->
-			<h4 class="author">
-				<label>by</label>
-				<span>
-					<!-- Should be a profile link -->
-					<a href="">{{asset.creatorName}}</a>
-				</span>
-			</h4>
-			<figure class="pricing">
-				<h4 class="coin-price">
-					<span class="amount"><!--{{asset.price}}-->$$</span>
-					<label class="currency">Coins</label>
-				</h4>
-			</figure>
+
+
 		</div>
 		<figure class="asset-action">
 			<AssetDownload :asset="asset" />
