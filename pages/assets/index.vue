@@ -41,7 +41,7 @@ import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/lib/assets/search-filters";
-import {commaAndJoin} from "~/lib/helpers";
+import {commaAndJoin, getElOffset} from "~/lib/helpers";
 
 @Component({
 	components: {
@@ -56,11 +56,39 @@ class AssetsIndexPage extends Vue {
 	skip = 0
 	perPage = 20
 	loadingMore = false
+	scrollTimeout : NodeJS.Timeout
 
 	head () {
 		return {
 			title: this.getPageTitle()
 		}
+	}
+
+	mounted () {
+		window.addEventListener('scroll', this.onScroll)
+	}
+
+	destroyed () {
+		window.removeEventListener('scroll', this.onScroll)
+	}
+
+	onScroll () {
+		clearTimeout(this.scrollTimeout)
+		this.scrollTimeout = setTimeout(async () => {
+			const pos = window.scrollY
+			const buffer = 100 // How many pixels from the bottom they need to scroll to
+			const results = this.$el.querySelector('.search-results')
+			if (!results) {
+				return
+			}
+			const offset = getElOffset(results)
+			const rect = results.getBoundingClientRect()
+			const cutoff = offset.top + rect.height - buffer - window.innerHeight
+
+			if (pos >= cutoff) {
+				await this.loadMore()
+			}
+		}, 50)
 	}
 
 	@Watch('$route')
@@ -87,8 +115,13 @@ class AssetsIndexPage extends Vue {
 		if (!this.assetsAjax.data || !this.assetsAjax.data.results) {
 			return
 		}
+		const newFrom = this.search.from + this.search.size
+		if (newFrom > this.assetsAjax.data.total) {
+			return
+		}
+
 		this.loadingMore = true
-		this.search.from += this.search.size
+		this.search.from = newFrom
 		try {
 			const res = await searchAssets(this.search)
 			let current = this.assetsAjax.data.results
