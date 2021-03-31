@@ -22,6 +22,10 @@
 	border-radius: .8em;
 	overflow: hidden;
 
+	.asset-thumb:hover {
+		opacity: 0.6;
+	}
+
 	.thumbnail {
 		grid-area: thumbnail;
 		background: #ccc;
@@ -30,8 +34,9 @@
 		pointer-events: none;
 	}
 	.thumbnail:hover {		
-		opacity: 0.8;	
+		opacity: 0.6;	
 	}
+	
 	.meta {
 		grid-area: meta;
 		padding: .1em 1.25em;

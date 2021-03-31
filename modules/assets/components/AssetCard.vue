@@ -1,6 +1,6 @@
 <template>
 	<li class="asset-card">		
-		<AssetLink :asset="asset" :style="`background-image: url(${asset.thumbnailSrc});`"></AssetLink>
+		<AssetLink :asset="asset" class="asset-thumb" :style="`background-image: url(${asset.thumbnailSrc});`"></AssetLink>
 		<!--
 		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
 		</div>
