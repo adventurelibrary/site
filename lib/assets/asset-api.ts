@@ -114,11 +114,7 @@ export const signActiveUpload = async (au : ActiveUpload) => {
 
 export const createAssetSignature = async (filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
 	const data = assetFormDataToPayload(fields)
-	const res = await api.post<AssetSignatureResponse>('assets/get_signature', {
-		fileName: filename,
-		userName: 'site',
-		assetData: data
-	})
+	const res = await api.post<AssetSignatureResponse>('assets/get_signature', data)
 	return res.data
 }
 
@@ -271,14 +267,15 @@ export const assetToFormData = (asset: Asset) : AssetFormData => {
 	return Object.assign({}, asset)
 }
 
-export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
-	const payload  : AssetPayload = {
-		asset: {}
-	}
-
-	payload.asset.name = data.name
-	payload.asset.description = data.description
-	payload.asset.categoryID = data.category
-	payload.asset.tagIDs = tagListToMap(data.tags)
+export const assetFormDataToPayload = (data: AssetFormData) : any => {
+	const payload : any = {}
+	payload.name = data.name
+	payload.description = data.description
+	payload.category = data.category
+	//payload.tagIDs = tagListToMap(data.tags)
+	payload.tags = []
+	payload.collectionID = new Date().getTime().toString()
+	payload.unlockPrice = 0
+	payload.revenueShare = {}
 	return payload
 }

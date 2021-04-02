@@ -50,7 +50,7 @@ export default class TagsInput extends Vue {
 	}
 
 	get excluded () : string[] {
-		if (!this.tagsLocal) {
+		if (!this.tagsLocal || !this.tagsLocal.map) {
 			return []
 		}
 		return this.tagsLocal.map((t : AssetTag) => {

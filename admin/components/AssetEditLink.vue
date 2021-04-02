@@ -11,7 +11,6 @@ class AssetEditLink extends Vue {
 	@Prop() asset : Asset
 
 	get id () : string {
-		return 'KjQB1Q8IWmpKvoGe9XXhtF8Ks9uagzqO'
 		return this.asset.id
 	}
 }

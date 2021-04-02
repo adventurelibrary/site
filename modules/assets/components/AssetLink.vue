@@ -12,7 +12,6 @@ class AssetLink extends Vue {
 
 	get slug () : string {
 		let id = this.asset.id
-		id = 'KjQB1Q8IWmpKvoGe9XXhtF8Ks9uagzqO'
 		return this.asset.slug + '-' + id
 	}
 }
