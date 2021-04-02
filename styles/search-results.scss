@@ -13,7 +13,7 @@
 	position: relative;
 	display: grid;
 	justify-content: normal;
-	grid-template-rows: 1fr 6.25em;
+	grid-template-rows: 3fr 1fr;
 	grid-template-areas:
 		"thumbnail"
 		"meta";
@@ -22,28 +22,30 @@
 	border-radius: .8em;
 	overflow: hidden;
 
-	.asset-thumb:hover {
-		opacity: 0.6;
+/*	&:hover {
+		grid-template-rows: 1fr 2fr;
 	}
-
-	.thumbnail {
+*/
+	.link {
 		grid-area: thumbnail;
+	}
+	.thumbnail {
+		grid-column: thumbnail-start / thumbnail-end;
+		grid-row: thumbnail-start / -1;
 		background: #ccc;
+		background-image: var(--asset-thumbnail);
 		background-size: cover;
 		background-position: center;
 		pointer-events: none;
 	}
-	.thumbnail:hover {		
-		opacity: 0.6;	
-	}
-	
 	.meta {
 		grid-area: meta;
+		background-color: #333;
 		padding: .1em 1.25em;
 		display: grid;
 		align-items: center;
-		align-self: center;
-		row-gap: .5em;
+		align-content: center;
+		//row-gap: .5em;
 		grid-template-rows: 1fr 1fr;
 		grid-template-columns: auto auto;
 		grid-template-areas: 
@@ -88,14 +90,12 @@
 				}
 			}
 		}
-	}
-	.meta:hover {		
-		background-color: gray;
-		.meta-full {display: inline;}
-		padding-bottom: 150px;
-	}
-	.meta-full {
-		display: none;
+		.description {
+			display: none;
+		}
+		.search-meta {
+			display: none;
+		}
 	}
 	.asset-action {
 		position: absolute;

@@ -1,30 +1,35 @@
 <template>
 	<li class="asset-card">
-		<AssetLink :asset="asset" class="asset-thumb" :style="`background-image: url(${asset.thumbnail});`"></AssetLink>
-
+		<AssetLink :asset="asset" class="link">
+			<!-- This Element Intentionally Left Empty -->
+		</AssetLink>
+		<div class="thumbnail" :style="`--asset-thumbnail: url(${asset.thumbnail});`">
+			<!-- This Element Intentionally Left Empty -->
+		</div>
 		<div class="meta">
-			<h3 class="title"><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
+			<h3 class="title">
+				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
+			</h3>
+			<h4 class="author">
+				<label>by</label>
+				<span>
+					<!-- Should be a profile link -->
+					<a href="">{{asset.creatorName}}</a>
+				</span>
+			</h4>
 			<figure class="pricing">
 				<h4 class="coin-price">
 					<span class="amount"><!--{{asset.price}}-->$$</span>
 					<label class="currency">Coins</label>
 				</h4>
 			</figure>
-
-			<div class="meta-full">
-				<h4 class="author">
-					<label>by</label>
-					<span>
-						<!-- Should be a profile link -->
-						<a href="">{{asset.creatorName}}</a>
-					</span>
-				</h4>
-
-				<div>
-					{{asset.description}}
-				</div>
+			<div class="description">
+				{{asset.description}}
 			</div>
-
+			<div class="search-meta">
+				<Category :category-id="asset.categoryID" />
+				<TagList :tags="asset.tags" />
+			</div>
 		</div>
 		<figure class="asset-action">
 			<AssetDownload :asset="asset" />
