@@ -4,7 +4,7 @@ import {
 	AssetPayload,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
+	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
@@ -78,7 +78,8 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 }
 
 export async function queryAssets (opts: Record<string, string>) : Promise<AssetsResponse> {
-	const res = await api.get('/assets?' + objectToQueryString(opts))
+	const res = await api.get<AssetsResponse>('/assets?' + objectToQueryString(opts))
+	res.data.assets = res.data.assets.map(transformAsset)
 	return res.data
 }
 
@@ -95,13 +96,19 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 
 // This function is used to cleanup any data that the server gives us
 export function transformAsset (asset: Asset) : Asset {
-	asset.tags = []
-	Object.keys(asset.tagIDs).forEach((tagId:string) => {
-		const tag = getTagById(tagId)
-		if (tag) {
-			asset.tags.push(tag)
-		}
-	})
+	console.log('tags before', asset.tags)
+	const newTags : AssetTag[] = []
+	if (Array.isArray(asset.tags)) {
+		asset.tags.forEach((t) => {
+			const tag = getTagById(t)
+			if (tag) {
+				newTags.push(tag)
+			}
+		})
+	}
+
+	asset.tagObjects = newTags
+
 	return asset
 }
 
@@ -176,17 +183,15 @@ export const getAssetAjaxById = async(id: string) : Promise<Ajax<Asset>> => {
 }
 
 export const getAssetById = async (id: string) : Promise<Asset> => {
-	return await getAssetByField('id', id)
+	const res = await getAssetByField('id', id)
+	const asset = transformAsset(res)
+	return asset
 }
 
-export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<AssetDownloadResponse> {
-	return new Promise<AssetDownloadResponse>((res) => {
-		setTimeout(() => {
-			res({
-				url: `https://assetlibrary.art/download/${id}?file=${options.file}`
-			})
-		}, 250)
-	})
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<string> {
+	const res = await api.get<AssetDownloadResponse>(`/assets/download?id=${id}&type=original`)
+	return res.data.url
 }
 
 export async function getAssets() : Promise<AssetsResponse> {
@@ -219,8 +224,8 @@ export const newAsset = () : Asset => {
 		description: '',
 		name: '',
 		slug: '',
-		tagIDs: {},
 		tags: [],
+		tagObjects: [],
 		thumbnail: '',
 		visibility: 'HIDDEN'
 	}
@@ -239,23 +244,15 @@ export const newAssetAjax = () : Ajax<Asset> => {
 	return newAjax<Asset>(newAsset())
 }
 
-export async function updateAssets (updates : AssetUpdate[]) {
-	return await api.post('/assets', {
-		assets: updates
-	})
+export async function updateAssets (data: any) {
+	return await api.post('/asset', data)
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
 	console.log(id, data)
-	return new Promise((res, rej) => {
-		setTimeout(() => {
-			if (Math.random() < 0.5) {
-				rej(new Error('Random error from the server'))
-				return
-			}
-			res(null)
-		}, 250)
-	})
+	const pl = assetFormDataToPayload(data)
+	pl.id = id
+	return await api.put('/assets/update', pl)
 }
 
 // This function is used to take what the server gives us for an asset,
@@ -273,7 +270,9 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	payload.description = data.description
 	payload.category = data.category
 	//payload.tagIDs = tagListToMap(data.tags)
-	payload.tags = []
+	payload.tags = data.tagObjects.map((t) => {
+		return t.label
+	})
 	payload.collectionID = new Date().getTime().toString()
 	payload.unlockPrice = 0
 	payload.revenueShare = {}

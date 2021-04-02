@@ -7,7 +7,7 @@
 		/>
 		<FormGroup label="Tags">
 			<TagsInput
-					v-model="copy.tags"
+					v-model="copy.tagObjects"
 				/>
 		</FormGroup>
 		<Textarea

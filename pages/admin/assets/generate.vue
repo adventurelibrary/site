@@ -63,14 +63,6 @@ for (let i = 0; i <= 100; i++) {
 
 	const creator = random(CREATORS)
 
-	const tagIDs : Record<string, number> = {}
-
-	let numTags = getRandomInt(1, 6)
-	for (let i = 1; i <= numTags; i++) {
-		const tag = random(ASSET_TAGS)
-		tagIDs[tag.id] = getRandomInt(1,5)
-	}
-
 	assets.push({
 		id: id,
 		name: name,
@@ -80,7 +72,7 @@ for (let i = 0; i <= 100; i++) {
 		category: random(CATEGORIES).id,
 		creatorName: creator.name,
 		creatorID: creator.id,
-		tagIDs: tagIDs,
+		tagObjects: [],
 		tags: [],
 		visibility: random(visis)
 	})

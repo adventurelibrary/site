@@ -41,8 +41,8 @@ export default class AssetDownload extends Vue {
 	async download (e: Event) {
 		e.preventDefault()
 		try {
-			const res = await getAssetDownloadLink(this.asset.id, this.getDownloadOptions())
-			window.open(res.url, '_blank')
+			const url = await getAssetDownloadLink(this.asset.id, this.getDownloadOptions())
+			window.open(url, '_blank')
 		} catch (ex) {
 			this.notifyError('Error downloading asset: ' + ex.toString())
 		}

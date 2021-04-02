@@ -3,7 +3,7 @@
 		<AssetLink :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
-		<div class="thumbnail" :style="`--asset-thumbnail: url(${asset.thumbnail});`">
+		<div class="thumbnail" :style="`background-image: url(${asset.thumbnail});`">
 			<!-- This Element Intentionally Left Empty -->
 		</div>
 		<div class="meta">

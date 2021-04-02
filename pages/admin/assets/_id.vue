@@ -22,7 +22,13 @@ import {Component, mixins} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import AdminPage from "~/admin/admin-page";
 import {Asset, AssetFormData} from "~/lib/assets/asset-types";
-import {assetFormDataToPayload, assetToFormData, getAssetAjaxById, newAssetAjax} from "~/lib/assets/asset-api";
+import {
+	assetFormDataToPayload,
+	assetToFormData,
+	getAssetAjaxById,
+	newAssetAjax,
+	saveAsset
+} from "~/lib/assets/asset-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import AssetFields from "~/modules/assets/components/AssetFields.vue";
 import FormMixin from "~/mixins/Forms.vue";
@@ -37,6 +43,7 @@ import FormMixin from "~/mixins/Forms.vue";
 export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 	public assetAjax = newAssetAjax()
 	public data : AssetFormData
+	public id : string
 
 	head () {
 		const asset = this.asset
@@ -68,8 +75,7 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
   }
 
   async formAction () {
-		const data = assetFormDataToPayload(this.data)
-		console.log('do some saving of this data', data)
+		await saveAsset(this.id, this.data)
 	}
 
 	async asyncData (ctx: Context) {
@@ -80,7 +86,8 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 		}
 		return {
 			assetAjax: assetRes,
-			data: data
+			data: data,
+			id: ctx.params.id
 		}
 	}
 

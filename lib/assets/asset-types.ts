@@ -8,8 +8,8 @@ export type AssetFields = {
 	category: string
 	description: string
 	name: string
-	tagIDs: Record<string, number>
-	tags: AssetTag[]
+	tags: string[]
+	tagObjects: AssetTag[]
 }
 
 // This is an asset that the server gives us

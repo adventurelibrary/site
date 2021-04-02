@@ -20,7 +20,7 @@ export function assetCategoryToFilter(category: Category) : AssetSearchFilter {
 	return  {
 		type: 'category',
 		label: category.plural,
-		value: category.plural
+		value: category.id
 	}
 }
 export function tagToFilter(tag: AssetTag) : AssetSearchFilter {

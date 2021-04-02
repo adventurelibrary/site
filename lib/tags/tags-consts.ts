@@ -7,7 +7,7 @@ export const ASSET_TAGS : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,Ar
 .map((label: string) => {
 	return {
 		label: label,
-		id: (label.toLocaleLowerCase()),
+		id: label,
 	}
 })
 
