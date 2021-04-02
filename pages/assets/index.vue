@@ -112,7 +112,7 @@ class AssetsIndexPage extends Vue {
 	}
 
 	async loadMore ()  {
-		if (!this.assetsAjax.data || !this.assetsAjax.data.results) {
+		if (!this.assetsAjax.data || !this.assetsAjax.data.assets) {
 			return
 		}
 		const newFrom = this.search.from + this.search.size
@@ -124,11 +124,11 @@ class AssetsIndexPage extends Vue {
 		this.search.from = newFrom
 		try {
 			const res = await searchAssets(this.search)
-			let current = this.assetsAjax.data.results
+			let current = this.assetsAjax.data.assets
 			if (!current) {
 				current = []
 			}
-			const newResults = current.concat(res.results)
+			const newResults = current.concat(res.assets)
 			if (this.assetsAjax.data) {
 				Vue.set(this.assetsAjax.data, 'results', newResults)
 			} else {
@@ -151,11 +151,11 @@ class AssetsIndexPage extends Vue {
 	}
 
 	get assets () : any[] {
-		return computeAjaxList(this.assetsAjax)
+		return computeAjaxList(this.assetsAjax, 'assets')
 	}
 
 	get totalAssets () : number {
-		return computeAjaxTotal(this.assetsAjax.data)
+		return computeAjaxTotal(this.assetsAjax)
 	}
 
 	getPageTitle () {

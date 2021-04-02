@@ -43,23 +43,27 @@ export const doAjax = async <T>(obj: Ajax<T>, fn: () => Promise<T>, skipLoading 
 // This helper is used in components to create an easy-to-use array variable for the template
 // This is so you can do <strong>There are {{items.length}} items</strong>
 // if items is coming from an ajax request that might be loading or have errors
-export const computeAjaxList = (ajax: any) : any[] => {
+export const computeAjaxList = (ajax: any, field = 'results') : any[] => {
 	if (ajax.loading || ajax.error) {
 		return []
 	}
-	if (!ajax.data || !ajax.data.results) {
+	if (!ajax.data || !ajax.data[field]) {
 		return []
 	}
-	return ajax.data.results
+	return ajax.data[field]
+}
+
+interface hasDataWithTotal {
+	data?: hasTotal
 }
 
 interface hasTotal  {
 	total: number
 }
 
-export function computeAjaxTotal (ajax : undefined | hasTotal) : number {
-	if (!ajax) {
+export function computeAjaxTotal (ajax : undefined | hasDataWithTotal) : number {
+	if (!ajax || !ajax.data) {
 		return 0
 	}
-	return ajax.total || 0
+	return ajax.data.total || 0
 }

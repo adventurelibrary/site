@@ -5,7 +5,7 @@ export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
 // These fields exist on assets that are in our db AND in assets
 // that the user is about to upload
 export type AssetFields = {
-	categoryID: string
+	category: string
 	description: string
 	name: string
 	tagIDs: Record<string, number>
@@ -52,6 +52,10 @@ export type AssetResponse = {
 	creator: Creator
 }
 
+export interface AssetUpdate {
+	id: string
+}
+
 export type SortDirection = 'asc' | 'desc'
 
 export type AssetSearchOptions = {
@@ -64,7 +68,7 @@ export type AssetSearchOptions = {
 }
 
 export type AssetsResponse = {
-	results: Asset[],
+	assets: Asset[],
 	total: number,
 }
 

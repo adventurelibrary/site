@@ -4,14 +4,15 @@ import {
 	AssetPayload,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetUploadResponse, AssetVisibility, SortDirection
+	AssetsResponse, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
 } from "./asset-types";
 import {Ajax, newAjax} from "../ajax";
 import {ActiveUpload} from "~/lib/assets/asset-uploads";
 import api from "~/lib/api"
 import {getTagById, tagListToMap} from "~/lib/tags/tags-api";
 import {AssetSearchFilter} from "~/lib/assets/search-filters";
-import {SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
+import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
+import {objectToQueryString} from "~/lib/helpers";
 
 // These are here so we don't have to have a server
 const ASSETS : Record<string, Asset> = require('./assets-data.json')
@@ -48,8 +49,10 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 		}
 	})
 	const query : Record<string, string> = {}
+
 	query.sort = getSearchOptionsSortField(opts)
 	query.sort_type = getSearchOptionsSortDirection(opts)
+
 	if (search && search.length) {
 		query.text = search
 	}
@@ -74,65 +77,20 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	return query
 }
 
-export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsResponse> => {
-	let assets : Asset[] = []
+export async function queryAssets (opts: Record<string, string>) : Promise<AssetsResponse> {
+	const res = await api.get('/assets?' + objectToQueryString(opts))
+	return res.data
+}
+
+export async function searchAdminAssets (opts: AssetSearchOptions) : Promise<AssetsResponse> {
 	const apiQuery = assetSearchOptionsToAPIQuery(opts)
-	console.log('apiQuery', apiQuery)
-	const query = (opts.query || '').toLowerCase().trim()
-	const filters = opts.filters
-	let size = opts.size
-	let from = opts.from
-	if (size > 40) {
-		size = 40
-	}
+	apiQuery.visibility = 'all'
+	return await queryAssets(apiQuery)
+}
 
-	if (!query.length && !filters.length) {
-		assets = ASSETS_LIST
-	} else {
-		// Go through all the hardcoded assets and perform some searching on them
-		// Each filter has a type, for what kind of filter it is
-		// This search does only a huge OR search. If ANY filter matches, the asset
-		// is returned
-		Object.values(ASSETS).forEach((asset: Asset) => {
-			let found = false
-			if (query.length && asset.name.toLowerCase().indexOf(query) >= 0) {
-				found = true
-			}
-			for (let i = 0; i < filters.length; i++) {
-				const filter = filters[i]
-				if (filter.type == 'category') {
-					if (filter.value === asset.categoryID) {
-						found = true
-						break
-					}
-				}
-				if (filter.type == 'tag') {
-					for (let j = 0; j < asset.tags.length; j++) {
-						const tag = asset.tags[j]
-						if (tag.id === filter.value) {
-							found = true
-							break
-						}
-					}
-				}
-			}
-
-			if (found) {
-				assets.push(asset)
-			}
-		})
-	}
-
-	const results = assets.slice(from, size+from).map(transformAsset)
-
-	return new Promise<AssetsResponse>((res) => {
-		setTimeout(() => {
-			res({
-				total: assets.length,
-				results: results
-			})
-		}, 500)
-	})
+export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsResponse> => {
+	const apiQuery = assetSearchOptionsToAPIQuery(opts)
+	return await queryAssets(apiQuery)
 }
 
 // This function is used to cleanup any data that the server gives us
@@ -181,14 +139,7 @@ export const uploadAsset = async (file : File, signature: string, params: any) :
 }
 
 export const getFeaturedAssets = async () : Promise<AssetsResponse> => {
-	return new Promise<AssetsResponse>((res) => {
-		setTimeout(() => {
-			res({
-				total: Object.keys(ASSETS).length,
-				results: ASSETS_LIST.slice(0, 10).map(transformAsset)
-			})
-		}, 220)
-	})
+	return searchAssets(newSearchOptions())
 }
 
 export async function getAssetByField(field: string, value: string) : Promise<Asset> {
@@ -246,7 +197,7 @@ export async function getAssets() : Promise<AssetsResponse> {
 	return new Promise<AssetsResponse>((res) => {
 		setTimeout(() => {
 			res({
-				results: ASSETS_LIST,
+				assets: ASSETS_LIST,
 				total: ASSETS_LIST.length
 			})
 		}, 200)
@@ -254,18 +205,19 @@ export async function getAssets() : Promise<AssetsResponse> {
 }
 
 export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
-	console.log(ids, vis)
-	return new Promise((res) => {
-		setTimeout(() => {
-			res('hi')
-		}, 250)
+	const updates : AssetUpdate[] = ids.map((id) => {
+		return {
+			id: id,
+			visibility: vis
+		}
 	})
+	return await updateAssets(updates)
 }
 
 export const newAsset = () : Asset => {
 	return {
 		id: '',
-		categoryID: '',
+		category: '',
 		creatorID: '',
 		creatorName: '',
 		description: '',
@@ -282,13 +234,19 @@ export const newAsset = () : Asset => {
 // The Ajax component adds functionality for 'loading' and 'error'
 export const newAssetsAjax = () : Ajax<AssetsResponse> => {
 	return newAjax<AssetsResponse>({
-		results: [],
+		assets: [],
 		total: 0
 	})
 }
 
 export const newAssetAjax = () : Ajax<Asset> => {
 	return newAjax<Asset>(newAsset())
+}
+
+export async function updateAssets (updates : AssetUpdate[]) {
+	return await api.post('/assets', {
+		assets: updates
+	})
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
@@ -320,7 +278,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : AssetPayload => {
 
 	payload.asset.name = data.name
 	payload.asset.description = data.description
-	payload.asset.categoryID = data.categoryID
+	payload.asset.categoryID = data.category
 	payload.asset.tagIDs = tagListToMap(data.tags)
 	return payload
 }

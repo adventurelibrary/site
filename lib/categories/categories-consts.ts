@@ -2,17 +2,21 @@ import {Category} from "~/lib/categories/categories-types";
 import {SelectOption} from "~/lib/helpers";
 
 export const CATEGORIES : Category[] = [{
-	id: '605c5274fd919766fb2c58d2',
+	id: 'map',
 	singular: 'Map',
 	plural: 'Maps'
 }, {
-	id: '605c56ce4a85250a96d4fd7d',
+	id: 'token',
 	singular: 'Token',
 	plural: 'Tokens'
 }, {
-	id: '605c528209240a031ccc6f4d',
-	singular: 'Portrait',
-	plural: 'Portraits'
+	id: 'scene',
+	singular: 'Scene',
+	plural: 'Scenes'
+}, {
+	id: 'character',
+	singular: 'Character',
+	plural: 'Characters'
 }]
 
 export const CategoryOptionsPlural : SelectOption[] = CATEGORIES.map((type: Category) : SelectOption => {

@@ -24,14 +24,6 @@
 					{{asset.description}}
 				</div>
 			</div>
-			<!--div>
-				{{asset.description}}
-			</div-->
-			<!--div>
-				<Category :category-id="asset.categoryID" />
-				<TagList :tags="asset.tags" />
-			</div-->
-
 
 		</div>
 		<figure class="asset-action">
@@ -44,7 +36,7 @@ import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
 import {Asset} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getCategoryById} from "~/lib/categories/categories-api";
+import {getCategory} from "~/lib/categories/categories-api";
 import Category from "~/modules/categories/components/Category.vue";
 import TagList from "~/modules/tags/TagList.vue";
 import {Category as CategoryType} from "~/lib/categories/categories-types"
@@ -67,7 +59,7 @@ class AssetCard extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		this.category = getCategoryById(this.asset.categoryID)
+		this.category = getCategory(this.asset.category)
 	}
 }
 export default AssetCard

@@ -9,6 +9,14 @@ export const sleep = (ms : number = 500) => {
 	return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+export function objectToQueryString (obj : Record<string, any>) {
+	var str = [];
+	for (var p in obj) {
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+	}
+	return str.join("&");
+}
+
 export function keyBoolToArray (checked : Record<string, boolean>) : string[] {
 	if (!checked) {
 		return []
@@ -62,7 +70,7 @@ export function stringToFakeId (str: string) : string {
 	return str.repeat(2).toLowerCase().split(/\s/).join('')
 }
 
-export function filenameGuessCategoryId(filename: string) : string {
+export function filenameGuessCategory(filename: string) : string {
 	const lower = filename.toLowerCase()
 	for(let i = 0; i < CATEGORIES.length; i++) {
 		const at = CATEGORIES[i]

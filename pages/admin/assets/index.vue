@@ -28,7 +28,7 @@
 					</template>
 					<template #categoryName="{item}">
 						<td>
-							<Category :category-id="item.categoryID" />
+							<Category :category="item.category" />
 						</td>
 					</template>
 					<template #tags="{item}">
@@ -46,7 +46,7 @@
 import Vue from "vue";
 import {Component, Watch} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
-import {newAssetsAjax, searchAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
+import {newAssetsAjax, searchAdminAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Asset, AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
@@ -73,10 +73,11 @@ export default class AssetsIndex extends AdminPage {
 	async asyncData (ctx: Context) {
 		const search = getRouteAssetSearchOptions(ctx.route)
 		const fn = async () => {
-			return await searchAssets(search)
+			return await searchAdminAssets(search)
 		}
 		const assetsAjax = newAssetsAjax()
 		await doAjax<AssetsResponse>(assetsAjax, fn)
+		console.log('ajax data', assetsAjax.data)
 		return {
 			assetsAjax,
 			search
@@ -88,11 +89,10 @@ export default class AssetsIndex extends AdminPage {
 		const search = getRouteAssetSearchOptions(newRoute)
 		this.search = search
 		const fn = async () => {
-			return await searchAssets(search)
+			return await searchAdminAssets(search)
 		}
 		await doAjax<AssetsResponse>(this.assetsAjax, fn)
 	}
-
 
 	// This is just some testing and demonstration, it will be removed later
 	mounted () {
@@ -125,11 +125,15 @@ export default class AssetsIndex extends AdminPage {
 	}
 
 	get assets () : any[] {
-		return computeAjaxList(this.assetsAjax)
+		const list = computeAjaxList(this.assetsAjax, 'assets')
+		console.log('list', list)
+		return list
 	}
 
 	get totalAssets () : number {
-		return computeAjaxTotal(this.assetsAjax.data)
+		const total = computeAjaxTotal(this.assetsAjax)
+		console.log('total', total)
+		return total
 	}
 
 	get numSelected () : number {

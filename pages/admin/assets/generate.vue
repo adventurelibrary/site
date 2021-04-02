@@ -77,7 +77,7 @@ for (let i = 0; i <= 100; i++) {
 		description: description,
 		slug: slug,
 		thumbnail: random(thumbnails),
-		categoryID: random(CATEGORIES).id,
+		category: random(CATEGORIES).id,
 		creatorName: creator.name,
 		creatorID: creator.id,
 		tagIDs: tagIDs,

@@ -36,7 +36,7 @@ import {NewAsset} from "~/lib/assets/asset-types";
 import {fieldNames} from "./AssetFields.vue";
 import ActiveUploadComponent from "./ActiveUpload.vue";
 import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-uploads";
-import {filenameGuessCategoryId, filenameToTitle, sleep} from "~/lib/helpers";
+import {filenameGuessCategory, filenameToTitle, sleep} from "~/lib/helpers";
 import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
 import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
 
@@ -120,7 +120,7 @@ export default Vue.extend({
 					tags: [],
 					description: '',
 					name: name,
-					categoryID: filenameGuessCategoryId(file.name),
+					category: filenameGuessCategory(file.name),
 				},
 				file: file,
 			})

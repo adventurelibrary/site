@@ -35,7 +35,7 @@ class HomePage extends Vue {
 		const assetsRes = await getFeaturedAssets()
 		return {
 			numFeatured: assetsRes.total,
-			featured: assetsRes.results
+			featured: assetsRes.assets
 		}
 	}
 
