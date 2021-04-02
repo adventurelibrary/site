@@ -36,7 +36,7 @@
 			</button>
 		</figure>
 		<select v-model="sortField" class="filter-select sort-select">
-			<option :value="'title'">Title</option>
+			<option :value="'name'">Name</option>
 			<option :value="'date'">Date</option>
 		</select>
 

@@ -17,8 +17,8 @@
 		/>
 		<CategorySelect
 				label="Type"
-				:value="copy.categoryID"
-				v-on:input="(val) => fieldChanged('categoryID', val)"
+				:value="copy.category"
+				v-on:input="(val) => fieldChanged('category', val)"
 		/>
 		<Select
 				:label="copy.visibility"
@@ -40,7 +40,7 @@ import Select from "~/components/forms/Select.vue";
 import {VisibilityOptions} from "~/lib/assets/asset-consts";
 import {SelectOption} from "~/lib/helpers";
 
-export const fieldNames = ['title', 'description', 'type']
+export const fieldNames = ['name', 'description', 'type']
 
 export default Vue.extend({
 	props: {

@@ -27,7 +27,7 @@
 				{{asset.description}}
 			</div>
 			<div class="search-meta">
-				<Category :category-id="asset.categoryID" />
+				<Category :category="asset.category" />
 				<TagList :tags="asset.tags" />
 			</div>
 		</div>
