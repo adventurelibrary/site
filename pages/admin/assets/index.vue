@@ -5,6 +5,9 @@
 		</CCardHeader>
 		<CCardBody>
 			<LoadingContainer :loading="assetsAjax.loading" :error="assetsAjax.error">
+				<button type="button" @click="syncAssets">
+					Sync All Assets
+				</button>
 				<Pagination :to="{name: 'admin-assets'}" :items-per-page="search.size" :total-items="totalAssets" />
 				<div>
 					{{numSelected}} Asset(s) Selected
@@ -46,7 +49,7 @@
 import Vue from "vue";
 import {Component, Watch} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
-import {newAssetsAjax, searchAdminAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
+import {newAssetsAjax, searchAdminAssets, syncAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Asset, AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
@@ -107,6 +110,15 @@ export default class AssetsIndex extends AdminPage {
 		Vue.set(this.selectedAssets, item.id, !val)
 	}
 
+	async syncAssets () {
+		try {
+			await syncAssets()
+			this.notifySuccess('Synced assets')
+		} catch (ex) {
+			this.notifyError(ex.toString())
+		}
+	}
+
 	async publishSelected () {
 		this.notifySuccess('publish #' + this.selectedAssetIds.length)
 		try {
@@ -126,13 +138,11 @@ export default class AssetsIndex extends AdminPage {
 
 	get assets () : any[] {
 		const list = computeAjaxList(this.assetsAjax, 'assets')
-		console.log('list', list)
 		return list
 	}
 
 	get totalAssets () : number {
 		const total = computeAjaxTotal(this.assetsAjax)
-		console.log('total', total)
 		return total
 	}
 

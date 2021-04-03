@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "dev-admin": "env ADMIN=1 nuxt",
+    "dev-admin-local": "env ADMIN=1 ADVL_BASE_URL=http://localhost:4300 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

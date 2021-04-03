@@ -1,15 +1,27 @@
 <template>
 	<span class="tag-list">
-		<span class="tag" v-for="tag in tags" :key="tag.key">{{tag.label}}</span>
+		<span class="tag" v-for="tag in tagObjs" :key="tag.key">{{tag.label}}</span>
 	</span>
 </template>
 <script lang="ts">
 import {Component, Vue, Prop} from "nuxt-property-decorator";
 import {AssetTag} from "~/lib/assets/asset-types";
+import {getTagById} from "~/lib/tags/tags-api";
 
 @Component
 export default class TagList extends Vue {
-	@Prop() tags : AssetTag[]
+	@Prop() tags : string[]
+
+	get tagObjs () : AssetTag[] {
+		const atags : AssetTag[] = []
+		this.tags.forEach((id: string) => {
+			const tag = getTagById(id)
+			if (tag) {
+				atags.push(tag)
+			}
+		})
+		return atags
+	}
 }
 </script>
 <style>

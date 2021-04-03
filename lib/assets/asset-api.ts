@@ -205,6 +205,10 @@ export async function getAssets() : Promise<AssetsResponse> {
 	})
 }
 
+export async function syncAssets () {
+	return await api.post('/assets/sync')
+}
+
 export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
 	const updates : AssetUpdate[] = ids.map((id) => {
 		return {
@@ -212,7 +216,7 @@ export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibili
 			visibility: vis
 		}
 	})
-	return await updateAssets(updates)
+	return await saveAssets(updates)
 }
 
 export const newAsset = () : Asset => {
@@ -244,15 +248,14 @@ export const newAssetAjax = () : Ajax<Asset> => {
 	return newAjax<Asset>(newAsset())
 }
 
-export async function updateAssets (data: any) {
-	return await api.post('/asset', data)
+export const saveAssets = async (payloads: AssetUpdate[]) => {
+	return await api.put('/assets/update', payloads)
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
-	console.log(id, data)
 	const pl = assetFormDataToPayload(data)
 	pl.id = id
-	return await api.put('/assets/update', pl)
+	return saveAssets([pl])
 }
 
 // This function is used to take what the server gives us for an asset,

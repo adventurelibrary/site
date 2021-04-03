@@ -19,6 +19,10 @@
 		</div>
 
 		<div>
+			<TagList :tags="asset.tags" />
+		</div>
+
+		<div>
 			Similar assets
 			[links : use code from front page within particular search terms]
 		</div>
@@ -33,10 +37,12 @@ import {Asset} from "~/lib/assets/asset-types";
 import { getAssetAjax} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
+import TagList from "~/modules/tags/TagList.vue";
 
 @Component({
 	components: {
-		AssetDownload: AssetDownload
+		AssetDownload: AssetDownload,
+		TagList: TagList
 	}
 })
 class AssetPage extends Vue {
