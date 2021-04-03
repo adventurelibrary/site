@@ -130,7 +130,7 @@ class AssetsIndexPage extends Vue {
 			}
 			const newResults = current.concat(res.assets)
 			if (this.assetsAjax.data) {
-				Vue.set(this.assetsAjax.data, 'results', newResults)
+				Vue.set(this.assetsAjax.data, 'assets', newResults)
 			} else {
 				throw new Error('Cannot set new results on empty data')
 			}
