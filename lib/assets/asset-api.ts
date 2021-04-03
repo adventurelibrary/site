@@ -96,7 +96,6 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 
 // This function is used to cleanup any data that the server gives us
 export function transformAsset (asset: Asset) : Asset {
-	console.log('tags before', asset.tags)
 	const newTags : AssetTag[] = []
 	if (Array.isArray(asset.tags)) {
 		asset.tags.forEach((t) => {
