@@ -12,6 +12,6 @@ api.interceptors.response.use((response) => {
 	if (err.response && err.response.body && err.response.data && err.response.data.error) {
 		return Promise.reject(err.response.data.error)
 	}
-	return Promise.reject('Err with request')
+	return Promise.reject('Err with request' + err.toString())
 })
 export default api
