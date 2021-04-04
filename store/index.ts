@@ -1,10 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {User} from "~/lib/users/user-types";
 Vue.use(Vuex)
 
 type State = {
 	toasts: Toast[],
 	breadcrumbs: any[],
+	user: User | null
+	login: {
+		working: boolean,
+		error: string
+	}
+	modals: {
+		login: boolean
+	}
 }
 
 type ToastType = 'success' | 'danger' | 'info'
@@ -21,10 +30,29 @@ type ActionParams = {
 	dispatch: any
 }
 
+export type LoginParams = {
+	username: string,
+	password: string
+}
+
+
+let toastCount = 0
+function newToastId () : number {
+	return new Date().getTime() + ++toastCount
+}
+
 export const state = () : State => {
 	return {
 		breadcrumbs: [],
 		toasts: [],
+		user: null,
+		login: {
+			working: false,
+			error: ''
+		},
+		modals: {
+			login: false
+		}
 	}
 }
 
@@ -76,12 +104,22 @@ export const mutations = {
 		state.toasts = state.toasts.filter((t => {
 			return t.id != id
 		}))
+	},
+	user (state: State, pl: User | null) {
+		state.user = pl
+	},
+	'login.working' (state: State, working: boolean) {
+		state.login.working = working
+	},
+	'login.error' (state: State, error: string) {
+		state.login.error = error
+	},
+	modal (state: State, update: {
+		key: 'login',
+		value: boolean
+	}) {
+		state.modals[update.key] = update.value
 	}
-}
-
-let toastCount = 0
-function newToastId () : number {
-	return new Date().getTime() + ++toastCount
 }
 
 export const actions = {
@@ -111,4 +149,43 @@ export const actions = {
 	closeModal ({commit}: ActionParams) {
 		commit('closeModal')
 	},
+	logout ({commit}: ActionParams) {
+		commit('user', null)
+	},
+	login ({commit} : ActionParams, {username, password} : LoginParams) {
+		console.log(username, password)
+		commit('login.working', true)
+		setTimeout(() => {
+			commit('user', {
+				id: new Date().getTime().toString(),
+				username: 'Mrs Username',
+			})
+			commit('login.working', false)
+		}, 500)
+	},
+	openLoginModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'login',
+			value: true
+		})
+	},
+	closeLoginModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'login',
+			value: false
+		})
+	},
+	closeAllModals ({dispatch} : ActionParams) {
+		dispatch('closeLoginModal')
+	}
+}
+
+export const getters = {
+	isLoggedIn (state: State) : boolean {
+		return state.user !== null
+	},
+	// TODO: Add || for more modals
+	showingModal (state: State) : boolean {
+		return state.modals.login
+	}
 }

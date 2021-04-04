@@ -1,0 +1,89 @@
+<template>
+	<div class="modal-container" v-show="showingModal">
+		<div class="modal-backdrop" @click="clickBackdrop">
+
+		</div>
+		<LoginModal
+			:show="showingLoginModal"
+			title="Login">
+		</LoginModal>
+	</div>
+</template>
+<script lang="ts">
+import Vue from "vue"
+import {Component, Getter, State} from "nuxt-property-decorator";
+import LoginModal from "~/modules/modals/LoginModal.vue";
+
+@Component({
+	components: {
+		LoginModal: LoginModal
+	}
+})
+export default class Modals extends Vue {
+	@Getter('showingModal') showingModal : boolean
+	@State(state => state.modals.login)  showingLoginModal : boolean
+
+	// TODO: Add an event listener for someone hitting the back button
+	// We might want to close modals on back button
+	mounted () {
+		window.addEventListener('keydown', this.keyDown)
+	}
+
+	destroyed () {
+		window.removeEventListener('keydown', this.keyDown)
+	}
+
+	keyDown (e: KeyboardEvent) {
+		if (!this.showingModal) {
+			return
+		}
+
+		if (e.key == 'Escape') {
+			e.preventDefault()
+			this.closeAllModals()
+		}
+	}
+
+	closeLoginModal () {
+		this.$store.dispatch('closeLoginModal')
+	}
+
+	clickBackdrop () {
+		this.closeAllModals()
+	}
+
+	closeAllModals () {
+		this.$store.dispatch('closeAllModals')
+	}
+}
+</script>
+<style>
+.modal-container {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+}
+
+.modal-backdrop {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	background: rgba(0, 0, 0, 0.75);
+}
+
+.modal {
+	position: absolute;
+	width: 90%;
+	height: 90%;
+	margin: 5% 5%;
+	background: black;
+	padding: 2em;
+	border: 4px solid var(--color-primary);
+}
+</style>
