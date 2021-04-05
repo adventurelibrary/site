@@ -1,27 +1,27 @@
 <template>
 	<div class="modal-container" v-show="showingModal">
 		<div class="modal-backdrop" @click="clickBackdrop">
-
 		</div>
-		<LoginModal
-			:show="showingLoginModal"
-			title="Login">
-		</LoginModal>
+		<LoginModal :show="showingLoginModal" />
+		<RegisterModal :show="showingRegisterModal" />
 	</div>
 </template>
 <script lang="ts">
 import Vue from "vue"
 import {Component, Getter, State} from "nuxt-property-decorator";
 import LoginModal from "~/modules/modals/LoginModal.vue";
+import RegisterModal from "~/modules/modals/RegisterModal.vue";
 
 @Component({
 	components: {
-		LoginModal: LoginModal
+		LoginModal: LoginModal,
+		RegisterModal: RegisterModal
 	}
 })
 export default class Modals extends Vue {
 	@Getter('showingModal') showingModal : boolean
 	@State(state => state.modals.login)  showingLoginModal : boolean
+	@State(state => state.modals.register)  showingRegisterModal : boolean
 
 	// TODO: Add an event listener for someone hitting the back button
 	// We might want to close modals on back button
@@ -34,6 +34,9 @@ export default class Modals extends Vue {
 	}
 
 	keyDown (e: KeyboardEvent) {
+		console.log('showingModal', this.showingModal)
+		console.log('showingLoginModal', this.showingLoginModal)
+		console.log('showingRegisterModal', this.showingRegisterModal)
 		if (!this.showingModal) {
 			return
 		}
@@ -42,10 +45,6 @@ export default class Modals extends Vue {
 			e.preventDefault()
 			this.closeAllModals()
 		}
-	}
-
-	closeLoginModal () {
-		this.$store.dispatch('closeLoginModal')
 	}
 
 	clickBackdrop () {
