@@ -1,7 +1,7 @@
 <template>
-	<CAlert v-if="showError" color="danger">
+	<div v-if="showError" class="form-errors">
 		<div v-for="msg in messages" :key="msg">{{msg}}</div>
-	</CAlert>
+	</div>
 </template>
 <script lang="ts">
 import Vue from "vue"

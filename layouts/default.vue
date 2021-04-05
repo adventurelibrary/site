@@ -36,7 +36,11 @@
 				</div>
 				<div v-else>
 					<div v-if="loginWorking">...</div>
-					<a v-else @click="openLogin">Login</a>
+					<span v-else>
+						<a @click="openLogin">Login</a>
+						<a @click="openRegister">Register</a>
+
+					</span>
 				</div>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
@@ -127,6 +131,10 @@ export default class Default extends Vue {
 
 	openLogin () {
 		this.$store.dispatch('openLoginModal')
+	}
+
+	openRegister () {
+		this.$store.dispatch('openRegisterModal')
 	}
 
 	async login () {

@@ -12,11 +12,14 @@ type State = {
 		error: string
 	}
 	modals: {
-		login: boolean
+		login: boolean,
+		register: boolean
 	}
 }
 
 type ToastType = 'success' | 'danger' | 'info'
+
+type ModalKeys = 'login' | 'register'
 
 export type Toast = {
 	id: number
@@ -51,7 +54,8 @@ export const state = () : State => {
 			error: ''
 		},
 		modals: {
-			login: false
+			login: false,
+			register: false
 		}
 	}
 }
@@ -115,9 +119,10 @@ export const mutations = {
 		state.login.error = error
 	},
 	modal (state: State, update: {
-		key: 'login',
+		key: ModalKeys,
 		value: boolean
 	}) {
+		console.log('update modal', update)
 		state.modals[update.key] = update.value
 	}
 }
@@ -146,9 +151,6 @@ export const actions = {
 			type: 'danger'
 		})
 	},
-	closeModal ({commit}: ActionParams) {
-		commit('closeModal')
-	},
 	logout ({commit}: ActionParams) {
 		commit('user', null)
 	},
@@ -175,8 +177,21 @@ export const actions = {
 			value: false
 		})
 	},
+	openRegisterModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'register',
+			value: true
+		})
+	},
+	closeRegisterModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'register',
+			value: false
+		})
+	},
 	closeAllModals ({dispatch} : ActionParams) {
 		dispatch('closeLoginModal')
+		dispatch('closeRegisterModal')
 	}
 }
 
@@ -186,6 +201,6 @@ export const getters = {
 	},
 	// TODO: Add || for more modals
 	showingModal (state: State) : boolean {
-		return state.modals.login
+		return state.modals.login|| state.modals.register
 	}
 }
