@@ -5,6 +5,7 @@
 			@close="closeModal">
 		<slot>
 			<form @submit="submit">
+				<FormErrors :error="form.error" />
 				<Input
 					label="Username or Email"
 					:value="identifier"
@@ -16,6 +17,7 @@
 						:value="password"
 						@input="(val) => password = val"
 				/>
+				<button>Login</button>
 				<div>
 					Not registered? <a @click="openSignUp">Sign up</a>
 				</div>
@@ -27,6 +29,7 @@
 import {Component, mixins, Prop} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import FormMixin from "~/mixins/Forms.vue";
+import {signIn} from "~/lib/auth/auth-api";
 import Input from "~/components/forms/InputGroup.vue";
 
 @Component({
@@ -46,7 +49,15 @@ export default class LoginModal extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		alert('do a signin')
+		try {
+			console.log('trying to sign in', this.identifier, this.password)
+			const jwt = await signIn(this.identifier, this.password)
+			console.log('your jwt', jwt)
+		} catch (ex) {
+			this.password = ''
+			this.notifyError(ex)
+			throw ex
+		}
 	}
 
 	openSignUp () {

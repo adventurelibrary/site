@@ -98,6 +98,7 @@ import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRou
 import {Component, Getter, State} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
+import {getSession} from "~/lib/auth/auth-api";
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
@@ -117,7 +118,16 @@ export default class Default extends Vue {
 	menuVisible = false;
 
 	mounted () {
+		this.loadSession()
+	}
 
+	async loadSession () {
+		try {
+			const sess = await getSession()
+			console.log('sess', sess)
+		} catch (ex) {
+			console.log('ex', ex)
+		}
 	}
 
 	get shade() {
