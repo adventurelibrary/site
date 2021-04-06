@@ -48,7 +48,6 @@ export default class FormMixin extends Vue {
       this.form.submitting = false
       await this.formSuccess()
     } catch (ex) {
-			console.log('form ex', ex)
       this.form.error = ex.toString()
       this.form.submitting = false
       this.notifyError('Error submitting form:' + ex.toString())
