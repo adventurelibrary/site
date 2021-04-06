@@ -1,9 +1,20 @@
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import {User} from "~/lib/users/user-types";
 
+const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
+const clientId = <string>process.env.COGNITO_CLIENT_ID
+
+if (userPoolId === '') {
+	throw new Error('COGNITO_USER_POOL_ID missing from .env file')
+}
+
+if (clientId === '') {
+	throw new Error('COGNITO_CLIENT_ID missing from .env file')
+}
+
 const poolData = {
-	UserPoolId: <string>process.env.COGNITO_USER_POOL_ID,
-	ClientId: <string>process.env.COGNITO_CLIENT_ID,
+	UserPoolId: userPoolId,
+	ClientId: clientId,
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
