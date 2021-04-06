@@ -1,7 +1,7 @@
 <template>
 	<div class="tag-search">
-		<ul class="action-list items" v-if="shownResults.length">
-			<li v-for="(tag, idx) in shownResults"
+		<ul class="action-list items" v-if="shownItems.length">
+			<li v-for="(tag, idx) in shownItems"
 				:key="tag.key"
 				class="action"
 				:class="{'active': activeItem === idx}"
@@ -74,12 +74,12 @@ export default class TagSearch extends SearchArrowNavMixin {
 	}
 
 	selectItem (idx: number) {
-		this.clickTag(this.shownResults[idx])
+		this.clickTag(this.shownItems[idx])
 	}
 
 	// The shown results are the filtered tags, which have been search through
 	// MINUS the tags that are already in our list of filters
-	get shownResults () : AssetTag[] {
+	get shownItems () : AssetTag[] {
 		return this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]

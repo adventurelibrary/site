@@ -1,6 +1,6 @@
 <template>
 	<ul class="action-list">
-		<li class="action" v-for="(action, idx) in items"
+		<li class="action" v-for="(action, idx) in shownActions"
 				:key="action.key"
 				:class="{'active': idx === activeItem}"
 		>
@@ -29,6 +29,17 @@ export default class SearchActions extends SearchArrowNavMixin {
 		this.activeItem = -1
 	}
 
+	get shownActions () : AssetSearchAction[] {
+		if (!this.query.length) {
+			return this.items
+		}
+		return this.items.filter((action: AssetSearchAction) => {
+			if (action.key.indexOf(this.query) >= 0) {
+				return true
+			}
+			return false
+		})
+	}
 
 	// The onPrev event for search actions works differently than the other search
 	// child components
@@ -52,13 +63,32 @@ export default class SearchActions extends SearchArrowNavMixin {
 		this.$emit('prevBeyond')
 	}
 
+	onTab (e: any) {
+		if (!this.active) {
+			return
+		}
+
+		if (this.activeItem < 0 && this.shownActions.length > 0) {
+			e.preventDefault()
+			this.clickAction(this.shownActions[0])
+			return
+		}
+
+		if (this.activeItem >= 0) {
+			e.preventDefault()
+			console.log('active item', this.activeItem)
+			this.selectItem(this.activeItem)
+			return
+		}
+
+	}
+
 	clickAction (type: AssetSearchAction) {
-		console.log('type', type)
 		this.$emit('action:clicked', type)
 	}
 
 	selectItem (idx: number) {
-		this.clickAction(this.items[idx])
+		this.clickAction(this.shownActions[idx])
 	}
 }
 </script>

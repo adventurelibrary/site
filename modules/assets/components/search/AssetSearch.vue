@@ -17,11 +17,10 @@
 			v-model="query"
 			role="query"
 			@keypress.enter="enter"
-			@keydown.up="keyUpLeftArrow"
-			@keydown.left="keyUpLeftArrow"
-			@keydown.right="keyDownRightArrow"
-			@keydown.down="keyDownRightArrow"
+			@keydown.up="keyUpArrow"
+			@keydown.down="keyDownArrow"
 			@keydown.delete="deleteKey"
+			@keydown.tab="tabKey"
 			@focus="onInputFocus"
 			@blur="onInputBlur"
 		/>
@@ -49,7 +48,6 @@
 					:query="actionQuery"
 					:active="showActionSuggestions"
 					@action:clicked="actionClicked"
-					@prevBeyond="selectPreviousFilter"
 				/>
 			</div>
 			<div class="filter-container" v-show="action === 'category'">
@@ -193,7 +191,7 @@ class AssetSearch extends Vue {
 	}
 
 	get showActionSuggestions () : boolean {
-		return this.query.length === 0
+		return this.action === null
 	}
 
 	get action() : string | null {
@@ -236,7 +234,6 @@ class AssetSearch extends Vue {
 	}
 
 	actionClicked (action: AssetSearchAction) {
-		console.log('action', action)
 		this.query = action.prefix + ':'
 		this.focusInput()
 	}
@@ -316,6 +313,12 @@ class AssetSearch extends Vue {
 		}
 	}
 
+	tabKey (e: any) {
+		e.preventDefault()
+		this.emitTab(e)
+		return
+	}
+
 	deleteKey (e : any) {
 		// If they're typing then delete and backspace work as normal
 		if (this.query.length > 0 && this.activeFilter == -1) {
@@ -348,11 +351,23 @@ class AssetSearch extends Vue {
 		}
 	}
 
-	keyDownRightArrow (e: any) {
-		if (this.query.length && e.target.selectionStart < this.query.length && this.activeFilter == -1) {
-			return
-		}
+	emitClearSelection () {
+		this.bus.$emit('clearSelection')
+	}
 
+	emitTab (e: any) {
+		this.bus.$emit('tab', e)
+	}
+
+	emitNext () {
+		this.bus.$emit('next')
+	}
+
+	emitPrev () {
+		this.bus.$emit('prev')
+	}
+
+	keyDownArrow (e: any) {
 		e.preventDefault()
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
@@ -360,28 +375,30 @@ class AssetSearch extends Vue {
 			this.selectNextFilter()
 			return
 		}
-		this.activeFilter = -1
-		this.bus.$emit('next')
-	}
-
-	keyUpLeftArrow (e: any) {
-		if (this.query.length && e.target.selectionStart > 0) {
-			// TODO: Check if they are at the first option in the child options
-			// If they are, then we can return and it will work like an up/left
-			// arrow in a text box
-			// If they are NOT, then we should stop the default and move up the list
-			// of child options
+		if (this.action && this.activeChildActiveItem >= 0) {
+			this.emitNext()
 			return
 		}
+		this.activeFilter = -1
+		this.emitNext()
+	}
 
-		// With no children active, this event is for filtering through this
-		// parent componenent's lists of filters
+	keyUpArrow (e: any) {
+		e.preventDefault()
+
 		if (!this.action) {
+			if (this.activeChildActiveItem > 0) {
+				this.emitPrev()
+				return
+			}
+			if (this.activeChildActiveItem == 0) {
+				this.emitClearSelection()
+				return
+			}
 			this.selectPreviousFilter()
 			return
 		}
-		e.preventDefault()
-		this.bus.$emit('prev')
+		this.emitPrev()
 	}
 
 	selectAdjacentFilter (direction : 1 | -1) {
