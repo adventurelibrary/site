@@ -51,8 +51,8 @@ export default class RegisterForm extends mixins(FormMixin) {
 	passwordConfirm = ''
 	needsConfirmation = false
 
-	validateForm () {
-		if (this.identifier == '') {
+	validateForm () : string {
+		if (this.username == '') {
 			return 'Username is required'
 		}
 		if (this.password == '') {
@@ -61,6 +61,7 @@ export default class RegisterForm extends mixins(FormMixin) {
 		if (this.passwordConfirm !== this.password) {
 			return 'Passwords do not match'
 		}
+		return ''
 	}
 
 	async formAction () {

@@ -32,7 +32,7 @@
 						<i class="ci-user"></i>
 						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
 					</figure>
-					<a class="account-link">{{user.username}}</a>
+					<nuxt-link :to="{name: 'login'}" class="account-link">{{user.username}}</nuxt-link>
 				</div>
 				<div v-else>
 					<a @click="openLogin">Login</a>
@@ -94,7 +94,8 @@ import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRou
 import {Component, Getter, State} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
-import {getSessionFromClient} from "~/lib/auth/auth-api";
+import {User} from "~/lib/users/user-types"
+
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
