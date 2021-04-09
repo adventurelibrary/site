@@ -4,41 +4,26 @@
 			title="Login"
 			@close="closeModal">
 		<slot>
-			<form @submit="submit">
-				<FormErrors :error="form.error" />
-				<Input
-					label="Username or Email"
-					:value="identifier"
-					@input="(val) => identifier = val"
-					/>
-				<Input
-						label="Password"
-						type="password"
-						:value="password"
-						@input="(val) => password = val"
-				/>
-				<button>Login</button>
-				<div>
-					Not registered? <a @click="openSignUp">Sign up</a>
-				</div>
-			</form>
+			<Login @success="onSuccess" />
+			<div>
+				Not registered? <a @click="openSignUp">Sign up</a>
+			</div>
 		</slot>
 	</Modal>
 </template>
 <script lang="ts">
-import {Component, mixins, Prop} from "nuxt-property-decorator";
+import Vue from "vue";
+import {Component, Prop} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
-import FormMixin from "~/mixins/Forms.vue";
-import {signIn} from "~/lib/auth/auth-api";
-import Input from "~/components/forms/InputGroup.vue";
+import Login from "~/components/LoginForm.vue";
 
 @Component({
 	components: {
+		Login,
 		Modal: Modal,
-		Input: Input
 	}
 })
-export default class LoginModal extends mixins(FormMixin) {
+export default class LoginModal extends Vue {
 	identifier = ''
 	password = ''
 
@@ -48,21 +33,14 @@ export default class LoginModal extends mixins(FormMixin) {
 		this.$store.dispatch('closeLoginModal')
 	}
 
-	async formAction () {
-		try {
-			await signIn(this.identifier, this.password)
-			await this.$store.dispatch('fetchSession')
-			this.$store.dispatch('closeAllModals')
-		} catch (ex) {
-			this.password = ''
-			this.notifyError(ex)
-			throw ex
-		}
-	}
-
 	openSignUp () {
 		this.$store.dispatch('closeAllModals')
 		this.$store.dispatch('openRegisterModal')
+	}
+
+	onSuccess () {
+		this.$store.dispatch('closeAllModals')
+		window.location.reload()
 	}
 }
 </script>
