@@ -2,8 +2,8 @@
 	<div class="modal-container" v-show="showingModal">
 		<div class="modal-backdrop" @click="clickBackdrop">
 		</div>
-		<LoginModal :show="showingLoginModal" />
-		<RegisterModal :show="showingRegisterModal" />
+		<LoginModal v-if="showingLoginModal" :show="showingLoginModal" />
+		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 	</div>
 </template>
 <script lang="ts">

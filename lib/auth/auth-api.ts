@@ -87,7 +87,7 @@ export async function signIn (identifier: string, password: string) {
 	})
 }
 
-export async function signUp (fields : SignUpFields) : Promise<User> {
+export async function signUp (fields : SignUpFields) : Promise<null> {
 	return new Promise((res, rej) => {
 		const attributeList = [];
 
@@ -112,14 +112,7 @@ export async function signUp (fields : SignUpFields) : Promise<User> {
 				return
 			}
 
-			await signIn(fields.username, fields.password)
-
-			const user = await getSessionFromClient()
-			if (user === null) {
-				rej('User from session is blank')
-				return
-			}
-			res(user)
+			res(null)
 		});
 	})
 }
