@@ -69,7 +69,6 @@ export default class RegisterModal extends mixins(FormMixin) {
 			username: this.username
 		}
 		const user = await signUp(data)
-		console.log('after user')
 		this.notifySuccess('Welcome user, ' + user.username)
 	}
 

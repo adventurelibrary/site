@@ -34,9 +34,6 @@ export default class Modals extends Vue {
 	}
 
 	keyDown (e: KeyboardEvent) {
-		console.log('showingModal', this.showingModal)
-		console.log('showingLoginModal', this.showingLoginModal)
-		console.log('showingRegisterModal', this.showingRegisterModal)
 		if (!this.showingModal) {
 			return
 		}

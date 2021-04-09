@@ -32,15 +32,11 @@
 						<i class="ci-user"></i>
 						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
 					</figure>
-					<a class="account-link">My Account</a>
+					<a class="account-link">{{user.username}}</a>
 				</div>
 				<div v-else>
-					<div v-if="loginWorking">...</div>
-					<span v-else>
-						<a @click="openLogin">Login</a>
-						<a @click="openRegister">Register</a>
-
-					</span>
+					<a @click="openLogin">Login</a>
+					<a @click="openRegister">Register</a>
 				</div>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
@@ -98,7 +94,7 @@ import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRou
 import {Component, Getter, State} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
-import {getSession} from "~/lib/auth/auth-api";
+import {getSessionFromClient} from "~/lib/auth/auth-api";
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
@@ -107,6 +103,7 @@ import {getSession} from "~/lib/auth/auth-api";
 })
 export default class Default extends Vue {
 	@State('toasts') toasts : Toast[]
+	@State('user') user : User
 	@Getter('isLoggedIn') isLoggedIn: boolean
 	@State(state => state.login.working) loginWorking : boolean
 
@@ -122,11 +119,13 @@ export default class Default extends Vue {
 	}
 
 	async loadSession () {
+		if (!process.client) {
+			return
+		}
 		try {
-			const sess = await getSession()
-			console.log('sess', sess)
+			await this.$store.dispatch('fetchSession')
 		} catch (ex) {
-			console.log('ex', ex)
+			this.notifyError('Error loading session')
 		}
 	}
 
@@ -147,13 +146,6 @@ export default class Default extends Vue {
 		this.$store.dispatch('openRegisterModal')
 	}
 
-	async login () {
-		await this.$store.dispatch('login', {
-			username: 'fdjkslfjdsak',
-			password: 'fdsfdslafdsa'
-		})
-		this.notifySuccess('Logged in!')
-	}
 
 	async logout () {
 		await this.$store.dispatch('logout')

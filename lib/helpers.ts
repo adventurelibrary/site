@@ -119,3 +119,28 @@ export function getElOffset (el: Element) {
 		left: rect.left + scrollLeft
 	}
 }
+
+export function setCookie (cname: string, cvalue: any, exdays : number = 7) {
+	const d = new Date();
+
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	const expires = "expires="+ d.toUTCString();
+
+	const cookie = cname.trim() + "=" + cvalue + "; " + expires;
+	document.cookie = cookie;
+}
+
+export function getCookie (cname: string) {
+	const name = cname + "=";
+	const ca = document.cookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+		let c = ca[i];
+		while (c.charAt(0)==' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length,c.length);
+		}
+	}
+	return "";
+}
