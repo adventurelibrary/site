@@ -70,7 +70,7 @@ import {keyBoolToArray} from "~/lib/helpers";
 })
 export default class AssetsIndex extends AdminPage {
 	public assetsAjax = newAssetsAjax()
-	public search : AssetSearchOptiLons
+	public search : AssetSearchOptions
 	public selectedAssets : Record<string, boolean> = {}
 
 	async asyncData (ctx: Context) {

@@ -32,10 +32,11 @@ export default class LoginForm extends mixins(FormMixin) {
 	identifier = ''
 	password = ''
 
-	validateForm () {
+	validateForm () : string {
 		if (this.identifier == '') {
 			return 'Username is required'
 		}
+		return ''
 	}
 
 	async formAction () {
