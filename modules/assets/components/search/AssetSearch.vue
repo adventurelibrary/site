@@ -236,7 +236,6 @@ class AssetSearch extends Vue {
 	}
 
 	actionClicked (action: AssetSearchAction) {
-		console.log('action', action)
 		this.query = action.prefix + ':'
 		this.focusInput()
 	}

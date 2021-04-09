@@ -1,9 +1,7 @@
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import * as AWS from 'aws-sdk/global';
 import {User} from "~/lib/users/user-types";
-import {CognitoUser, CognitoUserSession} from "amazon-cognito-identity-js";
-
-const region = <string>process.env.COGNITO_REGION
+import {CognitoUser} from "amazon-cognito-identity-js";
+import {getCookie, setCookie} from "~/lib/helpers";
 
 const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
 const clientId = <string>process.env.COGNITO_CLIENT_ID
@@ -29,41 +27,42 @@ export type SignUpFields = {
 	passwordConfirm: string
 }
 
-export async function getSession () : Promise<CognitoUser | null> {
-	return new Promise((res, rej) => {
-		const cognitoUser = userPool.getCurrentUser();
-		if (cognitoUser == null) {
+function getCognitoUser(username: string) : CognitoUser {
+	const userData = {
+		Username: username,
+		Pool: userPool,
+	};
+	return new AmazonCognitoIdentity.CognitoUser(userData);
+}
+
+export async function getSessionFromClient() : Promise<User | null> {
+	const jwt = getCookie('jwt')
+	if (jwt === null) {
+		return null
+	}
+	return getSession(jwt)
+}
+
+export async function getSession (jwt: string) : Promise<User | null> {
+	return new Promise((res) => {
+		if (jwt == '') {
 			res(null)
 			return
 		}
-		cognitoUser.getSession(function(err: Error | null, session: CognitoUserSession|null) {
-			if (err) {
-				rej(err.message || JSON.stringify(err))
-				return;
+		setTimeout(() => {
+			const user : User = {
+				id: '84935058243',
+				username: 'GuitarSun',
+				email: 'user@guitars.com',
+				admin: false
 			}
-			if (session == null) {
-				rej('session is null')
-				return
-			}
-			console.log('session validity: ' + session.isValid());
-
-			// NOTE: getSession must be called to authenticate user before calling getUserAttributes
-			cognitoUser.getUserAttributes(function(err, attributes) {
-				if (err) {
-					// Handle error
-				} else {
-					// Do something with attributes
-					console.log('attributes?', attributes)
-					res(cognitoUser)
-				}
-			});
-		});
-
+			res(user)
+		}, 250)
 	})
 }
 
 // Login as a user and get the user's jwt
-export async function signIn (identifier: string, password: string) : Promise<CognitoUser> {
+export async function signIn (identifier: string, password: string) {
 	return new Promise((res, rej) => {
 		const authenticationData = {
 			Username: identifier,
@@ -72,16 +71,12 @@ export async function signIn (identifier: string, password: string) : Promise<Co
 		const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
 			authenticationData
 		);
-		const userData = {
-			Username: identifier,
-			Pool: userPool,
-		};
-		var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+		const cognitoUser = getCognitoUser(identifier)
 		cognitoUser.authenticateUser(authenticationDetails, {
 			onSuccess: function(result) {
 				const jwt = result.getAccessToken().getJwtToken();
-				window.localStorage.setItem('jwt', jwt)
-				res(cognitoUser)
+				setCookie('jwt', jwt, 31)
+				res(null)
 				return
 			},
 
@@ -102,17 +97,13 @@ export async function signUp (fields : SignUpFields) : Promise<User> {
 		};
 
 		const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-
 		attributeList.push(attributeEmail);
 
-		userPool.signUp(fields.username, fields.password, attributeList, [], function (
+		userPool.signUp(fields.username, fields.password, attributeList, [], async function (
 			err,
 			result
 		) {
-			console.log('err', err)
-			console.log('result', result)
 			if (err) {
-				console.log('reject cause error')
 				rej(err.message || err.toString())
 				return;
 			}
@@ -120,14 +111,19 @@ export async function signUp (fields : SignUpFields) : Promise<User> {
 				rej('Result had no user')
 				return
 			}
-			res(cognitoUserToUser(result.user))
+
+			await signIn(fields.username, fields.password)
+
+			const user = await getSessionFromClient()
+			if (user === null) {
+				rej('User from session is blank')
+				return
+			}
+			res(user)
 		});
 	})
 }
 
-function cognitoUserToUser(cuser : AmazonCognitoIdentity.CognitoUser) : User {
-	return {
-		id: '???',
-		username: cuser.getUsername()
-	}
+export async function logout () {
+	setCookie('jwt', '')
 }

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/lib/users/user-types";
+import {getSessionFromClient, logout} from "~/lib/auth/auth-api";
 Vue.use(Vuex)
 
 type State = {
@@ -122,7 +123,6 @@ export const mutations = {
 		key: ModalKeys,
 		value: boolean
 	}) {
-		console.log('update modal', update)
 		state.modals[update.key] = update.value
 	}
 }
@@ -151,11 +151,11 @@ export const actions = {
 			type: 'danger'
 		})
 	},
-	logout ({commit}: ActionParams) {
+	async logout ({commit}: ActionParams) {
+		await logout()
 		commit('user', null)
 	},
 	login ({commit} : ActionParams, {username, password} : LoginParams) {
-		console.log(username, password)
 		commit('login.working', true)
 		setTimeout(() => {
 			commit('user', {
@@ -192,6 +192,10 @@ export const actions = {
 	closeAllModals ({dispatch} : ActionParams) {
 		dispatch('closeLoginModal')
 		dispatch('closeRegisterModal')
+	},
+	async fetchSession ({commit} : ActionParams) {
+		const user = await getSessionFromClient()
+		commit('user', user)
 	}
 }
 

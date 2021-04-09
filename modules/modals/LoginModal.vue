@@ -50,9 +50,9 @@ export default class LoginModal extends mixins(FormMixin) {
 
 	async formAction () {
 		try {
-			console.log('trying to sign in', this.identifier, this.password)
-			const jwt = await signIn(this.identifier, this.password)
-			console.log('your jwt', jwt)
+			await signIn(this.identifier, this.password)
+			await this.$store.dispatch('fetchSession')
+			this.$store.dispatch('closeAllModals')
 		} catch (ex) {
 			this.password = ''
 			this.notifyError(ex)
