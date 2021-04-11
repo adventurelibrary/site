@@ -58,7 +58,27 @@ class AssetPage extends Vue {
 		}
 		return {
 			title: asset.name + ' - Asset',
-			description: asset.description
+			description: asset.description,
+			og: asset.thumbnail,
+
+			// vue implementation
+			/*
+			metaInfo: {
+				title: asset.name + ' - Asset',
+				description: asset.description,
+				og: asset.thumbnail
+			},			
+			*/
+
+			// nuxt implementation
+			meta: [				
+				{
+					hid: 'description',  // hid is used as unique identifier. Do not use `vmid` for it as it will not work
+					name: asset.name + ' - Asset',
+					description: asset.description,
+					og: asset.thumbnail
+				}
+			]
 		}
 	}
 
