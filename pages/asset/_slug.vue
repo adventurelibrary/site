@@ -22,9 +22,12 @@
 			<TagList :tags="asset.tags" />
 		</div>
 
-		<div>
-			Similar assets
-			[links : use code from front page within particular search terms]
+		<div>						
+			<!-- Similar assets -->	
+			<ul class="search-results">
+				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
+				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
+			</ul>
 		</div>
 	</div>
 </template>
@@ -39,15 +42,34 @@ import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
 
+// related assets and search modules
+import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
+import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
+import AssetCard from "~/modules/assets/components/AssetCard.vue";
+
+
 @Component({
 	components: {
 		AssetDownload: AssetDownload,
-		TagList: TagList
+		TagList: TagList,
+		AssetCard
 	}
 })
 class AssetPage extends Vue {
 	public assetAjax : Ajax<Asset>
+	public relatedAssets : AssetsResponse
 
+	// search setup
+	public search : AssetSearchOptions
+	// search.filters
+
+	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
+	skip = 0
+	perPage = 5
+	loadingMore = false
+	scrollTimeout : NodeJS.Timeout
+
+	// setting header meta tags
 	head () {
 		const asset = this.asset
 		if (asset == null) {
@@ -61,16 +83,7 @@ class AssetPage extends Vue {
 			description: asset.description,
 			og: asset.thumbnail,
 
-			// vue implementation
-			/*
-			metaInfo: {
-				title: asset.name + ' - Asset',
-				description: asset.description,
-				og: asset.thumbnail
-			},			
-			*/
-
-			// nuxt implementation
+			// meta tags nuxt implementation
 			meta: [				
 				{
 					hid: 'description',  // hid is used as unique identifier. Do not use `vmid` for it as it will not work
@@ -88,6 +101,7 @@ class AssetPage extends Vue {
 		}
 	}
 
+
 	get asset () : Asset | null {
 		const res = getAjaxData<Asset>(this.assetAjax)
 		if (!res) {
@@ -96,12 +110,19 @@ class AssetPage extends Vue {
 		return res
 	}
 
+	// fetching asset data and related assets array
 	async asyncData (ctx: Context) {
-		const assetRes = await getAssetAjax(ctx.params.slug)
-		return {
-			assetAjax: assetRes
+		const assetRes = await getAssetAjax(ctx.params.slug)		
+		let relatedAssets
+		if (assetRes.data != undefined) {
+			relatedAssets = await getRelatedAssetsByTags(assetRes.data)			
 		}
-	}
+		return {
+			assetAjax: assetRes,
+			relatedAssets: relatedAssets
+		}
+	}	
+
 }
 
 export default AssetPage

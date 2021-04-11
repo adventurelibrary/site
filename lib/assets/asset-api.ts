@@ -83,6 +83,24 @@ export async function queryAssets (opts: Record<string, string>) : Promise<Asset
 	return res.data
 }
 
+// returns array of related assets of an asset by tags, excluding the original asset passed
+export async function getRelatedAssetsByTags (asset: Asset) : Promise<AssetsResponse> {
+	const opts = {tags: asset.tags.join(',') };
+	const res = await api.get<AssetsResponse>('/assets?' + objectToQueryString(opts))
+	res.data.assets = res.data.assets.map(transformAsset)	
+
+	// remove passed Asset from results
+	let n = 0;
+	res.data.assets.forEach(e => {
+		if (e.id == asset.id)			
+			res.data.assets.splice(n,1)		
+		n++;
+	})
+
+	return res.data
+}
+
+
 export async function searchAdminAssets (opts: AssetSearchOptions) : Promise<AssetsResponse> {
 	const apiQuery = assetSearchOptionsToAPIQuery(opts)
 	apiQuery.visibility = 'all'
