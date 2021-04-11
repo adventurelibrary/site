@@ -14,6 +14,11 @@ export type ActiveUpload = {
 	asset: AssetFormData
 }
 
+// The NewAsset is created when a user drags a new file onto the upload page
+// It contains info about the asset (name, description, tags, etc) and a File
+// This function converts all those new assets into ActiveUploads
+// This is done when the user clicks the big "BEGIN UPLOAD" button after selecting
+// one or more files and entering in the asset's information
 export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveUpload[] {
 	return newAssets.map((na: NewAsset, idx: number) : ActiveUpload => {
 		return {

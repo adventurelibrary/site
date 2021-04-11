@@ -27,6 +27,11 @@ export const stringToSortDirection = (str: string) : SortDirection => {
 	return 'desc'
 }
 
+// This converts the search options that our user has put together with the
+// search component, and converts it into a query string that will be
+// navigated to
+// So if a user selects two tags, Fall & Winter, and searches "fire" this function is what gets
+// us something like ?filters=t_Fall,t_Winter&query=fire
 export function assetSearchOptionsToQuery(options: AssetSearchOptions) : any {
 	const query : any = {}
 	if (options.query) {
