@@ -77,7 +77,13 @@ class AssetPage extends Vue {
 					name: asset.name + ' - Asset',
 					description: asset.description,
 					og: asset.thumbnail
-				}
+				},
+
+				// Twitter specific:
+				{ name: 'twitter:title', content: asset.name + ' - Asset' },
+				{ name: 'twitter:description', content: asset.description},
+				{ name: 'twitter:image', content: asset.thumbnail},
+				{ name: 'twitter:card', content: asset.thumbnail}	
 			]
 		}
 	}
