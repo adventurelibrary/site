@@ -6,20 +6,13 @@
 				:value="identifier"
 				@input="(val) => identifier = val"
 		/>
-		<InputGroup
-				label="Password"
-				type="password"
-				:value="password"
-				@input="(val) => password = val"
-		/>
-		<button>Login</button>
-		<div><nuxt-link :to="{name: 'forgot-password'}">Forgot Password</nuxt-link></div>
+		<button>Submit</button>
 	</form>
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
-import {signIn} from "~/lib/auth/auth-api";
+import {forgotPassword} from "~/lib/auth/auth-api";
 import InputGroup from "~/components/forms/InputGroup.vue";
 import FormErrors from "~/components/forms/FormErrors.vue";
 
@@ -29,20 +22,20 @@ import FormErrors from "~/components/forms/FormErrors.vue";
 		FormErrors: FormErrors
 	}
 })
-export default class LoginForm extends mixins(FormMixin) {
+export default class ForgotPasswordForm extends mixins(FormMixin) {
 	identifier = ''
 	password = ''
+	done = false
 
 	validateForm () : string {
 		if (this.identifier == '') {
-			return 'Username is required'
+			return 'Username or email is required'
 		}
 		return ''
 	}
 
 	async formAction () {
-		await signIn(this.identifier, this.password)
-		await this.$store.dispatch('fetchSession')
+		await forgotPassword(this.identifier)
 		this.$emit('success')
 	}
 }

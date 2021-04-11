@@ -3,7 +3,7 @@ import {Context} from "@nuxt/types";
 import {setJWT} from "~/lib/api"
 import {getCookie} from "~/lib/helpers";
 
-export default function (ctx: Context) {
+export default async function (ctx: Context) {
 	let jwt = ''
 	const {req} = ctx
 	if (req && req.headers.cookie) {
@@ -25,5 +25,8 @@ export default function (ctx: Context) {
 	}
 
 	setJWT(jwt)
+
+	await ctx.store.commit('jwt', jwt)
+	await ctx.store.dispatch('fetchSession')
 	return null
 }
