@@ -1,24 +1,27 @@
-import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import {User} from "~/lib/users/user-types";
-import {CognitoUser} from "amazon-cognito-identity-js";
 import {getCookie, setCookie} from "~/lib/helpers";
+import jwtdecode from 'jwt-decode'
+import {Auth} from 'aws-amplify'
+import {CognitoUser} from "amazon-cognito-identity-js";
 
 const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
 const clientId = <string>process.env.COGNITO_CLIENT_ID
 
-if (userPoolId === '') {
+if (!userPoolId) {
 	throw new Error('COGNITO_USER_POOL_ID missing from .env file')
 }
 
-if (clientId === '') {
+if (!clientId) {
 	throw new Error('COGNITO_CLIENT_ID missing from .env file')
 }
 
-const poolData = {
-	UserPoolId: userPoolId,
-	ClientId: clientId,
-};
-const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+Auth.configure({
+	Auth: {
+		userPoolId: userPoolId,
+		userPoolWebClientId: clientId,
+		//authenticationFlowType: 'USER_PASSWORD_AUTH'
+	}
+})
 
 export type SignUpFields = {
 	email: string
@@ -27,12 +30,8 @@ export type SignUpFields = {
 	passwordConfirm: string
 }
 
-function getCognitoUser(username: string) : CognitoUser {
-	const userData = {
-		Username: username,
-		Pool: userPool,
-	};
-	return new AmazonCognitoIdentity.CognitoUser(userData);
+function convertErr(err : any) : string {
+	return err.message || err.toString()
 }
 
 export async function getSessionFromClient() : Promise<User | null> {
@@ -50,10 +49,11 @@ export async function getSession (jwt: string) : Promise<User | null> {
 			return
 		}
 		setTimeout(() => {
+			const decode : any = jwtdecode(jwt)
 			const user : User = {
-				id: '84935058243',
-				username: 'GuitarSun',
-				email: 'user@guitars.com',
+				id: decode.sub,
+				username: decode.username,
+				email: decode.username + '_fake@gmail.com',
 				admin: false
 			}
 			res(user)
@@ -63,60 +63,61 @@ export async function getSession (jwt: string) : Promise<User | null> {
 
 // Login as a user and get the user's jwt
 export async function signIn (identifier: string, password: string) {
-	return new Promise((res, rej) => {
-		const authenticationData = {
-			Username: identifier,
-			Password: password,
-		};
-		const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(
-			authenticationData
-		);
-		const cognitoUser = getCognitoUser(identifier)
-		cognitoUser.authenticateUser(authenticationDetails, {
-			onSuccess: function(result) {
-				const jwt = result.getAccessToken().getJwtToken();
-				setCookie('jwt', jwt, 31)
-				res(null)
-				return
-			},
-
-			onFailure: function(err) {
-				rej(err.message || JSON.stringify(err));
-			},
-		});
-	})
+	try {
+		await Auth.signIn(identifier, password)
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
+	const sess = await Auth.currentSession()
+	setCookie('jwt', sess.getAccessToken().getJwtToken(), 31)
 }
 
-export async function signUp (fields : SignUpFields) : Promise<null> {
-	return new Promise((res, rej) => {
-		const attributeList = [];
 
-		const dataEmail = {
-			Name: 'email',
-			Value: fields.email,
-		};
-
-		const attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
-		attributeList.push(attributeEmail);
-
-		userPool.signUp(fields.username, fields.password, attributeList, [], async function (
-			err,
-			result
-		) {
-			if (err) {
-				rej(err.message || err.toString())
-				return;
+export async function signUp (fields : SignUpFields) : Promise<CognitoUser> {
+	try {
+		const { user } = await Auth.signUp({
+			username: fields.username,
+			password: fields.password,
+			attributes: {
+				email: fields.email
 			}
-			if (!result?.user) {
-				rej('Result had no user')
-				return
-			}
-
-			res(null)
 		});
-	})
+		return user
+	} catch (error) {
+		throw new Error(convertErr(error))
+	}
 }
 
 export async function logout () {
+	try {
+		await Auth.signOut()
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
 	setCookie('jwt', '')
+}
+
+export async function changePassword (username: string, oldPassword: string, newPassword: string) {
+	try {
+		const user = Auth.currentAuthenticatedUser()
+		return Auth.changePassword(user, oldPassword, newPassword)
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
+}
+
+export async function forgotPassword (username: string) {
+	try {
+		return Auth.forgotPassword(username)
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
+}
+
+export async function forgotPasswordSubmit (username: string, code: string, newPassword: string) {
+	try {
+		return Auth.forgotPasswordSubmit(username, code, newPassword)
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
 }

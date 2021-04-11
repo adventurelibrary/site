@@ -1,13 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/lib/users/user-types";
-import {getSessionFromClient, logout} from "~/lib/auth/auth-api";
+import {getSession, logout} from "~/lib/auth/auth-api";
 Vue.use(Vuex)
 
 type State = {
-	toasts: Toast[],
 	breadcrumbs: any[],
-	user: User | null
+	jwt: string,
 	login: {
 		working: boolean,
 		error: string
@@ -16,6 +15,8 @@ type State = {
 		login: boolean,
 		register: boolean
 	}
+	toasts: Toast[],
+	user: User | null
 }
 
 type ToastType = 'success' | 'danger' | 'info'
@@ -50,6 +51,7 @@ export const state = () : State => {
 		breadcrumbs: [],
 		toasts: [],
 		user: null,
+		jwt: '',
 		login: {
 			working: false,
 			error: ''
@@ -101,6 +103,9 @@ export const mutations = {
 	},
 	clearBreadcrumbs (state: State) {
 		state.breadcrumbs = []
+	},
+	jwt (state: State, jwt: string) {
+		state.jwt = jwt
 	},
 	addToast (state: State, toast: Toast) {
 		state.toasts.push(toast)
@@ -193,8 +198,8 @@ export const actions = {
 		dispatch('closeLoginModal')
 		dispatch('closeRegisterModal')
 	},
-	async fetchSession ({commit} : ActionParams) {
-		const user = await getSessionFromClient()
+	async fetchSession ({commit, state} : ActionParams) {
+		const user = await getSession(state.jwt)
 		commit('user', user)
 	}
 }

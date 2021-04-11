@@ -4,7 +4,6 @@ const base = <string>process.env.ADVL_BASE_URL
 console.log('API URL', base)
 
 let jwt = ''
-
 export const api = axios.create({
 	baseURL: base,
 })
@@ -24,6 +23,10 @@ api.interceptors.request.use(function (config) {
 	return Promise.reject(error);
 });
 
+// The JWT that all our requests use is set by this function
+// The function is called in our auth.ts middleware file
+// Depending on context (server vs client) it will get the JWT
+// from a different place
 export function setJWT(newJWT: string) {
 	jwt = newJWT
 }

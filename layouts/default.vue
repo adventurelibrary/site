@@ -32,7 +32,7 @@
 						<i class="ci-user"></i>
 						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
 					</figure>
-					<nuxt-link :to="{name: 'login'}" class="account-link">{{user.username}}</nuxt-link>
+					<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
 				</div>
 				<div v-else>
 					<a @click="openLogin">Login</a>
