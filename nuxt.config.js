@@ -50,6 +50,10 @@ export default {
     gzip: false
   },
 
+  router: {
+    middleware: 'auth'
+  },
+
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
 
@@ -60,7 +64,7 @@ export default {
     '@nuxtjs/dotenv'
   ],
 
-    // Build Configuration (https://go.nuxtjs.dev/config-build)
+  // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extend (config) {
       const vue$ = path.resolve(__dirname, './node_modules/vue/dist/vue.runtime.esm.js')

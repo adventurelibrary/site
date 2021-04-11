@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {AssetFormData} from "~/lib/assets/asset-types";
-import Input from "~/components/forms/Input.vue";
+import Input from "~/components/forms/InputGroup.vue";
 import Textarea from "~/components/forms/Textarea.vue";
 import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";

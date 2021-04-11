@@ -1,13 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {User} from "~/lib/users/user-types";
+import {getSession, logout} from "~/lib/auth/auth-api";
 Vue.use(Vuex)
 
 type State = {
-	toasts: Toast[],
 	breadcrumbs: any[],
+	jwt: string,
+	login: {
+		working: boolean,
+		error: string
+	}
+	modals: {
+		login: boolean,
+		register: boolean
+	}
+	toasts: Toast[],
+	user: User | null
 }
 
 type ToastType = 'success' | 'danger' | 'info'
+
+type ModalKeys = 'login' | 'register'
 
 export type Toast = {
 	id: number
@@ -21,10 +35,31 @@ type ActionParams = {
 	dispatch: any
 }
 
+export type LoginParams = {
+	username: string,
+	password: string
+}
+
+
+let toastCount = 0
+function newToastId () : number {
+	return new Date().getTime() + ++toastCount
+}
+
 export const state = () : State => {
 	return {
 		breadcrumbs: [],
 		toasts: [],
+		user: null,
+		jwt: '',
+		login: {
+			working: false,
+			error: ''
+		},
+		modals: {
+			login: false,
+			register: false
+		}
 	}
 }
 
@@ -69,6 +104,9 @@ export const mutations = {
 	clearBreadcrumbs (state: State) {
 		state.breadcrumbs = []
 	},
+	jwt (state: State, jwt: string) {
+		state.jwt = jwt
+	},
 	addToast (state: State, toast: Toast) {
 		state.toasts.push(toast)
 	},
@@ -76,12 +114,22 @@ export const mutations = {
 		state.toasts = state.toasts.filter((t => {
 			return t.id != id
 		}))
+	},
+	user (state: State, pl: User | null) {
+		state.user = pl
+	},
+	'login.working' (state: State, working: boolean) {
+		state.login.working = working
+	},
+	'login.error' (state: State, error: string) {
+		state.login.error = error
+	},
+	modal (state: State, update: {
+		key: ModalKeys,
+		value: boolean
+	}) {
+		state.modals[update.key] = update.value
 	}
-}
-
-let toastCount = 0
-function newToastId () : number {
-	return new Date().getTime() + ++toastCount
 }
 
 export const actions = {
@@ -108,7 +156,60 @@ export const actions = {
 			type: 'danger'
 		})
 	},
-	closeModal ({commit}: ActionParams) {
-		commit('closeModal')
+	async logout ({commit}: ActionParams) {
+		await logout()
+		commit('user', null)
 	},
+	login ({commit} : ActionParams, {username, password} : LoginParams) {
+		commit('login.working', true)
+		setTimeout(() => {
+			commit('user', {
+				id: new Date().getTime().toString(),
+				username: 'Mrs Username',
+			})
+			commit('login.working', false)
+		}, 500)
+	},
+	openLoginModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'login',
+			value: true
+		})
+	},
+	closeLoginModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'login',
+			value: false
+		})
+	},
+	openRegisterModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'register',
+			value: true
+		})
+	},
+	closeRegisterModal ({commit} : ActionParams) {
+		commit('modal', {
+			key: 'register',
+			value: false
+		})
+	},
+	closeAllModals ({dispatch} : ActionParams) {
+		dispatch('closeLoginModal')
+		dispatch('closeRegisterModal')
+	},
+	async fetchSession ({commit, state} : ActionParams) {
+		const user = await getSession(state.jwt)
+		commit('user', user)
+	}
+}
+
+export const getters = {
+	isLoggedIn (state: State) : boolean {
+		return state.user !== null
+	},
+	// TODO: Add || for more modals
+	showingModal (state: State) : boolean {
+		return state.modals.login|| state.modals.register
+	}
 }

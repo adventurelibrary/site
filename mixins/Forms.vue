@@ -26,7 +26,7 @@ export default class FormMixin extends Vue {
   // This should be overwritten by any component
   // that implements this mixin
   async formAction () {
-
+		throw new Error('Form action needs to be implemented by the inheriting component')
   }
 
   async formSuccess () {
@@ -36,15 +36,18 @@ export default class FormMixin extends Vue {
   async submit (e: any) {
     e.preventDefault()
     const err = this.validateForm()
-    if (err !== '') {
+    if (err && err.length) {
       this.form.error = err
       this.form.submitting = false
+			console.log('error', err)
 			return
     }
     this.form.submitting = true
     this.form.error = ''
     try {
+			console.log('doing the form action')
       await this.formAction()
+			console.log('done the form action')
       this.form.submitting = false
       await this.formSuccess()
     } catch (ex) {

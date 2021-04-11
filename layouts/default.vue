@@ -1,6 +1,6 @@
 <template>
 	<main class="body">
-		<div class="shade" 
+		<div class="shade"
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
 		</div>
@@ -13,7 +13,7 @@
 				</NuxtLink>
 			</figure>
 			<h1 class="site-name">Adventure Library</h1>
-			
+
 			<AssetSearchRouter :visible="overlays.search"/>
 
 			<button class="search-button"
@@ -26,12 +26,18 @@
 			</button>
 
 			<div class="account-actions">
-				<a class="logout-button">Logout</a>
-				<figure class="member-avatar">
-					<i class="ci-user"></i>
-					<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
-				</figure>
-				<a class="account-link">My Account</a>
+				<div v-if="isLoggedIn">
+					<a class="logout-button" @click="logout">Logout</a>
+					<figure class="member-avatar">
+						<i class="ci-user"></i>
+						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
+					</figure>
+					<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
+				</div>
+				<div v-else>
+					<a @click="openLogin">Login</a>
+					<a @click="openRegister">Register</a>
+				</div>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li><a href="">About Us</a></li>
@@ -74,24 +80,55 @@
 				</ul>
 			</section>
 		</footer>
+		<div class="toast-msgs">
+			<div v-for="toast in toasts" :key="toast.id" class="toast-msg" :class="toast.type">
+				{{toast.msg}}
+			</div>
+		</div>
+		<Modals />
 	</main>
 </template>
 <script lang="ts">
 import Vue from "vue"
 import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRouter.vue";
-import {Component} from "nuxt-property-decorator";
+import {Component, Getter, State} from "nuxt-property-decorator";
+import {Toast} from "~/store";
+import Modals from "~/modules/modals/Modals.vue";
+import {User} from "~/lib/users/user-types"
+
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
+		Modals: Modals
 	}
 })
 export default class Default extends Vue {
+	@State('toasts') toasts : Toast[]
+	@State('user') user : User
+	@Getter('isLoggedIn') isLoggedIn: boolean
+	@State(state => state.login.working) loginWorking : boolean
+
 	overlays: { [s: string]: boolean; } = {
 		search: false,
 		menu: false
 	}
 	searchVisible = false;
 	menuVisible = false;
+
+	mounted () {
+		this.loadSession()
+	}
+
+	async loadSession () {
+		if (!process.client) {
+			return
+		}
+		try {
+			await this.$store.dispatch('fetchSession')
+		} catch (ex) {
+			this.notifyError('Error loading session')
+		}
+	}
 
 	get shade() {
 		return Object.values(this.overlays).some(o => o);
@@ -100,6 +137,20 @@ export default class Default extends Vue {
 	hideOverlays() {
 		Object.keys(this.overlays).forEach(o => this.overlays[o] = false);
 		console.debug(this.overlays);
+	}
+
+	openLogin () {
+		this.$store.dispatch('openLoginModal')
+	}
+
+	openRegister () {
+		this.$store.dispatch('openRegisterModal')
+	}
+
+
+	async logout () {
+		await this.$store.dispatch('logout')
+		this.notifySuccess('Logged out')
 	}
 }
 </script>

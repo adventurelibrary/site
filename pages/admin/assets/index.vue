@@ -80,7 +80,6 @@ export default class AssetsIndex extends AdminPage {
 		}
 		const assetsAjax = newAssetsAjax()
 		await doAjax<AssetsResponse>(assetsAjax, fn)
-		console.log('ajax data', assetsAjax.data)
 		return {
 			assetsAjax,
 			search
