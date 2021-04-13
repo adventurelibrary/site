@@ -1,35 +1,38 @@
 <template>
-	<div class="container">
+	<article class="asset">
 
-		<img :src="asset.thumbnail" width="100%">
+		<section class="asset-preview" :style="`background-image: url(${asset.thumbnail});`">
+			<!-- Empty -->
+		</section>
 
-		<div>
-			<h1>{{asset.name}}</h1>
-			By [user icon] {{asset.creatorName}}
-		</div>
-		<div>
-			<AssetDownload :asset="asset" />
-		</div>
-		<div>
-			{{asset.downloads}}
-		</div>
-
-		<div>
-			{{asset.description}}
-		</div>
-
-		<div>
+		<section class="asset-info">
+			<h1 class="asset-title">{{asset.name}}</h1>
+			<h3 class="asset-author">
+				<!-- Will be a link to the author profile -->
+				By<a href=""><i class="author-icon ci-user"></i>{{asset.creatorName}}</a>
+			</h3>
+			<div class="asset-description">
+				{{asset.description}}
+			</div>
 			<TagList :tags="asset.tags" />
-		</div>
+		</section>
+		
+		<section class="asset-downloads">
+			<AssetDownload :asset="asset" />
+			<span class="download-count">
+				<span class="count">{{asset.downloads || 0}}</span>
+				<span class="label">downloads</span>
+			</span>
+		</section>
 
-		<div>						
+		<section class="similar-assets">						
 			<!-- Similar assets -->	
 			<ul class="search-results">
 				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
 			</ul>
-		</div>
-	</div>
+		</section>
+	</article>
 </template>
 <script lang="ts">
 import { Context } from '@nuxt/types'
