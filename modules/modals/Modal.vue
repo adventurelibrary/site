@@ -1,8 +1,10 @@
 <template>
 	<div class="modal" v-show="show">
 		<div class="modal-header">
-			<button type="button" @click="closeModal">close</button>
-			{{title}}
+			<h2 class="modal-title">{{title}}</h2>
+			<button class="modal-close" type="button" @click="closeModal">
+				<i class="ci-close_big"></i>
+			</button>
 		</div>
 		<div class="modal-body">
 			<slot>Modal Body</slot>
