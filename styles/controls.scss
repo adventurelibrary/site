@@ -1,0 +1,27 @@
+.site-body, .modal-container {
+	label {
+		color: white;
+		font-size: .75em;
+		display: grid;
+	}
+	input {
+		background-color: #171717;
+		border: 2px solid #333333;
+		color: #808080;
+	}
+	button {
+		display: inline-grid;
+		place-items: center;
+		padding: .75em;
+		font-weight: bold;
+		color: white;
+		background-color: #1AA9C9;
+		text-transform: uppercase;
+		border: none;
+		cursor: pointer;
+
+		&:hover {
+			text-shadow: 0 0 1px currentColor;
+		}
+	}
+}
