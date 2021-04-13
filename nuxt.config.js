@@ -9,6 +9,7 @@ const css = [
   'styles/base-page.scss',
   'styles/search.scss',
   'styles/search-results.scss',
+  'styles/modal.scss',
   'styles/controls.scss',
   'styles/styles.scss'
 ]
