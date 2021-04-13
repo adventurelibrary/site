@@ -14,6 +14,7 @@ const css = [
   'styles/search-results.scss',
   'styles/modal.scss',
   'styles/controls.scss',
+  'styles/asset.scss',
   'styles/styles.scss'
 ]
 const ignore = []
