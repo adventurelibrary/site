@@ -5,9 +5,6 @@
 			@close="closeModal">
 		<slot>
 			<RegisterForm />
-			<div>
-				Already registered? <a @click="openLogin">Login up</a>
-			</div>
 		</slot>
 	</Modal>
 </template>

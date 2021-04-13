@@ -3,7 +3,7 @@
 		<div v-if="needsConfirmation">
 			Check your email to confirm your registration.
 		</div>
-		<form v-else @submit="submit">
+		<form class="register-form" v-else @submit="submit">
 			<FormErrors :error="form.error" />
 			<InputGroup
 					label="Email"
@@ -27,7 +27,11 @@
 					:value="passwordConfirm"
 					@input="(val) => passwordConfirm = val"
 			/>
-			<button>Submit</button>
+			<section class="control-row">
+				<div>Already registered?</div>
+				<a @click="openLogin">Login</a>
+			</section>
+			<button class="account-create">Create Account</button>
 		</form>
 	</div>
 </template>

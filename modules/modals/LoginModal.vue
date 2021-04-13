@@ -5,9 +5,6 @@
 			@close="closeModal">
 		<slot>
 			<Login @success="onSuccess" />
-			<div>
-				Not registered? <a @click="openSignUp">Sign up</a>
-			</div>
 		</slot>
 	</Modal>
 </template>

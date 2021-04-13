@@ -1,5 +1,5 @@
 <template>
-	<form @submit="submit">
+	<form class="login-form" @submit="submit">
 		<FormErrors :error="form.error" />
 		<InputGroup
 				label="Username or Email"
@@ -12,8 +12,14 @@
 				:value="password"
 				@input="(val) => password = val"
 		/>
-		<button>Login</button>
-		<div><nuxt-link :to="{name: 'forgot-password'}">Forgot Password</nuxt-link></div>
+		<section class="control-row register-hints">
+			<div class="registration-hint">Don't have an account?</div>
+			<a class="register" @click="openSignUp">Register</a>
+		</section>
+		<section class="control-row login-controls">
+			<button class="login-button">Login to Account</button>
+			<nuxt-link class="password-reset" :to="{name: 'forgot-password'}">Forgot Password</nuxt-link>
+		</section>
 	</form>
 </template>
 <script lang="ts">
