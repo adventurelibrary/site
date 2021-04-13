@@ -120,5 +120,9 @@
 		:hover .download-format {
 			display: inline-block;
 		}
+		.button {
+			padding: 0;
+			background-color: unset;
+		}
 	}
 }
