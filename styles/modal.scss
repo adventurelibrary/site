@@ -1,3 +1,5 @@
+$media-small: 512px;
+
 .modal-container {
 	position: fixed;
 	top: 0px;
@@ -75,5 +77,44 @@
 		&:empty {
 			display: none;
 		}
+	}
+}
+
+.modal form {
+	display: grid;
+	grid-auto-flow: row;
+	gap: 1em;
+
+	.form-group {
+		display: grid;
+		grid-template-rows: 1em 2em;
+		gap: .5em;
+	}
+	.control-row {
+		display: grid;
+		grid-auto-flow: column;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+.login-form {
+	min-width: 82vw;
+	.password-reset {
+		display: grid;
+		color: currentColor;
+		text-decoration: none;
+	}
+}
+.register-form {
+	min-width: 82vw;
+	.account-create {
+		justify-self: start;
+	}
+}
+
+@media (min-width: $media-small) {
+	.login-form, .register-form {
+		min-width: 26em;
 	}
 }
