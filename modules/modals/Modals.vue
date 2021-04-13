@@ -53,33 +53,3 @@ export default class Modals extends Vue {
 	}
 }
 </script>
-<style>
-.modal-container {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	z-index: 1000;
-}
-
-.modal-backdrop {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	background: rgba(0, 0, 0, 0.75);
-}
-
-.modal {
-	position: absolute;
-	width: 90%;
-	height: 90%;
-	margin: 5% 5%;
-	background: black;
-	padding: 2em;
-	border: 4px solid var(--color-primary);
-}
-</style>
