@@ -64,8 +64,11 @@ export async function getSession (jwt: string) : Promise<User | null> {
 // Login as a user and get the user's jwt
 export async function signIn (identifier: string, password: string) {
 	try {
+		console.log('sign in')
 		await Auth.signIn(identifier, password)
+		console.log('after sign in')
 	} catch (ex) {
+		console.log('ex', ex)
 		throw new Error(convertErr(ex))
 	}
 	const sess = await Auth.currentSession()

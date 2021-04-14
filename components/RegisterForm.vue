@@ -29,7 +29,7 @@
 			/>
 			<section class="control-row">
 				<div>Already registered?</div>
-				<a @click="openLogin">Login</a>
+				<a @click="login">Login</a>
 			</section>
 			<button class="account-create">Create Account</button>
 		</form>
@@ -66,6 +66,10 @@ export default class RegisterForm extends mixins(FormMixin) {
 			return 'Passwords do not match'
 		}
 		return ''
+	}
+
+	login () {
+		this.$emit('login')
 	}
 
 	async formAction () {

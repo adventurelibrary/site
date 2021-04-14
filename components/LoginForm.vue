@@ -14,10 +14,10 @@
 		/>
 		<section class="control-row register-hints">
 			<div class="registration-hint">Don't have an account?</div>
-			<a class="register" @click="openSignUp">Register</a>
+			<a class="register" @click="register">Register</a>
 		</section>
 		<section class="control-row login-controls">
-			<button class="login-button">Login to Account</button>
+			<button class="login-button" :disable="form.submitting">Login to Account</button>
 			<nuxt-link class="password-reset" :to="{name: 'forgot-password'}">Forgot Password</nuxt-link>
 		</section>
 	</form>
@@ -46,8 +46,14 @@ export default class LoginForm extends mixins(FormMixin) {
 		return ''
 	}
 
+	register () {
+		this.$emit('register')
+	}
+
 	async formAction () {
+		console.log('before sign in')
 		await signIn(this.identifier, this.password)
+		console.log('after sign in')
 		await this.$store.dispatch('fetchSession')
 		this.$emit('success')
 	}

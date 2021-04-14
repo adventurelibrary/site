@@ -4,7 +4,7 @@
 			title="Login"
 			@close="closeModal">
 		<slot>
-			<Login @success="onSuccess" />
+			<Login @success="onSuccess" @register="openRegister" />
 		</slot>
 	</Modal>
 </template>
@@ -30,7 +30,7 @@ export default class LoginModal extends Vue {
 		this.$store.dispatch('closeLoginModal')
 	}
 
-	openSignUp () {
+	openRegister () {
 		this.$store.dispatch('closeAllModals')
 		this.$store.dispatch('openRegisterModal')
 	}

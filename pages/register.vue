@@ -2,10 +2,8 @@
 	<div>
 		<h1>Register</h1>
 		<RegisterForm
+			@login="login"
 		/>
-		<div>
-			Already registered? <nuxt-link :to="{name: 'login'}">Login</nuxt-link>
-		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -18,7 +16,10 @@ import Register from "~/components/RegisterForm.vue";
 	}
 })
 export default class RegisterPage extends Vue {
-	onSuccess () {
+	login () {
+		this.$router.push({
+			name: 'login'
+		})
 	}
 }
 </script>

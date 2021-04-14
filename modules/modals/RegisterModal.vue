@@ -4,7 +4,7 @@
 			title="Register"
 			@close="closeModal">
 		<slot>
-			<RegisterForm />
+			<RegisterForm @login="openLogin" />
 		</slot>
 	</Modal>
 </template>

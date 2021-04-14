@@ -3,10 +3,8 @@
 		<h1>Login</h1>
 		<LoginForm
 			@success="onSuccess"
+			@register="register"
 		/>
-		<div>
-			Not registered? <nuxt-link :to="{name: 'register'}">Register</nuxt-link>
-		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -22,6 +20,12 @@ export default class LoginPage extends Vue {
 	onSuccess () {
 		this.$router.push({
 			name: 'index'
+		})
+	}
+
+	register () {
+		this.$router.push({
+			name: 'register'
 		})
 	}
 }

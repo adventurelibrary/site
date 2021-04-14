@@ -32,6 +32,7 @@
 			</div>
 		</div>
 		<figure class="asset-action">
+			<AssetAddToBundle :asset="asset" />
 			<AssetDownload :asset="asset" />
 		</figure>
 	</li>
@@ -46,13 +47,15 @@ import Category from "~/modules/categories/components/Category.vue";
 import TagList from "~/modules/tags/TagList.vue";
 import {Category as CategoryType} from "~/lib/categories/categories-types"
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
+import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundleButton.vue";
 
 @Component({
 	components: {
 		AssetLink: AssetLink,
 		Category: Category,
 		TagList: TagList,
-		AssetDownload: AssetDownload
+		AssetDownload: AssetDownload,
+		AssetAddToBundle: AssetAddToBundleButton
 	}
 })
 class AssetCard extends Vue {
