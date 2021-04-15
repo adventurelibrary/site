@@ -1,6 +1,6 @@
 .asset {
 	display: grid;
-	grid-template-rows: 20em auto auto auto;
+	grid-template-rows: 20em repeat(3, min-content);
 	grid-template-areas: 
 		"preview"
 		"info"
@@ -22,6 +22,7 @@
 		display: grid;
 		padding: var(--padding);
 		gap: .5em;
+		align-content: start;
 
 		.asset-title {
 			margin: 0;
@@ -66,8 +67,8 @@
 }
 
 @media (min-width: 800px) {
-	.asset {	
-		grid-template-rows: 30em auto auto;
+	.asset {
+		grid-template-rows: 30em repeat(2, min-content);
 		grid-template-columns: 2fr 1fr;
 		grid-template-areas: 
 			"preview preview"
