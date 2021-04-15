@@ -26,18 +26,18 @@
 			</button>
 
 			<div class="account-actions">
-				<div v-if="isLoggedIn">
+				<template v-if="isLoggedIn">
 					<a class="logout-button" @click="logout">Logout</a>
 					<figure class="member-avatar">
 						<i class="ci-user"></i>
 						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
 					</figure>
 					<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
-				</div>
-				<div v-else>
+				</template>
+				<template v-else>
 					<a @click="openLogin">Login</a>
 					<a @click="openRegister">Register</a>
-				</div>
+				</template>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li><a href="">About Us</a></li>
