@@ -2,6 +2,9 @@ const path = require('path')
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
+console.log('API', process.env.ADVL_BASE_URL)
+console.log('PORT', process.env.PORT)
+
 const css = [
   'assets/coolicons/coolicons.css',
   'styles/color.scss',

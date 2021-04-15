@@ -2,9 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/lib/users/user-types";
 import {getSession, logout} from "~/lib/auth/auth-api";
+import {Asset} from "~/lib/assets/asset-types";
 Vue.use(Vuex)
 
 type State = {
+	addToBundleAsset: Asset | null,
+	createBundleAsset: Asset | null
 	breadcrumbs: any[],
 	jwt: string,
 	login: {
@@ -13,7 +16,9 @@ type State = {
 	}
 	modals: {
 		login: boolean,
-		register: boolean
+		register: boolean,
+		addToBundle: boolean,
+		createBundle: boolean
 	}
 	toasts: Toast[],
 	user: User | null
@@ -21,7 +26,7 @@ type State = {
 
 type ToastType = 'success' | 'danger' | 'info'
 
-type ModalKeys = 'login' | 'register'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle'
 
 export type Toast = {
 	id: number
@@ -48,18 +53,22 @@ function newToastId () : number {
 
 export const state = () : State => {
 	return {
+		addToBundleAsset: null,
 		breadcrumbs: [],
+		createBundleAsset: null,
+		jwt: '',
 		toasts: [],
 		user: null,
-		jwt: '',
 		login: {
 			working: false,
 			error: ''
 		},
 		modals: {
+			addToBundle: false,
+			createBundle: false,
 			login: false,
 			register: false
-		}
+		},
 	}
 }
 
@@ -129,6 +138,19 @@ export const mutations = {
 		value: boolean
 	}) {
 		state.modals[update.key] = update.value
+	},
+	addToBundleAsset (state: State, asset: Asset | null) {
+		state.addToBundleAsset = asset
+	},
+	createBundleAsset (state: State, asset: Asset | null) {
+		state.createBundleAsset = asset
+	},
+	closeAllModals(state: State) {
+		const keys = Object.keys(state.modals)
+		for (let i = 0; i < keys.length; i++) {
+			const key = keys[i]
+			state.modals[<ModalKeys>key] = false
+		}
 	}
 }
 
@@ -176,6 +198,13 @@ export const actions = {
 			value: true
 		})
 	},
+	openAddToBundleModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
+		commit('modal', {
+			key: 'addToBundle',
+			value: true
+		})
+		commit('addToBundleAsset', asset)
+	},
 	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {
 			key: 'login',
@@ -194,9 +223,16 @@ export const actions = {
 			value: false
 		})
 	},
-	closeAllModals ({dispatch} : ActionParams) {
-		dispatch('closeLoginModal')
-		dispatch('closeRegisterModal')
+	closeAllModals ({commit} : ActionParams) {
+		commit('closeAllModals')
+	},
+	async openCreateBundleWithAsset ({dispatch, commit} : ActionParams, {asset} : {asset: Asset | null}) {
+		await dispatch('closeAllModals')
+		commit('modal', {
+			key: 'createBundle',
+			value: true
+		})
+		commit('createBundleAsset', asset)
 	},
 	async fetchSession ({commit, state} : ActionParams) {
 		const user = await getSession(state.jwt)
@@ -208,8 +244,14 @@ export const getters = {
 	isLoggedIn (state: State) : boolean {
 		return state.user !== null
 	},
-	// TODO: Add || for more modals
 	showingModal (state: State) : boolean {
-		return state.modals.login|| state.modals.register
+		const keys = Object.keys(state.modals)
+		for (let i = 0; i < keys.length; i++) {
+			const key = keys[i]
+			if (state.modals[<ModalKeys>key]) {
+				return true
+			}
+		}
+		return false
 	}
 }
