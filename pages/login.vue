@@ -19,7 +19,8 @@ import Login from "~/components/LoginForm.vue";
 export default class LoginPage extends Vue {
 	onSuccess () {
 		this.$router.push({
-			name: 'index'
+			// name: 'index'
+			name: this.$store.state.userTracking.activePath  //redirect to last known path before pressing Login
 		})
 	}
 
