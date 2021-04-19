@@ -18,11 +18,11 @@
 
 			<button class="search-button"
 				v-on:click="overlays.search = true">
-				Search
+				<i class="ci-search" title="Search"></i>
 			</button>
 			<button class="menu-button"
 				v-on:click="overlays.menu = true">
-				Menu
+				<i class="ci-hamburger" title="Menu"></i>
 			</button>
 
 			<div class="account-actions">				
