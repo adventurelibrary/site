@@ -24,7 +24,7 @@ import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
 import {computeAjaxList, doAjax, newAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
-import {getMyBundles} from "~/lib/bundles/bundles-api";
+import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 
 type BundleItem = Bundle & {
@@ -37,7 +37,7 @@ type BundleItem = Bundle & {
 })
 export default class MyBundleSelector extends Vue {
 	filter : string = ''
-	bundlesAjax = newAjax<BundlesResponse>()
+	bundlesAjax = newBundlesAjax()
 
 
 	@Model('changed',  {

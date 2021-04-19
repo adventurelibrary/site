@@ -12,6 +12,7 @@ import {Component, mixins, Prop} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
 import BundleFields from "~/modules/bundles/components/BundleFields.vue";
 import {Asset} from "~/lib/assets/asset-types";
+import {createBundle} from "~/lib/bundles/bundles-api";
 
 @Component({
 	components: {
@@ -22,7 +23,12 @@ export default class CreateBundleForm extends mixins(FormMixin) {
 	@Prop() asset : Asset | null
 
 	async formAction () {
-		alert('Create bundle: ' + this.form.data.name)
+		const assetIds : string[] = []
+		if (this.asset) {
+			assetIds.push(this.asset.id)
+		}
+		await createBundle(this.form.data, assetIds)
+		this.$emit('success')
 	}
 }
 </script>

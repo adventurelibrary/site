@@ -96,10 +96,18 @@ class AssetPage extends Vue {
 				},
 
 				// Twitter specific:
+				// https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup
 				{ name: 'twitter:title', content: asset.name + ' - Asset' },
 				{ name: 'twitter:description', content: asset.description},
 				{ name: 'twitter:image', content: asset.thumbnail},
-				{ name: 'twitter:card', content: asset.thumbnail}	
+				{ name: 'twitter:card', content: asset.thumbnail},	
+
+				// Facebook specific tags:
+				// https://developers.facebook.com/docs/sharing/webmasters/
+				{ name: 'og:title', content: asset.name + ' - Asset' },
+				{ name: 'og:description', content: asset.description},
+				{ name: 'og:image', content: asset.thumbnail},			
+
 			]
 		}
 	}

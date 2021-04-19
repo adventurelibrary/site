@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/lib/users/user-types";
+import {UserTracking} from "~/lib/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/lib/assets/asset-types";
 Vue.use(Vuex)
@@ -21,7 +22,8 @@ type State = {
 		createBundle: boolean
 	}
 	toasts: Toast[],
-	user: User | null
+	user: User | null,
+	userTracking: UserTracking
 }
 
 type ToastType = 'success' | 'danger' | 'info'
@@ -59,6 +61,11 @@ export const state = () : State => {
 		jwt: '',
 		toasts: [],
 		user: null,
+		userTracking: {
+			id: "",
+			sessionId: "",
+			activePath: ""
+		},
 		login: {
 			working: false,
 			error: ''

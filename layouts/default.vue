@@ -25,7 +25,7 @@
 				Menu
 			</button>
 
-			<div class="account-actions">
+			<div class="account-actions">				
 				<template v-if="isLoggedIn">
 					<a class="logout-button" @click="logout">Logout</a>
 					<figure class="member-avatar">
@@ -95,6 +95,7 @@ import {Component, Getter, State} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/lib/users/user-types"
+import {UserTracking} from "~/lib/users/user-tracking"
 
 @Component({
 	components: {
@@ -105,6 +106,7 @@ import {User} from "~/lib/users/user-types"
 export default class Default extends Vue {
 	@State('toasts') toasts : Toast[]
 	@State('user') user : User
+	@State('userTracking') userTracking : UserTracking
 	@Getter('isLoggedIn') isLoggedIn: boolean
 	@State(state => state.login.working) loginWorking : boolean
 
@@ -140,15 +142,21 @@ export default class Default extends Vue {
 	}
 
 	openLogin () {
+		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+
 		this.$store.dispatch('openLoginModal')
 	}
 
 	openRegister () {
+		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+
 		this.$store.dispatch('openRegisterModal')
 	}
 
 
 	async logout () {
+		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+		
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
 	}
