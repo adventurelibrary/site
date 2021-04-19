@@ -1,5 +1,5 @@
 <template>
-	<div class="page-content">
+	<div class="page-content search-page">
 		<header class="page-header">
 			<h1>Search Assets</h1>
 			<!--div v-if="search">

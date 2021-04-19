@@ -1,6 +1,6 @@
 <template>
 	<section class="container">
-		<section class="featured-assets">
+		<section class="featured-assets search-page">
 			<h3>Featured Assets</h3>
 			<ul class="search-results">
 				<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />

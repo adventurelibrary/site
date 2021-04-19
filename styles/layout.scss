@@ -186,7 +186,10 @@ body {
 	grid-area: body;
 	justify-content: center;
 	display: grid;
-	grid-template-columns: var(--body-width);
+
+	> article {
+		max-width: var(--body-width);
+	}
 }
 
 .site-footer {
