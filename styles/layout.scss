@@ -39,6 +39,10 @@ body {
 	margin: 0;
 }
 
+.site-header, .site-footer {
+	box-shadow: 0 0 3px #0000007d;
+}
+
 .site-header {
 	position: relative;
 	grid-area: header;
