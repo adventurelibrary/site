@@ -1,3 +1,4 @@
+B
 <template>
 	<main class="body">
 		<div class="shade"
@@ -50,7 +51,7 @@
 		</main>
 		<footer class="site-footer">
 			<h1 class="footer-heading">Adventure Library</h1>
-			<p class="copyright-notice">Copyright text</p>
+			<p class="copyright-notice">Copyright Current Year</p>
 			<nav class="footer-links">
 				<ul>
 					<li><a href="">Link 1</a></li>
