@@ -52,6 +52,12 @@ export default {
 
   dev: false,
 
+  env: {
+    ADVL_BASE_URL: process.env.ADVL_BASE_URL,
+    COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
+    COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+  },
+
   performance: {
     gzip: false
   },
