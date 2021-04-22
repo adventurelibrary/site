@@ -7,12 +7,10 @@
 		<header class="site-header">
 			<figure class="logo">
 				<NuxtLink class="brand" :to="{name: 'index'}">
-					<img alt="Adventure Library"
-						src="https://cdn.discordapp.com/attachments/808965286915997726/822728272654630972/al-logo-white.png"
-						>
+					<!-- intentionally empty -->
 				</NuxtLink>
 			</figure>
-			<h1 class="site-name">Adventure Library</h1>
+			<!--h1 class="site-name">Adventure Library</h1-->
 
 			<AssetSearchRouter :visible="overlays.search"/>
 

@@ -52,9 +52,9 @@ body {
 	align-items: center;
 	padding: .5em 2.5em;
 	grid-template-rows: 1fr;
-	grid-template-columns: 3em 1fr 3em 3em;
+	grid-template-columns: 1fr 3em 3em;
 	grid-template-areas: 
-		"branding name search-button menu-button";
+		"branding search-button menu-button";
 
 	column-gap: 1.2em;
 
@@ -66,6 +66,10 @@ body {
 			display: grid;
 			width: 100%;
 			height: 100%;
+			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: contain;
 
 			img {
 				width: 100%;
@@ -74,11 +78,11 @@ body {
 			}
 		}
 	}
-	.site-name {
+	/*.site-name {
 		grid-area: name;
 		margin: 0;
 		font-size: 1em;
-	}
+	}*/
 
 	.asset-search {
 		display: none;
@@ -184,6 +188,7 @@ body {
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0, 0, 0, .5);
+	z-index: 1;
 }
 
 .site-body {
@@ -242,14 +247,14 @@ body {
 		--search-tag-column-max: 3;
 	}
 	.site-header {
-		grid-template-rows: minmax(4em, auto) 1fr;
-		grid-template-columns: 3.5em minmax(auto, var(--search-width)) auto;
+		grid-template-rows: 1fr minmax(4em, auto);
+		grid-template-columns: 12em minmax(auto, var(--search-width)) auto;
 		grid-template-areas: 
-			"branding     search      account"
-			"navigation navigation navigation";
-
-		.site-name {
-			display: none;
+			"branding navigation account"
+			"branding search     search";
+		
+		.branding {
+			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
 		}
 		.asset-search {
 			display: grid;
