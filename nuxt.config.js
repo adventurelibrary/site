@@ -15,7 +15,8 @@ const css = [
   'styles/modal.scss',
   'styles/controls.scss',
   'styles/asset.scss',
-  'styles/styles.scss'
+  'styles/styles.scss',
+  'styles/toasts.scss'
 ]
 const ignore = []
 const plugins = [

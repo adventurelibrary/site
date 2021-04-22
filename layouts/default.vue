@@ -26,7 +26,7 @@ B
 				Menu
 			</button>
 
-			<div class="account-actions">				
+			<div class="account-actions">
 				<template v-if="isLoggedIn">
 					<a class="logout-button" @click="logout">Logout</a>
 					<figure class="member-avatar">
@@ -157,7 +157,7 @@ export default class Default extends Vue {
 
 	async logout () {
 		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
-		
+
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
 	}

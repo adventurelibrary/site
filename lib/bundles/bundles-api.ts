@@ -56,3 +56,8 @@ export function newBundlesAjax () : Ajax<BundlesResponse> {
 		bundles: []
 	})
 }
+export async function addAssetToBundles (assetId: string, bundleIds: string[]) {
+	await api.post(`/add-asset-to-bundles?id=${assetId}`, {
+		bundleIds: bundleIds
+	})
+}

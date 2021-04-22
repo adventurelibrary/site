@@ -20,6 +20,7 @@ import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
 import {Asset} from "~/lib/assets/asset-types";
 import MyBundleSelector from "~/modules/bundles/components/MyBundleSelector.vue";
+import {addAssetToBundles} from "~/lib/bundles/bundles-api";
 
 @Component({
 	components: {
@@ -43,8 +44,15 @@ export default class AddAssetToBundleModal extends Vue {
 		})
 	}
 
-	addToBundles () {
-		alert('Adding ' + this.asset.name + ' to ' + this.bundleIds.length + 'bundle(s)')
+	async addToBundles () {
+		try {
+			await addAssetToBundles(this.asset.id, this.bundleIds)
+			this.notifySuccess('Added asset to ' + this.bundleIds.length + ' bundle' + (this.bundleIds.length == 1 ? '' : 's'))
+			await this.$store.dispatch('closeAllModals')
+		} catch (ex) {
+			console.log('ex', ex)
+			this.notifyError(ex.toString())
+		}
 	}
 }
 </script>
