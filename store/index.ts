@@ -162,13 +162,16 @@ export const mutations = {
 }
 
 export const actions = {
-	notify({commit}: ActionParams, {msg, type, duration = 2500} : {msg: string, type: ToastType, duration?: number}) {
+	notify({commit}: ActionParams, {msg, type, duration = 5000} : {msg: string, type: ToastType, duration?: number}) {
 		const id = newToastId()
 		commit('addToast', {
 			msg,
 			id: id,
 			type: type
 		})
+		setTimeout(() => {
+			commit('removeToast', id)
+		}, duration)
 	},
 	notifySuccess ({dispatch}: ActionParams, msg: string) {
 		dispatch('notify', {

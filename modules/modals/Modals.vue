@@ -10,7 +10,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Getter, State} from "nuxt-property-decorator";
+import {Component, Getter, State, Watch} from "nuxt-property-decorator";
 import LoginModal from "~/modules/modals/LoginModal.vue";
 import RegisterModal from "~/modules/modals/RegisterModal.vue";
 import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetToBundleModal.vue";
@@ -30,6 +30,15 @@ export default class Modals extends Vue {
 	@State(state => state.modals.register)  showingRegisterModal : boolean
 	@State(state => state.modals.addToBundle)  showingAddAssetToBundle : boolean
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
+
+	@Watch('$route')
+	routeWatcer () {
+		console.log('route changed, closing all modals')
+		// This is here so that if a user clicks a link that appears in the modal
+		// that modal won't still be there when they navigate to that new page
+		this.$store.dispatch('closeAllModals')
+	}
+
 
 	// TODO: Add an event listener for someone hitting the back button
 	// We might want to close modals on back button
