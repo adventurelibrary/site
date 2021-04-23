@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
-import {computeAjaxList, doAjax, newAjax} from "~/lib/ajax";
+import {computeAjaxList, doAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
 import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";

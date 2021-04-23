@@ -169,9 +169,6 @@ export const actions = {
 			id: id,
 			type: type
 		})
-		setTimeout(() => {
-			commit('removeToast', id)
-		}, duration)
 	},
 	notifySuccess ({dispatch}: ActionParams, msg: string) {
 		dispatch('notify', {

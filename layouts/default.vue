@@ -1,3 +1,4 @@
+B
 <template>
 	<main class="body">
 		<div class="shade"
@@ -23,7 +24,7 @@
 				<i class="ci-hamburger" title="Menu"></i>
 			</button>
 
-			<div class="account-actions">				
+			<div class="account-actions">
 				<template v-if="isLoggedIn">
 					<a class="logout-button" @click="logout">Logout</a>
 					<figure class="member-avatar">
@@ -48,7 +49,7 @@
 		</main>
 		<footer class="site-footer">
 			<h1 class="footer-heading">Adventure Library</h1>
-			<p class="copyright-notice">Copyright text</p>
+			<p class="copyright-notice">Copyright Current Year</p>
 			<nav class="footer-links">
 				<ul>
 					<li><a href="">Link 1</a></li>
@@ -154,7 +155,7 @@ export default class Default extends Vue {
 
 	async logout () {
 		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
-		
+
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
 	}
