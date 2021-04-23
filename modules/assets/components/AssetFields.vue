@@ -36,7 +36,7 @@ import Textarea from "~/components/forms/Textarea.vue";
 import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
-import Select from "~/components/forms/Select.vue";
+import Select from "~/components/forms/SelectGroup.vue";
 import {VisibilityOptions} from "~/lib/assets/asset-consts";
 import {SelectOption} from "~/lib/helpers";
 

@@ -3,6 +3,7 @@ import {Asset} from "~/lib/assets/asset-types";
 export type BundleFields = {
 	name: string
 	description: string
+	public: boolean
 
 }
 export type Bundle = BundleFields & {

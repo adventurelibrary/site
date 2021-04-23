@@ -13,7 +13,7 @@ api.interceptors.response.use((response) => {
 	if (err.response && err.response.body && err.response.data && err.response.data.error) {
 		return Promise.reject(err.response.data.error)
 	}
-	return Promise.reject('Err with request' + err.toString())
+	return Promise.reject(err.toString())
 })
 
 api.interceptors.request.use(function (config) {

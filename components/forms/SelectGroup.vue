@@ -15,7 +15,7 @@ import Vue, {PropType} from "vue"
 import FormGroup from "./FormGroup.vue";
 
 export default Vue.extend({
-	name: 'Select',
+	name: 'SelectGroup',
 	components: {
 		FormGroup: FormGroup
 	},

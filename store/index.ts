@@ -4,22 +4,26 @@ import {User} from "~/lib/users/user-types";
 import {UserTracking} from "~/lib/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/lib/assets/asset-types";
+import {Bundle} from "~/lib/bundles/bundle-types";
 Vue.use(Vuex)
 
 type State = {
 	addToBundleAsset: Asset | null,
-	createBundleAsset: Asset | null
 	breadcrumbs: any[],
+	createBundleAsset: Asset | null
+	editBundle: Bundle | null,
 	jwt: string,
 	login: {
 		working: boolean,
 		error: string
 	}
+	// Keys here need to be also added to the ModalKeys type
 	modals: {
+		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
+		createBundle: boolean
+		editBundle: boolean,
 		login: boolean,
 		register: boolean,
-		addToBundle: boolean,
-		createBundle: boolean
 	}
 	toasts: Toast[],
 	user: User | null,
@@ -28,7 +32,8 @@ type State = {
 
 type ToastType = 'success' | 'danger' | 'info'
 
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle'
+// Each key here needs to be added to the `modals` prop of the state
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle'
 
 export type Toast = {
 	id: number
@@ -58,6 +63,7 @@ export const state = () : State => {
 		addToBundleAsset: null,
 		breadcrumbs: [],
 		createBundleAsset: null,
+		editBundle: null,
 		jwt: '',
 		toasts: [],
 		user: null,
@@ -73,6 +79,7 @@ export const state = () : State => {
 		modals: {
 			addToBundle: false,
 			createBundle: false,
+			editBundle: false,
 			login: false,
 			register: false
 		},
@@ -149,6 +156,9 @@ export const mutations = {
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 	},
+	editBundle (state: State, bundle: Bundle | null) {
+		state.editBundle = bundle
+	},
 	createBundleAsset (state: State, asset: Asset | null) {
 		state.createBundleAsset = asset
 	},
@@ -211,6 +221,14 @@ export const actions = {
 			value: true
 		})
 		commit('addToBundleAsset', asset)
+	},
+	openEditBundleModal ({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
+		console.log('edit this', bundle)
+		commit('modal', {
+			key: 'editBundle',
+			value: true
+		})
+		commit('editBundle', bundle)
 	},
 	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {

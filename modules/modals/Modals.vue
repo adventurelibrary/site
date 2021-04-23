@@ -6,6 +6,7 @@
 		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 		<AddAssetToBundle v-if="showingAddAssetToBundle" />
 		<CreateBundleModal v-if="showingCreateBundle" />
+		<EditBundleModal v-if="showingEditBundle" />
 	</div>
 </template>
 <script lang="ts">
@@ -15,9 +16,11 @@ import LoginModal from "~/modules/modals/LoginModal.vue";
 import RegisterModal from "~/modules/modals/RegisterModal.vue";
 import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetToBundleModal.vue";
 import CreateBundleModal from "~/modules/bundles/components/CreateBundleModal.vue";
+import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
 
 @Component({
 	components: {
+		EditBundleModal,
 		AddAssetToBundle: AddAssetToBundleModal,
 		LoginModal: LoginModal,
 		RegisterModal: RegisterModal,
@@ -30,6 +33,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.register)  showingRegisterModal : boolean
 	@State(state => state.modals.addToBundle)  showingAddAssetToBundle : boolean
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
+	@State(state => state.modals.editBundle)  showingEditBundle : boolean
 
 	@Watch('$route')
 	routeWatcer () {

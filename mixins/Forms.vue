@@ -3,7 +3,13 @@ import FormErrors from "~/components/forms/FormErrors.vue";
 import Vue from "vue"
 import {Component} from "nuxt-property-decorator";
 
-export const newForm = (data = {}) => {
+export type Form = {
+	data: any,
+	error: string,
+	submitting: boolean
+}
+
+export const newForm = (data = {}) : Form => {
 	return {
 		data: data,
 		error: '',
@@ -54,7 +60,7 @@ export default class FormMixin extends Vue {
 			console.log('caught this', ex)
       this.form.error = ex.toString()
       this.form.submitting = false
-      this.notifyError('Error submitting form:' + ex.toString())
+      //this.notifyError('Error submitting form:' + ex.toString())
     }
   }
 }
