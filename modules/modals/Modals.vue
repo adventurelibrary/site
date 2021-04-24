@@ -6,7 +6,8 @@
 		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 		<AddAssetToBundle v-if="showingAddAssetToBundle" />
 		<CreateBundleModal v-if="showingCreateBundle" />
-		<EditBundleModal v-if="showingEditBundle" />
+		<EditBundleModal v-if="showingBundleEdit" />
+		<BundleAddAssetsModal v-if="showBundleAddAssets" />
 	</div>
 </template>
 <script lang="ts">
@@ -17,9 +18,11 @@ import RegisterModal from "~/modules/modals/RegisterModal.vue";
 import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetToBundleModal.vue";
 import CreateBundleModal from "~/modules/bundles/components/CreateBundleModal.vue";
 import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
+import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsModal.vue";
 
 @Component({
 	components: {
+		BundleAddAssetsModal,
 		EditBundleModal,
 		AddAssetToBundle: AddAssetToBundleModal,
 		LoginModal: LoginModal,
@@ -33,7 +36,8 @@ export default class Modals extends Vue {
 	@State(state => state.modals.register)  showingRegisterModal : boolean
 	@State(state => state.modals.addToBundle)  showingAddAssetToBundle : boolean
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
-	@State(state => state.modals.editBundle)  showingEditBundle : boolean
+	@State(state => state.modals.bundleEdit)  showingBundleEdit : boolean
+	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
 
 	@Watch('$route')
 	routeWatcer () {

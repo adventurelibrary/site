@@ -22,9 +22,11 @@ type State = {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
 		createBundle: boolean
 		editBundle: boolean,
+		bundleAddAssets: boolean,
 		login: boolean,
 		register: boolean,
 	}
+	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
 	user: User | null,
 	userTracking: UserTracking
@@ -33,7 +35,7 @@ type State = {
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets'
 
 export type Toast = {
 	id: number
@@ -62,6 +64,7 @@ export const state = () : State => {
 	return {
 		addToBundleAsset: null,
 		breadcrumbs: [],
+		bundleAddAssetsBundle: null,
 		createBundleAsset: null,
 		editBundle: null,
 		jwt: '',
@@ -78,10 +81,11 @@ export const state = () : State => {
 		},
 		modals: {
 			addToBundle: false,
+			bundleAddAssets: false,
 			createBundle: false,
 			editBundle: false,
 			login: false,
-			register: false
+			register: false,
 		},
 	}
 }
@@ -156,6 +160,9 @@ export const mutations = {
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 	},
+	bundleAddAssetsBundle (state: State, bundle: Bundle | null) {
+		state.bundleAddAssetsBundle = bundle
+	},
 	editBundle (state: State, bundle: Bundle | null) {
 		state.editBundle = bundle
 	},
@@ -199,16 +206,6 @@ export const actions = {
 		await logout()
 		commit('user', null)
 	},
-	login ({commit} : ActionParams, {username, password} : LoginParams) {
-		commit('login.working', true)
-		setTimeout(() => {
-			commit('user', {
-				id: new Date().getTime().toString(),
-				username: 'Mrs Username',
-			})
-			commit('login.working', false)
-		}, 500)
-	},
 	openLoginModal ({commit} : ActionParams) {
 		commit('modal', {
 			key: 'login',
@@ -222,8 +219,14 @@ export const actions = {
 		})
 		commit('addToBundleAsset', asset)
 	},
+	openBundleAddAssetsModal({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
+		commit('modal', {
+			key: 'bundleAddAssets',
+			value: true
+		})
+		commit('bundleAddAssetsBundle', bundle)
+	},
 	openEditBundleModal ({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
-		console.log('edit this', bundle)
 		commit('modal', {
 			key: 'editBundle',
 			value: true

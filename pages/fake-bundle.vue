@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<button type="button" @click="addAssets">Add Assets</button>
 		<button type="button" @click="openEditBundle">Edit Bundle</button>
 		<button type="button" @click="deleteBundle">Delete Bundle</button>
 	</div>
@@ -22,6 +23,13 @@ export default class FakeBundle extends Vue {
 
 	async openEditBundle () {
 		this.$store.dispatch('openEditBundleModal', {
+			bundle: this.bundle
+		})
+	}
+
+	async addAssets () {
+		console.log('add')
+		this.$store.dispatch('openBundleAddAssetsModal', {
 			bundle: this.bundle
 		})
 	}

@@ -91,7 +91,7 @@ import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/lib/asset
 import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
-import {stringToSortDirection} from "~/lib/assets/asset-helpers";
+import {newSearchOptions, stringToSortDirection} from "~/lib/assets/asset-helpers";
 import {Category} from "~/lib/categories/categories-types";
 
 const actions = ['category', 'creator', 'tag']
@@ -117,7 +117,9 @@ class AssetSearch extends Vue {
 	// The index of the active highlighted item from the child component
 	activeChildActiveItem : number
 
-	@Prop() options : AssetSearchOptions
+	@Prop({
+		default: newSearchOptions
+	}) options : AssetSearchOptions
 
 	enter (e : any) {
 		if (e) {

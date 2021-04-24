@@ -140,6 +140,8 @@ class AssetsIndexPage extends Vue {
 		this.loadingMore = false
 	}
 
+	// Performs a search based on the current parmeters stored in this.search, then overrites
+	// the local list of assets
 	async loadSearch (skipLoading = false) {
 		const fn = async () => {
 			return await searchAssets(this.search)
