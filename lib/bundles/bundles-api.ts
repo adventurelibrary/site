@@ -18,7 +18,10 @@ export async function getBundle (id: string)  : Promise<BundleResponse> {
 	return res.data
 }
 
-export async function getMyBundles () : Promise<BundlesResponse> {
+export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
+	const limit = 20
+	const start = (page - 1) * limit
+	console.log('Get the from ' + start + ' to ' + (start+limit) + ', more or less')
 	return new Promise((res) => {
 		setTimeout(() => {
 			res({
@@ -30,12 +33,12 @@ export async function getMyBundles () : Promise<BundlesResponse> {
 					numAssets: 2
 				}, {
 					id: '34dagdsagdsag',
-					name: 'Forest Maps',
+					name: 'Forest Maps (page ' + page + ')',
 					description: '',
 					public: true,
 					numAssets: 3
 				}],
-				total: 1,
+				total: 124,
 			})
 		}, 500)
 	})

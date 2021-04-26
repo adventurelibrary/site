@@ -41,8 +41,8 @@ B
 				</template>
 			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
-				<li><a href="">About Us</a></li>
-				<li><a href="">Purchase Coins</a></li>
+				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
+        <li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
 				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
 			</ul>
 		</header>
