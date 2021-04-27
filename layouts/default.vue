@@ -6,13 +6,10 @@ B
 			v-on:click="hideOverlays()">
 		</div>
 		<header class="site-header">
-			<figure class="logo">
-				<NuxtLink class="brand" :to="{name: 'index'}">
-					<!-- intentionally empty -->
-				</NuxtLink>
-			</figure>
-			<!--h1 class="site-name">Adventure Library</h1-->
-
+			<NuxtLink class="branding" :to="{name: 'index'}">
+				<h1 class="site-name">Adventure Library</h1>
+			</NuxtLink>
+			
 			<AssetSearchRouter :visible="overlays.search"/>
 
 			<button class="search-button"

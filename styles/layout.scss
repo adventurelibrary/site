@@ -1,10 +1,12 @@
 $media-small: 512px;
 $media-medium: 700px;
+$media-normal: 850px;
 $media-large: 1220px;
 
 :root {
 	--search-width: 100vw;
 	--header-height: 4.5em;
+	--logo-width: 1fr;
 	
 	--body-width: 92vw;
 
@@ -52,30 +54,33 @@ body {
 	align-items: center;
 	padding: .5em 2.5em;
 	grid-template-rows: 1fr;
-	grid-template-columns: 1fr 3em 3em;
+	grid-template-columns: var(--logo-width) 3em 3em;
 	grid-template-areas: 
 		"branding search-button menu-button";
 
 	column-gap: 1.2em;
 
-	.logo {
+	a[href] {
+		color: currentColor;
+		text-decoration: none;
+	}
+
+	.branding {
 		margin: 0;
 		grid-area: branding;
+		display: grid;
 
-		.brand {
-			display: grid;
-			width: 100%;
-			height: 100%;
-			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: contain;
+		background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
+		background-position: left;
+		background-repeat: no-repeat;
+		background-size: contain;
 
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: contain;
-			}
+		align-self: stretch;
+
+		color: currentColor;
+
+		.site-name {
+			display: none;
 		}
 	}
 	/*.site-name {
@@ -245,15 +250,17 @@ body {
 		--header-height: 9em;
 		--search-width: 55em;
 		--search-tag-column-max: 3;
+		--logo-width: 8em;
 	}
 	.site-header {
-		grid-template-rows: 1fr minmax(4em, auto);
-		grid-template-columns: 12em minmax(auto, var(--search-width)) auto;
+		grid-template-rows: auto minmax(4em, auto);
+		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width)) auto;
 		grid-template-areas: 
 			"branding navigation account"
 			"branding search     search";
 		
 		.branding {
+			background-position: center;
 			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
 		}
 		.asset-search {
@@ -289,9 +296,15 @@ body {
 		display: none;
 	}
 }
+@media (min-width: $media-normal) {
+	:root {
+		--logo-width: 12em;
+	}
+}
 @media (min-width: $media-large) {
 	:root {
 		--body-width: 1110px;
 		--search-tag-column-max: 4;
+		--logo-width: 12em;
 	}
 }
