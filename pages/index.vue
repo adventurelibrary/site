@@ -1,12 +1,15 @@
 <template>
-	<section class="container">
+	<div class="page-wrapper header-page home-page">
+		<!--header class="page-header">
+			<img src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+			<h2>Featured Assets</h2>
+		</header-->
 		<section class="featured-assets search-page">
-			<h3>Featured Assets</h3>
 			<ul class="search-results">
 				<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
 			</ul>
 		</section>
-	</section>
+	</div>
 </template>
 
 <script lang="ts">

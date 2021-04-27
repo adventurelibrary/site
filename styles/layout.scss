@@ -202,12 +202,6 @@ body {
 
 .site-body {
 	grid-area: body;
-	justify-content: center;
-	display: grid;
-
-	> article {
-		max-width: var(--body-width);
-	}
 }
 
 .site-footer {
