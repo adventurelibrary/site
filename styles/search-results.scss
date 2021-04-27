@@ -18,7 +18,7 @@
 	position: relative;
 	display: grid;
 	justify-content: normal;
-	grid-template-rows: 3fr 1fr;
+	grid-template-rows: 4fr 1fr;
 	grid-template-areas:
 		"thumbnail"
 		"meta";
@@ -28,10 +28,6 @@
 	overflow: hidden;
 	box-shadow: 0 0 5px black;
 
-/*	&:hover {
-		grid-template-rows: 1fr 2fr;
-	}
-*/
 	.link {
 		grid-area: thumbnail;
 	}
@@ -46,17 +42,19 @@
 	}
 	.meta {
 		grid-area: meta;
-		background-color: #333;
-		padding: .1em 1.25em;
+		background-color: #333A;
+		box-shadow: 0px 0px 5px 5px #333A;
+		padding: .3em 1.25em;
 		display: grid;
 		align-items: center;
-		align-content: center;
-		//row-gap: .5em;
-		grid-template-rows: 1fr 1fr;
+		align-content: start;
+		row-gap: .5em;
+		grid-template-rows: auto auto 1fr;
 		grid-template-columns: auto auto;
 		grid-template-areas: 
 			"title title"
-			"author price";
+			"author price"
+			"description description";
 
 		.title {
 			grid-area: title;
@@ -74,8 +72,9 @@
 			margin: 0;
 			font-size: 1em;
 			font-weight: normal;
+			white-space: nowrap;
 
-			label {
+			.author-label {
 				color: hsl(0deg, 0%, 87%);
 			}
 			a {
@@ -87,6 +86,7 @@
 			margin: 0;
 			grid-area: price;
 			justify-self: end;
+			white-space: nowrap;
 			
 			h4 { margin: 0 }
 			.coin-price {
@@ -98,6 +98,8 @@
 		}
 		.description {
 			display: none;
+			grid-area: description;
+			align-self: start;
 		}
 		.search-meta {
 			display: none;
@@ -129,6 +131,19 @@
 		.button {
 			padding: 0;
 			background-color: unset;
+		}
+	}
+
+	&:hover {
+		grid-template-rows: 1fr auto;
+
+		.meta {
+			padding: 1em 1.25em;
+			background-color: #333E;
+			box-shadow: 0px 0px 2px 2px #333E;
+		}
+		.description {
+			display: grid;
 		}
 	}
 }
