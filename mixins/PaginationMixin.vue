@@ -27,7 +27,7 @@ export default class PaginationMixin extends Vue {
 	}
 
 	@Watch('$route')
-  watchActivePage (newVal, oldVal) {
+  watchActivePage (newVal : Route, oldVal : Route) {
     const after = getRouteQueryPage(newVal)
     const before = getRouteQueryPage(oldVal)
     if (after != before) {

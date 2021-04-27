@@ -21,7 +21,7 @@
 import {Component, mixins} from "nuxt-property-decorator";
 import {computeAjaxList, computeAjaxTotal, doAjax, newAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
-import {getMyBundles} from "~/lib/bundles/bundles-api";
+import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import PaginationMixin, {getRouteQueryPage} from "~/mixins/PaginationMixin.vue";
 import {Context} from "@nuxt/types";
 
@@ -29,7 +29,7 @@ import {Context} from "@nuxt/types";
   middleware: ['require_auth']
 })
 export default class MyBundles extends mixins(PaginationMixin) {
-  bundlesAjax = newAjax<BundlesResponse>()
+  bundlesAjax = newBundlesAjax()
 
   // This function fires client side when the ?page query parameter is changed
   // Nuxt won't do a full route change cycle (which would call asyncData) if only
@@ -42,7 +42,7 @@ export default class MyBundles extends mixins(PaginationMixin) {
   }
 
   async asyncData (ctx : Context) {
-    const ajax = newAjax<BundlesResponse>()
+    const ajax = newBundlesAjax()
     const page = getRouteQueryPage(ctx.route)
     await doAjax<BundlesResponse>(ajax, async () => {
       return await getMyBundles(page)
