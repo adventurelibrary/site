@@ -1,5 +1,5 @@
 $media-small: 512px;
-$media-medium: 730px;
+$media-medium: 760px;
 $media-normal: 850px;
 $media-large: 1220px;
 
@@ -60,6 +60,8 @@ body {
 
 	column-gap: 1.2em;
 
+	z-index: 1;
+
 	a[href] {
 		color: currentColor;
 		text-decoration: none;
@@ -112,8 +114,9 @@ body {
 	}
 
 	.account-actions {
-		display: none;
-
+		grid-auto-flow: column;
+		justify-content: start;
+		align-items: center;
 		column-gap: 1ch;
 
 		.member-avatar {
@@ -155,6 +158,7 @@ body {
 		z-index: 1;
 
 		grid-auto-flow: row;
+		align-items: center;
 		
 		column-gap: 2em;
 		row-gap: 1em;
@@ -164,7 +168,7 @@ body {
 		background-color: inherit;
 
 		li {
-			display: block;
+			display: grid;
 			white-space: nowrap;
 		}
 		a {
@@ -254,10 +258,10 @@ body {
 	}
 	.site-header {
 		grid-template-rows: auto auto;
-		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width)) auto;
+		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width));
 		grid-template-areas: 
-			"branding navigation account"
-			"branding search     search";
+			"branding navigation"
+			"branding search    ";
 		
 		padding: 1em 2.5em;
 
@@ -273,25 +277,27 @@ body {
 			width: unset;
 			margin: .25em 0;
 		}
-		.account-actions {
-			grid-area: account;
-			display: grid;
-			grid-auto-flow: column;
-			white-space: nowrap;
-			align-items: center;
-		}
+
 		> button {
 			display: none;
 		}
 		.main-navigation {
 			position: static;
-			display: grid;
+			display: flex;
+			flex-wrap: wrap;
 			grid-area: navigation;
-			justify-self: start;
-			grid-auto-flow: column;
 			z-index: unset;
 			width: unset;
 			padding: 0;
+
+			li {
+				order: 1;
+			}
+			.account-actions {
+				flex-grow: 1;
+				order: 2;
+				justify-content: end;
+			}
 		}
 	}
 	.shade[visible] {

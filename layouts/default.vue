@@ -17,28 +17,29 @@ B
 				<i class="ci-search" title="Search"></i>
 			</button>
 			<button class="menu-button"
-				v-on:click="overlays.menu = true">
+				v-on:click="overlays.menu = !overlays.menu">
 				<i class="ci-hamburger" title="Menu"></i>
 			</button>
 
-			<div class="account-actions">
-				<template v-if="isLoggedIn">
-					<a class="logout-button" @click="logout">Logout</a>
-					<figure class="member-avatar">
-						<i class="ci-user"></i>
-						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
-					</figure>
-					<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
-				</template>
-				<template v-else>
-					<a @click="openLogin">Login</a>
-					<a @click="openRegister">Register</a>
-				</template>
-			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
+				<li class="account-actions">
+					<template v-if="isLoggedIn">
+						<a class="logout-button" @click="logout">Logout</a>
+						<figure class="member-avatar">
+							<i class="ci-user"></i>
+							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
+						</figure>
+						<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
+					</template>
+					<template v-else>
+						<a @click="openLogin">Login</a>
+						<a @click="openRegister">Register</a>
+					</template>
+				</li>
 				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
-        <li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
-				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
+        		<li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
+				<li><NuxtLink to="/mockups/filler">Buy Coins</NuxtLink></li>
+				<!--li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li-->
 			</ul>
 		</header>
 		<main class="site-body">
