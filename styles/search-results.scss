@@ -131,4 +131,17 @@
 			background-color: unset;
 		}
 	}
+
+	&:hover {
+		grid-template-rows: 1fr auto;
+
+		.meta {
+			padding: 1em 1.25em;
+			background-color: #333E;
+			box-shadow: 0px 0px 2px 2px #333E;
+		}
+		.description {
+			display: grid;
+		}
+	}
 }
