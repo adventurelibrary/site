@@ -11,7 +11,7 @@
 				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
 			</h3>
 			<h4 class="author">
-				<label>by</label>
+				<span class="author-label">by</span>
 				<span>
 					<!-- Should be a profile link -->
 					<a href="">{{asset.creatorName}}</a>
@@ -20,7 +20,7 @@
 			<figure class="pricing">
 				<h4 class="coin-price">
 					<span class="amount"><!--{{asset.price}}-->$$</span>
-					<label class="currency">Coins</label>
+					<span class="currency">Coins</span>
 				</h4>
 			</figure>
 			<div class="description">
