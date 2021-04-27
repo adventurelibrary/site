@@ -6,44 +6,40 @@ B
 			v-on:click="hideOverlays()">
 		</div>
 		<header class="site-header">
-			<figure class="logo">
-				<NuxtLink class="brand" :to="{name: 'index'}">
-					<img alt="Adventure Library"
-						src="https://cdn.discordapp.com/attachments/808965286915997726/822728272654630972/al-logo-white.png"
-						>
-				</NuxtLink>
-			</figure>
-			<h1 class="site-name">Adventure Library</h1>
-
+			<NuxtLink class="branding" :to="{name: 'index'}">
+				<h1 class="site-name">Adventure Library</h1>
+			</NuxtLink>
+			
 			<AssetSearchRouter :visible="overlays.search"/>
 
 			<button class="search-button"
 				v-on:click="overlays.search = true">
-				Search
+				<i class="ci-search" title="Search"></i>
 			</button>
 			<button class="menu-button"
-				v-on:click="overlays.menu = true">
-				Menu
+				v-on:click="overlays.menu = !overlays.menu">
+				<i class="ci-hamburger" title="Menu"></i>
 			</button>
 
-			<div class="account-actions">
-				<template v-if="isLoggedIn">
-					<a class="logout-button" @click="logout">Logout</a>
-					<figure class="member-avatar">
-						<i class="ci-user"></i>
-						<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
-					</figure>
-					<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
-				</template>
-				<template v-else>
-					<a @click="openLogin">Login</a>
-					<a @click="openRegister">Register</a>
-				</template>
-			</div>
 			<ul class="main-navigation" :visible="this.overlays.menu">
+				<li class="account-actions">
+					<template v-if="isLoggedIn">
+						<a class="logout-button" @click="logout">Logout</a>
+						<figure class="member-avatar">
+							<i class="ci-user"></i>
+							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
+						</figure>
+						<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
+					</template>
+					<template v-else>
+						<a @click="openLogin">Login</a>
+						<a @click="openRegister">Register</a>
+					</template>
+				</li>
 				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
-        <li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
-				<li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li>
+        		<li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
+				<li><NuxtLink to="/mockups/filler">Buy Coins</NuxtLink></li>
+				<!--li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li-->
 			</ul>
 		</header>
 		<main class="site-body">

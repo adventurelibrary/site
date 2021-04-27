@@ -1,10 +1,12 @@
 $media-small: 512px;
-$media-medium: 700px;
+$media-medium: 760px;
+$media-normal: 850px;
 $media-large: 1220px;
 
 :root {
 	--search-width: 100vw;
 	--header-height: 4.5em;
+	--logo-width: 1fr;
 	
 	--body-width: 92vw;
 
@@ -39,6 +41,10 @@ body {
 	margin: 0;
 }
 
+.site-header, .site-footer {
+	box-shadow: 0 0 3px #0000007d;
+}
+
 .site-header {
 	position: relative;
 	grid-area: header;
@@ -48,33 +54,42 @@ body {
 	align-items: center;
 	padding: .5em 2.5em;
 	grid-template-rows: 1fr;
-	grid-template-columns: 3em 1fr 3em 3em;
+	grid-template-columns: var(--logo-width) 3em 3em;
 	grid-template-areas: 
-		"branding name search-button menu-button";
+		"branding search-button menu-button";
 
 	column-gap: 1.2em;
 
-	.logo {
+	z-index: 1;
+
+	a[href] {
+		color: currentColor;
+		text-decoration: none;
+	}
+
+	.branding {
 		margin: 0;
 		grid-area: branding;
+		display: grid;
 
-		.brand {
-			display: grid;
-			width: 100%;
-			height: 100%;
+		background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
+		background-position: left;
+		background-repeat: no-repeat;
+		background-size: contain;
 
-			img {
-				width: 100%;
-				height: 100%;
-				object-fit: contain;
-			}
+		align-self: stretch;
+
+		color: currentColor;
+
+		.site-name {
+			display: none;
 		}
 	}
-	.site-name {
+	/*.site-name {
 		grid-area: name;
 		margin: 0;
 		font-size: 1em;
-	}
+	}*/
 
 	.asset-search {
 		display: none;
@@ -87,6 +102,7 @@ body {
 	}
 
 	> button {
+		font-size: 2em;
 		background: none;
 		border: none;
 		color: white;
@@ -98,8 +114,9 @@ body {
 	}
 
 	.account-actions {
-		display: none;
-
+		grid-auto-flow: column;
+		justify-content: start;
+		align-items: center;
 		column-gap: 1ch;
 
 		.member-avatar {
@@ -141,6 +158,7 @@ body {
 		z-index: 1;
 
 		grid-auto-flow: row;
+		align-items: center;
 		
 		column-gap: 2em;
 		row-gap: 1em;
@@ -150,7 +168,7 @@ body {
 		background-color: inherit;
 
 		li {
-			display: block;
+			display: grid;
 			white-space: nowrap;
 		}
 		a {
@@ -179,13 +197,17 @@ body {
 	width: 100vw;
 	height: 100vh;
 	background: rgba(0, 0, 0, .5);
+	z-index: 1;
 }
 
 .site-body {
 	grid-area: body;
 	justify-content: center;
 	display: grid;
-	grid-template-columns: var(--body-width);
+
+	> article {
+		max-width: var(--body-width);
+	}
 }
 
 .site-footer {
@@ -229,19 +251,23 @@ body {
 }
 @media (min-width: $media-medium) {
 	:root {
-		--header-height: 9em;
+		--header-height: 8.5em;
 		--search-width: 55em;
 		--search-tag-column-max: 3;
+		--logo-width: 8em;
 	}
 	.site-header {
-		grid-template-rows: minmax(4em, auto) 1fr;
-		grid-template-columns: 3.5em minmax(auto, var(--search-width)) auto;
+		grid-template-rows: auto auto;
+		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width));
 		grid-template-areas: 
-			"branding     search      account"
-			"navigation navigation navigation";
+			"branding navigation"
+			"branding search    ";
+		
+		padding: 1em 2.5em;
 
-		.site-name {
-			display: none;
+		.branding {
+			background-position: center;
+			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
 		}
 		.asset-search {
 			display: grid;
@@ -251,34 +277,42 @@ body {
 			width: unset;
 			margin: .25em 0;
 		}
-		.account-actions {
-			grid-area: account;
-			display: grid;
-			grid-auto-flow: column;
-			white-space: nowrap;
-			align-items: center;
-		}
+
 		> button {
 			display: none;
 		}
 		.main-navigation {
 			position: static;
-			display: grid;
+			display: flex;
+			flex-wrap: wrap;
 			grid-area: navigation;
-			justify-self: start;
-			grid-auto-flow: column;
 			z-index: unset;
 			width: unset;
 			padding: 0;
+
+			li {
+				order: 1;
+			}
+			.account-actions {
+				flex-grow: 1;
+				order: 2;
+				justify-content: end;
+			}
 		}
 	}
 	.shade[visible] {
 		display: none;
 	}
 }
+@media (min-width: $media-normal) {
+	:root {
+		--logo-width: 12em;
+	}
+}
 @media (min-width: $media-large) {
 	:root {
 		--body-width: 1110px;
 		--search-tag-column-max: 4;
+		--logo-width: 12em;
 	}
 }
