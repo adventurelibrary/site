@@ -1,0 +1,50 @@
+.bundle-select {
+	display: grid;
+	grid-template-rows: 2em auto;
+	gap: 1em;
+
+	.bundle-selector {
+		display: grid;
+		gap: 1em;
+
+		.bundle {
+			display: grid;
+			grid-template-columns: 2em 1fr auto auto;
+			align-items: center;
+			gap: .5em;
+			cursor: pointer;
+			
+			&:hover {
+				background: #1B1B1B;
+			}
+		}
+		.fake-image, .bundle-link { justify-self: end; }
+		.bundle-link {
+			color: currentColor;
+			text-decoration: none;
+		}
+	}
+}
+
+ul.bundle-selector {
+	margin: 0px;
+	padding: 0px;
+	list-style: inside;
+}
+
+.circle {
+	border-radius: 50%;
+	height: 20px;
+	width: 20px;
+	border: 2px solid #106466;
+}
+
+li.bundle.active .circle {
+	background: #1AA9C9;
+}
+
+.fake-image {
+	width: 100px;
+	height: 60px;
+	background: black;
+}

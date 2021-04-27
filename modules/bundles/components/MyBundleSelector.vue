@@ -1,23 +1,17 @@
 <template>
-	<div>
+	<section class="bundle-select">
 		<input type="text" v-model="filter" placeholder="Filter bundles" />
-		<div>
-			<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
-				<ul class="bundle-selector">
-					<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
-						<div class="circle"></div>
-						<div>
-							<strong>{{bundle.name}}</strong>
-							<a href="#bundle-page">{{bundle.numAssets}} Asset<S :num="bundle.numAssets" /></a>
-						</div>
-						<div class="fake-image">
-
-						</div>
-					</li>
-				</ul>
-			</LoadingContainer>
-		</div>
-	</div>
+		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
+			<ul class="bundle-selector">
+				<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
+					<div class="circle"></div>
+					<strong>{{bundle.name}}</strong>
+					<a class="bundle-link" href="#bundle-page">{{bundle.numAssets}} Asset<S :num="bundle.numAssets" /></a>
+					<img class="fake-image">
+				</li>
+			</ul>
+		</LoadingContainer>
+	</section>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
@@ -86,37 +80,3 @@ export default class MyBundleSelector extends Vue {
 	}
 }
 </script>
-<style scoped>
-ul.bundle-selector {
-	margin: 0px;
-	padding: 0px;
-	list-style: inside;
-}
-
-li.bundle {
-	display: flex;
-	padding: 1em;
-}
-
-li.bundle:hover {
-	background: #1B1B1B;
-	cursor: pointer;
-}
-
-.circle {
-	border-radius: 50%;
-	height: 20px;
-	width: 20px;
-	border: 2px solid #106466;
-}
-
-li.bundle.active .circle {
-	background: #1AA9C9;
-}
-
-.fake-image {
-	width: 100px;
-	height: 60px;
-	background: black;
-}
-</style>

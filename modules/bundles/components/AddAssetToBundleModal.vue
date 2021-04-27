@@ -5,12 +5,10 @@
 			@close="closeModal">
 		<slot>
 			<button @click="createNewBundle" type="button">Create New Bundle</button>
-			<div>
-				<MyBundleSelector v-model="bundleIds" />
-				<button @click="addToBundles" :disable="bundleIds.length == 0">
-					<span>Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
-				</button>
-			</div>
+			<MyBundleSelector v-model="bundleIds" />
+			<button @click="addToBundles" :disable="bundleIds.length == 0">
+				<span>Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
+			</button>
 		</slot>
 	</Modal>
 </template>

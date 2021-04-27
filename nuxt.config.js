@@ -15,6 +15,7 @@ const css = [
   'styles/modal.scss',
   'styles/controls.scss',
   'styles/asset.scss',
+  'styles/bundles.scss',
   'styles/styles.scss',
   'styles/toasts.scss'
 ]

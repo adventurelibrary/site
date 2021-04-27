@@ -80,7 +80,7 @@ $media-small: 512px;
 	}
 }
 
-.modal form {
+.modal form, .modal form .form-wrapper {
 	display: grid;
 	grid-auto-flow: row;
 	gap: 1em;

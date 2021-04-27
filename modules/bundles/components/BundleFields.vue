@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="form-wrapper">
 		<InputGroup
 				label="Name"
 				v-model="copy.name"
