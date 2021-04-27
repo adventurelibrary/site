@@ -72,8 +72,9 @@
 			margin: 0;
 			font-size: 1em;
 			font-weight: normal;
+			white-space: nowrap;
 
-			label {
+			.author-label {
 				color: hsl(0deg, 0%, 87%);
 			}
 			a {
@@ -85,6 +86,7 @@
 			margin: 0;
 			grid-area: price;
 			justify-self: end;
+			white-space: nowrap;
 			
 			h4 { margin: 0 }
 			.coin-price {
