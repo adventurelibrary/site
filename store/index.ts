@@ -4,23 +4,29 @@ import {User} from "~/lib/users/user-types";
 import {UserTracking} from "~/lib/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/lib/assets/asset-types";
+import {Bundle} from "~/lib/bundles/bundle-types";
 Vue.use(Vuex)
 
 type State = {
 	addToBundleAsset: Asset | null,
-	createBundleAsset: Asset | null
 	breadcrumbs: any[],
+	createBundleAsset: Asset | null
+	editBundle: Bundle | null,
 	jwt: string,
 	login: {
 		working: boolean,
 		error: string
 	}
+	// Keys here need to be also added to the ModalKeys type
 	modals: {
+		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
+		createBundle: boolean
+		editBundle: boolean,
+		bundleAddAssets: boolean,
 		login: boolean,
 		register: boolean,
-		addToBundle: boolean,
-		createBundle: boolean
 	}
+	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
 	user: User | null,
 	userTracking: UserTracking
@@ -28,7 +34,8 @@ type State = {
 
 type ToastType = 'success' | 'danger' | 'info'
 
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle'
+// Each key here needs to be added to the `modals` prop of the state
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets'
 
 export type Toast = {
 	id: number
@@ -57,7 +64,9 @@ export const state = () : State => {
 	return {
 		addToBundleAsset: null,
 		breadcrumbs: [],
+		bundleAddAssetsBundle: null,
 		createBundleAsset: null,
+		editBundle: null,
 		jwt: '',
 		toasts: [],
 		user: null,
@@ -72,9 +81,11 @@ export const state = () : State => {
 		},
 		modals: {
 			addToBundle: false,
+			bundleAddAssets: false,
 			createBundle: false,
+			editBundle: false,
 			login: false,
-			register: false
+			register: false,
 		},
 	}
 }
@@ -149,6 +160,12 @@ export const mutations = {
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 	},
+	bundleAddAssetsBundle (state: State, bundle: Bundle | null) {
+		state.bundleAddAssetsBundle = bundle
+	},
+	editBundle (state: State, bundle: Bundle | null) {
+		state.editBundle = bundle
+	},
 	createBundleAsset (state: State, asset: Asset | null) {
 		state.createBundleAsset = asset
 	},
@@ -162,13 +179,16 @@ export const mutations = {
 }
 
 export const actions = {
-	notify({commit}: ActionParams, {msg, type, duration = 2500} : {msg: string, type: ToastType, duration?: number}) {
+	notify({commit}: ActionParams, {msg, type, duration = 5000} : {msg: string, type: ToastType, duration?: number}) {
 		const id = newToastId()
 		commit('addToast', {
 			msg,
 			id: id,
 			type: type
 		})
+		setTimeout(() => {
+			commit('removeToast', id)
+		}, duration)
 	},
 	notifySuccess ({dispatch}: ActionParams, msg: string) {
 		dispatch('notify', {
@@ -186,16 +206,6 @@ export const actions = {
 		await logout()
 		commit('user', null)
 	},
-	login ({commit} : ActionParams, {username, password} : LoginParams) {
-		commit('login.working', true)
-		setTimeout(() => {
-			commit('user', {
-				id: new Date().getTime().toString(),
-				username: 'Mrs Username',
-			})
-			commit('login.working', false)
-		}, 500)
-	},
 	openLoginModal ({commit} : ActionParams) {
 		commit('modal', {
 			key: 'login',
@@ -208,6 +218,20 @@ export const actions = {
 			value: true
 		})
 		commit('addToBundleAsset', asset)
+	},
+	openBundleAddAssetsModal({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
+		commit('modal', {
+			key: 'bundleAddAssets',
+			value: true
+		})
+		commit('bundleAddAssetsBundle', bundle)
+	},
+	openEditBundleModal ({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
+		commit('modal', {
+			key: 'editBundle',
+			value: true
+		})
+		commit('editBundle', bundle)
 	},
 	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {

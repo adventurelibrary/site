@@ -7,6 +7,7 @@ function bundleFormDataToPayload (data: any, assetIds : string[]) : any {
 		bundle: {
 			name: data.name,
 			description: data.description,
+			public: data.public
 		},
 		assetIds: assetIds
 	}
@@ -17,22 +18,27 @@ export async function getBundle (id: string)  : Promise<BundleResponse> {
 	return res.data
 }
 
-export async function getMyBundles () : Promise<BundlesResponse> {
+export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
+	const limit = 20
+	const start = (page - 1) * limit
+	console.log('Get the from ' + start + ' to ' + (start+limit) + ', more or less')
 	return new Promise((res) => {
 		setTimeout(() => {
 			res({
 				bundles: [{
 					id: 'kfsdlasfdasfdsafa',
 					name: 'Dark Heresy Campaign',
+					public: true,
 					description: '',
 					numAssets: 2
 				}, {
 					id: '34dagdsagdsag',
-					name: 'Forest Maps',
+					name: 'Forest Maps (page ' + page + ')',
 					description: '',
+					public: true,
 					numAssets: 3
 				}],
-				total: 1,
+				total: 124,
 			})
 		}, 500)
 	})
@@ -48,6 +54,10 @@ export async function createBundle (formData : any, assetIds : string[]) {
 export async function updateBundle (id: string, formData : any) {
 	const payload = bundleFormDataToPayload(formData, [])
 	await api.put('/bundle?id=' + id, payload)
+}
+
+export async function deleteBundle (id: string) {
+	await api.delete('/bundle?id=' + id)
 }
 
 export function newBundlesAjax () : Ajax<BundlesResponse> {

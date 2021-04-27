@@ -45,6 +45,18 @@ export default class Pagination extends Vue {
 				label = 'Prev'
 			}
 
+			if (i == this.activePage + 1) {
+        label = 'Next'
+      }
+
+			if (i == numPages) {
+        label = 'Last'
+      }
+
+			if (i == 1) {
+        label = 'First'
+      }
+
 			if (this.activePage == 1 && i == 1) {
 				disabled = true
 			}

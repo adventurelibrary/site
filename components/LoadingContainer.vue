@@ -1,10 +1,14 @@
 <template>
 	<div role="loading-container">
 		<div v-if="loading">
-			Loading...
+      <slot name="loading">
+        Loading...
+      </slot>
 		</div>
 		<div v-if="error" class="alert alert-danger">
-			{{error}}
+      <slot name="error">
+        {{error}}
+      </slot>
 		</div>
 		<div v-if="!loading && !error">
 			<slot />
