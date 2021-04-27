@@ -46,32 +46,39 @@ B
 			<Nuxt />
 		</main>
 		<footer class="site-footer">
-			<h1 class="footer-heading">Adventure Library</h1>
-			<p class="copyright-notice">Copyright Current Year</p>
+			<!--h1 class="footer-heading">Adventure Library</h1-->
+			<img class="footer-heading" 
+				src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
 				<ul>
-					<li><a href="">Link 1</a></li>
-					<li><a href="">Link 2</a></li>
-					<li><a href="">Link 3</a></li>
-					<li><a href="">Link 4</a></li>
-					<li><a href="">Link 5</a></li>
+					<li><a href="">About Us</a></li>
+					<li><a href="">Terms of Service</a></li>
+					<li><a href="">FAQ</a></li>
+					<li><a href="">Feedback &amp; Support</a></li>
+					<li><a href="">Contact Us</a></li>
 				</ul>
 			</nav>
 			<section class="social-media">
 				<ul>
 					<li>
-						<a href="">
+						<a href="https://www.facebook.com/The-Adventure-Library-103147418541648">
 							<i class="ci-facebook"></i>
 						</a>
 					</li>
 					<li>
-						<a href="">
+						<a href="https://twitter.com/TheAdvLibrary">
 							<i class="ci-twitter"></i>
 						</a>
 					</li>
 					<li>
-						<a href="">
+						<a href="https://www.instagram.com/theadvlibrary/">
 							<i class="ci-instagram"></i>
+						</a>
+					</li>
+					<li>
+						<a href="https://discord.gg/cqTFTgpmHN">
+							<i class="ci-discord"></i>
 						</a>
 					</li>
 				</ul>

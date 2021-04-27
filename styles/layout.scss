@@ -211,6 +211,7 @@ body {
 	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
+	padding: 0 2em;
 
 	.copyright-notice {
 		text-align: center;
@@ -218,12 +219,13 @@ body {
 	.footer-links ul, .social-media ul {
 		display: grid;
 		grid-auto-flow: column;
-		gap: 4em;
+		gap: 1em;
 		padding: 0;
 		justify-content: center;
+		align-items: center;
 
 		li {
-			display: block;
+			display: grid;
 		}
 		a {
 			color: currentColor;
@@ -296,6 +298,11 @@ body {
 	}
 	.shade[visible] {
 		display: none;
+	}
+	.site-footer {
+		.footer-links ul, .social-media ul {
+			gap: 3em;
+		}
 	}
 }
 @media (min-width: $media-normal) {
