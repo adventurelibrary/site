@@ -1,10 +1,6 @@
 <template>
 	<article class="asset">
 
-		<section class="asset-preview" :style="`background-image: url(${asset.thumbnail});`">
-			<!-- Empty -->
-		</section>
-
 		<section class="asset-info">
 			<h1 class="asset-title">{{asset.name}}</h1>
 			<h3 class="asset-author">
@@ -13,8 +9,8 @@
 			</h3>
 			<div class="asset-description">
 				{{asset.description}}
+				ID: {{asset.id}}
 			</div>
-			<TagList :tags="asset.tags" />
 		</section>
 		
 		<section class="asset-downloads">
@@ -40,7 +36,7 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/lib/assets/asset-types";
-import { getAssetAjax} from "~/lib/assets/asset-api";
+import { getAssetAjax, getAssetById} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
@@ -71,6 +67,15 @@ class BundlePage extends Vue {
 	perPage = 5
 	loadingMore = false
 	scrollTimeout : NodeJS.Timeout
+
+	// static asset fetch by id	
+	/*
+		Example Asset IDs:
+		rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL
+		fWPd13YkAAEJaxsFDptS7ZZcfmppOreN
+		6L13wQqQbRfkVHkbPirNKQP0rQWTafRq
+	*/
+	//public Asset : Asset = getAssetById("rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL");
 
 	// setting header meta tags
 	head () {

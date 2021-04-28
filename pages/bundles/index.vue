@@ -9,6 +9,7 @@
 						<!--<BundleLink :asset="asset" class="link"></BundleLink>-->
 						<BundleLink>{{bundle.name}}</BundleLink>
 						<nuxt-link to="/bundle?id=123456">{{bundle.name}}</nuxt-link>
+						<nuxt-link to="/bundle/frozen-temple-of-the-king-5457-rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL">EXAMPLE BUNDLE PATH</nuxt-link>
 						<div v-for="asset in bundle" :key="asset.id">
 							<!-- fetch BundleResponse for bundle to get small thumbnail images from assets
 							display tiled in div for bundle -->
