@@ -1,6 +1,7 @@
 <template>
 	<Modal
 			:show="true"
+			class-name="bundle-add-assets-modal"
 			:title="`Add Assets to ${bundle.name}`"
 			@close="closeModal">
 		<slot>

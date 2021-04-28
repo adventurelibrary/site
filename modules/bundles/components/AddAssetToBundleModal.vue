@@ -2,6 +2,7 @@
 	<Modal
 			:show="true"
 			:title="`Add ${asset.name} to Bundles`"
+			class-name="add-asset-to-bundle"
 			@close="closeModal">
 		<slot>
 			<button @click="createNewBundle" type="button">Create New Bundle</button>

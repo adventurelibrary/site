@@ -1,5 +1,6 @@
 <template>
 	<div class="modal-container" v-show="showingModal">
+		Show Edit {{showingBundleEdit}}
 		<div class="modal-backdrop" @click="clickBackdrop">
 		</div>
 		<LoginModal v-if="showingLoginModal" :show="showingLoginModal" />
@@ -36,7 +37,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.register)  showingRegisterModal : boolean
 	@State(state => state.modals.addToBundle)  showingAddAssetToBundle : boolean
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
-	@State(state => state.modals.bundleEdit)  showingBundleEdit : boolean
+	@State(state => state.modals.editBundle)  showingBundleEdit : boolean
 	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
 
 	@Watch('$route')
@@ -59,6 +60,7 @@ export default class Modals extends Vue {
 	}
 
 	keyDown (e: KeyboardEvent) {
+		console.log('this', this.$store.state)
 		if (!this.showingModal) {
 			return
 		}

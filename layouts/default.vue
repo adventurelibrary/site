@@ -1,6 +1,6 @@
 B
 <template>
-	<main class="body">
+<main class="body"  :class="pageClass" >
 		<div class="shade"
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
@@ -9,7 +9,7 @@ B
 			<NuxtLink class="branding" :to="{name: 'index'}">
 				<h1 class="site-name">Adventure Library</h1>
 			</NuxtLink>
-			
+
 			<AssetSearchRouter :visible="overlays.search"/>
 
 			<button class="search-button"
@@ -47,7 +47,7 @@ B
 		</main>
 		<footer class="site-footer">
 			<!--h1 class="footer-heading">Adventure Library</h1-->
-			<img class="footer-heading" 
+			<img class="footer-heading"
 				src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
 			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
@@ -138,6 +138,11 @@ export default class Default extends Vue {
 
 	get shade() {
 		return Object.values(this.overlays).some(o => o);
+	}
+
+	// Returns the name of the page as a CSS selector we can apply to the <main /> component
+	get pageClass () : string {
+		return 'page-' + this.$router.currentRoute.name
 	}
 
 	hideOverlays() {

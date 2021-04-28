@@ -1,5 +1,5 @@
 <template>
-	<div class="modal" v-show="show">
+	<div :class="classes" v-show="show">
 		<div class="modal-header">
 			<h2 class="modal-title">{{title}}</h2>
 			<button class="modal-close" type="button" @click="closeModal">
@@ -22,6 +22,13 @@ import {Component, Prop} from "nuxt-property-decorator";
 export default class Modal extends Vue {
 	@Prop() title : string
 	@Prop() show : boolean
+	@Prop({
+		default: ''
+	}) className : string
+
+	get classes () : string {
+		return `modal ${this.className}`
+	}
 
 	closeModal () {
 		this.$emit('close')

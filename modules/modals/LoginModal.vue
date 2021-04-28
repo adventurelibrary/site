@@ -1,6 +1,7 @@
 <template>
 	<Modal
 			:show="show"
+			class-name="login-modal"
 			title="Login"
 			@close="closeModal">
 		<slot>

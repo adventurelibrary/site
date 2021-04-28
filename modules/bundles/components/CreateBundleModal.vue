@@ -1,6 +1,7 @@
 <template>
 	<Modal
 			:show="true"
+			class-name="create-bundle-modal"
 			title="Create Bundle"
 			@close="closeModal">
 		<slot>
