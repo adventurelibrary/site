@@ -18,6 +18,6 @@ export type BundlesResponse = {
 }
 
 export type BundleResponse = {
-	bundle: Bundle,
-	assets: Asset[]	
+	bundle?: Bundle,
+	assets: Asset[]
 }

@@ -19,7 +19,10 @@ import Login from "~/components/LoginForm.vue";
 })
 export default class LoginPage extends Vue {
 	get redirectPath () : string {
-		return this.$route.query.redirect
+		if (typeof this.$route.query.redirect == 'string') {
+			return this.$route.query.redirect
+		}
+		return ''
 	}
 
 	onSuccess () {

@@ -19,7 +19,7 @@
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
-import {computeAjaxList, computeAjaxTotal, doAjax, newAjax} from "~/lib/ajax";
+import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
 import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import PaginationMixin, {getRouteQueryPage} from "~/mixins/PaginationMixin.vue";

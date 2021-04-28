@@ -1,34 +1,23 @@
 <template>
-	<article class="asset">
+	<div class="bundle-page">
 
-		<section class="asset-info">
-			<h1 class="asset-title">{{asset.name}}</h1>
-			<h3 class="asset-author">
-				<!-- Will be a link to the author profile -->
-				By<a href=""><i class="author-icon ci-user"></i>{{asset.creatorName}}</a>
-			</h3>
+		<section class="bundle-info">
+			<h1>{{bundle.name}}</h1>
 			<div class="asset-description">
-				{{asset.description}}
-				ID: {{asset.id}}
+				{{bundle.description}}
+				ID: {{bundle.id}}
 			</div>
 		</section>
-		
-		<section class="asset-downloads">
-			<AssetDownload :asset="asset" />
-			<span class="download-count">
-				<span class="count">{{asset.downloads || 0}}</span>
-				<span class="label">downloads</span>
-			</span>
-		</section>
 
-		<section class="similar-assets">						
-			<!-- Similar assets -->	
+
+		<section class="similar-assets">
+			<!-- Similar assets -->
 			<ul class="search-results">
 				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
-				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
+				<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"/>
 			</ul>
 		</section>
-	</article>
+	</div>
 </template>
 <script lang="ts">
 import { Context } from '@nuxt/types'
@@ -45,6 +34,8 @@ import TagList from "~/modules/tags/TagList.vue";
 import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import {newBundleAjax, newBundlesAjax} from "~/lib/bundles/bundles-api";
+import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 
 
 @Component({
@@ -55,12 +46,8 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 	}
 })
 class BundlePage extends Vue {
-	public assetAjax : Ajax<Asset>
-	public relatedAssets : AssetsResponse
+	bundleAjax = newBundleAjax()
 
-	// search setup
-	public search : AssetSearchOptions
-	// search.filters
 
 	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
 	skip = 0
@@ -68,7 +55,7 @@ class BundlePage extends Vue {
 	loadingMore = false
 	scrollTimeout : NodeJS.Timeout
 
-	// static asset fetch by id	
+	// static asset fetch by id
 	/*
 		Example Asset IDs:
 		rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL
@@ -79,65 +66,62 @@ class BundlePage extends Vue {
 
 	// setting header meta tags
 	head () {
-		const asset = this.asset
-		if (asset == null) {
+		const bundle = this.bundle
+		if (bundle == null) {
 			return {
-				title: '404 Asset',
+				title: '404 Bundle',
 				description: ''
 			}
 		}
 		return {
-			title: asset.name + ' - Asset',
-			description: asset.description,
-			og: asset.thumbnail,
+			title: bundle.name + ' - Bundle',
+			description: bundle.description,
 
 			// meta tags nuxt implementation
-			meta: [				
+			meta: [
 				{
 					hid: 'description',  // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-					name: asset.name + ' - Asset',
-					description: asset.description,
-					og: asset.thumbnail
+					name: bundle.name + ' - Bundle',
+					description: bundle.description,
 				},
 
 				// Twitter specific:
 				// https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup
-				{ name: 'twitter:title', content: asset.name + ' - Asset' },
-				{ name: 'twitter:description', content: asset.description},
-				{ name: 'twitter:image', content: asset.thumbnail},
-				{ name: 'twitter:card', content: asset.thumbnail},	
+				{ name: 'twitter:title', content: bundle.name + ' - Bundle' },
+				{ name: 'twitter:description', content: bundle.description},
 
 				// Facebook specific tags:
 				// https://developers.facebook.com/docs/sharing/webmasters/
-				{ name: 'og:title', content: asset.name + ' - Asset' },
-				{ name: 'og:description', content: asset.description},
-				{ name: 'og:image', content: asset.thumbnail},			
-
+				{ name: 'og:title', content: bundle.name + ' - Bundle' },
+				{ name: 'og:description', content: bundle.description},
 			]
 		}
 	}
 
 
-	get asset () : Asset | null {
-		const res = getAjaxData<Asset>(this.assetAjax)
-		if (!res) {
-			return null
+	get bundle () : Bundle | undefined {
+		const data = getAjaxData<BundleResponse>(this.bundleAjax)
+		if (!data) {
+			return undefined
 		}
-		return res
+		return data.bundle
+	}
+
+	get assets () : Asset[] {
+		const data = getAjaxData<BundleResponse>(this.bundleAjax)
+		if (!data) {
+			return []
+		}
+		return data.assets
 	}
 
 	// fetching asset data and related assets array
 	async asyncData (ctx: Context) {
-		const assetRes = await getAssetAjax(ctx.params.slug)		
-		let relatedAssets
-		if (assetRes.data != undefined) {
-			relatedAssets = await getRelatedAssetsByTags(assetRes.data)			
-		}
+		const bundleRes = await getAssetAjax(ctx.params.slug)
 		return {
-			assetAjax: assetRes,
-			relatedAssets: relatedAssets
+			bundleAjax: bundleRes,
 		}
-	}	
+	}
 
 }
 

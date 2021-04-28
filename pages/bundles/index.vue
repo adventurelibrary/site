@@ -4,19 +4,12 @@
 		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
 			<div>Showing {{bundles.length}}. Total: {{totalBundles}}</div>
 			<ul>
-				<div v-for="bundle in bundles" :key="bundle.id">
+				<li v-for="bundle in bundles" :key="bundle.id">
 					<div>
 						<!--<BundleLink :asset="asset" class="link"></BundleLink>-->
-						<BundleLink>{{bundle.name}}</BundleLink>
-						<nuxt-link to="/bundle?id=123456">{{bundle.name}}</nuxt-link>
-						<nuxt-link to="/bundle/frozen-temple-of-the-king-5457-rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL">EXAMPLE BUNDLE PATH</nuxt-link>
-						<div v-for="asset in bundle" :key="asset.id">
-							<!-- fetch BundleResponse for bundle to get small thumbnail images from assets
-							display tiled in div for bundle -->
-							{{asset}}
-						</div>
-					</div>					
-				</div>
+						<BundleLink :bundle="bundle">{{bundle.name}}</BundleLink>
+					</div>
+				</li>
 			</ul>
 			<Pagination
 				:items-per-page="20"
@@ -29,16 +22,18 @@
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
-import {computeAjaxList, computeAjaxTotal, doAjax, newAjax} from "~/lib/ajax";
-import {Bundle, BundleResponse, BundlesResponse} from "~/lib/bundles/bundle-types";
+import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
+import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
 import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import PaginationMixin, {getRouteQueryPage} from "~/mixins/PaginationMixin.vue";
 import {Context} from "@nuxt/types";
-import {Asset, AssetResponse} from "~/lib/assets/asset-types";
 import BundleLink from "~/modules/assets/components/BundleLink.vue";
 
 @Component({
-	middleware: ['require_auth']
+	middleware: ['require_auth'],
+	components: {
+		BundleLink
+	}
 })
 export default class MyBundles extends mixins(PaginationMixin) {
 	bundlesAjax = newBundlesAjax()
@@ -65,20 +60,13 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	}
 
 	get bundles () : Bundle[] {
-		return computeAjaxList(this.bundlesAjax, 'bundles')
+		const list = computeAjaxList(this.bundlesAjax, 'bundles')
+		console.log('list', list)
+		return list
 	}
 
 	get totalBundles () : number {
 		return computeAjaxTotal(this.bundlesAjax)
 	}
-
-/*
-	getBundledAssets () {
-		Bundle
-		doAjax<BundleResponse>(this.bundlesAjax, async () => {
-			return await getMyBundles(this.activePage)
-		})
-	}
-	*/
 }
 </script>

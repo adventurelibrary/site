@@ -4,15 +4,15 @@
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
-import {BundleResponse} from "~/lib/bundles/bundle-types";
+import {Bundle} from "~/lib/bundles/bundle-types";
 
 @Component
 class BundleLink extends Vue {
-  @Prop() bundleResponse : BundleResponse
+  @Prop() bundle : Bundle
 
 	get slug () : string {
-		let id = this.bundleResponse.bundle.id
-		return this.bundleResponse.bundle.slug + '-' + id		
+		let id = this.bundle.id
+		return this.bundle.slug + '-' + id
 	}
 }
 export default BundleLink
