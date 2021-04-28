@@ -18,7 +18,8 @@ export default class FakeBundle extends Vue {
 		description: 'This is a fake bundle used for testing',
 		name: 'My Fake Bundle',
 		public: true,
-		numAssets: 10
+		numAssets: 10,
+		slug: "examplebundle3"
 	}
 
 	async openEditBundle () {

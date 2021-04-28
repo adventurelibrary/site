@@ -30,13 +30,15 @@ export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
 					name: 'Dark Heresy Campaign',
 					public: true,
 					description: '',
-					numAssets: 2
+					numAssets: 2,
+					slug: "examplebundle1"
 				}, {
 					id: '34dagdsagdsag',
 					name: 'Forest Maps (page ' + page + ')',
 					description: '',
 					public: true,
-					numAssets: 3
+					numAssets: 3,
+					slug: "examplebundle2"
 				}],
 				total: 124,
 			})
