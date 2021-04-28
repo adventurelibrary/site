@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<h1>Login</h1>
+		<div>go to {{redirectPath}}</div>
 		<LoginForm
 			@success="onSuccess"
 			@register="register"
@@ -17,11 +18,15 @@ import Login from "~/components/LoginForm.vue";
 	}
 })
 export default class LoginPage extends Vue {
+	get redirectPath () : string {
+		return this.$route.query.redirect
+	}
+
 	onSuccess () {
-		this.$router.push({
-			// name: 'index'
-			name: this.$store.state.userTracking.activePath  //redirect to last known path before pressing Login
-		})
+		console.log('this.redirectPath', this.redirectPath)
+		if (this.redirectPath && this.redirectPath.length) {
+			this.$router.push(this.redirectPath)
+		}
 	}
 
 	register () {

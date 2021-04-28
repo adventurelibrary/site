@@ -150,21 +150,25 @@ export default class Default extends Vue {
 		console.debug(this.overlays);
 	}
 
+	setTrackingPath () {
+		this.$store.dispatch('userTrackingPath', this.$router.currentRoute.fullPath)
+	}
+
 	openLogin () {
-		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+		this.setTrackingPath()
 
 		this.$store.dispatch('openLoginModal')
 	}
 
 	openRegister () {
-		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+		this.setTrackingPath()
 
 		this.$store.dispatch('openRegisterModal')
 	}
 
 
 	async logout () {
-		this.$store.state.userTracking.activePath = this.$store.$router.currentRoute.fullPath
+		this.setTrackingPath()
 
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')

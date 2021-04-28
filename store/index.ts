@@ -91,6 +91,12 @@ export const state = () : State => {
 }
 
 export const mutations = {
+	userTracking (state: State, userTracking: UserTracking) {
+		state.userTracking = userTracking
+	},
+	userTrackingPath (state: State, path: string) {
+		state.userTracking.activePath = path
+	},
 	breadcrumbs (state: State, crumbs: any[]) {
 		crumbs.unshift({
 			to: 'Dashboard',
@@ -179,6 +185,10 @@ export const mutations = {
 }
 
 export const actions = {
+	userTrackingPath ({commit} : ActionParams, path : string) {
+		console.log('this is user path', path)
+		commit('userTrackingPath', path)
+	},
 	notify({commit}: ActionParams, {msg, type, duration = 5000} : {msg: string, type: ToastType, duration?: number}) {
 		const id = newToastId()
 		commit('addToast', {
