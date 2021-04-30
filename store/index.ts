@@ -12,7 +12,6 @@ type State = {
 	breadcrumbs: any[],
 	createBundleAsset: Asset | null
 	editBundle: Bundle | null,
-	jwt: string,
 	login: {
 		working: boolean,
 		error: string
@@ -67,7 +66,6 @@ export const state = () : State => {
 		bundleAddAssetsBundle: null,
 		createBundleAsset: null,
 		editBundle: null,
-		jwt: '',
 		toasts: [],
 		user: null,
 		userTracking: {
@@ -137,9 +135,6 @@ export const mutations = {
 	clearBreadcrumbs (state: State) {
 		state.breadcrumbs = []
 	},
-	jwt (state: State, jwt: string) {
-		state.jwt = jwt
-	},
 	addToast (state: State, toast: Toast) {
 		state.toasts.push(toast)
 	},
@@ -186,7 +181,6 @@ export const mutations = {
 
 export const actions = {
 	userTrackingPath ({commit} : ActionParams, path : string) {
-		console.log('this is user path', path)
 		commit('userTrackingPath', path)
 	},
 	notify({commit}: ActionParams, {msg, type, duration = 5000} : {msg: string, type: ToastType, duration?: number}) {
@@ -272,8 +266,8 @@ export const actions = {
 		})
 		commit('createBundleAsset', asset)
 	},
-	async fetchSession ({commit, state} : ActionParams) {
-		const user = await getSession(state.jwt)
+	async fetchSession ({commit} : ActionParams) {
+		const user = await getSession()
 		commit('user', user)
 	}
 }
