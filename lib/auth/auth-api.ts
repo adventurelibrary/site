@@ -1,8 +1,8 @@
 import {User} from "~/lib/users/user-types";
 import {getCookie, setCookie} from "~/lib/helpers";
-import jwtdecode from 'jwt-decode'
 import {Auth} from 'aws-amplify'
 import {CognitoUser} from "amazon-cognito-identity-js";
+import api, {getJWT, setJWT} from "~/lib/api";
 
 const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
 const clientId = <string>process.env.COGNITO_CLIENT_ID
@@ -39,36 +39,24 @@ export async function getSessionFromClient() : Promise<User | null> {
 	if (jwt === null) {
 		return null
 	}
-	return getSession(jwt)
+	return getSession()
 }
 
-export async function getSession (jwt: string) : Promise<User | null> {
-	return new Promise((res) => {
-		if (jwt == '') {
-			res(null)
-			return
-		}
-		setTimeout(() => {
-			const decode : any = jwtdecode(jwt)
-			const user : User = {
-				id: decode.sub,
-				username: decode.username,
-				email: decode.username + '_fake@gmail.com',
-				admin: false
-			}
-			res(user)
-		}, 250)
-	})
+export async function getSession () : Promise<User | null> {
+	let res
+	try {
+		res = await api.get('/users')
+	} catch (ex) {
+		return null
+	}
+	return res.data
 }
 
 // Login as a user and get the user's jwt
 export async function signIn (identifier: string, password: string) {
 	try {
-		console.log('sign in')
 		await Auth.signIn(identifier, password)
-		console.log('after sign in')
 	} catch (ex) {
-		console.log('ex', ex)
 		throw new Error(convertErr(ex))
 	}
 	const sess = await Auth.currentSession()

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {getCookie} from "~/lib/helpers";
 
 const base = <string>process.env.ADVL_BASE_URL
 console.log('API URL', base)
@@ -17,7 +18,12 @@ api.interceptors.response.use((response) => {
 })
 
 api.interceptors.request.use(function (config) {
-	config.headers.Authorization = jwt
+	if (process.client && !jwt) {
+		jwt = getCookie('jwt')
+	}
+	if (jwt) {
+		config.headers.Authorization = 'JWT ' + jwt
+	}
 	return config;
 }, function (error) {
 	return Promise.reject(error);
@@ -25,10 +31,14 @@ api.interceptors.request.use(function (config) {
 
 // The JWT that all our requests use is set by this function
 // The function is called in our auth.ts middleware file
-// Depending on context (server vs client) it will get the JWT
-// from a different place
+// Depending on context (server vs client) that middleware will get the JWT
+// from a different place (client cookie or request cookie, at time of writing)
 export function setJWT(newJWT: string) {
 	jwt = newJWT
+}
+
+export function getJWT () : string {
+	return jwt
 }
 
 
