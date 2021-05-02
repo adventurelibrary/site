@@ -25,7 +25,7 @@ export type Asset = AssetFields & {
 // This is created when a user drags and drops a file or selects files
 // to upload
 export type NewAsset = {
-	asset: AssetFields,
+	asset: AssetFormData,
 	file: File
 }
 
@@ -35,6 +35,8 @@ export interface AssetFormData extends AssetFields {
 	// EG: a boolean that says "email my followers about this asset"
 	// That would be here and not in Asset because it isn't data that is stored  in the asset, it's
 	// a flag to tell the server to perform another function
+
+	uploadAsCreator?: string // This field is optional because it's only there if you're an admin
 }
 
 // Data sent by browser to the server to create/update an asset

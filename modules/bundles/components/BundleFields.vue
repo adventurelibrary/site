@@ -30,7 +30,7 @@ import SelectGroup from "~/components/forms/SelectGroup.vue";
 export default class BundleFields extends Vue {
 	publicOptions = [{value: false, label: 'Private'}, {value: true, label: 'Public'}]
 
-	@Model('changed',  {
+	@Model('change',  {
 		type: Object as PropType<any>
 	})
 	readonly copy! : any

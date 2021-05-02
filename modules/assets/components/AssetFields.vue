@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<CreatorSelectorGroup
+				v-model="copy.uploadAsCreator"
+				@change="uploadAsCreatorChanged"
+			/>
 		<Input
 				label="Name"
 				:value="copy.name"
@@ -39,17 +43,25 @@ import FormGroup from "~/components/forms/FormGroup.vue";
 import Select from "~/components/forms/SelectGroup.vue";
 import {VisibilityOptions} from "~/lib/assets/asset-consts";
 import {SelectOption} from "~/lib/helpers";
+import CreatorSelectorGroup from "~/modules/creators/components/CreatorSelectorGroup.vue";
 
-export const fieldNames = ['name', 'description', 'type']
+// This is used by other components like the UploadAssets one to know keys from objects
+// it receives are ones it should use to update an Asset object
+export const fieldNames = ['name', 'tags', 'description', 'type', 'uploadAsCreator', 'visibility']
 
 export default Vue.extend({
 	props: {
 		asset: {
 			type: Object as PropType<AssetFormData>,
 			required: true
+		},
+		asAdmin: {
+			type: Boolean,
+			required: false
 		}
 	},
 	components: {
+		CreatorSelectorGroup,
 		Input: Input,
 		Textarea: Textarea,
 		CategorySelect: AssetCategorySelect,
@@ -79,6 +91,9 @@ export default Vue.extend({
 		fieldChanged (field: string, value: any) {
 			this.copy[field] = value;
 			this.$emit('assetChanged', this.copy)
+		},
+		uploadAsCreatorChanged (val: string) {
+			this.fieldChanged('uploadAsCreator', val)
 		}
 	}
 })

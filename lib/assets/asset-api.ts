@@ -305,5 +305,8 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	payload.collectionID = new Date().getTime().toString()
 	payload.unlockPrice = 0
 	payload.revenueShare = {}
+	if (data.uploadAsCreator) {
+		payload.creatorId = data.uploadAsCreator
+	}
 	return payload
 }

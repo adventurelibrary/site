@@ -74,10 +74,17 @@ export default Vue.extend({
 		})
 	},
 	methods: {
+		// Takes all the uploads that the user has been trying to put in
+		// and converts them into ActiveUploads and then it starts to
+		// upload them one by one
 		async beginUploads () {
 			const uploads = convertNewAssetToActiveUploads(this.newAssets)
 			Vue.set(this, 'uploads', uploads)
 			this.stage = 'uploading'
+
+			// Scroll to the top because they might have such a long form that it makes the
+			// page quite tall, and the one at the top is going to change
+			// We scroll them up so that they see the change
 			window.scrollTo(0, 0)
 			for (let i = 0; i < this.uploads.length; i++) {
 				const upload = this.uploads[i]
@@ -86,16 +93,25 @@ export default Vue.extend({
 			}
 		},
 
+		// First you get the signature from our server, then you upload the file
+		// directly to transloadit
 		async beginUpload (upload: ActiveUpload) {
       await this.signUpload(upload)
       await this.uploadAsset(upload)
 		},
 
-		async  signUpload (upload: ActiveUpload) {
-			await signActiveUpload(upload)
+		async signUpload (upload: ActiveUpload) {
+			try {
+				await signActiveUpload(upload)
+			} catch (ex) {
+				upload.status = 'error'
+				upload.error = ex.toString()
+			}
 		},
 
-		async  uploadAsset(upload: ActiveUpload) {
+		// Handles changing the 'status' of the upload, so that the UI changes
+		// and calls the function that actually starts uploading the file
+		async uploadAsset(upload: ActiveUpload) {
 			upload.status = 'uploading'
 			try {
 				await uploadAsset(upload.file, upload.signature, upload.params)
@@ -116,18 +132,19 @@ export default Vue.extend({
 
 			this.newAssets.push({
 				asset: {
-					tags: [],
-					tagObjects: [],
+					category: filenameGuessCategory(file.name),
 					description: '',
 					name: name,
-					category: filenameGuessCategory(file.name),
+					tags: [],
+					tagObjects: [],
+					uploadAsCreator: ''
 				},
 				file: file,
 			})
 		},
 		updateFields (idx: number, fields: any) {
 			fieldNames.forEach((field: string) => {
-				Vue.set(this.newAssets[idx], field, fields[field])
+				Vue.set(this.newAssets[idx].asset, field, fields[field])
 			})
 		}
 	},

@@ -12,6 +12,7 @@
 					:asset="newAsset.asset"
 					v-on:assetChanged="assetChanged"
 			/>
+
 		</div>
 	</div>
 </template>
@@ -60,6 +61,11 @@ export default Vue.extend({
 		assetChanged (newVal: any) {
 			this.$emit('updateFields', newVal)
 		},
+		// This handles the user adding one or more files into the file input
+		// If they put in one, then we're just replacing
+		// If they add multiple then we're replacing the first one they put in,
+		// and then emitting up to the parent that we want to add the other
+		// files as new files
 		changeFiles (files: File[]) {
 			for( let i = 0; i < files.length; i++ ){
 				const file = files[i]
