@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<textarea :style="{width: '100%', height: '50em'}" :value="assetsJSON"></textarea>
+		<textarea :style="{width: '100%', height: '50em'}" :value="sql"></textarea>
 	</div>
 </template>
 <script lang="ts">
@@ -8,10 +8,11 @@ import {ASSET_TAGS} from "~/lib/tags/tags-consts";
 import AdminPage from "~/admin/admin-page";
 import {Component} from "nuxt-property-decorator";
 import {CATEGORIES} from "~/lib/categories/categories-consts";
+import { v4 as uuidv4 } from 'uuid';
 
 const prefixes = ['Sunny', 'Wartorn', 'Frozen', 'Ashen', 'Windy', 'Holy', 'Knightly']
 const nouns = ['Town', 'Castle', 'Fort', 'Forest', 'Camp', 'Glade', 'Oasis', 'Fortress', 'Temple', 'Cathedral']
-const suffix = ['of Doom', 'of the Queen', 'of the King', 'of Fire', 'of Ice', 'of Orcs']
+const suffix = ['of Doom', 'of the Queen', 'of the King', 'of Fire', 'of Ice', 'of Orcs', 'of Night', 'of Dawn', 'of the Vampires']
 const visis = ['PENDING', 'HIDDEN', 'PUBLIC', 'PUBLIC', 'PUBLIC', 'PUBLIC']
 const words = `But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?`.split(' ')
 const files = `0psfjzfws6wbqzp5FYa6Iy7dMKbjEfan.webp
@@ -47,8 +48,12 @@ let assets : any[] = []
 const assetsHash : Record<any, any> = {}
 const slugs : string[] = []
 
+const creatorId = uuidv4();
+
+
 files.forEach((file : string) => {
-	const [id, extension] = file.split('.')
+	const [xs, extension] = file.split('.')
+	const id = uuidv4()
 	const name = [random(prefixes), random(nouns), random(suffix)].join(' ')
 	let slug = ''
 
@@ -81,9 +86,8 @@ files.forEach((file : string) => {
 
 	assets.push({
 		id: id,
-		category: random(CATEGORIES).id,
+		category: random(CATEGORIES).id.toUpperCase(),
 		collectionID: "003",
-		creatorID: "admin-test",
 		description: description,
 		fileType: "IMAGE",
 		name: name,
@@ -107,6 +111,25 @@ files.forEach((file : string) => {
 export default class GenerateAssets extends AdminPage {
 	assets = assets
 	assetsJSON = JSON.stringify(assets, null, 2)
+	sql = ''
+
+	created () {
+		this.sql = `
+INSERT INTO creators (id, name, slug) VALUES
+('${creatorId}', 'Adventure Library', 'adventure-library');
+`
+		this.sql += `
+INSERT INTO assets (id, creator_id, slug, name, description, tags, original_file_ext, type, visibility, size_in_bytes) VALUES
+`
+		const assetsInserts = assets.map((asset: any) => {
+			const tags = asset.tags.map((x : string) => '"' + x + '"')
+			return `
+('${asset.id}','${creatorId}', '${asset.slug}', '${asset.name}', '${asset.description}', '{${tags.join(',')}}', '${asset.originalFileExt}','${asset.category}', '${asset.visibility}', ${asset.sizeInBytes})`
+		})
+
+		this.sql += assetsInserts.join(`,
+`) + ';'
+	}
 }
 
 </script>
