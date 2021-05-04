@@ -37,3 +37,14 @@
 		}
 	}
 }
+.body {
+	::-webkit-scrollbar,
+	::-webkit-scrollbar-track,
+	::-webkit-scrollbar-track-piece {
+		background-color: $black8;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: $black-teal;
+		border: 1px solid darken($black-teal, 5);
+	}
+}
