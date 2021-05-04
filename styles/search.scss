@@ -1,10 +1,12 @@
+@import "search-results";
+
 .asset-search {
 	&[visible] {
 		display: grid;
 	}
 
 	position: relative;
-	background: var(--search-background-light);
+	background: $search-background-light;
 	grid-template-columns: 2.6em minmax(min-content, max-content) minmax(16ch, 1fr) auto auto;
 	grid-template-areas:
 		"button filters input order sort";
@@ -50,19 +52,19 @@
 
 		li {
 			font-size: .75em;
-			background-color: #1AA9C9;
+			background-color: $filter-light;
 			padding: .3em .7em;
 			border-radius: .3em;
 			display: block;
 			white-space: nowrap;
 
 			&.active {
-			  background-color: #106466;
+			  background-color: $filter-dark;
 			}
 		}
 		.filter-type {
 			text-transform: capitalize;
-			color: #EEE;
+			color: $white3;
 
 			&::after {
 				content: ":";
@@ -70,7 +72,7 @@
 		}
 		.filter-value {
 			text-transform: lowercase;
-			color: #DDD;
+			color: $white4;
 		}
 		.filter-delete {
 			display: inline-block;
@@ -145,7 +147,7 @@
 		}
 
 		option {
-			background-color: var(--search-background-light);
+			background-color: $search-background-light;
 			border: none;
 		}
 	}
@@ -155,17 +157,17 @@
 	position: absolute;
 	width: 100%;
 	top: 100%;
-	background: var(--search-filter-background-light);
+	background: $search-filter-background-light;
 	padding: .6em 1.2em;
 	border-radius: 0 0 .25em .25em;
 	font-size: .8em;
-	box-shadow: 0 3px 3px #0000007d;
+	box-shadow: 0 3px 3px $shadow-light;
 
 	h3 {
 		margin: 0 0 1em 0;
 		font-size: 1em;
 		text-transform: uppercase;
-		color: #C0C0C5;
+		color: $light-gray2;
 	}
 
 	.action-list {
@@ -180,13 +182,13 @@
 
 		&.active,
 		&.active .action-prefix {
-		  color: #1AA9C9;
+		  color: $filter-light;
 		}
 	}
 	.action-prefix {
-		color: #C0C0C5;
+		color: $light-gray2;
 	}
 	.action-description {
-		color: #828282;
+		color: $gray3;
 	}
 }

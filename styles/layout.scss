@@ -49,19 +49,19 @@ body {
 		"body"
 		"footer";
 
-	background-color: var(--color-background);
-	color: white;
+	background-color: $main-background;
+	color: $text-color;
 	margin: 0;
 }
 
 .site-header, .site-footer {
-	box-shadow: 0 0 3px #0000007d;
+	box-shadow: 0 0 3px $shadow-light;
 }
 
 .site-header {
 	position: relative;
 	grid-area: header;
-	background-color: var(--color-primary);
+	background-color: $color-primary;
 	display: grid;
 	justify-content: center;
 	align-items: center;
@@ -142,11 +142,11 @@ body {
 		font-size: 2em;
 		background: none;
 		border: none;
-		color: white;
+		color: $button-text;
 		cursor: pointer;
 
 		&:hover {
-			filter: drop-shadow(0 0 2px white);
+			filter: drop-shadow(0 0 2px currentColor);
 		}
 	}
 
@@ -163,7 +163,7 @@ body {
 			width: 2.65em;
 			height: 2.65em;
 			border-radius: 50%;
-			background-color: #106466;
+			background-color: $main-teal;
 			overflow: hidden;
 			grid-template: 
 				"icon" 2.65em / 2.65em;
@@ -227,7 +227,7 @@ body {
 			@include medium { order: 1; }
 		}
 		a {
-			color: var(--heading-color);
+			color: $heading-color;
 			text-transform: uppercase;
 			text-decoration: none;
 		}
@@ -264,7 +264,7 @@ body {
 .site-footer {
 	display: grid;
 	grid-area: footer;
-	background-color: var(--color-primary);
+	background-color: $color-primary;
 	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
