@@ -1,3 +1,78 @@
+.modal.add-asset-to-bundle {
+	.modal-body {
+		grid-template-rows: 1fr auto 1fr;
+		gap: 1em;
+	}
+}
+
+.modal.bundle-add-assets-modal {
+	$size: 12em;
+	$gap: 1em;
+	$rows: 3;
+	$cols: 3;
+
+	.modal-body {
+		gap: 1em;
+	}
+
+	.results {
+		display: grid;
+		grid-template-columns: repeat($cols, $size);
+		grid-auto-rows: $size;
+		grid-auto-flow: row;
+		gap: $gap;
+
+		margin: 0;
+		padding: 0 1em;
+
+		max-height: ($size * $cols) + ($gap * ($rows - 1));
+		overflow-y: scroll;
+
+		.result {
+			display: grid;
+			position: relative;
+			grid-template-rows: 1fr 1.5em 1.2em;
+			grid-template-columns: 1fr;
+			grid-template-areas: 
+				"image"
+				"title"
+				"category";
+
+			.thumbnail {
+				grid-row: image-start / -1;
+				grid-column: image-start / image-end;
+				background: $asset-card-background;
+			}
+			h3, h4 { 
+				margin: 0;
+				padding: 0 .5em;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			h3 {
+				font-size: 1em;
+				grid-area: title;
+			}
+			h4 {
+				font-size: .8em;
+				font-style: italic;
+				font-weight: normal;
+				grid-area: category;
+				justify-self: end;
+			}
+			.asset-action {
+				margin: 0;
+				position: absolute;
+				top: .5em;
+				right: .5em;
+
+				button { padding: .25em; }
+			}
+		}
+	}
+}
+
 .bundle-select {
 	display: grid;
 	grid-template-rows: 2em auto;
@@ -15,7 +90,7 @@
 			cursor: pointer;
 			
 			&:hover {
-				background: #1B1B1B;
+				background: $black6;
 			}
 		}
 		.fake-image, .bundle-link { justify-self: end; }
@@ -36,11 +111,11 @@ ul.bundle-selector {
 	border-radius: 50%;
 	height: 20px;
 	width: 20px;
-	border: 2px solid #106466;
+	border: 2px solid $button-dark;
 }
 
 li.bundle.active .circle {
-	background: #1AA9C9;
+	background: $button-light;
 }
 
 .fake-image {

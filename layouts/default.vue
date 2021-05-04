@@ -1,6 +1,6 @@
 B
 <template>
-<main class="body"  :class="pageClass" >
+<main class="body" :class="pageClass">
 		<div class="shade"
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
