@@ -5,9 +5,10 @@
 			class-name="add-asset-to-bundle"
 			@close="closeModal">
 		<slot>
-			<button @click="createNewBundle" type="button">Create New Bundle</button>
+			<h1>Add to Bundle</h1>
+			<button @click="createNewBundle" type="button" class="create">Create New Bundle</button>
 			<MyBundleSelector v-model="bundleIds" />
-			<button @click="addToBundles" :disable="bundleIds.length == 0">
+			<button @click="addToBundles" :disable="bundleIds.length == 0" class="add">
 				<span>Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
 			</button>
 		</slot>

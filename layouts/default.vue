@@ -62,23 +62,33 @@ B
 			<section class="social-media">
 				<ul>
 					<li>
-						<a href="https://www.facebook.com/The-Adventure-Library-103147418541648">
+						<a href="https://www.facebook.com/The-Adventure-Library-103147418541648"
+							title="Facebook">
 							<i class="ci-facebook"></i>
 						</a>
 					</li>
 					<li>
-						<a href="https://twitter.com/TheAdvLibrary">
+						<a href="https://twitter.com/TheAdvLibrary"
+							title="Twitter">
 							<i class="ci-twitter"></i>
 						</a>
 					</li>
 					<li>
-						<a href="https://www.instagram.com/theadvlibrary/">
+						<a href="https://www.instagram.com/theadvlibrary/"
+							title="Instagram">
 							<i class="ci-instagram"></i>
 						</a>
 					</li>
 					<li>
-						<a href="https://discord.gg/cqTFTgpmHN">
+						<a href="https://discord.gg/cqTFTgpmHN"
+							title="Discord">
 							<i class="ci-discord"></i>
+						</a>
+					</li>
+					<li>
+						<a href="https://discord.com/channels/807488484382212146/809345389504364574/839338867652034590"
+							title="Newsletter">
+							<i class="ci-mail"></i>
 						</a>
 					</li>
 				</ul>
