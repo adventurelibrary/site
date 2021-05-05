@@ -1,17 +1,18 @@
 <template>
-	<section class="bundle-select">
-		<input type="text" v-model="filter" placeholder="Filter bundles" />
+	<fragment>
+		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
 		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
 			<ul class="bundle-selector">
 				<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
 					<div class="circle"></div>
-					<strong>{{bundle.name}}</strong>
-					<a class="bundle-link" href="#bundle-page">{{bundle.numAssets}} Asset<S :num="bundle.numAssets" /></a>
-					<img class="fake-image">
+					<h4 class="title">{{bundle.name}}</h4>
+					<a class="link" href="#bundle-page">{{bundle.numAssets}} Asset<S :num="bundle.numAssets" /></a>
+					<p class="description">{{bundle.description || "Filler text"}}</p>
+					<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
 				</li>
 			</ul>
 		</LoadingContainer>
-	</section>
+	</fragment>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
@@ -20,13 +21,15 @@ import {computeAjaxList, doAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
 import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
+import {Fragment} from "vue-fragment";
 
 type BundleItem = Bundle & {
 	active: boolean
 }
 @Component({
 	components: {
-		LoadingContainer
+		LoadingContainer,
+		Fragment
 	}
 })
 export default class MyBundleSelector extends Vue {
