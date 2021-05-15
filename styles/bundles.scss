@@ -1,50 +1,156 @@
-.bundle-select {
-	display: grid;
-	grid-template-rows: 2em auto;
-	gap: 1em;
+.modal.bundle-add-assets-modal {
+	$size: 12em;
+	$gap: 1em;
+	$rows: 3;
+	$cols: 3;
 
-	.bundle-selector {
-		display: grid;
+	.modal-body {
 		gap: 1em;
+	}
 
-		.bundle {
+	.results {
+		display: grid;
+		grid-template-columns: repeat($cols, $size);
+		grid-auto-rows: $size;
+		grid-auto-flow: row;
+		gap: $gap;
+
+		margin: 0;
+		padding: 0 1em;
+
+		max-height: ($size * $cols) + ($gap * ($rows - 1));
+		overflow-y: scroll;
+
+		.result {
 			display: grid;
-			grid-template-columns: 2em 1fr auto auto;
-			align-items: center;
-			gap: .5em;
-			cursor: pointer;
-			
-			&:hover {
-				background: #1B1B1B;
+			position: relative;
+			grid-template-rows: 1fr 1.5em 1.2em;
+			grid-template-columns: 1fr;
+			grid-template-areas: 
+				"image"
+				"title"
+				"category";
+
+			.thumbnail {
+				grid-row: image-start / -1;
+				grid-column: image-start / image-end;
+				background: $asset-card-background;
 			}
-		}
-		.fake-image, .bundle-link { justify-self: end; }
-		.bundle-link {
-			color: currentColor;
-			text-decoration: none;
+			h3, h4 { 
+				margin: 0;
+				padding: 0 .5em;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			h3 {
+				font-size: 1em;
+				grid-area: title;
+			}
+			h4 {
+				font-size: .8em;
+				font-style: italic;
+				font-weight: normal;
+				grid-area: category;
+				justify-self: end;
+			}
+			.asset-action {
+				margin: 0;
+				position: absolute;
+				top: .5em;
+				right: .5em;
+
+				button { padding: .25em; }
+			}
 		}
 	}
 }
 
-ul.bundle-selector {
-	margin: 0px;
-	padding: 0px;
-	list-style: inside;
+.modal.add-asset-to-bundle {
+	@include medium { width: 45em; }
+
+	.modal-body {
+		grid-template-rows: 2em 2em auto 2em;
+		grid-template-columns: auto auto;
+		grid-template-areas: 
+			"heading create"
+			"filter ."
+			"list list"
+			". controls";
+		gap: 1em;
+		
+		h1 {
+			grid-area: heading;
+			font-size: 1.5em;
+		}
+	}
+
+	.filter {
+		grid-area: filter;
+	}
+	.loading-container {
+		grid-area: list;
+	}
+	button { 
+		justify-self: end;
+	}
+	button.create {
+		grid-area: create;
+	}
+	button.add {
+		grid-area: controls;
+	}
 }
 
-.circle {
-	border-radius: 50%;
-	height: 20px;
-	width: 20px;
-	border: 2px solid #106466;
-}
+.bundle-selector {
+	display: grid;
+	grid-auto-rows: 5.5em;
+	gap: 1em;
+	user-select: none;
 
-li.bundle.active .circle {
-	background: #1AA9C9;
-}
+	.bundle {
+		display: grid;
+		grid-template-columns: 2em max-content 1fr 6em;
+		grid-template-rows: 1fr 1fr;
+		grid-template-areas:
+			"circle title link image"
+			"circle description . image";
 
-.fake-image {
-	width: 100px;
-	height: 60px;
-	background: black;
+		align-items: center;
+		column-gap: .5em;
+		cursor: pointer;
+
+		border: 2px solid $gray4;
+		border-radius: 3px;
+
+		padding: 0 1em;
+		
+		&:hover {
+			background: $black6;
+		}
+	}
+	.fake-image { 
+		justify-self: end; 
+	}
+
+	.title, .link { align-self: end; }
+	.description { align-self: start; }
+
+	.circle { grid-area: circle; }
+	.title { grid-area: title; }
+	.description { 
+		grid-area: description;
+		font-size: .8em;
+	}
+	img {
+		place-self: stretch;
+		object-fit: cover;
+		grid-area: image; 
+	}
+	.link {
+		grid-area: link;
+		color: currentColor;
+		text-decoration: underline;
+		justify-self: start;
+	}
 }

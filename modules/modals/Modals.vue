@@ -1,6 +1,5 @@
 <template>
 	<div class="modal-container" v-show="showingModal">
-		Show Edit {{showingBundleEdit}}
 		<div class="modal-backdrop" @click="clickBackdrop">
 		</div>
 		<LoginModal v-if="showingLoginModal" :show="showingLoginModal" />
@@ -42,7 +41,6 @@ export default class Modals extends Vue {
 
 	@Watch('$route')
 	routeWatcer () {
-		console.log('route changed, closing all modals')
 		// This is here so that if a user clicks a link that appears in the modal
 		// that modal won't still be there when they navigate to that new page
 		this.$store.dispatch('closeAllModals')
@@ -60,7 +58,6 @@ export default class Modals extends Vue {
 	}
 
 	keyDown (e: KeyboardEvent) {
-		console.log('this', this.$store.state)
 		if (!this.showingModal) {
 			return
 		}

@@ -1,14 +1,77 @@
-:root {
-	--color-primary: #032224;
-	--color-secondary: #106466;
-	--color-background: #181A19;
-	--color-accent: #808080;
+$main-teal: #106466;
 
-	--heading-color: #FFFFFF;
-	--text-color: #FFFFFF;
+$gray: #808080;
+$gray2: #6C6C6C;
+$gray3: #828282;
+$gray4: #484848;
+$light-gray: #F4F5F4;
+$light-gray2: #C0C0C5;
+$dark-gray: #3A3A3A;
 
-	--search-background-light: #F4F5F4;
-	--search-filter-background-light: #282929;
-	--search-filter-background-med: #222222;
-	--search-filter-background-dark: #1B1B1B;
-}
+$gray-trans: #333A;
+$gray-trans2: #333E;
+
+$black1: #032224;
+$black2: #2C3532;
+$black3: #181A19;
+$black4: #282929;
+$black5: #222222;
+$black6: #1B1B1B;
+$black7: #333333;
+$black8: #171717;
+
+$black-trans: #16171880;
+$black-trans2: #0000007d;
+
+$black-teal: $black1;
+$black-gray: $black2;
+$black-dark: $black3;
+
+$white: #FFFFFF;
+$white2: #F4F5F4;
+$white3: #EEE;
+$white4: #DDD;
+
+$blue: #2218C3;
+
+$cta-blue-light: #1AA9C9;
+$cta-blue-dark: #138BA6;
+
+$search-background-light: $light-gray;
+$search-filter-background-light: $black4;
+$search-filter-background-med: $black5;
+$search-filter-background-dark: $black6;
+
+$filter-light: $cta-blue-light;
+$filter-dark: $cta-blue-dark;
+
+$shadow-light: $black-trans2;
+
+$color-primary: $black1;
+$color-secondary: $main-teal;
+$main-background: $black3;
+
+$heading-color: $white;
+$text-color: $white;
+
+$asset-background: $black4;
+$asset-card-meta: $gray-trans;
+$asset-card-meta-dark: $gray-trans2;
+$asset-card-background: rgba(255, 255, 255, 0.07);
+
+$button-light:  $cta-blue-light; 
+$button-dark:  $cta-blue-dark;
+$button-text: $white;
+
+$input-background: $black8;
+$input-border: $black7;
+$input-text: $gray;
+
+$select-background: $black4;
+$select-border: $dark-gray;
+
+$modal-background: $black5;
+$modal-header: $black7;
+$modal-text: $white;
+
+$a-href: $cta-blue-light;

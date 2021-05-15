@@ -1,23 +1,25 @@
 <template>
-	<div role="loading-container">
+	<section role="loading-container" class="loading-container">
 		<div v-if="loading">
-      <slot name="loading">
-        Loading...
-      </slot>
+			<slot name="loading">
+				Loading...
+			</slot>
 		</div>
-		<div v-if="error" class="alert alert-danger">
-      <slot name="error">
-        {{error}}
-      </slot>
+		<div v-if="error">
+			<slot name="error">
+				{{error}}
+			</slot>
 		</div>
-		<div v-if="!loading && !error">
+		<template v-if="!loading && !error">
 			<slot />
-		</div>
-	</div>
+		</template>
+	</section>
 </template>
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
+import {Fragment} from "vue-fragment";
+
 @Component
 export default class LoadingContainer extends Vue {
 	@Prop() loading: boolean

@@ -28,10 +28,9 @@
       }
 
       .btn.btn-primary {
-        color: var(--color-accent);
-        background: var(--color-background);
+        color: $gray;
+        background: $main-background;
       }
     }
   }
-
 }

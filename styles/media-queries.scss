@@ -1,0 +1,20 @@
+@mixin small {
+	@media (min-width: $media-small) {
+		@content;
+	}
+}
+@mixin medium {
+	@media (min-width: $media-medium) {
+		@content;
+	}
+}
+@mixin normal {
+	@media (min-width: $media-normal) {
+		@content;
+	}
+}
+@mixin large {
+	@media (min-width: $media-large) {
+		@content;
+	}
+}

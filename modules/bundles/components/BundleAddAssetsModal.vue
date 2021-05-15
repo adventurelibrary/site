@@ -5,17 +5,24 @@
 			:title="`Add Assets to ${bundle.name}`"
 			@close="closeModal">
 		<slot>
-			<div>
-				<AssetSearch @submit="searchAssets" />
-				<LoadingContainer :loading="assetsAjax.loading" :error="assetsAjax.error">
-					<ul>
-						<li v-if="!assets.length">Not showing any assets.</li>
-						<li v-for="asset in assets" :key="asset.id">
-							{{asset.name}} ({{asset.category}}) - <button @click="() => { clickAddAsset(asset) }">Add</button>
-						</li>
-					</ul>
-				</LoadingContainer>
-			</div>
+			<AssetSearch @submit="searchAssets" />
+			<LoadingContainer :loading="assetsAjax.loading" :error="assetsAjax.error">
+				<h4 v-if="!assets.length">Not showing any assets.</h4>
+				<ul class="results">	
+					<li v-for="asset in assets" :key="asset.id" class="result">
+						<div class="thumbnail" :style="`background-image: url(${asset.thumbnail});`">
+							<!-- This Element Intentionally Left Empty -->
+						</div>
+						<h3>{{asset.name}}</h3>
+						<h4>{{asset.category}}</h4>
+						<figure class="asset-action">
+							<button @click="() => { clickAddAsset(asset) }">
+								<i class="ci-plus"></i>
+							</button>
+						</figure>
+					</li>
+				</ul>
+			</LoadingContainer>
 		</slot>
 	</Modal>
 </template>

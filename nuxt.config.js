@@ -7,17 +7,8 @@ console.log('PORT', process.env.PORT)
 
 const css = [
   'assets/coolicons/coolicons.css',
-  'styles/color.scss',
-  'styles/layout.scss',
-  'styles/base-page.scss',
-  'styles/search.scss',
-  'styles/search-results.scss',
-  'styles/modal.scss',
-  'styles/controls.scss',
-  'styles/asset.scss',
-  'styles/bundles.scss',
-  'styles/styles.scss',
-  'styles/toasts.scss'
+   // @import and additional .scss files in styles.scss
+  'styles/styles.scss'
 ]
 const ignore = []
 const plugins = [

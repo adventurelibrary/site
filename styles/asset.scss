@@ -7,7 +7,7 @@
 		"download"
 		"similar";
 
-	background: #282929;
+	background: $black4;
 	--padding: 2em;
 
 	.asset-preview {
@@ -31,7 +31,7 @@
 		.asset-author {
 			margin: 0;
 			font-size: 1.1em;
-			color: #6C6C6C;
+			color: $gray2;
 			font-weight: normal;
 
 			a { color: currentColor; }
