@@ -5,6 +5,7 @@
 			<div>
 				<NuxtLink :to="{name: 'admin-assets'}">Assets</NuxtLink>
 				<NuxtLink :to="{name: 'admin-assets-upload'}">Upload</NuxtLink>
+				<NuxtLink :to="{name: 'admin-creators'}">Creators</NuxtLink>
 			</div>
     </header>
 		<div>

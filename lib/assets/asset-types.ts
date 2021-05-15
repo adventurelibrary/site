@@ -1,4 +1,5 @@
 import {AssetSearchFilter} from "./search-filters";
+import {Creator} from "~/lib/creators/creator-types";
 
 export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
 
@@ -40,10 +41,6 @@ export interface AssetFormData extends AssetFields {
 // Data sent by browser to the server to create/update an asset
 export type AssetPayload = {
 	asset: any
-}
-
-export type Creator = {
-	name: string
 }
 
 // Data returned by the server about a specific asset
