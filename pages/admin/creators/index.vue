@@ -9,7 +9,7 @@
 				<CDataTable :items="creators" :fields="['name']" :clickable-rows="false">
 					<template #name="{item}">
 						<td>
-							edit {{item.name}}
+							<nuxt-link :to="{name: 'admin-creators-id', params: {id: item.id}}">{{item.name}}</nuxt-link>
 						</td>
 					</template>
 				</CDataTable>
@@ -22,11 +22,11 @@
 import {Component, Watch} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
-import {CreatorsResponse} from "~/lib/creators/creator-types";
+import {CreatorsResponse} from "~/modules/creators/creator-types";
 import AdminPage from "~/admin/admin-page";
 import {Route} from "vue-router";
 import LoadingContainer from "~/components/LoadingContainer.vue";
-import {getCreators, newCreatorsAjax} from "~/lib/creators/creator-api";
+import {getCreators, newCreatorsAjax} from "~/modules/creators/creator-api";
 @Component({
 	components: {
 		LoadingContainer,

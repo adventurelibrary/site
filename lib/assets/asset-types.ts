@@ -1,5 +1,5 @@
 import {AssetSearchFilter} from "./search-filters";
-import {Creator} from "~/lib/creators/creator-types";
+import {Creator} from "~/modules/creators/creator-types";
 
 export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
 
