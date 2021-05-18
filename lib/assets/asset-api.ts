@@ -307,3 +307,10 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	payload.revenueShare = {}
 	return payload
 }
+
+export async function archiveAsset (assetId: string) {
+	console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
+
+	// update asset visible to hidden
+	await api.put('/assets/update/', [{id: assetId, visibility: 'HIDDEN'}])	
+}

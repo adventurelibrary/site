@@ -1,13 +1,14 @@
 <template>
 	<div class="modal-container" v-show="showingModal">
 		<div class="modal-backdrop" @click="clickBackdrop">
-		</div>
+		</div>		
 		<LoginModal v-if="showingLoginModal" :show="showingLoginModal" />
 		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 		<AddAssetToBundle v-if="showingAddAssetToBundle" />
 		<CreateBundleModal v-if="showingCreateBundle" />
 		<EditBundleModal v-if="showingBundleEdit" />
 		<BundleAddAssetsModal v-if="showBundleAddAssets" />
+		<AssetArchiveModal v-if="showArchiveAsset" />
 	</div>
 </template>
 <script lang="ts">
@@ -19,6 +20,7 @@ import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetToBundle
 import CreateBundleModal from "~/modules/bundles/components/CreateBundleModal.vue";
 import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
 import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsModal.vue";
+import AssetArchiveModal from "~/modules/modals/AssetArchiveModal.vue";
 
 @Component({
 	components: {
@@ -27,7 +29,8 @@ import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsMo
 		AddAssetToBundle: AddAssetToBundleModal,
 		LoginModal: LoginModal,
 		RegisterModal: RegisterModal,
-		CreateBundleModal: CreateBundleModal
+		CreateBundleModal: CreateBundleModal,
+		AssetArchiveModal: AssetArchiveModal
 	}
 })
 export default class Modals extends Vue {
@@ -38,6 +41,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
 	@State(state => state.modals.editBundle)  showingBundleEdit : boolean
 	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
+	@State(state => state.modals.archiveAsset)  showArchiveAsset : boolean
 
 	@Watch('$route')
 	routeWatcer () {

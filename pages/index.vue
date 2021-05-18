@@ -3,7 +3,7 @@
 		<!--header class="page-header">
 			<img src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
 			<h2>Featured Assets</h2>
-		</header-->
+		</header-->		
 		<section class="featured-assets search-page">
 			<ul class="search-results">
 				<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
