@@ -268,7 +268,8 @@ body {
 	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
-	padding: 0 2em;
+	padding: 0 2em 2em 2em;
+	row-gap: 2em;
 
 	.copyright-notice {
 		text-align: center;
