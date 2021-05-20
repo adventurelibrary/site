@@ -38,7 +38,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/png', href: '/favicon-16.png', sizes: '16x16' },
-      { rel: 'icon', type: 'image/png', href: '/favicon-32.png', sizes: '32x32' },
+      { rel: 'icon', type: 'image/png', href: '/favicon.png', sizes: '32x32' },
       { rel: 'icon', type: 'image/png', href: '/favicon-48.png', sizes: '48x48' },
       { rel: 'icon', type: 'image/png', href: '/favicon-72.png', sizes: '72x72' },
       { rel: 'icon', type: 'image/png', href: '/favicon-96.png', sizes: '96x96' },
