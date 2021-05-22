@@ -8,16 +8,37 @@ import {
     getStatusCode,
 } from 'http-status-codes';
 
-import {ErrorCustom} from "lib/errors/ErrorCustom"
 
-export class ErrorForm extends ErrorCustom {    
+export class ErrorCustom extends Error {
+
+    #statusCode: StatusCodes
+
     constructor(name: string, statusCode: StatusCodes, message: string) {        
-        super(name, statusCode, message);
+        super();
+        super.name = name        
+        this.#statusCode = statusCode
+        super.message = message
     }
-}
 
-const ErrWrongEmailPassword = new ErrorForm("wrong_email_password", StatusCodes.UNAUTHORIZED, "Wrong email / password.")
-const ErrEmailAlreadyRegistered = new ErrorForm("email_registered", StatusCodes.FORBIDDEN, "Email already registered.")
+    getStatusCode () {
+        return this.#statusCode
+
+    }
+
+    toString() {
+        return "Error: " + this.name + " | Code: " + this.#statusCode.toString + " |  Message: " + this.message;        
+    }
+
+    toStringUser() {
+        return "Error Message: " + this.message + " | Code: " + this.#statusCode.toString;    
+    }
+
+
+    toStringExtended() {
+        return "Error: " + this.name + " | Code: " + this.#statusCode.toString + " - " + getReasonPhrase(this.#statusCode).toString + " |  Message: " + this.message;        
+    }
+
+}
 
 
 
