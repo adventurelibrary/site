@@ -8,6 +8,7 @@ import {Bundle} from "~/lib/bundles/bundle-types";
 Vue.use(Vuex)
 
 type State = {
+	archiveAsset: Asset | null,
 	addToBundleAsset: Asset | null,
 	breadcrumbs: any[],
 	createBundleAsset: Asset | null
@@ -24,6 +25,7 @@ type State = {
 		bundleAddAssets: boolean,
 		login: boolean,
 		register: boolean,
+		archiveAsset: boolean
 	}
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
@@ -34,7 +36,7 @@ type State = {
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset'
 
 export type Toast = {
 	id: number
@@ -61,6 +63,7 @@ function newToastId () : number {
 
 export const state = () : State => {
 	return {
+		archiveAsset: null,
 		addToBundleAsset: null,
 		breadcrumbs: [],
 		bundleAddAssetsBundle: null,
@@ -84,6 +87,7 @@ export const state = () : State => {
 			editBundle: false,
 			login: false,
 			register: false,
+			archiveAsset: false
 		},
 	}
 }
@@ -158,9 +162,20 @@ export const mutations = {
 	}) {
 		state.modals[update.key] = update.value
 	},
+	archiveAsset (state: State, asset: Asset | null) {		
+		state.archiveAsset = asset
+		console.log('archiveAsset mutation')
+	},		
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
-	},
+		// update asset visible to hidden
+		// v1/assets/{assetID}/update  POST
+		// API: lib/assets.ts updateAsset, updates.visibility
+		// visibility=HIDDEN
+		// v=HIDDEN
+		// v1/assets/{assetID}/update?v=HIDDEN    ?
+
+	},	
 	bundleAddAssetsBundle (state: State, bundle: Bundle | null) {
 		state.bundleAddAssetsBundle = bundle
 	},
@@ -237,11 +252,18 @@ export const actions = {
 		})
 		commit('editBundle', bundle)
 	},
-	closeLoginModal ({commit} : ActionParams) {
+	closeLoginModal ({commit} : ActionParams) {		
 		commit('modal', {
 			key: 'login',
 			value: false
 		})
+	},
+	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {		
+		commit('modal', {
+			key: 'archiveAsset',
+			value: true
+		})
+		commit('archiveAsset', asset)
 	},
 	openRegisterModal ({commit} : ActionParams) {
 		commit('modal', {

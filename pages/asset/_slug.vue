@@ -6,7 +6,12 @@
 		</section>
 
 		<section class="asset-info">
-			<h1 class="asset-title">{{asset.name}}</h1>
+			<h1 class="asset-title">{{asset.name}}</h1> 
+
+			<figure class="asset-action">				
+				<AssetArchiveButton :asset="asset" />
+			</figure>
+		
 			<h3 class="asset-author">
 				<!-- Will be a link to the author profile -->
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creatorName}}</a>
@@ -43,6 +48,7 @@ import {Asset} from "~/lib/assets/asset-types";
 import { getAssetAjax} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
+import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
 import TagList from "~/modules/tags/TagList.vue";
 
 // related assets and search modules
@@ -50,12 +56,15 @@ import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
+import Modals from "~/modules/modals/Modals.vue";
 
 @Component({
 	components: {
 		AssetDownload: AssetDownload,
 		TagList: TagList,
-		AssetCard
+		AssetCard,
+		Modals: Modals,
+		AssetArchiveButton: AssetArchiveButton
 	}
 })
 class AssetPage extends Vue {
@@ -87,7 +96,8 @@ class AssetPage extends Vue {
 			og: asset.thumbnail,
 
 			// meta tags nuxt implementation
-			meta: [				
+			meta: [		
+				{ charset: 'utf-8' },		
 				{
 					hid: 'description',  // hid is used as unique identifier. Do not use `vmid` for it as it will not work
 					name: asset.name + ' - Asset',
