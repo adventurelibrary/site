@@ -1,6 +1,7 @@
 // Extends Error: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
 // Uses http-status-codes npm: https://www.npmjs.com/package/http-status-codes
 
+import { bool } from 'aws-sdk/clients/signer';
 import {
     ReasonPhrases,
     StatusCodes,
@@ -11,13 +12,73 @@ import {
 import {ErrorCustom} from "lib/errors/ErrorCustom"
 
 export class ErrorForm extends ErrorCustom {    
+
     constructor(name: string, statusCode: StatusCodes, message: string) {        
         super(name, statusCode, message);
     }
+
+    // public super function to check email for new account registration
+    checkEmailForRegistration(email: string) {
+        this.validateEmail(email)
+        this.validateEmailAlreadyRegistered(email)
+    }
+
+    // validates correctly formed email
+    // returns console log if successfull, otherwise also adds ErrForm to stack
+    private validateEmail(email: string) {
+        // RFC2822 Email Validation: https://regexr.com/2rhq7
+        let regExprEmailFormat = "a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+
+        if (email.match(regExprEmailFormat)) {
+            console.log("validateEmail: Valid email.")
+        }
+        else {
+            console.log("validateEmail: Invalid email.")
+             this.addError(ErrInvalidEmail)
+        }
+    }
+
+
+    // verifies if email has already been registered in the DB for a user
+    // returns console log if successfull, otherwise also adds ErrForm to stack
+    private validateEmailAlreadyRegistered(email: string) {
+        let registered: bool = false
+
+        // API function missing to check if email already registered
+        registered = true
+
+        if (registered) {
+            console.log("validateEmailAlreadyRegistered: Email not already registered.")
+        }
+        else {
+            console.log("validateEmailAlreadyRegistered: Email already registered.")
+             this.addError(ErrEmailAlreadyRegistered)
+        }
+    }
+
+    // verifies if email + password combination is valid
+    // returns console log if successfull, otherwise also adds ErrForm to stack
+    validateWrongEmailPassword(email: string, password: string) {
+        let validLogin: bool = false        
+
+        // run parts of the login code to check this?
+
+        if (validLogin) {
+            console.log("validateWrongEmailPassword: Valid login.")
+        }
+        else {
+            console.log("validateWrongEmailPassword: Invalid login.")
+             this.addError(ErrWrongEmailPassword)
+        }
+    }
+
 }
 
-const ErrWrongEmailPassword = new ErrorForm("wrong_email_password", StatusCodes.UNAUTHORIZED, "Wrong email / password.")
+const ErrInvalidEmail = new ErrorForm("invalid_email", StatusCodes.NOT_ACCEPTABLE, "Invalid email address.")
 const ErrEmailAlreadyRegistered = new ErrorForm("email_registered", StatusCodes.FORBIDDEN, "Email already registered.")
+
+const ErrWrongEmailPassword = new ErrorForm("wrong_email_password", StatusCodes.UNAUTHORIZED, "Wrong email / password.")
+
 
 
 

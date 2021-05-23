@@ -12,6 +12,7 @@ import {
 export class ErrorCustom extends Error {
 
     #statusCode: StatusCodes
+    #errorList: ErrorCustom[]
 
     constructor(name: string, statusCode: StatusCodes, message: string) {        
         super();
@@ -23,6 +24,22 @@ export class ErrorCustom extends Error {
     getStatusCode () {
         return this.#statusCode
 
+    }
+
+    addError(error: ErrorCustom) {
+        this.#errorList.push(error)
+    }
+
+    
+    getErrors() {
+        return this.#errorList
+    }
+
+    
+    getError(id: number) {
+        if (id < this.#errorList.length) {
+            return(this.#errorList[id])
+        }
     }
 
     toString() {
