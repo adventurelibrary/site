@@ -70,9 +70,8 @@ export default class EditCreatorPage extends mixins(AdminPage, FormMixin) {
 	}
 
 	async formAction () {
-		console.log('pls save')
 		await saveCreator(this.id, this.form.data)
-		console.log('faiiled to save')
+		this.notifySuccess('Creator saved')
 	}
 
 	async asyncData (ctx: Context) {
