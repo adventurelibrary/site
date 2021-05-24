@@ -102,6 +102,19 @@
 	}
 }
 
+.modal.edit-bundle {
+	@include medium { width: 45em; }
+
+	.modal-body form {
+		display: grid;
+		grid-template-rows: 1fr auto 1fr auto auto;
+	}
+
+	textarea {
+		min-height: 8em;
+	}
+}
+
 .bundle-selector {
 	display: grid;
 	grid-auto-rows: 5.5em;

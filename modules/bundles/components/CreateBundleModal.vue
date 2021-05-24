@@ -1,11 +1,10 @@
 <template>
 	<Modal
 			:show="true"
-			class-name="create-bundle-modal"
+			class-name="edit-bundle create-bundle"
 			title="Create Bundle"
 			@close="closeModal">
 		<slot>
-			Asset: {{asset.name}}
 			<CreateBundleForm :asset="asset" @success="onSuccess" />
 		</slot>
 	</Modal>

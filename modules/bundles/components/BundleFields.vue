@@ -1,5 +1,5 @@
 <template>
-	<div class="form-wrapper">
+	<fragment>
 		<InputGroup
 				label="Name"
 				v-model="copy.name"
@@ -11,7 +11,7 @@
 			label="Public"
 			:options="publicOptions"
 			v-model="copy.public" />
-	</div>
+	</fragment>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
@@ -19,12 +19,14 @@ import {Component, Model} from "nuxt-property-decorator";
 import InputGroup from "~/components/forms/InputGroup.vue";
 import Textarea from "~/components/forms/Textarea.vue";
 import SelectGroup from "~/components/forms/SelectGroup.vue";
+import {Fragment} from "vue-fragment";
 
 @Component({
 	components: {
 		InputGroup: InputGroup,
 		TextareaGroup: Textarea,
-		SelectGroup: SelectGroup
+		SelectGroup: SelectGroup,
+		Fragment
 	}
 })
 export default class BundleFields extends Vue {
