@@ -1,5 +1,5 @@
 <template>
-  <FormGroup :label="label">
+  <FormGroup :label="label" class="text-area">
 <textarea
     class="form-control"
     v-bind:value="value"

@@ -91,6 +91,10 @@
 		display: grid;
 		grid-template-rows: 1em 2em;
 		gap: .5em;
+
+		&.text-area {
+			grid-template-rows: 1em 8em;
+		}
 	}
 	.control-row {
 		display: grid;

@@ -4,7 +4,7 @@
 		font-size: .75em;
 		display: grid;
 	}
-	input {
+	input, textarea {
 		background-color: $input-background;
 		border: 2px solid $input-border;
 		color: $input-text;
