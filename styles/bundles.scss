@@ -1,4 +1,7 @@
 .modal.bundle-add-assets-modal {
+	@include medium { width: 45em; }
+	min-height: 50vh;
+
 	$size: 12em;
 	$gap: 1em;
 	$rows: 3;
@@ -6,6 +9,16 @@
 
 	.modal-body {
 		gap: 1em;
+		grid-template-rows: 2.5em auto;
+
+		.asset-search {
+			z-index: 1;
+			gap: .5em;
+		}
+	}
+
+	[role="loading-container"] {
+		display: block;
 	}
 
 	.results {
@@ -20,7 +33,7 @@
 
 		max-height: ($size * $cols) + ($gap * ($rows - 1));
 		overflow-y: scroll;
-
+		
 		.result {
 			display: grid;
 			position: relative;
@@ -30,6 +43,8 @@
 				"image"
 				"title"
 				"category";
+
+			border-radius: .4em;
 
 			.thumbnail {
 				grid-row: image-start / -1;
@@ -42,6 +57,7 @@
 				white-space: nowrap;
 				overflow: hidden;
 				text-overflow: ellipsis;
+				background-color: $asset-card-meta;
 			}
 			h3 {
 				font-size: 1em;
@@ -52,7 +68,7 @@
 				font-style: italic;
 				font-weight: normal;
 				grid-area: category;
-				justify-self: end;
+				text-align: right;
 			}
 			.asset-action {
 				margin: 0;
