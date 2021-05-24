@@ -27,16 +27,8 @@ export const newCreatorsAjax = () : Ajax<CreatorsResponse> => {
 }
 
 export async function getCreators () : Promise<CreatorsResponse> {
-	return new Promise((res) => {
-		setTimeout(() => {
-			res({
-				total: 2,
-				creators: CREATORS
-			})
-		}, 250)
-	})
-/*	const res = await api.get('/creators')
-	return res.data*/
+	const res = await api.get('/creators')
+	return res.data
 }
 
 export const newCreatorAjax = () : Ajax<Creator> => {
@@ -44,13 +36,7 @@ export const newCreatorAjax = () : Ajax<Creator> => {
 }
 
 export async function getCreatorById (id: string) : Promise<Creator> {
-	console.log('id to find', id)
-	const found = CREATORS.find(x => x.id === id)
-	console.log('found', found)
-	if (found) {
-		return Promise.resolve(found)
-	}
-	const res = await api.get('/creators/' + id)
+	const res = await api.get('/creator/' + id)
 	return res.data
 }
 
@@ -69,7 +55,6 @@ export function creatorFormDataToPayload (data: CreatorFormData) : any {
 }
 
 export async function saveCreator (id: string, data: CreatorFormData) {
-	throw new Error('Not implemented')
 	const payload = creatorFormDataToPayload(data)
-	return await api.put('/creators/' + id, payload)
+	return await api.put('/creator/' + id, payload)
 }
