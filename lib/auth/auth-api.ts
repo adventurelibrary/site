@@ -60,7 +60,7 @@ export async function signIn (identifier: string, password: string) {
 		throw new Error(convertErr(ex))
 	}
 	const sess = await Auth.currentSession()
-	setCookie('jwt', sess.getAccessToken().getJwtToken(), 31)
+	setCookie('jwt', sess.getIdToken().getJwtToken(), 31)
 }
 
 
