@@ -58,3 +58,11 @@ export async function saveCreator (id: string, data: CreatorFormData) {
 	const payload = creatorFormDataToPayload(data)
 	return await api.put('/creator/' + id, payload)
 }
+
+
+export async function addCreator (data: CreatorFormData) : Promise<string> {
+	const payload = creatorFormDataToPayload(data)
+	const res = await api.post('/creators', payload)
+	return res.data.id
+}
+
