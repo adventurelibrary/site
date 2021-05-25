@@ -38,6 +38,7 @@ B
 				</li>
 				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
         		<li><nuxt-link :to="{name: 'my-bundles'}">My Bundles</nuxt-link></li>
+        		<li><nuxt-link :to="{name: 'user'}">My Account</nuxt-link></li>
 				<li><NuxtLink to="/mockups/filler">Buy Coins</NuxtLink></li>
 				<!--li><NuxtLink to="/mockups/filler">Filler Mockup</NuxtLink></li-->
 			</ul>
