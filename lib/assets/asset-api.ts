@@ -246,8 +246,8 @@ export const newAsset = () : Asset => {
 	return {
 		id: '',
 		category: '',
-		creatorID: '',
-		creatorName: '',
+		creator_id: '',
+		creator_name: '',
 		description: '',
 		name: '',
 		slug: '',
@@ -296,15 +296,15 @@ export const assetToFormData = (asset: Asset) : AssetFormData => {
 export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	const payload : any = {}
 	payload.name = data.name
+	payload.creator_id = data.creator_id
 	payload.description = data.description
 	payload.category = data.category
 	//payload.tagIDs = tagListToMap(data.tags)
 	payload.tags = data.tagObjects.map((t) => {
 		return t.label
 	})
-	payload.collectionID = new Date().getTime().toString()
-	payload.unlockPrice = 0
-	payload.revenueShare = {}
+	payload.unlock_price = 0
+	payload.revenue_share = {}
 	return payload
 }
 
@@ -312,5 +312,5 @@ export async function archiveAsset (assetId: string) {
 	console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 
 	// update asset visible to hidden
-	await api.put('/assets/update/', [{id: assetId, visibility: 'HIDDEN'}])	
+	await api.put('/assets/update/', [{id: assetId, visibility: 'HIDDEN'}])
 }

@@ -9,7 +9,9 @@ export default async function (ctx: Context) {
 	// then we set the JWT in our api with setJWT so that it knows
 	// to use that JWT in the auth header
 	if (req && req.headers.cookie) {
-		const cookies = req.headers.cookie.split(';')
+		const cookies = req.headers.cookie.split(';').sort((a, b) => {
+			return a.length > b.length ? -1 : 1
+		})
 		for (const c of cookies) {
 			const parts = c.split('=')
 			const name = parts[0].trim()

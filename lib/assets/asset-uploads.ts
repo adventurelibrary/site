@@ -19,7 +19,7 @@ export type ActiveUpload = {
 // This function converts all those new assets into ActiveUploads
 // This is done when the user clicks the big "BEGIN UPLOAD" button after selecting
 // one or more files and entering in the asset's information
-export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveUpload[] {
+export function convertNewAssetToActiveUploads (newAssets: NewAsset[], creatorId: string) : ActiveUpload[] {
 	return newAssets.map((na: NewAsset, idx: number) : ActiveUpload => {
 		return {
 			title: na.asset.name,
@@ -28,7 +28,10 @@ export function convertNewAssetToActiveUploads (newAssets: NewAsset[]) : ActiveU
 			error: '',
 			signature: '',
 			key: idx,
-			asset: na.asset,
+			asset: {
+				...na.asset,
+				creator_id: creatorId
+			},
 			file: na.file,
 			params: {}
 		}

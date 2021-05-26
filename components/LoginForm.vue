@@ -1,5 +1,5 @@
 <template>
-	<form class="login-form" @submit="submit">		
+	<form class="login-form" @submit="submit">
 		<FormErrors :error="form.error" />
 		<InputGroup
 				label="Username or Email"

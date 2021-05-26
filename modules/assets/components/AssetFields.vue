@@ -21,7 +21,7 @@
 				v-on:input="(val) => fieldChanged('category', val)"
 		/>
 		<Select
-				:label="copy.visibility"
+				label="Visibility"
 				:options="visOptions"
 				:value="copy.visibility"
 				v-on:input="(val) => fieldChanged('visibility', val)" />

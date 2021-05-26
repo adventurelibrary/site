@@ -1,4 +1,5 @@
 import {CATEGORIES} from "~/lib/categories/categories-consts";
+import Cookies from 'js-cookie'
 
 export interface SelectOption {
 	value: any,
@@ -79,7 +80,7 @@ export function filenameGuessCategory(filename: string) : string {
 		}
 	}
 
-	return ''
+	return 'map'
 }
 
 export function filenameToTitle(filename: string) : string {
@@ -121,26 +122,14 @@ export function getElOffset (el: Element) {
 }
 
 export function setCookie (cname: string, cvalue: any, exdays : number = 7) {
-	const d = new Date();
-
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	const expires = "expires="+ d.toUTCString();
-
-	const cookie = cname.trim() + "=" + cvalue + "; " + expires;
-	document.cookie = cookie;
+	Cookies.set(cname, cvalue, {
+		expires: exdays,
+		path: "/"
+	})
+	return
 }
 
 export function getCookie (cname: string) {
-	const name = cname + "=";
-	const ca = document.cookie.split(';');
-	for(let i = 0; i <ca.length; i++) {
-		let c = ca[i];
-		while (c.charAt(0)==' ') {
-			c = c.substring(1);
-		}
-		if (c.indexOf(name) == 0) {
-			return c.substring(name.length,c.length);
-		}
-	}
-	return "";
+	const cookie = Cookies.get(cname)
+	return cookie
 }

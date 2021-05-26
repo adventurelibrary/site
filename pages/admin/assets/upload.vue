@@ -2,7 +2,7 @@
 <div class="upload-page">
 	<h1>Upload Assets</h1>
 	<div>
-		<UploadAssets />
+		<UploadAssets :as-admin="true" />
 	</div>
 </div>
 </template>
