@@ -3,6 +3,7 @@ import {getCookie, setCookie} from "~/lib/helpers";
 import {Auth} from 'aws-amplify'
 import {CognitoUser} from "amazon-cognito-identity-js";
 import api, {getJWT, setJWT} from "~/lib/api";
+import Cookies from "js-cookie";
 
 const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
 const clientId = <string>process.env.COGNITO_CLIENT_ID
@@ -60,7 +61,8 @@ export async function signIn (identifier: string, password: string) {
 		throw new Error(convertErr(ex))
 	}
 	const sess = await Auth.currentSession()
-	setCookie('jwt', sess.getIdToken().getJwtToken(), 31)
+	const jwt = sess.getIdToken().getJwtToken()
+	setCookie('jwt', jwt, 31)
 }
 
 
@@ -85,7 +87,7 @@ export async function logout () {
 	} catch (ex) {
 		throw new Error(convertErr(ex))
 	}
-	setCookie('jwt', '')
+	Cookies.remove('jwt')
 }
 
 export async function changePassword (username: string, oldPassword: string, newPassword: string) {

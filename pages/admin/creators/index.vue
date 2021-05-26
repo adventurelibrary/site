@@ -4,6 +4,7 @@
 			Creators
 		</CCardHeader>
 		<CCardBody>
+			<nuxt-link :to="{name: 'admin-creators-new'}">Add Creator</nuxt-link>
 			<LoadingContainer :loading="creatorsAjax.loading" :error="creatorsAjax.error">
 				<Pagination :to="{name: 'admin-creators'}" :items-per-page="itemsPerPage" :total-items="totalCreators" />
 				<CDataTable :items="creators" :fields="['name']" :clickable-rows="false">

@@ -1,6 +1,11 @@
 <template>
 	<div>
+		<FormErrors :error="error" />
 		<div v-show="stage === 'adding'">
+			<div v-if="asAdmin">
+				<div>Upload as creator <span v-if="creator">{{creator.name}}</span><span v-else>n/a</span></div>
+				<CreatorSelector v-model="creator" />
+			</div>
 			<div v-show="newAssets.length !== 0">
 				<NewAssetComponent
 						v-for="(asset, idx) in newAssets"
@@ -39,6 +44,10 @@ import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-u
 import {filenameGuessCategory, filenameToTitle, sleep} from "~/lib/helpers";
 import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
 import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
+import CreatorSelector from "~/modules/creators/components/CreatorSelector.vue";
+import {Creator} from "~/modules/creators/creator-types";
+import FormErrors from "~/components/forms/FormErrors.vue";
+import {convertAPIException} from "~/lib/errors/errors";
 
 type Stage = 'adding' | 'uploading' | 'done'
 
@@ -46,21 +55,27 @@ type Data = {
 	stage: Stage,
 	newAssets: NewAsset[],
 	uploads: ActiveUpload[],
-	acceptedImageTypes: string
+	acceptedImageTypes: string,
+	error: string,
+	creator: Creator | undefined
 }
 
 export default Vue.extend({
 	name: 'UploadAssets',
-	props: ['assets'],
+	props: ['assets', 'asAdmin'],
 	components: {
+		FormErrors,
 		NewAssetComponent: NewAssetComponent,
 		ActiveUploadComponent: ActiveUploadComponent,
+		CreatorSelector: CreatorSelector
 	},
 	data () : Data {
 		return {
 			stage: 'adding',
 			newAssets: [],
+			error: '',
 			uploads: [],
+			creator: undefined,
 			acceptedImageTypes: ACCEPTED_IMAGE_TYPES
 		}
 	},
@@ -75,14 +90,26 @@ export default Vue.extend({
 	},
 	methods: {
 		async beginUploads () {
-			const uploads = convertNewAssetToActiveUploads(this.newAssets)
-			Vue.set(this, 'uploads', uploads)
-			this.stage = 'uploading'
-			window.scrollTo(0, 0)
-			for (let i = 0; i < this.uploads.length; i++) {
-				const upload = this.uploads[i]
-				await sleep(250)
-				await this.beginUpload(upload)
+			if (this.asAdmin) {
+				if (!this.creator) {
+					this.error = 'Please select a creator'
+					this.notifyError('Please select a creator')
+					return
+				}
+			}
+			try {
+				const uploads = convertNewAssetToActiveUploads(this.newAssets, this.getCreatorId())
+				Vue.set(this, 'uploads', uploads)
+				this.stage = 'uploading'
+				window.scrollTo(0, 0)
+				for (let i = 0; i < this.uploads.length; i++) {
+					const upload = this.uploads[i]
+					await sleep(250)
+					await this.beginUpload(upload)
+				}
+			} catch (ex) {
+				this.error = convertAPIException(ex)
+				this.stage = 'adding'
 			}
 		},
 
@@ -91,11 +118,11 @@ export default Vue.extend({
       await this.uploadAsset(upload)
 		},
 
-		async  signUpload (upload: ActiveUpload) {
+		async signUpload (upload: ActiveUpload) {
 			await signActiveUpload(upload)
 		},
 
-		async  uploadAsset(upload: ActiveUpload) {
+		async uploadAsset(upload: ActiveUpload) {
 			upload.status = 'uploading'
 			try {
 				await uploadAsset(upload.file, upload.signature, upload.params)
@@ -121,6 +148,7 @@ export default Vue.extend({
 					description: '',
 					name: name,
 					category: filenameGuessCategory(file.name),
+					creator_id: this.getCreatorId()
 				},
 				file: file,
 			})
@@ -129,6 +157,12 @@ export default Vue.extend({
 			fieldNames.forEach((field: string) => {
 				Vue.set(this.newAssets[idx], field, fields[field])
 			})
+		},
+		getCreatorId () : string {
+			if (!this.creator) {
+				return ''
+			}
+			return this.creator.id
 		}
 	},
 })

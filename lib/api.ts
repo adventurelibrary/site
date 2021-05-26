@@ -11,7 +11,7 @@ export const api = axios.create({
 api.interceptors.response.use((response) => {
 	return response
 }, (err) => {
-	if (err.response && err.response.body && err.response.data && err.response.data.error) {
+	if (err.response && err.response.data && err.response.data.error) {
 		return Promise.reject(err.response.data.error)
 	}
 	return Promise.reject(err.toString())
@@ -19,7 +19,7 @@ api.interceptors.response.use((response) => {
 
 api.interceptors.request.use(function (config) {
 	if (process.client && !jwt) {
-		jwt = getCookie('jwt')
+		jwt = <string>getCookie('jwt')
 	}
 	if (jwt) {
 		config.headers.Authorization = 'JWT ' + jwt

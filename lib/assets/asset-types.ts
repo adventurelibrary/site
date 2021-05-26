@@ -8,6 +8,7 @@ export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
 export type AssetFields = {
 	category: string
 	description: string
+	creator_id: string
 	name: string
 	tags: string[]
 	tagObjects: AssetTag[]
@@ -16,8 +17,8 @@ export type AssetFields = {
 // This is an asset that the server gives us
 export type Asset = AssetFields & {
 	id: string
-	creatorName: string
-	creatorID: string
+	creator_name: string
+	creator_id: string
 	slug: string
 	thumbnail: string
 	visibility: AssetVisibility
@@ -36,6 +37,7 @@ export interface AssetFormData extends AssetFields {
 	// EG: a boolean that says "email my followers about this asset"
 	// That would be here and not in Asset because it isn't data that is stored  in the asset, it's
 	// a flag to tell the server to perform another function
+	creator_id: string
 }
 
 // Data sent by browser to the server to create/update an asset
