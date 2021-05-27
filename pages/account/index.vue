@@ -4,7 +4,9 @@
 		<div v-if="user">
 			<h2>Account Information</h2>			
 			Username: {{user.username}}<br/>
-			My coins: <br/>
+			Public name: ---<br/>
+			My coins: 0<br/>			
+			<nuxt-link :to="{name: 'account-purchase-history'}">Purchase History</nuxt-link><br/>
 			<nuxt-link :to="{name: 'account-change-password'}">Change Password</nuxt-link>
 		</div>
 
@@ -12,10 +14,10 @@
 		<div v-if="user.creator==true">
 			<h2>Creator Section</h2>
 			<h3>Assets</h3>
-			View my assets<br/>
+			<nuxt-link :to="{name: 'assets?search=by%3A%20adminuser'}">View my assets</nuxt-link><br/>
 			Create new asset<br/>
 			<h3>Bundles</h3>
-			View my bundles
+			<nuxt-link :to="{name: 'my-bundles'}">View my bundles</nuxt-link><br/>
 			Create new bundle
 		</div>
 
