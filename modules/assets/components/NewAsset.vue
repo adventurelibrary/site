@@ -11,6 +11,7 @@
 			<AssetFields
 					:asset="newAsset.asset"
 					v-on:assetChanged="assetChanged"
+					:hide-visibility="true"
 			/>
 		</div>
 	</div>

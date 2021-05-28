@@ -21,6 +21,7 @@
 				v-on:input="(val) => fieldChanged('category', val)"
 		/>
 		<Select
+				v-if="!hideVisibility"
 				label="Visibility"
 				:options="visOptions"
 				:value="copy.visibility"
@@ -47,6 +48,11 @@ export default Vue.extend({
 		asset: {
 			type: Object as PropType<AssetFormData>,
 			required: true
+		},
+		hideVisibility: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	components: {

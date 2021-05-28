@@ -14,6 +14,9 @@ export default class TagList extends Vue {
 
 	get tagObjs () : AssetTag[] {
 		const atags : AssetTag[] = []
+		if (!this.tags) {
+			return []
+		}
 		this.tags.forEach((id: string) => {
 			const tag = getTagById(id)
 			if (tag) {

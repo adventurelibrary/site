@@ -213,8 +213,8 @@ export const getAssetAjaxById = async(id: string) : Promise<Ajax<Asset>> => {
 }
 
 export const getAssetById = async (id: string) : Promise<Asset> => {
-	const res = await getAssetByField('id', id)
-	const asset = transformAsset(res)
+	const res = await api.get<Asset>('/assets/' + id) //await getAssetByField('id', id)
+	const asset = transformAsset(res.data)
 	return asset
 }
 
@@ -297,6 +297,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	const payload : any = {}
 	payload.name = data.name
 	payload.creator_id = data.creator_id
+	payload.visibility = data.visibility
 	payload.description = data.description
 	payload.category = data.category
 	//payload.tagIDs = tagListToMap(data.tags)
