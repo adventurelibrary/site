@@ -124,6 +124,7 @@ export default Vue.extend({
 
 		async uploadAsset(upload: ActiveUpload) {
 			upload.status = 'uploading'
+			upload.error = ''
 			try {
 				await uploadAsset(upload.file, upload.signature, upload.params)
 				upload.status = 'complete'

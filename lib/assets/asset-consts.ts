@@ -15,9 +15,10 @@ export const AssetSearchActions : AssetSearchAction[] = [{
 export const VisibilityOptions : SelectOption[] = [{
 	label: 'Hidden',
 	value: 'HIDDEN'
-}, {
+/*}, {
+	// This is waiting for transloadit, so you can't actually set an asset to that setting
 	label: 'Pending',
-	value: 'PENDING'
+	value: 'PENDING'*/
 }, {
 	label: 'Public',
 	value: 'PUBLIC'

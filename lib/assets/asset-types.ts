@@ -12,6 +12,7 @@ export type AssetFields = {
 	name: string
 	tags: string[]
 	tagObjects: AssetTag[]
+	visibility: AssetVisibility
 }
 
 // This is an asset that the server gives us
@@ -21,7 +22,6 @@ export type Asset = AssetFields & {
 	creator_id: string
 	slug: string
 	thumbnail: string
-	visibility: AssetVisibility
 }
 
 // This is created when a user drags and drops a file or selects files
