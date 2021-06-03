@@ -86,7 +86,6 @@ export default class EditCreatorPage extends mixins(AdminPage, FormMixin) {
 			creatorAjax.error = ex
 		}
 		creatorAjax.loading = false
-		console.log('data', data)
 		return {
 			creatorAjax: creatorAjax,
 			data: data,

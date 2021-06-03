@@ -21,9 +21,9 @@ export type ActiveUpload = {
 // one or more files and entering in the asset's information
 export function convertNewAssetToActiveUploads (newAssets: NewAsset[], creatorId: string) : ActiveUpload[] {
 	return newAssets.map((na: NewAsset, idx: number) : ActiveUpload => {
-		return {
+		const au = {
 			title: na.asset.name,
-			status: 'waiting',
+			status: <UploadStatus>'waiting',
 			progress: 0,
 			error: '',
 			signature: '',
@@ -35,5 +35,6 @@ export function convertNewAssetToActiveUploads (newAssets: NewAsset[], creatorId
 			file: na.file,
 			params: {}
 		}
+		return au
 	})
 }

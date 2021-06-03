@@ -66,14 +66,12 @@ export default class NewCreatorPage extends mixins(AdminPage, FormMixin) {
 		let data : any = {}
 		try {
 			const creator = await getCreatorById(ctx.route.params.id)
-			console.log('gotted', creator)
 			creatorAjax.data = creator
 			data = creatorToFormData(creator)
 		} catch (ex) {
 			creatorAjax.error = ex
 		}
 		creatorAjax.loading = false
-		console.log('data', data)
 		return {
 			creatorAjax: creatorAjax,
 			data: data,

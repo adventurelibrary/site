@@ -7,13 +7,14 @@
 				<CreatorSelector v-model="creator" />
 			</div>
 			<div v-show="newAssets.length !== 0">
+				Name: {{newAssets}}
 				<NewAssetComponent
-						v-for="(asset, idx) in newAssets"
-						:new-asset="asset"
-						:key="idx"
-						v-on:addFile="addFile"
-						v-on:updateFile="(file) => updateFile(idx, file)"
-						v-on:updateFields="(file) => updateFields(idx, file)"
+					v-for="(asset, idx) in newAssets"
+					:new-asset="asset"
+					:key="idx"
+					v-on:addFile="addFile"
+					v-on:updateFile="(file) => updateFile(idx, file)"
+					v-on:updateFields="(file) => updateFields(idx, file)"
 				/>
 			</div>
 			<form ref="startform">
@@ -157,7 +158,7 @@ export default Vue.extend({
 		},
 		updateFields (idx: number, fields: any) {
 			fieldNames.forEach((field: string) => {
-				Vue.set(this.newAssets[idx], field, fields[field])
+				Vue.set(this.newAssets[idx].asset, field, fields[field])
 			})
 		},
 		getCreatorId () : string {

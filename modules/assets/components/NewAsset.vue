@@ -9,9 +9,9 @@
 		</form>
 		<div class="new-asset-fields">
 			<AssetFields
-					:asset="newAsset.asset"
-					v-on:assetChanged="assetChanged"
-					:hide-visibility="true"
+				:asset="newAsset.asset"
+				v-on:assetChanged="assetChanged"
+				:hide-visibility="true"
 			/>
 		</div>
 	</div>
