@@ -180,7 +180,10 @@ export async function getAssetByField(field: string, value: string) : Promise<As
 export const getAssetBySlug = async (slug: string) : Promise<Asset> => {
 	const parts = slug.split('-')
 	const id = parts[parts.length-1]
-	return getAssetById(id)
+	const path = `/assets?id=${id}`
+	const res = await api.get(path)
+	return transformAsset(res.data)
+	//return getAssetById(id)
 }
 
 // Queries for an asset, and does wraps the process in an Ajax object

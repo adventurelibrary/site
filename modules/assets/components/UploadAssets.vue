@@ -148,6 +148,7 @@ export default Vue.extend({
 					tagObjects: [],
 					description: '',
 					name: name,
+          visibility: 'PENDING',
 					category: filenameGuessCategory(file.name),
 					creator_id: this.getCreatorId()
 				},

@@ -1,17 +1,17 @@
 <template>
-	<article class="asset">
+	<article class="asset" v-if="asset">
 
 		<section class="asset-preview" :style="`background-image: url(${asset.thumbnail});`">
 			<!-- Empty -->
 		</section>
 
 		<section class="asset-info">
-			<h1 class="asset-title">{{asset.name}}</h1> 
+			<h1 class="asset-title">{{asset.name}}</h1>
 
-			<figure class="asset-action">				
+			<figure class="asset-action">
 				<AssetArchiveButton :asset="asset" />
 			</figure>
-		
+
 			<h3 class="asset-author">
 				<!-- Will be a link to the author profile -->
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creatorName}}</a>
@@ -21,7 +21,7 @@
 			</div>
 			<TagList :tags="asset.tags" />
 		</section>
-		
+
 		<section class="asset-downloads">
 			<AssetDownload :asset="asset" />
 			<span class="download-count">
@@ -30,8 +30,8 @@
 			</span>
 		</section>
 
-		<section class="similar-assets">						
-			<!-- Similar assets -->	
+		<section class="similar-assets">
+			<!-- Similar assets -->
 			<ul class="search-results">
 				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
@@ -96,8 +96,8 @@ class AssetPage extends Vue {
 			og: asset.thumbnail,
 
 			// meta tags nuxt implementation
-			meta: [		
-				{ charset: 'utf-8' },		
+			meta: [
+				{ charset: 'utf-8' },
 				{
 					hid: 'description',  // hid is used as unique identifier. Do not use `vmid` for it as it will not work
 					name: asset.name + ' - Asset',
@@ -110,13 +110,13 @@ class AssetPage extends Vue {
 				{ name: 'twitter:title', content: asset.name + ' - Asset' },
 				{ name: 'twitter:description', content: asset.description},
 				{ name: 'twitter:image', content: asset.thumbnail},
-				{ name: 'twitter:card', content: asset.thumbnail},	
+				{ name: 'twitter:card', content: asset.thumbnail},
 
 				// Facebook specific tags:
 				// https://developers.facebook.com/docs/sharing/webmasters/
 				{ name: 'og:title', content: asset.name + ' - Asset' },
 				{ name: 'og:description', content: asset.description},
-				{ name: 'og:image', content: asset.thumbnail},			
+				{ name: 'og:image', content: asset.thumbnail},
 
 			]
 		}
@@ -133,16 +133,16 @@ class AssetPage extends Vue {
 
 	// fetching asset data and related assets array
 	async asyncData (ctx: Context) {
-		const assetRes = await getAssetAjax(ctx.params.slug)		
+		const assetRes = await getAssetAjax(ctx.params.slug)
 		let relatedAssets
 		if (assetRes.data != undefined) {
-			relatedAssets = await getRelatedAssetsByTags(assetRes.data)			
+			relatedAssets = await getRelatedAssetsByTags(assetRes.data)
 		}
 		return {
 			assetAjax: assetRes,
 			relatedAssets: relatedAssets
 		}
-	}	
+	}
 
 }
 
