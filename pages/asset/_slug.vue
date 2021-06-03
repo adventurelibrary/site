@@ -1,7 +1,7 @@
 <template>
 	<article class="asset" v-if="asset">
 
-		<section class="asset-preview" :style="`background-image: url(${asset.thumbnail});`">
+		<section class="asset-preview" :style="`background-image: url(${asset.previewLink});`">
 			<!-- Empty -->
 		</section>
 
@@ -14,7 +14,7 @@
 
 			<h3 class="asset-author">
 				<!-- Will be a link to the author profile -->
-				By<a href=""><i class="author-icon ci-user"></i>{{asset.creatorName}}</a>
+				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
 			</h3>
 			<div class="asset-description">
 				{{asset.description}}

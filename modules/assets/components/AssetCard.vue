@@ -14,7 +14,7 @@
 				<span class="author-label">by</span>
 				<span>
 					<!-- Should be a profile link -->
-					<a href="">{{asset.creatorName}}</a>
+					{{asset.creator_name}}
 				</span>
 			</h4>
 			<figure class="pricing">

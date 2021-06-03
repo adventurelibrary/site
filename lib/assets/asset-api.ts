@@ -230,7 +230,7 @@ export async function getAssetDownloadLink(id: string, options: AssetDownloadOpt
 // This endpoint on the server will grab all assets in the dynamo db
 // and sync them up with elastic search
 export async function syncAssets () {
-	return await api.post('/assets/sync')
+	return await api.post('/database/sync')
 }
 
 // This used when a user selects multiple assets and wants to mark them all as
