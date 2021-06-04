@@ -55,7 +55,7 @@ export function commaAndJoin (pieces: string[]) : string {
 	return pieces.join(', ') + ', and ' + last
 }
 
-function titleCase (str: string) : string {
+export function titleCase (str: string) : string {
 	return str.toUpperCase().substr(0, 1) + str.toLowerCase().substr(1)
 }
 

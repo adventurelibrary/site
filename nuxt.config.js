@@ -20,7 +20,7 @@ if (!isAdmin) {
   ignore.push('layouts/admin.vue')
 } else {
   css.push('styles/admin.scss')
-  css.push('@coreui/coreui/scss/coreui.scss')
+  //css.push('@coreui/coreui/scss/coreui.scss')
   plugins.push({
     src: 'plugins/admin',
     mode: 'client'

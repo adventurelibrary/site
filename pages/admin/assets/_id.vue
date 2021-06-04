@@ -1,21 +1,21 @@
 <template>
-	<CCard>
-		<CCardHeader>
+	<div class="card">
+		<div class="card-header">
 			Edit Asset
-		</CCardHeader>
-		<CCardBody>
+		</div>
+		<div class="card-body">
 			<LoadingContainer :loading="assetAjax.loading" :error="assetAjax.error">
 				<form @submit="submit">
 					<FormErrors :error="form.error" />
 					<AssetFields :asset="data" @assetChanged="dataChanged" />
 					<div>
-						<CButton type="button" color="danger" style="float: right;" @click="deleteAsset">Delete</CButton>
-						<CButton type="submit" color="primary">Submit</CButton>
+						<button type="button" style="float: right;" @click="deleteAsset">Delete</button>
+						<button type="submit">Submit</button>
 					</div>
 				</form>
 			</LoadingContainer>
-		</CCardBody>
-	</CCard>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";

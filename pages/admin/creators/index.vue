@@ -1,23 +1,23 @@
 <template>
-	<CCard>
-		<CCardHeader>
+	<div class="card">
+		<div class="card-header">
 			Creators
-		</CCardHeader>
-		<CCardBody>
+		</div>
+		<div class="card-body">
 			<nuxt-link :to="{name: 'admin-creators-new'}">Add Creator</nuxt-link>
 			<LoadingContainer :loading="creatorsAjax.loading" :error="creatorsAjax.error">
 				<Pagination :to="{name: 'admin-creators'}" :items-per-page="itemsPerPage" :total-items="totalCreators" />
-				<CDataTable :items="creators" :fields="['name']" :clickable-rows="false">
+				<DataTable :items="creators" :fields="['name']" :clickable-rows="false">
 					<template #name="{item}">
 						<td>
 							<nuxt-link :to="{name: 'admin-creators-id', params: {id: item.id}}">{{item.name}}</nuxt-link>
 						</td>
 					</template>
-				</CDataTable>
+				</DataTable>
 				<Pagination :to="{name: 'admin-creators'}" :items-per-page="itemsPerPage" :total-items="totalCreators" />
 			</LoadingContainer>
-		</CCardBody>
-	</CCard>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import {Component, Watch} from "nuxt-property-decorator";
@@ -28,9 +28,11 @@ import AdminPage from "~/admin/admin-page";
 import {Route} from "vue-router";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {getCreators, newCreatorsAjax} from "~/modules/creators/creator-api";
+import DataTable from "~/components/DataTable.vue";
 @Component({
 	components: {
 		LoadingContainer,
+		DataTable: DataTable
 	}
 })
 export default class CreatorsIndex extends AdminPage {
