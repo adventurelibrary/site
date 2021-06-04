@@ -1,9 +1,9 @@
 <template>
-	<CCard>
-		<CCardHeader>
+	<div>
+		<div>
 			Assets
-		</CCardHeader>
-		<CCardBody>
+		</div>
+		<div>
 			<LoadingContainer :loading="assetsAjax.loading" :error="assetsAjax.error">
 				<button type="button" @click="syncAssets">
 					Sync All Assets
@@ -18,7 +18,7 @@
 						Delete
 					</button>
 				</div>
-				<CDataTable :items="assets" :fields="['select', 'name', 'categoryName', 'visibility', 'tags']" :clickable-rows="true" @row-clicked="rowClicked">
+				<DataTable :items="assets" :fields="['select', 'name', 'categoryName', 'visibility', 'tags']" :clickable-rows="true" @row-clicked="rowClicked">
 					<template #select="{item}">
 						<td>
 							<input type="checkbox" :checked="selectedAssets[item.id]" />
@@ -39,11 +39,11 @@
 							<TagList :tags="item.tags" />
 						</td>
 					</template>
-				</CDataTable>
+				</DataTable>
 				<Pagination :to="{name: 'admin-assets'}" :items-per-page="search.size" :total-items="totalAssets" />
 			</LoadingContainer>
-		</CCardBody>
-	</CCard>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -60,8 +60,10 @@ import Category from "~/modules/categories/components/Category.vue";
 import {Route} from "vue-router";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {keyBoolToArray} from "~/lib/helpers";
+import DataTable from "~/components/DataTable.vue";
 @Component({
 	components: {
+		DataTable,
 		LoadingContainer,
 		TagList,
 		AssetEditLink,
@@ -94,14 +96,6 @@ export default class AssetsIndex extends AdminPage {
 			return await searchAdminAssets(search)
 		}
 		await doAjax<AssetsResponse>(this.assetsAjax, fn)
-	}
-
-	// This is just some testing and demonstration, it will be removed later
-	mounted () {
-		this.notifySuccess('Successfully showed this message')
-		setTimeout(() => {
-			this.notifyError('Now an error')
-		}, 1500)
 	}
 
 	rowClicked (item: Asset) {

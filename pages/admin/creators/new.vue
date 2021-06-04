@@ -1,18 +1,18 @@
 <template>
-	<CCard>
-		<CCardHeader>
+	<div class="card">
+		<div class="card-header">
 			Add a Creator
-		</CCardHeader>
-		<CCardBody>
+		</div>
+		<div class="card-body">
 			<form @submit="submit">
 				<FormErrors :error="form.error" />
 				<CreatorFields v-model="form.data" />
 				<div>
-					<CButton type="submit" color="primary">Submit</CButton>
+					<button type="submit">Submit</button>
 				</div>
 			</form>
-		</CCardBody>
-	</CCard>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";

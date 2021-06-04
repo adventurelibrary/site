@@ -9,8 +9,8 @@
 					<FormErrors :error="form.error" />
 					<CreatorFields v-model="form.data" />
 					<div>
-						<CButton type="button" color="danger" style="float: right;" @click="deleteCreator">Delete</CButton>
-						<CButton type="submit" color="primary">Submit</CButton>
+						<button type="button" style="float: right;" @click="deleteCreator">Delete</button>
+						<button type="submit">Submit</button>
 					</div>
 				</form>
 			</LoadingContainer>

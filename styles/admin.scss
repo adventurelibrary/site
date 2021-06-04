@@ -36,3 +36,21 @@
     }
   }
 }
+
+table.data-table {
+  width: 100%;
+  border-spacing: 1px;
+  background: #ccc;
+
+  tr {
+    background: #fff;
+
+    &:nth-child(odd) {
+      background: #F0F0F0;
+    }
+  }
+
+  td, th {
+    padding: 0.25em 0.5em;
+  }
+}
