@@ -1,4 +1,4 @@
-* { 
+* {
 	margin: 0;
 	padding: 0;
 }
@@ -8,6 +8,7 @@
 @import "media-queries";
 
 @import "base-page";
+@import "upload";
 @import "search";
 @import "modal";
 @import "controls";

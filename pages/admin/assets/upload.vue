@@ -2,7 +2,8 @@
 <div class="upload-page">
 	<h1>Upload Assets</h1>
 	<div>
-		<UploadAssets :as-admin="true" />
+		<UploadAssets
+			:as-admin="true" />
 	</div>
 </div>
 </template>
@@ -28,11 +29,5 @@ export default Upload
 .upload-page {
 	max-width: 960px;
 	margin: 0 auto;
-}
-
-.drop-files {
-	border: 1px dashed #ccc;
-	padding: 5em;
-	text-align: center;
 }
 </style>

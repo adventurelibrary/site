@@ -1,5 +1,16 @@
 <template>
 	<div>
+		<div>
+			<div>
+				<h2>Upload Artwork</h2>
+				<p v-if="creator"><em>Uploading as {{creator.name}}</em></p>
+				<p>File should be jpg, png, or svg.</p>
+			</div>
+			<div>
+				<label for="add-file" class="btn btn-add-file">+ Add File</label>
+				<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
+			</div>
+		</div>
 		<FormErrors :error="error" />
 		<div v-show="stage === 'adding'">
 			<div v-if="asAdmin">
@@ -7,7 +18,6 @@
 				<CreatorSelector v-model="creator" />
 			</div>
 			<div v-show="newAssets.length !== 0">
-				Name: {{newAssets}}
 				<NewAssetComponent
 					v-for="(asset, idx) in newAssets"
 					:new-asset="asset"
@@ -18,7 +28,7 @@
 				/>
 			</div>
 			<form ref="startform">
-				<input type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
+				<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
 				<div class="drop-files">Drag new assets here</div>
 			</form>
 			<div v-if="newAssets.length">
@@ -58,12 +68,11 @@ type Data = {
 	uploads: ActiveUpload[],
 	acceptedImageTypes: string,
 	error: string,
-	creator: Creator | undefined
 }
 
 export default Vue.extend({
 	name: 'UploadAssets',
-	props: ['assets', 'asAdmin'],
+	props: ['assets', 'asAdmin', 'creator'],
 	components: {
 		FormErrors,
 		NewAssetComponent: NewAssetComponent,
@@ -76,7 +85,6 @@ export default Vue.extend({
 			newAssets: [],
 			error: '',
 			uploads: [],
-			creator: undefined,
 			acceptedImageTypes: ACCEPTED_IMAGE_TYPES
 		}
 	},
@@ -171,15 +179,4 @@ export default Vue.extend({
 })
 </script>
 <style>
-.upload-all {
-	display: block;
-	background: var(--color-primary);
-	color: #fff;
-	padding: 1em;
-	border-radius: 10px;
-	text-align: center;
-	font-size: 1.5em;
-	width: 100%;
-	margin: 1em 0;
-}
 </style>

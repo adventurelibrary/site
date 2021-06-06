@@ -1,0 +1,19 @@
+@import "color";
+
+input.file {
+  display: none;
+}
+
+label.btn.btn-add-file {
+  background: transparent;
+  border: 2px solid $color-secondary;
+  padding: 5px;
+  color: white;
+}
+
+.drop-files {
+  margin: 10px 0;
+  border: 2px dashed $color-secondary;
+  padding: 2em;
+  text-align: center;
+}
