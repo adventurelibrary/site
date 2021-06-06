@@ -15,7 +15,7 @@ import {Component, Vue} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import {computeAjaxList, doAjax, newAjax} from "~/lib/ajax";
 import {Creator, CreatorsResponse} from "~/modules/creators/creator-types";
-import {getCreators} from "~/modules/creators/creator-api";
+import {getMyCreators} from "~/modules/creators/creator-api";
 
 @Component({
 	components: {
@@ -39,8 +39,14 @@ export default class UploadPage extends Vue {
 			creators: []
 		})
 		await doAjax<CreatorsResponse>(cajax, async () => {
-			return await getCreators()
+			return await getMyCreators()
 		})
+
+		// If they only own one creator then just select that automatically for them
+		if (cajax.data && cajax.data.creators && cajax.data.creators.length === 1) {
+			//ctx.redirect(`/upload/as/${cajax.data.creators[0].id}`)
+			return
+		}
 		return {
 			creatorSlug: ctx.params.slug,
 			creatorsAjax: cajax

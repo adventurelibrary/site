@@ -31,6 +31,11 @@ export async function getCreators () : Promise<CreatorsResponse> {
 	return res.data
 }
 
+export async function getMyCreators () : Promise<CreatorsResponse> {
+	const res = await api.get('/creators/mine')
+	return res.data
+}
+
 export const newCreatorAjax = () : Ajax<Creator> => {
 	return newAjax<Creator>(newCreator())
 }
