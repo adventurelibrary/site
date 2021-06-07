@@ -25,6 +25,7 @@
 import Vue from "vue"
 import {Component, State} from "nuxt-property-decorator";
 import {Toast} from "~/store";
+import {Context} from "@nuxt/types";
 
 @Component
 export default class AdminLayout extends Vue {

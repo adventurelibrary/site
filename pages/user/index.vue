@@ -20,7 +20,7 @@
 				<a href="" class="toggle active">My Assets</a>
 				<a href="" class="toggle">My Bundles</a>
 			</div>
-			
+
 			<div class="my-assets"><!-- TODO: My Assets Component --></div>
 			<div class="my-bundles">
 				<!-- TODO: My Bundles Component -->
@@ -37,7 +37,7 @@
 </template>
 <script lang="ts">
 import {Component, State, Vue} from "nuxt-property-decorator";
-import {User} from "~/lib/users/user-types"
+import {User} from "~/modules/users/user-types"
 
 @Component({
 	//middleware: ['require_auth']

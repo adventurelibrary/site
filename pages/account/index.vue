@@ -2,10 +2,10 @@
 	<div>
 		<!-- Default user details and links -->
 		<div v-if="user">
-			<h2>Account Information</h2>			
+			<h2>Account Information</h2>
 			Username: {{user.username}}<br/>
 			Public name: ---<br/>
-			My coins: 0<br/>			
+			My coins: 0<br/>
 			<nuxt-link :to="{name: 'account-purchase-history'}">Purchase History</nuxt-link><br/>
 			<nuxt-link :to="{name: 'account-change-password'}">Change Password</nuxt-link>
 		</div>
@@ -35,14 +35,14 @@
 
 <script lang="ts">
 import {Component, State, Vue} from "nuxt-property-decorator";
-import {User} from "~/lib/users/user-types"
+import {User} from "~/modules/users/user-types"
 
 @Component({
 	middleware: ['require_auth']
 })
 export default class ChangePassword extends Vue {
 	@State('user') user : User
-	
+
 
 }
 </script>

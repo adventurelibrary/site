@@ -55,12 +55,9 @@ export default class MyCreatorSelector extends Vue {
 	}
 
 	selectCreator (creator: Creator) {
-		console.log('select this', creator)
 		if (this.selected && this.selected.id === creator.id) {
 			this.$emit('changed', undefined)
-			console.log('emit it')
 		} else {
-			console.log('emit', creator)
 			this.$emit('changed', creator)
 		}
 	}

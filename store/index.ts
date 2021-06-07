@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {User} from "~/lib/users/user-types";
+import {User} from "~/modules/users/user-types";
 import {UserTracking} from "~/lib/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/lib/assets/asset-types";
@@ -162,10 +162,10 @@ export const mutations = {
 	}) {
 		state.modals[update.key] = update.value
 	},
-	archiveAsset (state: State, asset: Asset | null) {		
+	archiveAsset (state: State, asset: Asset | null) {
 		state.archiveAsset = asset
 		console.log('archiveAsset mutation')
-	},		
+	},
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 		// update asset visible to hidden
@@ -175,7 +175,7 @@ export const mutations = {
 		// v=HIDDEN
 		// v1/assets/{assetID}/update?v=HIDDEN    ?
 
-	},	
+	},
 	bundleAddAssetsBundle (state: State, bundle: Bundle | null) {
 		state.bundleAddAssetsBundle = bundle
 	},
@@ -252,13 +252,13 @@ export const actions = {
 		})
 		commit('editBundle', bundle)
 	},
-	closeLoginModal ({commit} : ActionParams) {		
+	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {
 			key: 'login',
 			value: false
 		})
 	},
-	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {		
+	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
 		commit('modal', {
 			key: 'archiveAsset',
 			value: true

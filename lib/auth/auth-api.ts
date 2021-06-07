@@ -1,4 +1,4 @@
-import {User} from "~/lib/users/user-types";
+import {User} from "~/modules/users/user-types";
 import {getCookie, setCookie} from "~/lib/helpers";
 import {Auth} from 'aws-amplify'
 import {CognitoUser} from "amazon-cognito-identity-js";
@@ -46,7 +46,7 @@ export async function getSessionFromClient() : Promise<User | null> {
 export async function getSession () : Promise<User | null> {
 	let res
 	try {
-		res = await api.get('/users')
+		res = await api.get('/user/me')
 	} catch (ex) {
 		return null
 	}

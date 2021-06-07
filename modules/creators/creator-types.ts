@@ -1,6 +1,7 @@
 // Fields that are both in our forms and in our db
 export type CreatorFields = {
 	name: string
+	owner_id: string
 }
 
 //

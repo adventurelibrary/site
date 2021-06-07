@@ -4,15 +4,18 @@
 				label="Name"
 				v-model="copy.name"
 		/>
+		<UserSelect label="Owner" v-model="copy.owner_id" />
 	</div>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
 import InputGroup from "~/components/forms/InputGroup.vue";
+import UserSelect from "~/modules/users/components/UserSelect.vue";
 
 @Component({
 	components: {
+		UserSelect,
 		InputGroup: InputGroup,
 	}
 })

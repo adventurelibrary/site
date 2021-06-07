@@ -6,7 +6,13 @@
 				v-on:input="input"
 		>
 			<option v-if="disabledPrompt" disabled>{{disabledPrompt}}</option>
-			<option v-for="option in options" :key="option.value" v-bind:value="option.value">{{option.label}}</option>
+			<option v-for="option in options"
+				:selected="option.value === value"
+				:key="option.value"
+				v-bind:value="option.value"
+				>
+				{{option.label}}
+			</option>
 		</select>
 	</FormGroup>
 </template>

@@ -1,9 +1,9 @@
 <template>
-	<CCard>
-		<CCardHeader>
+	<div>
+		<div>
 			Edit Creator {{creator.name}}
-		</CCardHeader>
-		<CCardBody>
+		</div>
+		<div>
 			<LoadingContainer :loading="creatorAjax.loading" :error="creatorAjax.error">
 				<form @submit="submit">
 					<FormErrors :error="form.error" />
@@ -14,8 +14,8 @@
 					</div>
 				</form>
 			</LoadingContainer>
-		</CCardBody>
-	</CCard>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
@@ -32,6 +32,7 @@ import FormMixin from "~/mixins/Forms.vue";
 
 
 @Component({
+	middleware: ['require_admin'],
 	components: {
 		LoadingContainer: LoadingContainer,
 		CreatorFields: CreatorFields

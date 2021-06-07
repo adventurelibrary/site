@@ -7,7 +7,9 @@
 import Vue from "vue"
 import {Component} from "nuxt-property-decorator";
 
-@Component
+@Component({
+	middleware: ['require_admin']
+})
 export default class AdminIndex extends Vue {
 	layout () : string {
 		return 'admin'

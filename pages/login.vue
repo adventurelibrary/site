@@ -1,16 +1,22 @@
 <template>
 	<div>
 		<h1>Login</h1>
-		<div>go to {{redirectPath}}</div>
-		<LoginForm
-			@success="onSuccess"
-			@register="register"
-		/>
+		<fragment v-if="!isLoggedIn">
+			<LoginForm
+				@success="onSuccess"
+				@register="register"
+			/>
+			<div v-if="redirectPath">You will be redirected to <nuxt-link :to="redirectPath"><code>{{redirectPath}}</code></nuxt-link></div>
+		</fragment>
+		<div v-else>
+			You are already logged in.
+			<div v-if="redirectPath"><nuxt-link :to="redirectPath">Go to <code>{{redirectPath}}</code></nuxt-link></div>
+		</div>
 	</div>
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component} from "nuxt-property-decorator";
+import {Component, Getter} from "nuxt-property-decorator";
 import Login from "~/components/LoginForm.vue";
 @Component({
 	components: {
@@ -18,6 +24,8 @@ import Login from "~/components/LoginForm.vue";
 	}
 })
 export default class LoginPage extends Vue {
+	@Getter('isLoggedIn') isLoggedIn : boolean
+
 	get redirectPath () : string {
 		if (typeof this.$route.query.redirect == 'string') {
 			return this.$route.query.redirect
@@ -26,7 +34,6 @@ export default class LoginPage extends Vue {
 	}
 
 	onSuccess () {
-		console.log('this.redirectPath', this.redirectPath)
 		if (this.redirectPath && this.redirectPath.length) {
 			this.$router.push(this.redirectPath)
 		}

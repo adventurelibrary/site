@@ -15,6 +15,7 @@ export const newCreator = () : Creator => {
 	return {
 		id: '',
 		name: '',
+		owner_id: '',
 	}
 }
 
@@ -46,8 +47,10 @@ export async function getCreatorById (id: string) : Promise<Creator> {
 }
 
 export function creatorToFormData (creator: Creator) : CreatorFormData {
+	console.log('owenr id', creator.owner_id)
 	return {
-		name: creator.name
+		name: creator.name,
+		owner_id: creator.owner_id,
 	}
 }
 
@@ -55,7 +58,8 @@ export function creatorToFormData (creator: Creator) : CreatorFormData {
 // This is where we could do things like parseInt
 export function creatorFormDataToPayload (data: CreatorFormData) : any {
 	return {
-		name: data.name
+		name: data.name,
+		owner_id: data.owner_id,
 	}
 }
 
