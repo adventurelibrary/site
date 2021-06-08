@@ -15,7 +15,7 @@
 				:items-per-page="20"
 				:total-items="totalBundles"
 				:active-page="activePage"
-				:to="{name: 'my-bundles'}"
+				:to="{name: 'bundles'}"
 			/>
 		</LoadingContainer>
 	</div>

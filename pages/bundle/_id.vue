@@ -95,19 +95,18 @@ class BundlePage extends Vue {
 	}
 
 	get bundle () : Bundle | undefined {
-		const data = getAjaxData<Bundle>(this.bundleAjax)
+		const data = getAjaxData<BundleResponse>(this.bundleAjax)
 		if (!data) {
 			return undefined
 		}
 		return data
 	}
 
-	get assets () : Asset[] | undefined {
-		const data = getAjaxData<Bundle>(this.bundleAjax)
-		if (!data) {
+	get assets () : Asset[] {
+		if (!this.bundle || !this.bundle.assets) {
 			return []
 		}
-		return data.assets
+		return this.bundle.assets
 	}
 
 	// fetching asset data and related assets array
