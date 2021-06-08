@@ -2,10 +2,10 @@
 	<div>
 		<!-- Default user details and links -->
 		<div v-if="user">
-			<h2>Account Information</h2>			
+			<h2>Account Information</h2>
 			Username: {{user.username}}<br/>
 			Public name: ---<br/>
-			My coins: 0<br/>			
+			My coins: 0<br/>
 			<nuxt-link :to="{name: 'account-purchase-history'}">Purchase History</nuxt-link><br/>
 			<nuxt-link :to="{name: 'account-change-password'}">Change Password</nuxt-link>
 		</div>
@@ -17,7 +17,7 @@
 			<nuxt-link :to="{name: 'assets?search=by%3A%20adminuser'}">View my assets</nuxt-link><br/>
 			Create new asset<br/>
 			<h3>Bundles</h3>
-			<nuxt-link :to="{name: 'my-bundles'}">View my bundles</nuxt-link><br/>
+			<nuxt-link :to="{name: 'bundles'}">View my bundles</nuxt-link><br/>
 			Create new bundle
 		</div>
 
@@ -42,7 +42,7 @@ import {User} from "~/lib/users/user-types"
 })
 export default class ChangePassword extends Vue {
 	@State('user') user : User
-	
+
 
 }
 </script>
