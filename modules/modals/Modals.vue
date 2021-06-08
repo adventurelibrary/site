@@ -9,6 +9,7 @@
 		<EditBundleModal v-if="showingBundleEdit" />
 		<BundleAddAssetsModal v-if="showBundleAddAssets" />
 		<AssetArchiveModal v-if="showArchiveAsset" />
+		<AssetReportModal v-if="showReportAsset" />
 	</div>
 </template>
 <script lang="ts">
@@ -21,6 +22,7 @@ import CreateBundleModal from "~/modules/bundles/components/CreateBundleModal.vu
 import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
 import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsModal.vue";
 import AssetArchiveModal from "~/modules/modals/AssetArchiveModal.vue";
+import AssetReportModal from "~/modules/modals/AssetReportModal.vue";
 
 @Component({
 	components: {
@@ -30,7 +32,8 @@ import AssetArchiveModal from "~/modules/modals/AssetArchiveModal.vue";
 		LoginModal: LoginModal,
 		RegisterModal: RegisterModal,
 		CreateBundleModal: CreateBundleModal,
-		AssetArchiveModal: AssetArchiveModal
+		AssetArchiveModal: AssetArchiveModal,
+		AssetReportModal: AssetReportModal
 	}
 })
 export default class Modals extends Vue {
@@ -42,6 +45,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.editBundle)  showingBundleEdit : boolean
 	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
 	@State(state => state.modals.archiveAsset)  showArchiveAsset : boolean
+	@State(state => state.modals.reportAsset)  showReportAsset : boolean
 
 	@Watch('$route')
 	routeWatcer () {
@@ -77,7 +81,7 @@ export default class Modals extends Vue {
 	}
 
 	closeAllModals () {
-		this.$store.dispatch('closeAllModals')
+		this.$store.dispatch('Modals: closeAllModals()')
 	}
 }
 </script>

@@ -6,10 +6,15 @@
 		</section>
 
 		<section class="asset-info">
-			<h1 class="asset-title">{{asset.name}}</h1>
+			<h1 class="asset-title">{{asset.name}}</h1> 
+			<!-- <nuxt-link :to="{name: 'contact-reportAsset', params: {assetId: asset.id}}">Report</nuxt-link> -->
 
 			<figure class="asset-action">
 				<AssetArchiveButton :asset="asset" />
+			</figure>
+
+			<figure class="asset-action">
+				<AssetReportButton :asset="asset" />
 			</figure>
 
 			<h3 class="asset-author">
@@ -45,10 +50,11 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/lib/assets/asset-types";
-import { getAssetAjax} from "~/lib/assets/asset-api";
+import {getAssetAjax} from "~/lib/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
+import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue";
 import TagList from "~/modules/tags/TagList.vue";
 
 // related assets and search modules
@@ -64,7 +70,8 @@ import Modals from "~/modules/modals/Modals.vue";
 		TagList: TagList,
 		AssetCard,
 		Modals: Modals,
-		AssetArchiveButton: AssetArchiveButton
+		AssetArchiveButton: AssetArchiveButton,
+		AssetReportButton: AssetReportButton
 	}
 })
 class AssetPage extends Vue {

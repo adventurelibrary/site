@@ -7,9 +7,9 @@
 		<slot>
 			<h1>Are you sure you want to delete the "{{asset.name}}" Asset?</h1>
 			
-			<input id="confirmArchiveText" type="text" v-on:input="trackEntry()" v-model="confirmArchiveTextTest" placeholder="Type in DELETE to enable the Delete button."/>
+			<input id="confirmArchiveText" type="text" v-on:input="trackEntry()" placeholder="Type in DELETE to enable the Delete button."/>
 			<span>Type in DELETE to enable the Delete button.</span>
-			
+						
 			<button id="archiveButton" @click="archiveAsset" type="button" class="create" disabled>Delete Asset</button>			
 			<button @click="closeModal" type="button" class="create">Cancel</button>	
 		</slot>
@@ -33,8 +33,7 @@ export default class ArchiveAssetModal extends Vue {
 
 	@State('archiveAsset') asset : Asset
 
-	closeModal () {
-		console.log('closed AssetArchiveModal')
+	closeModal () {		
 		this.$store.dispatch('closeAllModals')
 	}
 

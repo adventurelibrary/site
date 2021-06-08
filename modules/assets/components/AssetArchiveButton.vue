@@ -10,7 +10,7 @@ import {Asset} from "~/lib/assets/asset-types";
 import { state } from "~/store";
 
 @Component
-export default class AssetArchive extends Vue {
+export default class AssetArchiveButton extends Vue {
 	@Prop() asset : Asset
 	@Getter('isLoggedIn') isLoggedIn : boolean
 

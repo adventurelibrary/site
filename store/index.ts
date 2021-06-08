@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 type State = {
 	archiveAsset: Asset | null,
+	reportAsset: Asset | null,
 	addToBundleAsset: Asset | null,
 	breadcrumbs: any[],
 	createBundleAsset: Asset | null
@@ -26,6 +27,7 @@ type State = {
 		login: boolean,
 		register: boolean,
 		archiveAsset: boolean
+		reportAsset: boolean
 	}
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
@@ -36,7 +38,7 @@ type State = {
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset'
 
 export type Toast = {
 	id: number
@@ -69,6 +71,7 @@ export const state = () : State => {
 		bundleAddAssetsBundle: null,
 		createBundleAsset: null,
 		editBundle: null,
+		reportAsset: null,
 		toasts: [],
 		user: null,
 		userTracking: {
@@ -81,13 +84,14 @@ export const state = () : State => {
 			error: ''
 		},
 		modals: {
+			archiveAsset: false,
 			addToBundle: false,
 			bundleAddAssets: false,
 			createBundle: false,
 			editBundle: false,
 			login: false,
 			register: false,
-			archiveAsset: false
+			reportAsset: false
 		},
 	}
 }
@@ -165,7 +169,11 @@ export const mutations = {
 	archiveAsset (state: State, asset: Asset | null) {		
 		state.archiveAsset = asset
 		console.log('archiveAsset mutation')
-	},		
+	},
+	reportAsset (state: State, asset: Asset | null) {		
+		state.reportAsset = asset
+		console.log('reportAsset mutation')
+	},			
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 		// update asset visible to hidden
@@ -276,6 +284,13 @@ export const actions = {
 			key: 'register',
 			value: false
 		})
+	},
+	openReportAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {		
+		commit('modal', {
+			key: 'reportAsset',
+			value: true
+		})
+		commit('reportAsset', asset)
 	},
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')

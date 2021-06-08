@@ -316,5 +316,53 @@ export async function archiveAsset (assetId: string) {
 	console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 
 	// update asset visible to hidden
-	await api.put('/assets/update/', [{id: assetId, visibility: 'HIDDEN'}])
+	await api.put('/assets/update', [{id: assetId, visibility: 'HIDDEN'}])
+}
+
+// recieves reports of assets, sends report to Notion
+export async function reportAsset (assetId: string, assetName: string, reportCategory: string, submitterName: string, submitterEmail: string, message: string) {
+	console.log("asset-api.ts: API reportAsset called for asset id: ", assetId)
+
+	// call Notion API to register report, Notion automation task can then be set to send emails to moderators if needed
+	// Notion API: https://developers.notion.com/
+	// Notion Block API: https://developers.notion.com/reference/block
+	/*
+		Sent info:
+
+		assetId
+		assetName	
+		name
+		email
+		message
+	*/
+
+	// create JSON --data object to send to Notion
+	let JSONobject = {
+		"children": [
+			{
+				"object": "block",
+				"type": "heading_2",
+				"heading_2": {
+					"text": [{ "type": "text", "text": { "content": "Report: " + assetName + " (ID: " + assetId + ")" } }]
+				}
+			},
+			{
+				"object": "block",
+				"type": "paragraph",
+				"paragraph": {
+					"text": [
+						{
+							"type": "text",
+							"text": {
+								"content": "Report Category: " + reportCategory + " | Reported By: " + submitterName + " | Email: " + submitterEmail + " | Message: " + message,
+								"link": { "url": "http://localhost:2000/asset/" + "generatedassetlinkslug" }
+							}
+						}
+					]
+				}
+			}
+		]
+	}
+
+	console.log("Delivered Notion message: ", JSONobject)
 }
