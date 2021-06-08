@@ -61,7 +61,6 @@ export default class MyBundles extends mixins(PaginationMixin) {
 
 	get bundles () : Bundle[] {
 		const list = computeAjaxList(this.bundlesAjax, 'bundles')
-		console.log('list', list)
 		return list
 	}
 
