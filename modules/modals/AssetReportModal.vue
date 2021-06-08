@@ -1,110 +1,91 @@
-<template>   
-    <Modal
+<template>
+	<Modal
 		:show="true"
 		:title="`Report ${asset.name} Asset`"
 		class-name="add-asset-to-bundle"
 		@close="closeModal">
+		<slot>
+			<div>
+				<h1>Report</h1>
+				<form v-on:submit="sendReport()">
+					<FormGroup label="Report category">
+						<select v-model='reportCategory'>
+							<option v-for="option in options" v-bind:key="option.value">
+								some text
+								{{ option.text }}
+							</option>
+						</select>
+					</FormGroup>
 
-	<slot>
-        <h1>Report</h1>        
+						<!-- only display name and contact email if user is not logged in, otherwise use logged in details -->
+					<FormGroup label="Name">
+						<input v-model="name" placeholder="Your name." />
+					</FormGroup>
 
-        Report category:
-        <select v-model='reportCategory'>
-            <option v-for="option in options" v-bind:key="option.value">
-                some text
-                {{ option.text }}
-            </option>
-        </select>
+					<FormGroup label="Name">
+						<input v-model="email" placeholder="Your email address." />
+					</FormGroup>
 
-        <!-- only display name and contact email if user is not logged in, otherwise use logged in details -->
-        Name:
-        <input id="name" v-model="name" placeholder="Your name.">        
-
-        Contact email:
-        <input v-model="email" placeholder="Your email address.">        
-
-        Message:
-        <textarea v-model="message" placeholder="Leave your message here."></textarea>
-
-        <button v-on:click="sendReport()">Send Report</button>
+					<FormGroup label="Name">
+						<textarea v-model="message" placeholder="Leave your message here."></textarea>
+					</FormGroup>
+					<button>Send Report</button>
+				</form>
+			</div>
 		</slot>
 	</Modal>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Getter, State} from "nuxt-property-decorator";
+import {Component, Getter, State} from "nuxt-property-decorator";
 import {User} from "~/lib/users/user-types"
 import {Asset} from "~/lib/assets/asset-types";
-import { options } from "less";
-import {reportAsset} from "~/lib/assets/asset-api";
 import Vue from "vue";
 import Modal from "~/modules/modals/Modal.vue";
+import FormGroup from "~/components/forms/FormGroup.vue";
+import {reportAsset} from "~/lib/assets/asset-api";
 
 @Component({
 	components: {
 		Modal: Modal,
+		FormGroup: FormGroup
 	}
 })
-
-
 export default class ReportAssetModal extends Vue {
-	@State('user') user : User  
-    @Getter('isLoggedIn') isLoggedIn : boolean
-    @State('reportAsset') asset : Asset
+	@State('user') user : User
+	@Getter('isLoggedIn') isLoggedIn : boolean
+	@State('reportAsset') asset : Asset
 
-    // add user name and id if logged in
-    name = new Vue({
-        el: 'name',
-        data: {
-            value: 'no value at start'
-        }
-    }) 
-
-    
-    el: {   
-
-    }
-    
-    data : {
-        reportCategory: '',
-        options: [
-            {text: 'Inappropriate content', value: 'Inappropriate content'},
-            {text: 'Low quality', value: 'Low quality'},
-            {text: 'Misleading product description', value: 'Misleading product description'},
-            {text: 'Stolen content', value: 'Stolen content'},
-            {text: 'Other', value: 'Other'}            
-        ],
-        name: '',
-        email: '',
-        message: ''
-
-    }
+	name = ''
+	options = [
+		{text: 'Inappropriate content', value: 'Inappropriate content'},
+		{text: 'Low quality', value: 'Low quality'},
+		{text: 'Misleading product description', value: 'Misleading product description'},
+		{text: 'Stolen content', value: 'Stolen content'},
+		{text: 'Other', value: 'Other'}
+	]
+	reportCategory = ''
+	message= ''
+	email = ''
 
 	closeModal () {
 		this.$store.dispatch('closeAllModals')
-        
 	}
-
-
 
 	// handles archiving of the asset
 	async sendReport () {
 		try {
-			await reportAsset(this.asset.id, this.asset.name, this.data.reportCategory, this.data.name, this.data.email, this.data.message)
+			await reportAsset(this.asset.id, this.asset.name, this.reportCategory, this.name, this.email, this.message)
 			this.closeModal()
 
 			// send message for user
-			//this.$store.dispatch('notifySuccess', "Asset deleted successfully.")	
-			this.notifySuccess("Asset " + this.asset.name + " was reported successfully.")			
+			//this.$store.dispatch('notifySuccess', "Asset deleted successfully.")
+			this.notifySuccess("Asset " + this.asset.name + " was reported successfully.")
 		}
 		catch (ex) {
 			console.log('ex ', ex)
 			this.notifyError(ex.toString())
 		}
-	}    
+	}
 }
-
-
-
-
 </script>
