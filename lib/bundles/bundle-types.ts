@@ -10,6 +10,7 @@ export type Bundle = BundleFields & {
 	id: string
 	numAssets: number
 	slug: string
+	assets?: Asset[]
 }
 
 export type BundlesResponse = {
@@ -17,7 +18,4 @@ export type BundlesResponse = {
 	total: number
 }
 
-export type BundleResponse = {
-	bundle?: Bundle,
-	assets: Asset[]
-}
+export type BundleResponse = undefined | Bundle
