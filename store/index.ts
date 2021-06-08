@@ -50,6 +50,7 @@ type ActionParams = {
 	state: State
 	commit: any
 	dispatch: any
+	getters: any
 }
 
 export type LoginParams = {
@@ -166,14 +167,14 @@ export const mutations = {
 	}) {
 		state.modals[update.key] = update.value
 	},
-	archiveAsset (state: State, asset: Asset | null) {		
+	archiveAsset (state: State, asset: Asset | null) {
 		state.archiveAsset = asset
 		console.log('archiveAsset mutation')
 	},
-	reportAsset (state: State, asset: Asset | null) {		
+	reportAsset (state: State, asset: Asset | null) {
 		state.reportAsset = asset
 		console.log('reportAsset mutation')
-	},			
+	},
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
 		// update asset visible to hidden
@@ -183,7 +184,7 @@ export const mutations = {
 		// v=HIDDEN
 		// v1/assets/{assetID}/update?v=HIDDEN    ?
 
-	},	
+	},
 	bundleAddAssetsBundle (state: State, bundle: Bundle | null) {
 		state.bundleAddAssetsBundle = bundle
 	},
@@ -239,7 +240,11 @@ export const actions = {
 			value: true
 		})
 	},
-	openAddToBundleModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
+	openAddToBundleModal ({commit, dispatch, getters} : ActionParams, {asset} : {asset: Asset}) {
+		if (!getters.isLoggedIn) {
+			dispatch('notifyError', 'You must be logged in')
+			return
+		}
 		commit('modal', {
 			key: 'addToBundle',
 			value: true
@@ -260,13 +265,13 @@ export const actions = {
 		})
 		commit('editBundle', bundle)
 	},
-	closeLoginModal ({commit} : ActionParams) {		
+	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {
 			key: 'login',
 			value: false
 		})
 	},
-	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {		
+	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
 		commit('modal', {
 			key: 'archiveAsset',
 			value: true
@@ -285,7 +290,7 @@ export const actions = {
 			value: false
 		})
 	},
-	openReportAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {		
+	openReportAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
 		commit('modal', {
 			key: 'reportAsset',
 			value: true
@@ -305,13 +310,15 @@ export const actions = {
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
+		console.log('new user', user)
 		commit('user', user)
 	}
 }
 
 export const getters = {
 	isLoggedIn (state: State) : boolean {
-		return state.user !== null
+		console.log('state.user', JSON.stringify(state.user))
+		return !!state.user
 	},
 	showingModal (state: State) : boolean {
 		const keys = Object.keys(state.modals)

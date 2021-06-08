@@ -21,7 +21,6 @@ export default class EditBundleForm extends mixins(FormMixin) {
 	@Prop() bundle : Bundle | null
 
 	created () {
-		console.log('set form data', this.form.data, this.bundle)
 		this.form.data = this.bundle
 	}
 

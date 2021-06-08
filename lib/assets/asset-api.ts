@@ -223,7 +223,7 @@ export const getAssetById = async (id: string) : Promise<Asset> => {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getAssetDownloadLink(id: string, options: AssetDownloadOptions) : Promise<string> {
-	const res = await api.get<AssetDownloadResponse>(`/assets/download?id=${id}&type=original`)
+	const res = await api.get<AssetDownloadResponse>(`/assets/${id}/download?type=original`)
 	return res.data.url
 }
 

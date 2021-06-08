@@ -34,7 +34,6 @@ export default class AddAssetToBundleModal extends Vue {
 	@State('addToBundleAsset') asset : Asset
 
 	closeModal () {
-		console.log('close em all')
 		this.$store.dispatch('closeAllModals')
 	}
 
