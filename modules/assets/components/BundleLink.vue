@@ -1,5 +1,5 @@
 <template>
-  <NuxtLink :to="{name: 'bundle-slug', params: {slug: slug}}"><slot></slot></NuxtLink>
+  <NuxtLink :to="{name: 'bundle-id', params: {id: id}}"><slot></slot></NuxtLink>
 </template>
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
@@ -10,9 +10,8 @@ import {Bundle} from "~/lib/bundles/bundle-types";
 class BundleLink extends Vue {
   @Prop() bundle : Bundle
 
-	get slug () : string {
-		let id = this.bundle.id
-		return this.bundle.slug + '-' + id
+	get id () : string {
+		return this.bundle.id
 	}
 }
 export default BundleLink

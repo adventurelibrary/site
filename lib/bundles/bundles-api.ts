@@ -14,7 +14,7 @@ function bundleFormDataToPayload (data: any, assetIds : string[]) : any {
 }
 
 export async function getBundle (id: string)  : Promise<BundleResponse> {
-	const res = await api.get<Promise<BundleResponse>>('/bundle?id=' + id)
+	const res = await api.get<Promise<BundleResponse>>('/bundles/' + id)
 	return res.data
 }
 
@@ -23,7 +23,7 @@ export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
 	const start = (page - 1) * limit
 	console.log('Get the from ' + start + ' to ' + (start+limit) + ', more or less')
 
-	const res = await api.get<Promise<BundlesResponse>>(`/bundles`)
+	const res = await api.get<Promise<BundlesResponse>>(`/bundles/mine`)
 	return res.data
 }
 
@@ -49,9 +49,7 @@ export function newBundlesAjax () : Ajax<BundlesResponse> {
 }
 
 export function newBundleAjax () : Ajax<BundleResponse> {
-	return newAjax<BundleResponse>({
-		assets: []
-	})
+	return newAjax<BundleResponse>(undefined)
 }
 
 export async function addAssetsToBundle(bundleId: string, assetIds: string[]) {

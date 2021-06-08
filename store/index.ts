@@ -310,14 +310,12 @@ export const actions = {
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
-		console.log('new user', user)
 		commit('user', user)
 	}
 }
 
 export const getters = {
 	isLoggedIn (state: State) : boolean {
-		console.log('state.user', JSON.stringify(state.user))
 		return !!state.user
 	},
 	showingModal (state: State) : boolean {

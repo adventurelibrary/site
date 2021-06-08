@@ -1,5 +1,5 @@
 <template>
-	<div class="bundle-page">
+	<div class="bundle-page" v-if="bundle">
 
 		<section class="bundle-info">
 			<h1>{{bundle.name}}</h1>
@@ -25,8 +25,8 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/lib/assets/asset-types";
-import { getAssetAjax, getAssetById} from "~/lib/assets/asset-api";
-import {Ajax, getAjaxData} from "~/lib/ajax";
+import {getAssetAjax, getAssetById, searchAdminAssets} from "~/lib/assets/asset-api";
+import {Ajax, doAjax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
 
@@ -34,7 +34,7 @@ import TagList from "~/modules/tags/TagList.vue";
 import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
-import {newBundleAjax, newBundlesAjax} from "~/lib/bundles/bundles-api";
+import {getBundle, newBundleAjax, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 
 @Component({
@@ -46,9 +46,6 @@ import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 })
 class BundlePage extends Vue {
 	bundleAjax = newBundleAjax()
-
-
-	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
 	skip = 0
 	perPage = 5
 	loadingMore = false
@@ -97,17 +94,16 @@ class BundlePage extends Vue {
 		}
 	}
 
-
 	get bundle () : Bundle | undefined {
-		const data = getAjaxData<BundleResponse>(this.bundleAjax)
+		const data = getAjaxData<Bundle>(this.bundleAjax)
 		if (!data) {
 			return undefined
 		}
-		return data.bundle
+		return data
 	}
 
-	get assets () : Asset[] {
-		const data = getAjaxData<BundleResponse>(this.bundleAjax)
+	get assets () : Asset[] | undefined {
+		const data = getAjaxData<Bundle>(this.bundleAjax)
 		if (!data) {
 			return []
 		}
@@ -116,9 +112,13 @@ class BundlePage extends Vue {
 
 	// fetching asset data and related assets array
 	async asyncData (ctx: Context) {
-		const bundleRes = await getAssetAjax(ctx.params.slug)
+		const fn = async () => {
+			return await getBundle(ctx.params.id)
+		}
+		const ajax = newBundleAjax()
+		await doAjax<BundleResponse>(ajax, fn)
 		return {
-			bundleAjax: bundleRes,
+			bundleAjax: ajax,
 		}
 	}
 
