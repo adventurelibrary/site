@@ -76,6 +76,7 @@ export default class ReportAssetModal extends Vue {
 
 	closeModal () {
 		this.$store.dispatch('closeAllModals')
+        
 	}
 
 
