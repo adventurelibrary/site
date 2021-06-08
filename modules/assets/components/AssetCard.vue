@@ -17,12 +17,12 @@
 					{{asset.creator_name}}
 				</span>
 			</h4>
-			<figure class="pricing">
+<!--			<figure class="pricing">
 				<h4 class="coin-price">
-					<span class="amount"><!--{{asset.price}}-->$$</span>
+					<span class="amount">&lt;!&ndash;{{asset.price}}&ndash;&gt;$$</span>
 					<span class="currency">Coins</span>
 				</h4>
-			</figure>
+			</figure>-->
 			<div class="description">
 				{{asset.description}}
 			</div>
@@ -32,13 +32,13 @@
 			</div>
 		</div>
 		<figure class="asset-action">
-			<AssetAddToBundle :asset="asset" />
+			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<AssetDownload :asset="asset" />
 		</figure>
 	</li>
 </template>
 <script lang="ts">
-import {Component, Prop, Watch} from "nuxt-property-decorator";
+import {Component, Prop, Getter, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
 import {Asset} from "~/lib/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
@@ -60,6 +60,8 @@ import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundle
 })
 class AssetCard extends Vue {
 	category : CategoryType | null
+
+	@Getter('isLoggedIn') isLoggedIn : boolean
 
 	@Prop() asset : Asset
 

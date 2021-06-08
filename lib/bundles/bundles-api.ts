@@ -22,44 +22,23 @@ export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
 	const limit = 20
 	const start = (page - 1) * limit
 	console.log('Get the from ' + start + ' to ' + (start+limit) + ', more or less')
-	return new Promise((res) => {
-		setTimeout(() => {
-			res({
-				bundles: [{
-					id: 'kfsdlasfdasfdsafa',
-					name: 'Dark Heresy Campaign',
-					public: true,
-					description: '',
-					numAssets: 2,
-					slug: "examplebundle1"
-				}, {
-					id: '34dagdsagdsag',
-					name: 'Forest Maps (page ' + page + ')',
-					description: '',
-					public: true,
-					numAssets: 3,
-					slug: "examplebundle2"
-				}],
-				total: 124,
-			})
-		}, 500)
-	})
-	/*const res = await api.get<Promise<BundlesResponse>>('/my-bundles')
-	return res.data*/
+
+	const res = await api.get<Promise<BundlesResponse>>(`/bundles`)
+	return res.data
 }
 
 export async function createBundle (formData : any, assetIds : string[]) {
 	const payload = bundleFormDataToPayload(formData, assetIds)
-	await api.post('/bundle', payload)
+	await api.post('/bundles/create', payload)
 }
 
 export async function updateBundle (id: string, formData : any) {
 	const payload = bundleFormDataToPayload(formData, [])
-	await api.put('/bundle?id=' + id, payload)
+	await api.put('/bundles/' + id, payload)
 }
 
 export async function deleteBundle (id: string) {
-	await api.delete('/bundle?id=' + id)
+	await api.delete('/bundles/' + id)
 }
 
 export function newBundlesAjax () : Ajax<BundlesResponse> {
@@ -75,8 +54,20 @@ export function newBundleAjax () : Ajax<BundleResponse> {
 	})
 }
 
-export async function addAssetToBundles (assetId: string, bundleIds: string[]) {
-	await api.post(`/add-asset-to-bundles?id=${assetId}`, {
-		bundleIds: bundleIds
+export async function addAssetsToBundle(bundleId: string, assetIds: string[]) {
+	await api.put('/bundles/' + bundleId, {
+		added_assets: assetIds
 	})
+}
+
+export async function removeAssetsFromBundle(bundleId: string, assetIds: string[]) {
+	await api.put('/bundles/' + bundleId, {
+		removed_assets: assetIds
+	})
+}
+
+export async function addAssetToBundles (assetId: string, bundleIds: string[]) {
+	for (let i = 0; i < bundleIds.length; i++) {
+		await addAssetsToBundle(bundleIds[i], [assetId])
+	}
 }

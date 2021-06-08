@@ -33,13 +33,13 @@
 
 		max-height: ($size * $cols) + ($gap * ($rows - 1));
 		overflow-y: scroll;
-		
+
 		.result {
 			display: grid;
 			position: relative;
 			grid-template-rows: 1fr 1.5em 1.2em;
 			grid-template-columns: 1fr;
-			grid-template-areas: 
+			grid-template-areas:
 				"image"
 				"title"
 				"category";
@@ -51,7 +51,7 @@
 				grid-column: image-start / image-end;
 				background: $asset-card-background;
 			}
-			h3, h4 { 
+			h3, h4 {
 				margin: 0;
 				padding: 0 .5em;
 				white-space: nowrap;
@@ -88,13 +88,13 @@
 	.modal-body {
 		grid-template-rows: 2em 2em auto 2em;
 		grid-template-columns: auto auto;
-		grid-template-areas: 
+		grid-template-areas:
 			"heading create"
 			"filter ."
 			"list list"
 			". controls";
 		gap: 1em;
-		
+
 		h1 {
 			grid-area: heading;
 			font-size: 1.5em;
@@ -107,7 +107,7 @@
 	.loading-container {
 		grid-area: list;
 	}
-	button { 
+	button {
 		justify-self: end;
 	}
 	button.create {
@@ -136,6 +136,8 @@
 	grid-auto-rows: 5.5em;
 	gap: 1em;
 	user-select: none;
+	max-height: 50vh;
+	overflow-y: auto;
 
 	.bundle {
 		display: grid;
@@ -153,13 +155,13 @@
 		border-radius: 3px;
 
 		padding: 0 1em;
-		
+
 		&:hover {
 			background: $black6;
 		}
 	}
-	.fake-image { 
-		justify-self: end; 
+	.fake-image {
+		justify-self: end;
 	}
 
 	.title, .link { align-self: end; }
@@ -167,14 +169,14 @@
 
 	.circle { grid-area: circle; }
 	.title { grid-area: title; }
-	.description { 
+	.description {
 		grid-area: description;
 		font-size: .8em;
 	}
 	img {
 		place-self: stretch;
 		object-fit: cover;
-		grid-area: image; 
+		grid-area: image;
 	}
 	.link {
 		grid-area: link;

@@ -37,7 +37,6 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import {newBundleAjax, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 
-
 @Component({
 	components: {
 		AssetDownload: AssetDownload,
