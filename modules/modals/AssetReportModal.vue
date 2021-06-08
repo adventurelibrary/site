@@ -1,5 +1,11 @@
 <template>   
-	<div>
+    <Modal
+		:show="true"
+		:title="`Report ${asset.name} Asset`"
+		class-name="add-asset-to-bundle"
+		@close="closeModal">
+
+	<slot>
         <h1>Report</h1>        
 
         Report category:
@@ -12,7 +18,7 @@
 
         <!-- only display name and contact email if user is not logged in, otherwise use logged in details -->
         Name:
-        <input v-model="name" placeholder="Your name.">        
+        <input id="name" v-model="name" placeholder="Your name.">        
 
         Contact email:
         <input v-model="email" placeholder="Your email address.">        
@@ -21,7 +27,8 @@
         <textarea v-model="message" placeholder="Leave your message here."></textarea>
 
         <button v-on:click="sendReport()">Send Report</button>
-	</div>
+		</slot>
+	</Modal>
 </template>
 
 <script lang="ts">
@@ -31,12 +38,11 @@ import {Asset} from "~/lib/assets/asset-types";
 import { options } from "less";
 import {reportAsset} from "~/lib/assets/asset-api";
 import Vue from "vue";
+import Modal from "~/modules/modals/Modal.vue";
 
 @Component({
 	components: {
-		//asset: Asset
-        // reportCategory: 
-
+		Modal: Modal,
 	}
 })
 
@@ -44,10 +50,10 @@ import Vue from "vue";
 export default class ReportAssetModal extends Vue {
 	@State('user') user : User  
     @Getter('isLoggedIn') isLoggedIn : boolean
-    @State('reporteAsset') asset : Asset
+    @State('reportAsset') asset : Asset
 
     // add user name and id if logged in
-    userName = ({
+    name = new Vue({
         el: 'name',
         data: {
             value: 'no value at start'
