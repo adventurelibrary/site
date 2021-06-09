@@ -1,7 +1,7 @@
 <template>
 	<div class="modal-container" v-show="showingModal">
 		<div class="modal-backdrop" @click="clickBackdrop">
-		</div>		
+		</div>
 		<LoginModal v-if="showingLoginModal" :show="showingLoginModal" />
 		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 		<AddAssetToBundle v-if="showingAddAssetToBundle" />
@@ -81,7 +81,7 @@ export default class Modals extends Vue {
 	}
 
 	closeAllModals () {
-		this.$store.dispatch('Modals: closeAllModals()')
+		this.$store.dispatch('closeAllModals')
 	}
 }
 </script>

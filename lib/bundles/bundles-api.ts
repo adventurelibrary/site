@@ -3,14 +3,17 @@ import api from "~/lib/api";
 import {Ajax, newAjax} from "~/lib/ajax";
 
 function bundleFormDataToPayload (data: any, assetIds : string[]) : any {
-	return {
-		bundle: {
-			name: data.name,
-			description: data.description,
-			public: data.public
-		},
-		assetIds: assetIds
+	const pl : any = {
+		name: data.name,
+		description: data.description,
+		public: data.public
 	}
+
+	if (assetIds && assetIds.length) {
+		pl.added_assets = assetIds
+	}
+
+	return pl
 }
 
 export async function getBundle (id: string)  : Promise<BundleResponse> {
@@ -38,7 +41,7 @@ export async function updateBundle (id: string, formData : any) {
 }
 
 export async function deleteBundle (id: string) {
-	await api.delete('/bundles/' + id)
+	await api.post('/bundles/' + id + '/delete')
 }
 
 export function newBundlesAjax () : Ajax<BundlesResponse> {
@@ -68,4 +71,8 @@ export async function addAssetToBundles (assetId: string, bundleIds: string[]) {
 	for (let i = 0; i < bundleIds.length; i++) {
 		await addAssetsToBundle(bundleIds[i], [assetId])
 	}
+}
+
+export async function removeAssetFromBundle (bundleId: string, assetId: string) {
+	return await removeAssetsFromBundle(bundleId, [assetId])
 }

@@ -7,7 +7,7 @@
 				<li v-for="bundle in bundles" :key="bundle.id">
 					<div>
 						<!--<BundleLink :asset="asset" class="link"></BundleLink>-->
-						<BundleLink :bundle="bundle">{{bundle.name}}</BundleLink>
+						<BundleCard :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)">{{bundle.name}}</BundleCard>
 					</div>
 				</li>
 			</ul>
@@ -28,11 +28,12 @@ import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import PaginationMixin, {getRouteQueryPage} from "~/mixins/PaginationMixin.vue";
 import {Context} from "@nuxt/types";
 import BundleLink from "~/modules/assets/components/BundleLink.vue";
+import BundleCard from "~/modules/bundles/components/BundleCard.vue";
 
 @Component({
 	middleware: ['require_auth'],
 	components: {
-		BundleLink
+		BundleCard
 	}
 })
 export default class MyBundles extends mixins(PaginationMixin) {
@@ -66,6 +67,13 @@ export default class MyBundles extends mixins(PaginationMixin) {
 
 	get totalBundles () : number {
 		return computeAjaxTotal(this.bundlesAjax)
+	}
+
+	hideBundle (id: string) {
+		if (!this.bundlesAjax.data || !this.bundlesAjax.data.bundles) {
+			return
+		}
+		this.bundlesAjax.data.bundles = this.bundlesAjax.data.bundles.filter(x => x.id != id)
 	}
 }
 </script>

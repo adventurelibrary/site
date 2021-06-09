@@ -21,7 +21,6 @@ export default Vue.extend({
 	},
 	props: {
 		value: {
-			type: String
 		},
 		label: {
 			type: String,
