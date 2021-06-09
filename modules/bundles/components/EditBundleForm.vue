@@ -26,6 +26,7 @@ export default class EditBundleForm extends mixins(FormMixin) {
 
 	async formAction () {
 		if (!this.bundle) {
+			console.log('no bundle')
 			return
 		}
 		await updateBundle(this.bundle.id, this.form.data)

@@ -26,9 +26,13 @@ export default class LoginPage extends Vue {
 	}
 
 	onSuccess () {
-		console.log('this.redirectPath', this.redirectPath)
 		if (this.redirectPath && this.redirectPath.length) {
-			this.$router.push(this.redirectPath)
+			this.notifySuccess(`Logged in, redirecting...`)
+			this.$router.push({
+				path: this.redirectPath
+			})
+		} else {
+			this.notifySuccess(`Logged in`)
 		}
 	}
 

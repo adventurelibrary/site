@@ -1,22 +1,28 @@
 <template>
-	<div class="bundle-page" v-if="bundle">
+	<div class="bundle-page">
+		<fragment v-if="bundle">
+			<section class="bundle-info">
+				<h1>{{bundle.name}}</h1>
+				<div class="asset-description">
+					{{bundle.description}}
+					ID: {{bundle.id}}
+				</div>
+			</section>
 
-		<section class="bundle-info">
-			<h1>{{bundle.name}}</h1>
-			<div class="asset-description">
-				{{bundle.description}}
-				ID: {{bundle.id}}
-			</div>
-		</section>
 
-
-		<section class="similar-assets">
-			<!-- Similar assets -->
-			<ul class="search-results">
-				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
-				<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"/>
-			</ul>
-		</section>
+			<section class="bundle-assets">
+				<h3>Bundle Assets</h3>
+				<ul class="search-results">
+					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
+					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
+						<fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)">X</button></fragment>
+					</AssetCard>
+				</ul>
+			</section>
+		</fragment>
+		<fragment v-else>
+			<div>Could not find that bundle.</div>
+		</fragment>
 	</div>
 </template>
 <script lang="ts">
@@ -34,7 +40,13 @@ import TagList from "~/modules/tags/TagList.vue";
 import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
 import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
-import {getBundle, newBundleAjax, newBundlesAjax} from "~/lib/bundles/bundles-api";
+import {
+	getBundle,
+	newBundleAjax,
+	newBundlesAjax,
+	removeAssetFromBundle,
+	removeAssetsFromBundle
+} from "~/lib/bundles/bundles-api";
 import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 
 @Component({
@@ -121,6 +133,17 @@ class BundlePage extends Vue {
 		}
 	}
 
+	async clickRemoveAsset (asset: Asset) {
+		if (!this.bundle) {
+			return
+		}
+		await removeAssetFromBundle(this.bundle.id, asset.id)
+		if (this.bundleAjax.data  && this.bundleAjax.data.assets) {
+			this.bundleAjax.data.assets = this.bundleAjax.data.assets.filter((a) => {
+					return a.id !== asset.id
+			})
+		}
+	}
 }
 
 export default BundlePage
