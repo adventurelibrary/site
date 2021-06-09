@@ -62,6 +62,7 @@ export default class ReportAssetModal extends Vue {
 		{text: 'Low quality', value: 'Low quality'},
 		{text: 'Misleading product description', value: 'Misleading product description'},
 		{text: 'Stolen content', value: 'Stolen content'},
+		{text: 'Not as advertised', value: 'Not as advertised'},
 		{text: 'Other', value: 'Other'}
 	]
 	reportCategory = ''
