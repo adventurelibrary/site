@@ -54,7 +54,7 @@ export default class UploadPage extends Vue {
 	}
 
 	get creators() : Creator[] {
-		const list = [{ id: "test37", name: "test37" }]; //computeAjaxList(this.creatorsAjax, 'creators')
+		const list = computeAjaxList(this.creatorsAjax, 'creators')
 		return list
 	}
 }
