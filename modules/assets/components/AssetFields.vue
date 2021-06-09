@@ -1,20 +1,20 @@
 <template>
-	<div>
+	<section class="asset-fields">
 		<Input
-				label="Name"
+				label="Title"
 				:value="copy.name"
 				v-on:input="(val) => fieldChanged('name', val)"
+		/>
+		<Textarea
+				label="Description"
+				:value="copy.description"
+				v-on:input="(val) => fieldChanged('description', val)"
 		/>
 		<FormGroup label="Tags">
 			<TagsInput
 					v-model="copy.tagObjects"
 				/>
 		</FormGroup>
-		<Textarea
-				label="Description"
-				:value="copy.description"
-				v-on:input="(val) => fieldChanged('description', val)"
-		/>
 		<CategorySelect
 				label="Type"
 				:value="copy.category"
@@ -26,7 +26,7 @@
 				:options="visOptions"
 				:value="copy.visibility"
 				v-on:input="(val) => fieldChanged('visibility', val)" />
-	</div>
+	</section>
 </template>
 
 <script lang="ts">

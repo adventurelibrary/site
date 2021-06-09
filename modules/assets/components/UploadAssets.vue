@@ -1,23 +1,22 @@
 <template>
-	<div>
-		<div>
-			<div>
-				<h2>Upload Artwork</h2>
-				<p v-if="creator"><em>Uploading as {{creator.name}}</em></p>
-				<p>File should be jpg, png, or svg.</p>
-			</div>
-			<div>
-				<label for="add-file" class="btn btn-add-file">+ Add File</label>
-				<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
-			</div>
-		</div>
-		<FormErrors :error="error" />
-		<div v-show="stage === 'adding'">
+	<fragment>
+		<section class="upload-header">
+			<h2>Upload Artwork</h2>
+			<p v-if="creator"><em>Uploading as {{creator.name}}</em></p>
+			<p>File should be jpg, png, or svg.</p>
+		</section>
+		<section class="upload-controls">
+			<a class="button add-file">+Add Upload</a>
+			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
+		</section>
+		
+		<FormErrors :error="error" class="upload-errors" />
+		<section v-show="stage === 'adding'" class="upload-form">
 			<div v-if="asAdmin">
 				<div>Upload as creator <span v-if="creator">{{creator.name}}</span><span v-else>n/a</span></div>
 				<CreatorSelector v-model="creator" />
 			</div>
-			<div v-show="newAssets.length !== 0">
+			<ul v-show="newAssets.length !== 0" class="upload-list">
 				<NewAssetComponent
 					v-for="(asset, idx) in newAssets"
 					:new-asset="asset"
@@ -26,23 +25,25 @@
 					v-on:updateFile="(file) => updateFile(idx, file)"
 					v-on:updateFields="(file) => updateFields(idx, file)"
 				/>
-			</div>
-			<form ref="startform">
-				<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
-				<div class="drop-files">Drag new assets here</div>
+			</ul>
+			<form ref="startform" class="startform">
+				<div class="drop-files start">
+					<h4>Drag &amp; drop your files here</h4>
+					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
+				</div>
 			</form>
 			<div v-if="newAssets.length">
 				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
 			</div>
-		</div>
-		<div v-if="stage === 'uploading'">
+		</section>
+		<section v-if="stage === 'uploading'" class="upload-status">
 			<ActiveUploadComponent
-					v-for="(upload, idx) in uploads"
-					:upload="upload"
-					:key="idx"
+				v-for="(upload, idx) in uploads"
+				:upload="upload"
+				:key="idx"
 			/>
-		</div>
-	</div>
+		</section>
+	</fragment>
 </template>
 <script lang="ts">
 import Vue from "vue"
@@ -59,6 +60,7 @@ import CreatorSelector from "~/modules/creators/components/CreatorSelector.vue";
 import {Creator} from "~/modules/creators/creator-types";
 import FormErrors from "~/components/forms/FormErrors.vue";
 import {convertAPIException} from "~/lib/errors/errors";
+import {Fragment} from "vue-fragment";
 
 type Stage = 'adding' | 'uploading' | 'done'
 
@@ -77,7 +79,8 @@ export default Vue.extend({
 		FormErrors,
 		NewAssetComponent: NewAssetComponent,
 		ActiveUploadComponent: ActiveUploadComponent,
-		CreatorSelector: CreatorSelector
+		CreatorSelector: CreatorSelector,
+		Fragment
 	},
 	data () : Data {
 		return {

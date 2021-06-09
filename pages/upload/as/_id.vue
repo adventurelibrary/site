@@ -1,10 +1,7 @@
 <template>
-	<div class="page-container">
-		<UploadAssets
-				:creator="creator"
-				:as-admin="false" />
-
-	</div>
+	<UploadAssets
+		:creator="creator"
+		:as-admin="false" />
 </template>
 <script lang="ts">
 
@@ -16,7 +13,7 @@ import {Creator} from "~/modules/creators/creator-types";
 
 @Component({
 	components: {
-		UploadAssets: UploadAssets
+		UploadAssets: UploadAssets,
 	}
 })
 export default class UploadPage extends Vue {

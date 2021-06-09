@@ -1,20 +1,20 @@
 <template>
-	<div class="new-asset">
+	<li class="new-asset">
 		<form ref="fileform" class="new-asset-file">
-      <div class="preview">
-				<AssetFilePreview :file="newAsset.file" />
+			<div class="drop-files">
+				<div class="preview">
+					<AssetFilePreview :file="newAsset.file" />
+				</div>
+				<h4>Drag &amp; drop your files here</h4>
+				<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
 			</div>
-			<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
-			<div class="drop-files">Drop here to replace</div>
-		</form>
-		<div class="new-asset-fields">
 			<AssetFields
 				:asset="newAsset.asset"
 				v-on:assetChanged="assetChanged"
 				:hide-visibility="true"
 			/>
-		</div>
-	</div>
+		</form>
+	</li>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
@@ -74,35 +74,3 @@ export default Vue.extend({
 	},
 })
 </script>
-<style>
-.new-asset {
-	display: flex;
-	flex-direction: row;
-	padding-bottom: 2em;
-	margin-bottom: 2em;
-	border-bottom: 1px solid #333;
-}
-
-.new-asset-file,
-.new-asset-fields {
-	flex: 0 0 50%;
-}
-
-.new-asset-fields {
-	padding-left: 1em;
-}
-
-.new-asset-file {
-	padding-right: 1em;
-	text-align: center;
-}
-
-.new-asset-file img {
-	max-height: 100%;
-	max-width: 100%;
-}
-
-.new-asset-file .drop-files {
-	padding: 1em;
-}
-</style>
