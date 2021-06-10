@@ -6,7 +6,7 @@
 <script>
 import Vue from "vue";
 import {Component} from "nuxt-property-decorator";
-import ProfilePage from "@/pages/user/components/ProfilePage";
+import ProfilePage from "@/pages/user/components/ProfilePage.vue";
 @Component({
 	components: {
 		ProfilePage
