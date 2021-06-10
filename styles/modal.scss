@@ -122,12 +122,24 @@
 	}
 }
 
-.login-form, .register-form, .report-form {
+.archive-asset-form {
+	display: grid;
+}
+
+.login-form,
+.register-form,
+.report-form,
+.archive-asset-form {
 	min-width: 82em;
 }
 @media (min-width: $media-small) {
-	.login-form, .register-form, .report-form {
+	.login-form,
+	.register-form,
+	.report-form {
 		min-width: 26em;
+	}
+	.archive-asset-form {
+		min-width: 16em;
 	}
 }
 

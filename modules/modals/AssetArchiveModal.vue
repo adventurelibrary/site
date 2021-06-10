@@ -2,16 +2,18 @@
 	<Modal
 			:show="true"
 			:title="`Delete ${asset.name} Asset`"
-			class-name="add-asset-to-bundle"
+			class-name="archive-asset"
 			@close="closeModal">
 		<slot>
-			<h1>Are you sure you want to delete the "{{asset.name}}" Asset?</h1>
-			
-			<input id="confirmArchiveText" type="text" v-on:input="trackEntry()" placeholder="Type in DELETE to enable the Delete button."/>
-			<span>Type in DELETE to enable the Delete button.</span>
-						
-			<button id="archiveButton" @click="archiveAsset" type="button" class="create" disabled>Delete Asset</button>			
-			<button @click="closeModal" type="button" class="create">Cancel</button>	
+			<form class="archive-asset-form">
+				<h3>Are you sure you want to delete the "{{asset.name}}" Asset?</h3>
+				
+				<input id="confirmArchiveText" type="text" v-on:input="trackEntry()" placeholder="Type in DELETE to enable the Delete button."/>
+				<span>Type in DELETE to enable the Delete button.</span>
+				
+				<button id="archiveButton" @click="archiveAsset" type="button" class="create" disabled>Delete Asset</button>
+				<button @click="closeModal" type="button" class="create">Cancel</button>
+			</form>
 		</slot>
 	</Modal>
 </template>
