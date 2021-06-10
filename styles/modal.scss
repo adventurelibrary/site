@@ -105,7 +105,6 @@
 }
 
 .login-form {
-	min-width: 82vw;
 	.password-reset {
 		display: grid;
 		color: currentColor;
@@ -113,14 +112,22 @@
 	}
 }
 .register-form {
-	min-width: 82vw;
 	.account-create {
 		justify-self: start;
 	}
 }
+.report-form {
+	form {
+		display: grid;
+	}
+}
 
+.login-form, .register-form, .report-form {
+	min-width: 82em;
+}
 @media (min-width: $media-small) {
-	.login-form, .register-form {
+	.login-form, .register-form, .report-form {
 		min-width: 26em;
 	}
 }
+

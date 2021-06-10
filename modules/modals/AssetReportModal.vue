@@ -2,12 +2,12 @@
 	<Modal
 		:show="true"
 		:title="`Report ${asset.name} Asset`"
-		class-name="add-asset-to-bundle"
+		class-name="report-asset"
 		@close="closeModal">
 		<slot>
 			<div>
 				<h1>Report</h1>
-				<form v-on:submit="sendReport()">
+				<form v-on:submit="sendReport()" class="report-form">
 					<FormGroup label="Report category">
 						<select v-model='reportCategory'>
 							<option v-for="option in options" v-bind:key="option.value">
@@ -26,7 +26,7 @@
 						<input v-model="email" placeholder="Your email address." />
 					</FormGroup>
 
-					<FormGroup label="Name">
+					<FormGroup label="Name" class="text-area">
 						<textarea v-model="message" placeholder="Leave your message here."></textarea>
 					</FormGroup>
 					<button>Send Report</button>
