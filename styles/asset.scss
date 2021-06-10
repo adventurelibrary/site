@@ -40,6 +40,14 @@
 				margin: 0 .15ch;
 			}
 		}
+		.asset-control {
+			display: grid;
+			gap: 2ch;
+			grid-auto-flow: column;
+			justify-content: start;
+			color: $gray2;
+			font-size: .8em;
+		}
 	}
 	.asset-downloads {
 		grid-area: download;

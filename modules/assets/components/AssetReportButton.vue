@@ -1,7 +1,7 @@
 <template>
-	<button @click="openModal" type="button">
+	<a @click="openModal">
 		Report Asset
-	</button>
+	</a>
 </template>
 <script lang="ts">
 import Vue from "vue"

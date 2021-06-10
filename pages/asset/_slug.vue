@@ -9,14 +9,6 @@
 			<h1 class="asset-title">{{asset.name}}</h1> 
 			<!-- <nuxt-link :to="{name: 'contact-reportAsset', params: {assetId: asset.id}}">Report</nuxt-link> -->
 
-			<figure class="asset-action">
-				<AssetArchiveButton :asset="asset" />
-			</figure>
-
-			<figure class="asset-action">
-				<AssetReportButton :asset="asset" />
-			</figure>
-
 			<h3 class="asset-author">
 				<!-- Will be a link to the author profile -->
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
@@ -25,6 +17,10 @@
 				{{asset.description}}
 			</div>
 			<TagList :tags="asset.tags" />
+			<div class="asset-control">
+				<AssetArchiveButton :asset="asset" />
+				<AssetReportButton :asset="asset" />
+			</div>
 		</section>
 
 		<section class="asset-downloads">
@@ -33,6 +29,7 @@
 				<span class="count">{{asset.downloads || 0}}</span>
 				<span class="label">downloads</span>
 			</span>
+			
 		</section>
 
 		<section class="similar-assets">

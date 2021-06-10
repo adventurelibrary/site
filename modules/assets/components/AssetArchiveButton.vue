@@ -1,7 +1,7 @@
 <template>
-	<button v-if="confirmCreatorOfAsset() == true" @click="openModal" type="button">
+	<a v-if="confirmCreatorOfAsset() == true" @click="openModal">
 		Delete Asset
-	</button>
+	</a>
 </template>
 <script lang="ts">
 import Vue from "vue"
