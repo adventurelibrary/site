@@ -37,8 +37,9 @@ B
 					</template>
 				</li>
 				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
-				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'bundles'}">My Bundles</nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user'}">My Account</nuxt-link></li>
+				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user-bundles'}">My Bundles</nuxt-link></li>
+				<li v-if="isCreator"><nuxt-link :to="{name: 'user-assets'}">My Assets</nuxt-link></li>
 			</ul>
 		</header>
 		<main class="site-body">
@@ -121,6 +122,7 @@ export default class Default extends Vue {
 	@State('user') user : User
 	@State('userTracking') userTracking : UserTracking
 	@Getter('isLoggedIn') isLoggedIn: boolean
+	@Getter('isCreator') isCreator : boolean
 	@State(state => state.login.working) loginWorking : boolean
 
 	overlays: { [s: string]: boolean; } = {

@@ -318,6 +318,13 @@ export const getters = {
 	isLoggedIn (state: State) : boolean {
 		return !!state.user
 	},
+	isCreator (state: State) : boolean {
+		if (!state.user) {
+			return false
+		}
+
+		return state.user.is_creator
+	},
 	showingModal (state: State) : boolean {
 		const keys = Object.keys(state.modals)
 		for (let i = 0; i < keys.length; i++) {

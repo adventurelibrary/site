@@ -1,6 +1,5 @@
 <template>
-	<div>
-		<h1>My Bundles</h1>
+	<ProfilePage active-tab="bundles">
 		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
 			<div>Showing {{bundles.length}}. Total: {{totalBundles}}</div>
 			<ul>
@@ -12,13 +11,13 @@
 				</li>
 			</ul>
 			<Pagination
-				:items-per-page="20"
-				:total-items="totalBundles"
-				:active-page="activePage"
-				:to="{name: 'bundles'}"
+					:items-per-page="20"
+					:total-items="totalBundles"
+					:active-page="activePage"
+					:to="{name: 'bundles'}"
 			/>
 		</LoadingContainer>
-	</div>
+	</ProfilePage>
 </template>
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
@@ -27,13 +26,16 @@ import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
 import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
 import PaginationMixin, {getRouteQueryPage} from "~/mixins/PaginationMixin.vue";
 import {Context} from "@nuxt/types";
-import BundleLink from "~/modules/assets/components/BundleLink.vue";
 import BundleCard from "~/modules/bundles/components/BundleCard.vue";
+import ProfilePage from "~/pages/user/components/ProfilePage.vue";
+import LoadingContainer from "~/components/LoadingContainer.vue";
 
 @Component({
 	middleware: ['require_auth'],
 	components: {
-		BundleCard
+		ProfilePage,
+		BundleCard,
+		LoadingContainer: LoadingContainer
 	}
 })
 export default class MyBundles extends mixins(PaginationMixin) {
@@ -52,9 +54,15 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	async asyncData (ctx : Context) {
 		const ajax = newBundlesAjax()
 		const page = getRouteQueryPage(ctx.route)
-		await doAjax<BundlesResponse>(ajax, async () => {
-			return await getMyBundles(page)
-		})
+		if (process.client) {
+			/*doAjax<BundlesResponse>(ajax, async () => {
+				return await getMyBundles(page)
+			})*/
+		} else {
+			await doAjax<BundlesResponse>(ajax, async () => {
+				return await getMyBundles(page)
+			})
+		}
 		return {
 			bundlesAjax: ajax
 		}

@@ -1,17 +1,22 @@
 <template>
-	<div>
+	<article>
 		<h1>Upload</h1>
-		<p>Choose which Creator to upload as</p>
-		<ul>
-			<li v-for="creator in creators" :key="creator.id">
-				<nuxt-link :to="{name: 'upload-as-id', params: {id: creator.id}}">{{creator.name}}</nuxt-link>
-			</li>
-		</ul>
-	</div>
+		<div v-if="!isCreator">
+			You are not a creator.
+		</div>
+		<div v-else>
+			<p>Choose which Creator to upload as</p>
+			<ul>
+				<li v-for="creator in creators" :key="creator.id">
+					<nuxt-link :to="{name: 'upload-as-id', params: {id: creator.id}}">{{creator.name}}</nuxt-link>
+				</li>
+			</ul>
+		</div>
+	</article>
 </template>
 <script lang="ts">
 
-import {Component, Vue} from "nuxt-property-decorator";
+import {Component, Vue, Getter} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import {computeAjaxList, doAjax, newAjax} from "~/lib/ajax";
 import {Creator, CreatorsResponse} from "~/modules/creators/creator-types";
@@ -27,6 +32,8 @@ export default class UploadPage extends Vue {
 		total: 0,
 		creators: []
 	})
+
+	@Getter('isCreator') isCreator : boolean
 
 	async loadCreators () {
 

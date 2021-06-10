@@ -66,6 +66,13 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	query.size = size.toString()
 	query.from = from.toString()
 
+	if (opts.mine) {
+		query.mine = '1'
+	}
+	if (opts.visibility) {
+		query.visibility = opts.visibility
+	}
+
 	return query
 }
 
@@ -330,7 +337,7 @@ export async function reportAsset (assetId: string, assetName: string, reportCat
 		Sent info:
 
 		assetId
-		assetName	
+		assetName
 		name
 		email
 		message

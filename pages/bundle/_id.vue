@@ -7,15 +7,20 @@
 					{{bundle.description}}
 					ID: {{bundle.id}}
 				</div>
+				<div>
+					<button type="button" @click="clickDeleteBundle">Delete</button>
+					<button type="button" @click="clickEditBundle">Edit</button>
+				</div>
 			</section>
 
 
 			<section class="bundle-assets">
 				<h3>Bundle Assets</h3>
 				<ul class="search-results">
+					<li v-if="!assets.length">No assets.</li>
 					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-						<fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)">X</button></fragment>
+						<Fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)">X</button></Fragment>
 					</AssetCard>
 				</ul>
 			</section>
@@ -29,23 +34,17 @@
 import { Context } from '@nuxt/types'
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
-
 import {Asset} from "~/lib/assets/asset-types";
-import {getAssetAjax, getAssetById, searchAdminAssets} from "~/lib/assets/asset-api";
-import {Ajax, doAjax, getAjaxData} from "~/lib/ajax";
+import {doAjax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
-
-// related assets and search modules
-import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
-import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
+import {Fragment} from "vue-fragment";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import {
+	deleteBundle,
 	getBundle,
 	newBundleAjax,
-	newBundlesAjax,
 	removeAssetFromBundle,
-	removeAssetsFromBundle
 } from "~/lib/bundles/bundles-api";
 import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 
@@ -53,7 +52,8 @@ import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
 	components: {
 		AssetDownload: AssetDownload,
 		TagList: TagList,
-		AssetCard
+		AssetCard,
+		Fragment
 	}
 })
 class BundlePage extends Vue {
@@ -62,15 +62,6 @@ class BundlePage extends Vue {
 	perPage = 5
 	loadingMore = false
 	scrollTimeout : NodeJS.Timeout
-
-	// static asset fetch by id
-	/*
-		Example Asset IDs:
-		rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL
-		fWPd13YkAAEJaxsFDptS7ZZcfmppOreN
-		6L13wQqQbRfkVHkbPirNKQP0rQWTafRq
-	*/
-	//public Asset : Asset = getAssetById("rJsMIN5v9WrbxvvNkJ9r31aUQEIpHNbL");
 
 	// setting header meta tags
 	head () {
@@ -143,6 +134,29 @@ class BundlePage extends Vue {
 					return a.id !== asset.id
 			})
 		}
+	}
+
+
+	async clickDeleteBundle () {
+		if (prompt('Type DELETE to delete bundle') !== 'DELETE') {
+			return
+		}
+
+		if (!this.bundle) {
+			return
+		}
+
+		await deleteBundle(this.bundle.id)
+		this.notifySuccess('Bundle deleted')
+		this.$router.push({name: 'bundles'})
+	}
+
+	async clickEditBundle () {
+		this.$store.dispatch('openEditBundleModal', {
+			bundle: this.bundle
+		})
+		// TODO: emit the changed bundle and watch for that change here
+		// then update the bundle on the page
 	}
 }
 
