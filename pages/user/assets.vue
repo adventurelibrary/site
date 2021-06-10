@@ -10,7 +10,7 @@
 <script lang="ts">
 import Vue from "vue";
 import {Component} from "nuxt-property-decorator";
-import ProfilePage from "@/pages/user/components/ProfilePage";
+import ProfilePage from "@/pages/user/components/ProfilePage.vue";
 import {newAssetsAjax, searchAssets} from "@/lib/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "@/lib/ajax";
 import {newSearchOptions} from "@/lib/assets/asset-helpers";
