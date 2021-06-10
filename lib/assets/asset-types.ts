@@ -64,6 +64,8 @@ export type AssetSearchOptions = {
 	sortDirection: SortDirection
 	from: number
 	size: number
+	mine?: boolean
+	visibility?: string
 }
 
 export type AssetsResponse = {

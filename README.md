@@ -10,3 +10,11 @@ npm run dev
 ```
 npm run dev-admin
 ```
+
+## Deploy
+
+```
+npm i
+npm run build
+npm start
+```

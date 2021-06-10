@@ -1,7 +1,7 @@
 export type User = {
 	id: string
-	admin: boolean
-	creator: boolean
+	is_admin: boolean
+	is_creator: boolean
 	email: string
 	username: string
 }

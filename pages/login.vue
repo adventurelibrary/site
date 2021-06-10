@@ -25,7 +25,8 @@ export default class LoginPage extends Vue {
 		return ''
 	}
 
-	onSuccess () {
+	async onSuccess () {
+		await this.$store.dispatch('fetchSession')
 		if (this.redirectPath && this.redirectPath.length) {
 			this.notifySuccess(`Logged in, redirecting...`)
 			this.$router.push({
