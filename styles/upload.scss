@@ -71,13 +71,21 @@
 			grid-template-columns: 1fr;
 			justify-items: center;
 
-			&.start { 
-				grid-template-rows: auto; 
-				padding: 2.5em;
-			}
-
 			h4, input {
 				grid-column: 1 / -1;
+				visibility: hidden;
+			}
+			&:hover { 
+					h4, input {
+					visibility: visible;
+				}
+			}
+			&.start { 
+				padding: 2.5em;
+
+				h4, input {
+					visibility: visible;
+				}
 			}
 			h4 { 
 				grid-row: 1 / 2; 

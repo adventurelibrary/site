@@ -16,6 +16,12 @@
 				<div>Upload as creator</div>
 				<CreatorSelector v-model="creator" />
 			</div>
+			<form ref="startform" class="startform">
+				<div class="drop-files start">
+					<h4>Drag &amp; drop new files here</h4>
+					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
+				</div>
+			</form>
 			<ul v-show="newAssets.length !== 0" class="upload-list">
 				<NewAssetComponent
 					v-for="(asset, idx) in newAssets"
@@ -26,12 +32,6 @@
 					v-on:updateFields="(file) => updateFields(idx, file)"
 				/>
 			</ul>
-			<form ref="startform" class="startform">
-				<div class="drop-files start">
-					<h4>Drag &amp; drop your files here</h4>
-					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
-				</div>
-			</form>
 			<div v-show="newAssets.length">
 				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
 			</div>

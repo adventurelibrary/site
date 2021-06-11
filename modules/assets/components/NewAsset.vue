@@ -5,7 +5,7 @@
 				<div class="preview">
 					<AssetFilePreview :file="newAsset.file" />
 				</div>
-				<h4>Drag &amp; drop your files here</h4>
+				<h4>Drag &amp; drop replacement file here.</h4>
 				<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
 			</div>
 			<AssetFields
