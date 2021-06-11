@@ -9,7 +9,7 @@
 			<a class="button add-file basic">+Add Upload</a>
 			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
-		
+
 		<FormErrors :error="error" class="upload-errors" />
 		<section v-show="stage === 'adding'" class="upload-form">
 			<div v-if="asAdmin">
@@ -36,7 +36,7 @@
 				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
 			</div>
 		</section>
-		<section v-if="stage === 'uploading'" class="upload-status">
+		<section v-show="stage === 'uploading'" class="upload-status">
 			<ActiveUploadComponent
 				v-for="(upload, idx) in uploads"
 				:upload="upload"
@@ -57,7 +57,6 @@ import {filenameGuessCategory, filenameToTitle, sleep} from "~/lib/helpers";
 import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
 import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
 import CreatorSelector from "~/modules/creators/components/CreatorSelector.vue";
-import {Creator} from "~/modules/creators/creator-types";
 import FormErrors from "~/components/forms/FormErrors.vue";
 import {convertAPIException} from "~/lib/errors/errors";
 import {Fragment} from "vue-fragment";
