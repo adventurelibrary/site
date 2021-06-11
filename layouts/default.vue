@@ -105,7 +105,7 @@ B
 <script lang="ts">
 import Vue from "vue"
 import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRouter.vue";
-import {Component, Getter, State} from "nuxt-property-decorator";
+import {Component, Getter, State, Watch} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/lib/users/user-types"
@@ -118,12 +118,23 @@ import {UserTracking} from "~/lib/users/user-tracking"
 	}
 })
 export default class Default extends Vue {
+	pageClass = ''
+
 	@State('toasts') toasts : Toast[]
 	@State('user') user : User
 	@State('userTracking') userTracking : UserTracking
 	@Getter('isLoggedIn') isLoggedIn: boolean
 	@Getter('isCreator') isCreator : boolean
 	@State(state => state.login.working) loginWorking : boolean
+
+	// Returns the name of the page as a CSS selector we can apply to the <main /> component
+	@Watch('$route', {
+		immediate: true
+	})
+	watchRouter () {
+		const name = this.$router.currentRoute.name
+		this.pageClass = 'page-' + name
+	}
 
 	overlays: { [s: string]: boolean; } = {
 		search: false,
@@ -151,10 +162,6 @@ export default class Default extends Vue {
 		return Object.values(this.overlays).some(o => o);
 	}
 
-	// Returns the name of the page as a CSS selector we can apply to the <main /> component
-	get pageClass () : string {
-		return 'page-' + this.$router.currentRoute.name
-	}
 
 	hideOverlays() {
 		Object.keys(this.overlays).forEach(o => this.overlays[o] = false);
