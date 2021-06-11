@@ -2,9 +2,9 @@
 	<ProfilePage active-tab="settings">
 		<h1>My Assets</h1>
 		<nuxt-link :to="{name: 'upload'}">Upload Assets</nuxt-link>
-		<ul class="search-results">
-			<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-		</ul>
+		<div class="assets">
+			<AssetManageItem v-for="asset in assets" :key="asset.id" :asset="asset"></AssetManageItem>
+		</div>
 	</ProfilePage>
 </template>
 <script lang="ts">
@@ -15,12 +15,13 @@ import {newAssetsAjax, searchAssets} from "@/lib/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "@/lib/ajax";
 import {newSearchOptions} from "@/lib/assets/asset-helpers";
 import {Asset} from "@/lib/assets/asset-types";
-import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetManageItem from "~/modules/assets/components/AssetManageItem.vue";
 
 @Component({
+	middleware: ['require_auth'],
 	components: {
 		ProfilePage,
-		AssetCard: AssetCard
+		AssetManageItem: AssetManageItem
 	}
 })
 export default class UserAssets extends Vue {

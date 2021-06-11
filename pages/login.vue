@@ -1,12 +1,12 @@
 <template>
-	<div>
+	<article>
 		<h1>Login</h1>
 		<div>go to {{redirectPath}}</div>
 		<LoginForm
 			@success="onSuccess"
 			@register="register"
 		/>
-	</div>
+	</article>
 </template>
 <script lang="ts">
 import Vue from "vue"
@@ -34,6 +34,7 @@ export default class LoginPage extends Vue {
 			})
 		} else {
 			this.notifySuccess(`Logged in`)
+			this.$router.replace('/')
 		}
 	}
 

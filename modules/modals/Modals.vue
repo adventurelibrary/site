@@ -6,6 +6,7 @@
 		<RegisterModal v-if="showingRegisterModal" :show="showingRegisterModal" />
 		<AddAssetToBundle v-if="showingAddAssetToBundle" />
 		<CreateBundleModal v-if="showingCreateBundle" />
+		<EditAssetModal v-if="showingAssetEdit" />
 		<EditBundleModal v-if="showingBundleEdit" />
 		<BundleAddAssetsModal v-if="showBundleAddAssets" />
 		<AssetArchiveModal v-if="showArchiveAsset" />
@@ -23,9 +24,11 @@ import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
 import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsModal.vue";
 import AssetArchiveModal from "~/modules/modals/AssetArchiveModal.vue";
 import AssetReportModal from "~/modules/modals/AssetReportModal.vue";
+import EditAssetModal from "~/modules/assets/components/EditAssetModal.vue";
 
 @Component({
 	components: {
+		EditAssetModal,
 		BundleAddAssetsModal,
 		EditBundleModal,
 		AddAssetToBundle: AddAssetToBundleModal,
@@ -43,6 +46,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.addToBundle)  showingAddAssetToBundle : boolean
 	@State(state => state.modals.createBundle)  showingCreateBundle : boolean
 	@State(state => state.modals.editBundle)  showingBundleEdit : boolean
+	@State(state => state.modals.editAsset)  showingAssetEdit : boolean
 	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
 	@State(state => state.modals.archiveAsset)  showArchiveAsset : boolean
 	@State(state => state.modals.reportAsset)  showReportAsset : boolean
