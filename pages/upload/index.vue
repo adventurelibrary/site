@@ -51,7 +51,7 @@ export default class UploadPage extends Vue {
 
 		// If they only own one creator then just select that automatically for them
 		if (cajax.data && cajax.data.creators && cajax.data.creators.length === 1) {
-			//ctx.redirect(`/upload/as/${cajax.data.creators[0].id}`)
+			ctx.redirect(`/upload/as/${cajax.data.creators[0].id}`)
 			return
 		}
 		return {
