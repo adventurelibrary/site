@@ -13,7 +13,7 @@
 		<FormErrors :error="error" class="upload-errors" />
 		<section v-show="stage === 'adding'" class="upload-form">
 			<div v-if="asAdmin">
-				<div>Upload as creator <span v-if="creator">{{creator.name}}</span><span v-else>n/a</span></div>
+				<div>Upload as creator</div>
 				<CreatorSelector v-model="creator" />
 			</div>
 			<ul v-show="newAssets.length !== 0" class="upload-list">
@@ -32,7 +32,7 @@
 					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
 				</div>
 			</form>
-			<div v-if="newAssets.length">
+			<div v-show="newAssets.length">
 				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
 			</div>
 		</section>

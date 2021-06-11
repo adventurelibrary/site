@@ -29,7 +29,8 @@
 					:class="{active: activeTab === 'assets'}">
 				My Assets
 			</nuxt-link>
-			<a href="" class="button upgrade">Become An Artist</a>
+			<a v-if="!isCreator" @click="becomeAnArtist" class="button upgrade">Become An Artist</a>
+			<nuxt-link v-else @click="becomeAnArtist" :to="{name: 'upload'}" class="button upgrade">Upload Assets</nuxt-link>
 		</nav>
 		<section class="tab active">
 			<slot></slot>
@@ -37,14 +38,19 @@
 	</article>
 </template>
 <script lang="ts">
-import {Component, State, Vue, Prop} from "nuxt-property-decorator";
+import {Component, State, Vue, Prop, Getter} from "nuxt-property-decorator";
 import {User} from "~/lib/users/user-types"
 
 @Component({
 	middleware: ['require_auth']
 })
 export default class ProfilePage extends Vue {
+	@Getter('isCreator') isCreator : boolean
 	@State('user') user : User
 	@Prop() activeTab : string
+
+	becomeAnArtist () {
+		alert('Google Form coming')
+	}
 }
 </script>
