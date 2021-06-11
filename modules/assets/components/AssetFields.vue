@@ -1,5 +1,5 @@
 <template>
-	<section class="asset-fields">
+	<section class="asset-fields basic-form">
 		<Input
 				label="Title"
 				:value="copy.name"

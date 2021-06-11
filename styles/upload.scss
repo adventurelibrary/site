@@ -9,6 +9,7 @@
 		"upload";
 		
 	row-gap: 2.5em;
+	column-gap: 5em;
 
 	@include medium {
 		grid-template-columns: auto auto;
@@ -25,6 +26,10 @@
 	}
 	.upload-controls {
 		grid-area: controls;
+		display: grid;
+		grid-auto-flow: column;
+		place-items: center;
+		gap: 1em;
 	}
 	.upload-form {
 		grid-area: upload;

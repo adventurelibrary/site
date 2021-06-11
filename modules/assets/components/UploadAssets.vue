@@ -6,7 +6,7 @@
 			<p>File should be jpg, png, or svg.</p>
 		</section>
 		<section class="upload-controls">
-			<a class="button add-file">+Add Upload</a>
+			<a class="button add-file basic">+Add Upload</a>
 			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
 		
