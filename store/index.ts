@@ -10,6 +10,7 @@ Vue.use(Vuex)
 type State = {
 	archiveAsset: Asset | null,
 	reportAsset: Asset | null,
+	editAsset: Asset | null
 	addToBundleAsset: Asset | null,
 	breadcrumbs: any[],
 	createBundleAsset: Asset | null
@@ -28,6 +29,7 @@ type State = {
 		register: boolean,
 		archiveAsset: boolean
 		reportAsset: boolean
+		editAsset: boolean
 	}
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
@@ -38,7 +40,7 @@ type State = {
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset' | 'editAsset'
 
 export type Toast = {
 	id: number
@@ -73,6 +75,7 @@ export const state = () : State => {
 		createBundleAsset: null,
 		editBundle: null,
 		reportAsset: null,
+		editAsset: null,
 		toasts: [],
 		user: null,
 		userTracking: {
@@ -92,7 +95,8 @@ export const state = () : State => {
 			editBundle: false,
 			login: false,
 			register: false,
-			reportAsset: false
+			reportAsset: false,
+			editAsset: false
 		},
 	}
 }
@@ -169,11 +173,9 @@ export const mutations = {
 	},
 	archiveAsset (state: State, asset: Asset | null) {
 		state.archiveAsset = asset
-		console.log('archiveAsset mutation')
 	},
 	reportAsset (state: State, asset: Asset | null) {
 		state.reportAsset = asset
-		console.log('reportAsset mutation')
 	},
 	addToBundleAsset (state: State, asset: Asset | null) {
 		state.addToBundleAsset = asset
@@ -190,6 +192,9 @@ export const mutations = {
 	},
 	editBundle (state: State, bundle: Bundle | null) {
 		state.editBundle = bundle
+	},
+	editAsset (state: State, asset: Asset | null) {
+		state.editAsset = asset
 	},
 	createBundleAsset (state: State, asset: Asset | null) {
 		state.createBundleAsset = asset
@@ -264,6 +269,13 @@ export const actions = {
 			value: true
 		})
 		commit('editBundle', bundle)
+	},
+	openEditAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
+		commit('modal', {
+			key: 'editAsset',
+			value: true
+		})
+		commit('editAsset', asset)
 	},
 	closeLoginModal ({commit} : ActionParams) {
 		commit('modal', {
