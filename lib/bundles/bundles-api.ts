@@ -6,7 +6,7 @@ function bundleFormDataToPayload (data: any, assetIds : string[]) : any {
 	const pl : any = {
 		name: data.name,
 		description: data.description,
-		public: data.public
+		public: !!data.public
 	}
 
 	if (assetIds && assetIds.length) {
