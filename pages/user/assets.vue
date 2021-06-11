@@ -1,5 +1,5 @@
 <template>
-	<ProfilePage active-tab="settings">
+	<ProfilePage active-tab="assets">
 		<h1>My Assets</h1>
 		<nuxt-link :to="{name: 'upload'}">Upload Assets</nuxt-link>
 		<div class="assets">
