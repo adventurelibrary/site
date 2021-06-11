@@ -1,5 +1,5 @@
 <template>
-	<form @submit="submit">
+	<form @submit="submit" class="edit-asset">
 		<FormErrors :error="form.error" />
 		<AssetFields :asset="form.data" @assetChanged="dataChanged" />
 		<button type="submit">Save Asset</button>

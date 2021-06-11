@@ -129,13 +129,15 @@
 .login-form,
 .register-form,
 .report-form,
-.archive-asset-form {
+.archive-asset-form,
+.edit-asset {
 	min-width: 82em;
 }
 @media (min-width: $media-small) {
 	.login-form,
 	.register-form,
-	.report-form {
+	.report-form,
+	.edit-asset {
 		min-width: 26em;
 	}
 	.archive-asset-form {
