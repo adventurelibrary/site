@@ -41,23 +41,30 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	// the query params change. So, we watch the query params ourselves with the PaginationMixin
 	// and just do an ajax call when the page changes
 	async pageChanged () {
+		this.loadBundles()
+	}
+
+	async loadBundles () {
 		doAjax<BundlesResponse>(this.bundlesAjax, async () => {
 			return await getMyBundles(this.activePage)
 		})
 	}
 
+	async created () {
+		if (process.client) {
+			await this.loadBundles()
+		}
+	}
+
 	async asyncData (ctx : Context) {
+		if (process.client) {
+			return {}
+		}
 		const ajax = newBundlesAjax()
 		const page = getRouteQueryPage(ctx.route)
-		if (process.client) {
-			/*doAjax<BundlesResponse>(ajax, async () => {
-				return await getMyBundles(page)
-			})*/
-		} else {
-			await doAjax<BundlesResponse>(ajax, async () => {
-				return await getMyBundles(page)
-			})
-		}
+		await doAjax<BundlesResponse>(ajax, async () => {
+			return await getMyBundles(page)
+		})
 		return {
 			bundlesAjax: ajax
 		}

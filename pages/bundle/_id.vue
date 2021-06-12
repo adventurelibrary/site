@@ -20,7 +20,7 @@
 					<li v-if="!assets.length">No assets.</li>
 					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-						<Fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)">X</button></Fragment>
+						<Fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">X</button></Fragment>
 					</AssetCard>
 				</ul>
 			</section>
