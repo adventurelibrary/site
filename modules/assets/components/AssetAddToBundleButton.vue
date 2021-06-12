@@ -1,5 +1,5 @@
 <template>
-	<button @click="openModal" type="button">
+	<button class="asset-action action-add-asset-to-bundle" @click="openModal" type="button">
 		+
 	</button>
 </template>

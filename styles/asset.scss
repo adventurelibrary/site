@@ -1,7 +1,7 @@
 .asset {
 	display: grid;
 	grid-template-rows: 20em repeat(3, min-content);
-	grid-template-areas: 
+	grid-template-areas:
 		"preview"
 		"info"
 		"download"
@@ -74,11 +74,15 @@
 	}
 }
 
+.asset-thumbnail {
+	background-size: cover;
+}
+
 @media (min-width: 800px) {
 	.asset {
 		grid-template-rows: 30em repeat(2, min-content);
 		grid-template-columns: 2fr 1fr;
-		grid-template-areas: 
+		grid-template-areas:
 			"preview preview"
 			"info download"
 			"similar similar";

@@ -3,9 +3,11 @@
 		<InputGroup
 				label="Name"
 				v-model="copy.name"
+				placeholder="Bundle name"
 		/>
 		<TextareaGroup
 			label="Description"
+			placeholder="Describe your bundle..."
 			v-model="copy.description" />
 		<SelectGroup
 			label="Public"

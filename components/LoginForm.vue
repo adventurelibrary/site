@@ -17,7 +17,7 @@
 			<a class="register" @click="register">Register</a>
 		</section>
 		<section class="control-row login-controls">
-			<button class="login-button" :disable="form.submitting">Login to Account</button>
+			<SubmitButton classes="login-button" :submitting="form.submitting" idle-text="Login to Account" />
 			<nuxt-link class="password-reset" :to="{name: 'forgot-password'}">Forgot Password</nuxt-link>
 		</section>
 	</form>
@@ -28,11 +28,13 @@ import FormMixin from "~/mixins/Forms.vue";
 import {signIn} from "~/lib/auth/auth-api";
 import InputGroup from "~/components/forms/InputGroup.vue";
 import FormErrors from "~/components/forms/FormErrors.vue";
+import SubmitButton from "~/components/forms/SubmitButton.vue";
 
 @Component({
 	components: {
 		InputGroup: InputGroup,
-		FormErrors: FormErrors
+		FormErrors: FormErrors,
+		SubmitButton: SubmitButton
 	}
 })
 export default class LoginForm extends mixins(FormMixin) {

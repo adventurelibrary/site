@@ -1,5 +1,5 @@
 <template>
-	<div class="asset-download">
+	<div class="asset-action asset-download">
 		<template v-if="canDownload">
 			<select v-model="fileType" class="download-format">
 				<option v-for="option in fileOptions" :key="option.value" :value="option.value">{{option.label}}</option>

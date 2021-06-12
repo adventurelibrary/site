@@ -12,7 +12,10 @@ api.interceptors.response.use((response) => {
 	return response
 }, (err) => {
 	if (err.response && err.response.data && err.response.data.error) {
-		return Promise.reject(err.response.data.error)
+		if (err.response.data.error.message) {
+			return Promise.reject(err.response.data.error.message)
+		}
+		return Promise.reject(JSON.stringify(err.response.data.error))
 	}
 	return Promise.reject(err.toString())
 })

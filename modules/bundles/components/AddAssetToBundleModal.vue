@@ -8,8 +8,9 @@
 			<h1>Add to Bundle</h1>
 			<button @click="createNewBundle" type="button" class="create">Create New Bundle</button>
 			<MyBundleSelector v-model="bundleIds" />
-			<button @click="addToBundles" :disable="bundleIds.length == 0" class="add">
-				<span>Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
+			<button @click="addToBundles" :disabled="bundleIds.length == 0" class="add">
+				<span v-show="bundleIds.length">Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
+				<span v-show="!bundleIds.length">Select Bundle(s)</span>
 			</button>
 		</slot>
 	</Modal>
