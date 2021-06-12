@@ -25,7 +25,12 @@ export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
 	const limit = 20
 	const skip = (page - 1) * limit
 
-	const res = await api.get<Promise<BundlesResponse>>(`/bundles/mine?limit=${limit}&skip=${skip}`)
+	const res = await api.get<Promise<BundlesResponse>>(`/bundles/mine`, {
+		params: {
+			limit: limit,
+			skip: skip
+		}
+	})
 	return res.data
 }
 
