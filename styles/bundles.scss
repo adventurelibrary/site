@@ -131,6 +131,17 @@
 	}
 }
 
+.create-bundle-asset-item {
+	display: flex;
+	align-items: center;
+
+	.thumbnail {
+		flex: 40px 0 0;
+		height: 40px;
+		margin-right: 0.5em;
+	}
+}
+
 .bundle-selector {
 	display: grid;
 	grid-auto-rows: 5.5em;

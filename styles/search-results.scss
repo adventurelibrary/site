@@ -51,7 +51,7 @@
 		row-gap: .5em;
 		grid-template-rows: auto auto 1fr;
 		grid-template-columns: auto auto;
-		grid-template-areas: 
+		grid-template-areas:
 			"title title"
 			"author price"
 			"description description";
@@ -87,7 +87,7 @@
 			grid-area: price;
 			justify-self: end;
 			white-space: nowrap;
-			
+
 			h4 { margin: 0 }
 			.coin-price {
 				//.amount { }
@@ -105,11 +105,20 @@
 			display: none;
 		}
 	}
-	.asset-action {
+	.asset-actions {
 		position: absolute;
 		top: .3em;
 		right: .3em;
 		margin: 0;
+		display: flex;
+	}
+
+	.asset-action.action-add-asset-to-bundle {
+		margin-right: 3px;
+		padding: 0.3em 0.5em;
+	}
+
+	.asset-action {
 		background-color: rgba(0, 0, 0, 0.4);
 		border-radius: .3em;
 		padding: .3em;
@@ -120,12 +129,13 @@
 			background: none;
 			border: none;
 			color: currentColor;
+			padding: 0px;
 
 			option {
 				background: rgba(0, 0, 0, 0.4);
 			}
 		}
-		:hover .download-format {
+		&:hover .download-format {
 			display: inline-block;
 		}
 		.button {

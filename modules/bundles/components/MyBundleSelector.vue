@@ -6,7 +6,7 @@
 				<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
 					<div class="circle"></div>
 					<h4 class="title">{{bundle.name}}</h4>
-					<a class="link" href="#bundle-page">{{bundle.numAssets}} Asset<S :num="bundle.numAssets" /></a>
+					<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
 					<p class="description">{{bundle.description || "Filler text"}}</p>
 					<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
 				</li>

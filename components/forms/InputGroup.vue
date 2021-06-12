@@ -4,6 +4,7 @@
 			v-bind:value="value"
 			v-on:input="input"
 			:type="inputType"
+			:placeholder="placeholder"
 			/>
 	</FormGroup>
 </template>
@@ -16,7 +17,7 @@ export default Vue.extend({
 	components: {
 		FormGroup: FormGroup
 	},
-	props: ['value', 'label', 'type'],
+	props: ['value', 'label', 'type', 'placeholder'],
 	methods: {
 		input ($event: any) {
 			const val = $event.target.value

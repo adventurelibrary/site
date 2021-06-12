@@ -3,9 +3,7 @@
 		<AssetLink :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
-		<div class="thumbnail" :style="`background-image: url(${asset.thumbnail});`">
-			<!-- This Element Intentionally Left Empty -->
-		</div>
+		<AssetThumbnail :asset="asset" />
 		<div class="meta">
 			<h3 class="title">
 				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
@@ -31,7 +29,7 @@
 				<TagList :tags="asset.tags" />
 			</div>
 		</div>
-		<figure class="asset-action">
+		<figure class="asset-actions">
 			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<AssetDownload :asset="asset" />
 			<slot name="extra-actions"></slot>
@@ -49,6 +47,7 @@ import TagList from "~/modules/tags/TagList.vue";
 import {Category as CategoryType} from "~/modules/categories/categories-types"
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundleButton.vue";
+import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 
 @Component({
 	components: {
@@ -56,7 +55,8 @@ import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundle
 		Category: Category,
 		TagList: TagList,
 		AssetDownload: AssetDownload,
-		AssetAddToBundle: AssetAddToBundleButton
+		AssetAddToBundle: AssetAddToBundleButton,
+		AssetThumbnail: AssetThumbnail
 	}
 })
 class AssetCard extends Vue {

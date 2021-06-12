@@ -13,7 +13,7 @@ export const newForm = (data = {}) : Form => {
 	return {
 		data: data,
 		error: '',
-		submitting: true
+		submitting: false
 	}
 }
 
