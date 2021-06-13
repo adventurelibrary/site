@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs');
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 
@@ -86,4 +87,11 @@ export default {
   css: css,
   plugins: plugins,
   ignore: ignore,
+  server: {
+    host: '0.0.0.0',
+    https: {
+      key: fs.readFileSync('privkey.pem'),
+      cert: fs.readFileSync('cert.pem')
+    }
+  }
 }
