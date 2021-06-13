@@ -1,7 +1,7 @@
-import {AssetSearchOptions, AssetTag} from "~/lib/assets/asset-types";
-import {newSearchOptions, SORT_DEFAULT_SIZE, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
-import {AssetSearchFilter, stringToFilterType} from "~/lib/assets/search-filters";
-import {ASSET_TAGS} from "~/lib/tags/tags-consts";
+import {AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
+import {newSearchOptions, SORT_DEFAULT_SIZE, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/modules/assets/asset-helpers";
+import {AssetSearchFilter, stringToFilterType} from "~/modules/assets/search-filters";
+import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 
 export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	if (!$route) {

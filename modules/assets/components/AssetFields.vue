@@ -31,14 +31,14 @@
 
 <script lang="ts">
 import Vue, {PropType} from "vue"
-import {AssetFormData} from "~/lib/assets/asset-types";
+import {AssetFormData} from "~/modules/assets/asset-types";
 import Input from "~/components/forms/InputGroup.vue";
 import Textarea from "~/components/forms/Textarea.vue";
 import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
 import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
 import Select from "~/components/forms/SelectGroup.vue";
-import {VisibilityOptions} from "~/lib/assets/asset-consts";
+import {VisibilityOptions} from "~/modules/assets/asset-consts";
 import {SelectOption} from "~/lib/helpers";
 
 export const fieldNames = ['name', 'description', 'type']

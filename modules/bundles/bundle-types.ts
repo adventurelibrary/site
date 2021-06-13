@@ -1,4 +1,4 @@
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 
 export type BundleFields = {
 	name: string

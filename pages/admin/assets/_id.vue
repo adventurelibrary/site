@@ -21,14 +21,14 @@
 import {Component, mixins} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
 import AdminPage from "~/admin/admin-page";
-import {Asset, AssetFormData} from "~/lib/assets/asset-types";
+import {Asset, AssetFormData} from "~/modules/assets/asset-types";
 import {
 	assetFormDataToPayload,
 	assetToFormData,
 	getAssetAjaxById,
 	newAssetAjax,
 	saveAsset
-} from "~/lib/assets/asset-api";
+} from "~/modules/assets/asset-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import AssetFields from "~/modules/assets/components/AssetFields.vue";
 import FormMixin from "~/mixins/Forms.vue";

@@ -19,10 +19,10 @@
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {stopEvents} from "~/lib/file-helpers";
-import {NewAsset} from "~/lib/assets/asset-types";
+import {NewAsset} from "~/modules/assets/asset-types";
 import AssetFields from "./AssetFields.vue";
 import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
-import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
+import {ACCEPTED_IMAGE_TYPES} from "~/modules/assets/asset-consts";
 
 export default Vue.extend({
 	name: 'NewAsset',

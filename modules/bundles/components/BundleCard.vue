@@ -9,7 +9,7 @@
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Bundle} from "~/lib/bundles/bundle-types";
+import {Bundle} from "~/modules/bundles/bundle-types";
 import BundleLink from "~/modules/assets/components/BundleLink.vue";
 
 @Component({

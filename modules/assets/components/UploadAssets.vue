@@ -49,13 +49,13 @@
 import Vue from "vue"
 import {stopEvents} from "~/lib/file-helpers";
 import NewAssetComponent from "./NewAsset.vue";
-import {NewAsset} from "~/lib/assets/asset-types";
+import {NewAsset} from "~/modules/assets/asset-types";
 import {fieldNames} from "./AssetFields.vue";
 import ActiveUploadComponent from "./ActiveUpload.vue";
-import {ActiveUpload, convertNewAssetToActiveUploads} from "~/lib/assets/asset-uploads";
+import {ActiveUpload, convertNewAssetToActiveUploads} from "~/modules/assets/asset-uploads";
 import {filenameGuessCategory, filenameToTitle, sleep} from "~/lib/helpers";
-import {signActiveUpload, uploadAsset} from "~/lib/assets/asset-api";
-import {ACCEPTED_IMAGE_TYPES} from "~/lib/assets/asset-consts";
+import {signActiveUpload, uploadAsset} from "~/modules/assets/asset-api";
+import {ACCEPTED_IMAGE_TYPES} from "~/modules/assets/asset-consts";
 import CreatorSelector from "~/modules/creators/components/CreatorSelector.vue";
 import FormErrors from "~/components/forms/FormErrors.vue";
 import {convertAPIException} from "~/lib/errors/errors";

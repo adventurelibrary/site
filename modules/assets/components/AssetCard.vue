@@ -41,12 +41,12 @@
 <script lang="ts">
 import {Component, Prop, Getter, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getCategory} from "~/lib/categories/categories-api";
+import {getCategory} from "~/modules/categories/categories-api";
 import Category from "~/modules/categories/components/Category.vue";
 import TagList from "~/modules/tags/TagList.vue";
-import {Category as CategoryType} from "~/lib/categories/categories-types"
+import {Category as CategoryType} from "~/modules/categories/categories-types"
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundleButton.vue";
 

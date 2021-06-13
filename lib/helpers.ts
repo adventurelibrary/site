@@ -1,4 +1,4 @@
-import {CATEGORIES} from "~/lib/categories/categories-consts";
+import {CATEGORIES} from "~/modules/categories/categories-consts";
 import Cookies from 'js-cookie'
 
 export interface SelectOption {

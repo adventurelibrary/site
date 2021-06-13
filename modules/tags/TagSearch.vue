@@ -17,9 +17,9 @@
 </template>
 <script lang="ts">
 import {Component, Watch, Prop} from "nuxt-property-decorator";
-import {AssetTag} from "~/lib/assets/asset-types";
+import {AssetTag} from "~/modules/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
-import {ASSET_TAGS} from "~/lib/tags/tags-consts";
+import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]

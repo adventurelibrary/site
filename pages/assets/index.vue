@@ -33,14 +33,14 @@ import {Component, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
-import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
-import {assetSearchOptionsToQuery} from "~/lib/assets/asset-helpers";
-import {newAssetsAjax, searchAssets} from "~/lib/assets/asset-api";
+import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
+import {newAssetsAjax, searchAssets} from "~/modules/assets/asset-api";
 import {Ajax, computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
-import {AssetSearchFilter} from "~/lib/assets/search-filters";
+import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
 
 @Component({

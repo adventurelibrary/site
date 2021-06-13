@@ -27,7 +27,7 @@
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetTag} from "~/lib/assets/asset-types";
+import {AssetTag} from "~/modules/assets/asset-types";
 
 @Component({
 	components: {

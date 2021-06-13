@@ -9,8 +9,8 @@
 import {Component, mixins, Prop} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
 import BundleFields from "~/modules/bundles/components/BundleFields.vue";
-import {updateBundle} from "~/lib/bundles/bundles-api";
-import {Bundle} from "~/lib/bundles/bundle-types";
+import {updateBundle} from "~/modules/bundles/bundles-api";
+import {Bundle} from "~/modules/bundles/bundle-types";
 
 @Component({
 	components: {

@@ -1,5 +1,5 @@
 import {AssetTag} from "./asset-types";
-import {Category} from "~/lib/categories/categories-types";
+import {Category} from "~/modules/categories/categories-types";
 
 export type FilterType = 'tag' | 'creator' | 'price' | 'category'
 

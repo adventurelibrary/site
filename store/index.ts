@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {User} from "~/lib/users/user-types";
-import {UserTracking} from "~/lib/users/user-tracking";
+import {User} from "~/modules/users/user-types";
+import {UserTracking} from "~/modules/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
-import {Asset} from "~/lib/assets/asset-types";
-import {Bundle} from "~/lib/bundles/bundle-types";
+import {Asset} from "~/modules/assets/asset-types";
+import {Bundle} from "~/modules/bundles/bundle-types";
 Vue.use(Vuex)
 
 type State = {

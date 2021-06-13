@@ -49,9 +49,9 @@
 import Vue from "vue";
 import {Component, Watch} from "nuxt-property-decorator";
 import {Context} from "@nuxt/types";
-import {newAssetsAjax, searchAdminAssets, syncAssets, updateAssetsVisibilities} from "~/lib/assets/asset-api";
+import {newAssetsAjax, searchAdminAssets, syncAssets, updateAssetsVisibilities} from "~/modules/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
-import {Asset, AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
+import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import AdminPage from "~/admin/admin-page";
 import TagList from "~/modules/tags/TagList.vue";

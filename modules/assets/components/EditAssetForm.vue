@@ -9,8 +9,8 @@
 import {Component, mixins, Prop} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
 import AssetFields from "~/modules/assets/components/AssetFields.vue";
-import {saveAsset} from "~/lib/assets/asset-api";
-import {Asset} from "~/lib/assets/asset-types";
+import {saveAsset} from "~/modules/assets/asset-api";
+import {Asset} from "~/modules/assets/asset-types";
 
 @Component({
 	components: {

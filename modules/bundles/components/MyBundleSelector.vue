@@ -18,8 +18,8 @@
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
 import {computeAjaxList, doAjax} from "~/lib/ajax";
-import {Bundle, BundlesResponse} from "~/lib/bundles/bundle-types";
-import {getMyBundles, newBundlesAjax} from "~/lib/bundles/bundles-api";
+import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
+import {getMyBundles, newBundlesAjax} from "~/modules/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
 

@@ -5,8 +5,8 @@
 import Vue from "vue"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue"
 import {Component} from "nuxt-property-decorator";
-import {AssetSearchOptions} from "~/lib/assets/asset-types";
-import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
+import {AssetSearchOptions} from "~/modules/assets/asset-types";
+import {assetSearchOptionsToQuery, newSearchOptions} from "~/modules/assets/asset-helpers";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 
 @Component({

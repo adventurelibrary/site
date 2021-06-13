@@ -18,9 +18,9 @@
 import {Component, State} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import MyBundleSelector from "~/modules/bundles/components/MyBundleSelector.vue";
-import {addAssetToBundles} from "~/lib/bundles/bundles-api";
+import {addAssetToBundles} from "~/modules/bundles/bundles-api";
 
 @Component({
 	components: {

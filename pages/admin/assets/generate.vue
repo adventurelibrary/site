@@ -4,10 +4,10 @@
 	</div>
 </template>
 <script lang="ts">
-import {ASSET_TAGS} from "~/lib/tags/tags-consts";
+import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 import AdminPage from "~/admin/admin-page";
 import {Component} from "nuxt-property-decorator";
-import {CATEGORIES} from "~/lib/categories/categories-consts";
+import {CATEGORIES} from "~/modules/categories/categories-consts";
 
 const prefixes = ['Sunny', 'Wartorn', 'Frozen', 'Ashen', 'Windy', 'Holy', 'Knightly']
 const nouns = ['Town', 'Castle', 'Fort', 'Forest', 'Camp', 'Glade', 'Oasis', 'Fortress', 'Temple', 'Cathedral']

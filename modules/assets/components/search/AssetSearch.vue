@@ -85,14 +85,14 @@ Show Actions: {{showActionSuggestions}}
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/lib/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/lib/assets/search-filters";
+import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/modules/assets/search-filters";
 import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
-import {newSearchOptions, stringToSortDirection} from "~/lib/assets/asset-helpers";
-import {Category} from "~/lib/categories/categories-types";
+import {newSearchOptions, stringToSortDirection} from "~/modules/assets/asset-helpers";
+import {Category} from "~/modules/categories/categories-types";
 
 const actions = ['category', 'creator', 'tag']
 

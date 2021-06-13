@@ -1,5 +1,5 @@
-import {CATEGORIES} from "~/lib/categories/categories-consts";
-import {Category} from "~/lib/categories/categories-types";
+import {CATEGORIES} from "~/modules/categories/categories-consts";
+import {Category} from "~/modules/categories/categories-types";
 
 export function getCategory(id: string) : (Category | null) {
 	for (let i = 0; i < CATEGORIES.length; i++) {

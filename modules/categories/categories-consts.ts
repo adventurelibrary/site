@@ -1,4 +1,4 @@
-import {Category} from "~/lib/categories/categories-types";
+import {Category} from "~/modules/categories/categories-types";
 import {SelectOption} from "~/lib/helpers";
 
 export const CATEGORIES : Category[] = [{

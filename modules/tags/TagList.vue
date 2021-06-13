@@ -5,8 +5,8 @@
 </template>
 <script lang="ts">
 import {Component, Vue, Prop} from "nuxt-property-decorator";
-import {AssetTag} from "~/lib/assets/asset-types";
-import {getTagById} from "~/lib/tags/tags-api";
+import {AssetTag} from "~/modules/assets/asset-types";
+import {getTagById} from "~/modules/tags/tags-api";
 
 @Component
 export default class TagList extends Vue {

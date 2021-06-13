@@ -8,7 +8,7 @@
 			<AssetSearch @submit="searchAssets" />
 			<LoadingContainer :loading="assetsAjax.loading" :error="assetsAjax.error">
 				<h4 v-if="!assets.length">Not showing any assets.</h4>
-				<ul class="results">	
+				<ul class="results">
 					<li v-for="asset in assets" :key="asset.id" class="result">
 						<div class="thumbnail" :style="`background-image: url(${asset.thumbnail});`">
 							<!-- This Element Intentionally Left Empty -->
@@ -31,10 +31,10 @@ import {Component, State} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
 import MyBundleSelector from "~/modules/bundles/components/MyBundleSelector.vue";
-import {Bundle} from "~/lib/bundles/bundle-types";
-import {Asset, AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
+import {Bundle} from "~/modules/bundles/bundle-types";
+import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
-import {newAssetsAjax, searchAssets} from "~/lib/assets/asset-api";
+import {newAssetsAjax, searchAssets} from "~/modules/assets/asset-api";
 import {computeAjaxList, doAjax} from "~/lib/ajax";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 
