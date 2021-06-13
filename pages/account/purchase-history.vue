@@ -1,9 +1,9 @@
 <template>
-	<div>
+	<article>
 		<div v-if="user">
 			Purchase history.
 		</div>
-	</div>
+	</article>
 </template>
 
 

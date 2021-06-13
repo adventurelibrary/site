@@ -1,10 +1,10 @@
 <template>
-	<div>
+	<article>
 		<h1>Register</h1>
 		<RegisterForm
 			@login="login"
 		/>
-	</div>
+	</article>
 </template>
 <script lang="ts">
 import Vue from "vue"

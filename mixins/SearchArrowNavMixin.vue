@@ -1,8 +1,10 @@
 <script lang="ts">
-import {Component, Prop, Watch} from "nuxt-property-decorator";
+import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue"
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
 
+// This mixin is for components that are meant to allow users highlight
+// certain items in a list using their arrow keys
 @Component
 export default class SearchArrowNavMixin extends Vue{
 	activeItem : number = -1
