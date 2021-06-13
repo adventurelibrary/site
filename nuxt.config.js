@@ -6,6 +6,17 @@ const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
 console.log('API', process.env.ADVL_BASE_URL)
 console.log('PORT', process.env.PORT)
 
+let server
+if (process.env.NODE_ENV === 'production') {
+	server ={
+		host: '0.0.0.0',
+		https: {
+			key: fs.readFileSync('privkey.pem'),
+			cert: fs.readFileSync('cert.pem')
+		}
+	}
+}
+
 const css = [
   'assets/coolicons/coolicons.css',
    // @import and additional .scss files in styles.scss
@@ -87,11 +98,5 @@ export default {
   css: css,
   plugins: plugins,
   ignore: ignore,
-  server: {
-    host: '0.0.0.0',
-    https: {
-      key: fs.readFileSync('privkey.pem'),
-      cert: fs.readFileSync('cert.pem')
-    }
-  }
+  server: server
 }
