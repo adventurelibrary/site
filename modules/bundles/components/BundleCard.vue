@@ -1,9 +1,8 @@
 <template>
 	<div class="bundle-card">
-		<div>
-			<BundleLink :bundle="bundle">{{bundle.name}}</BundleLink>
-			<p>{{bundle.description}}</p>
-		</div>
+    <BundleLink :bundle="bundle" :style="{backgroundImage: `url(${bundle.cover_thumbnail})`}">
+      <span>{{bundle.name}}</span>
+    </BundleLink>
 	</div>
 </template>
 <script lang="ts">
