@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
-import {ActiveUpload} from "~/lib/assets/asset-uploads";
+import {ActiveUpload} from "~/modules/assets/asset-uploads";
 import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
 
 export default Vue.extend({

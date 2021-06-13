@@ -1,4 +1,4 @@
-import {AssetTag} from "~/lib/assets/asset-types";
+import {AssetTag} from "~/modules/assets/asset-types";
 import {SelectOption} from "~/lib/helpers";
 
 export const ASSET_TAGS : AssetTag[] = `Winter,Summer,Fall,Spring,Fantasy,Orc,House,Archer,Priest,Barbarian,Town,Village,Castle`

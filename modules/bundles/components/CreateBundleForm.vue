@@ -11,8 +11,8 @@
 import {Component, mixins, Prop} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
 import BundleFields from "~/modules/bundles/components/BundleFields.vue";
-import {Asset} from "~/lib/assets/asset-types";
-import {createBundle} from "~/lib/bundles/bundles-api";
+import {Asset} from "~/modules/assets/asset-types";
+import {createBundle} from "~/modules/bundles/bundles-api";
 
 @Component({
 	components: {

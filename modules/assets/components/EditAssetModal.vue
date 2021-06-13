@@ -14,7 +14,7 @@ import {Component, State} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
 import EditAssetForm from "~/modules/assets/components/EditAssetForm.vue";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 
 @Component({
 	components: {

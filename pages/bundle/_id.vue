@@ -34,7 +34,7 @@
 import { Context } from '@nuxt/types'
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import {doAjax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
@@ -45,8 +45,8 @@ import {
 	getBundle,
 	newBundleAjax,
 	removeAssetFromBundle,
-} from "~/lib/bundles/bundles-api";
-import {Bundle, BundleResponse} from "~/lib/bundles/bundle-types";
+} from "~/modules/bundles/bundles-api";
+import {Bundle, BundleResponse} from "~/modules/bundles/bundle-types";
 
 @Component({
 	components: {

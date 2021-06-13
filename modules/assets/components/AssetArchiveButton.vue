@@ -6,7 +6,7 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Getter, State} from "nuxt-property-decorator";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import { state } from "~/store";
 
 @Component

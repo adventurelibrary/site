@@ -11,10 +11,10 @@
 import Vue from "vue";
 import {Component} from "nuxt-property-decorator";
 import ProfilePage from "@/pages/user/components/ProfilePage.vue";
-import {newAssetsAjax, searchAssets} from "@/lib/assets/asset-api";
+import {newAssetsAjax, searchAssets} from "~/modules/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "@/lib/ajax";
-import {newSearchOptions} from "@/lib/assets/asset-helpers";
-import {Asset} from "@/lib/assets/asset-types";
+import {newSearchOptions} from "~/modules/assets/asset-helpers";
+import {Asset} from "~/modules/assets/asset-types";
 import AssetManageItem from "~/modules/assets/components/AssetManageItem.vue";
 
 @Component({

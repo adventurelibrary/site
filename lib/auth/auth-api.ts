@@ -1,4 +1,4 @@
-import {User} from "~/lib/users/user-types";
+import {User} from "~/modules/users/user-types";
 import {getCookie, setCookie} from "~/lib/helpers";
 import {Auth} from 'aws-amplify'
 import {CognitoUser} from "amazon-cognito-identity-js";

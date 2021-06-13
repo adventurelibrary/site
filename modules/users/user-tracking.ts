@@ -2,6 +2,6 @@
 
 export type UserTracking = {
 	id: string
-    sessionId: string
+	sessionId: string
 	activePath: string
 }

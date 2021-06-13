@@ -16,9 +16,9 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {Asset, AssetDownloadOptions} from "~/lib/assets/asset-types";
+import {Asset, AssetDownloadOptions} from "~/modules/assets/asset-types";
 import {SelectOption} from "~/lib/helpers";
-import {getAssetDownloadLink} from "~/lib/assets/asset-api";
+import {getAssetDownloadLink} from "~/modules/assets/asset-api";
 
 @Component
 export default class AssetDownload extends Vue {

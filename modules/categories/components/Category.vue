@@ -4,8 +4,8 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {getCategory} from "~/lib/categories/categories-api";
-import {Category as CategoryType} from "~/lib/categories/categories-types";
+import {getCategory} from "~/modules/categories/categories-api";
+import {Category as CategoryType} from "~/modules/categories/categories-types";
 
 @Component
 export default class Category extends Vue {

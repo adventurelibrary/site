@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import {Component, State, Vue} from "nuxt-property-decorator";
-import {User} from "~/lib/users/user-types"
+import {User} from "~/modules/users/user-types"
 
 @Component({
 	middleware: ['require_auth']

@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from "vue"
 import Select from "~/components/forms/SelectGroup.vue";
-import {CategoryOptionsSingular} from "~/lib/categories/categories-consts";
+import {CategoryOptionsSingular} from "~/modules/categories/categories-consts";
 export default Vue.extend({
 	name: 'CategorySelect',
 	components: {

@@ -108,8 +108,8 @@ import AssetSearchRouter from "~/modules/assets/components/search/AssetSearchRou
 import {Component, Getter, State, Watch} from "nuxt-property-decorator";
 import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
-import {User} from "~/lib/users/user-types"
-import {UserTracking} from "~/lib/users/user-tracking"
+import {User} from "~/modules/users/user-types"
+import {UserTracking} from "~/modules/users/user-tracking"
 
 @Component({
 	components: {

@@ -8,8 +8,8 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component} from "nuxt-property-decorator";
-import {Bundle} from "~/lib/bundles/bundle-types";
-import {deleteBundle} from "~/lib/bundles/bundles-api";
+import {Bundle} from "~/modules/bundles/bundle-types";
+import {deleteBundle} from "~/modules/bundles/bundles-api";
 
 @Component
 export default class FakeBundle extends Vue {

@@ -37,12 +37,12 @@
 
 <script lang="ts">
 import {Component, Getter, State} from "nuxt-property-decorator";
-import {User} from "~/lib/users/user-types"
-import {Asset} from "~/lib/assets/asset-types";
+import {User} from "~/modules/users/user-types"
+import {Asset} from "~/modules/assets/asset-types";
 import Vue from "vue";
 import Modal from "~/modules/modals/Modal.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
-import {reportAsset} from "~/lib/assets/asset-api";
+import {reportAsset} from "~/modules/assets/asset-api";
 
 @Component({
 	components: {

@@ -14,7 +14,7 @@ import {Component, State} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
 import EditBundleForm from "~/modules/bundles/components/EditBundleForm.vue";
-import {Bundle} from "~/lib/bundles/bundle-types";
+import {Bundle} from "~/modules/bundles/bundle-types";
 
 @Component({
 	components: {

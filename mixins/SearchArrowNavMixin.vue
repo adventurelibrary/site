@@ -1,7 +1,7 @@
 <script lang="ts">
 import {Component, Prop, Watch} from "nuxt-property-decorator";
 import Vue from "vue"
-import {AssetSearchFilter} from "~/lib/assets/search-filters";
+import {AssetSearchFilter} from "~/modules/assets/search-filters";
 
 @Component
 export default class SearchArrowNavMixin extends Vue{

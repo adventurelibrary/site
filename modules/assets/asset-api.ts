@@ -5,12 +5,12 @@ import {
 	AssetSignatureResponse,
 	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
 } from "./asset-types";
-import {Ajax, newAjax} from "../ajax";
-import {ActiveUpload} from "~/lib/assets/asset-uploads";
+import {Ajax, newAjax} from "../../lib/ajax";
+import {ActiveUpload} from "~/modules/assets/asset-uploads";
 import api from "~/lib/api"
-import {getTagById} from "~/lib/tags/tags-api";
-import {AssetSearchFilter} from "~/lib/assets/search-filters";
-import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
+import {getTagById} from "~/modules/tags/tags-api";
+import {AssetSearchFilter} from "~/modules/assets/search-filters";
+import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/modules/assets/asset-helpers";
 import {objectToQueryString} from "~/lib/helpers";
 
 export function getSearchOptionsSortField (opts: AssetSearchOptions) : string {

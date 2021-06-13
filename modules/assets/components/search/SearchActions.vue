@@ -15,8 +15,8 @@
 </template>
 <script lang="ts">
 import {Component} from "nuxt-property-decorator";
-import {AssetSearchAction} from "~/lib/assets/asset-types";
-import {AssetSearchActions} from "~/lib/assets/asset-consts";
+import {AssetSearchAction} from "~/modules/assets/asset-types";
+import {AssetSearchActions} from "~/modules/assets/asset-consts";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 
 @Component({

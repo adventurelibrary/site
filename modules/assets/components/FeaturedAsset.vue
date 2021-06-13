@@ -11,7 +11,7 @@
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
 
 @Component({

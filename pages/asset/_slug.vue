@@ -6,7 +6,7 @@
 		</section>
 
 		<section class="asset-info">
-			<h1 class="asset-title">{{asset.name}}</h1> 
+			<h1 class="asset-title">{{asset.name}}</h1>
 			<!-- <nuxt-link :to="{name: 'contact-reportAsset', params: {assetId: asset.id}}">Report</nuxt-link> -->
 
 			<h3 class="asset-author">
@@ -31,7 +31,7 @@
 				<span class="count">{{asset.downloads || 0}}</span>
 				<span class="label">downloads</span>
 			</span>
-			
+
 		</section>
 
 		<section class="similar-assets">
@@ -48,8 +48,8 @@ import { Context } from '@nuxt/types'
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
-import {Asset} from "~/lib/assets/asset-types";
-import {getAssetAjax} from "~/lib/assets/asset-api";
+import {Asset} from "~/modules/assets/asset-types";
+import {getAssetAjax} from "~/modules/assets/asset-api";
 import {Ajax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
@@ -57,8 +57,8 @@ import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue
 import TagList from "~/modules/tags/TagList.vue";
 
 // related assets and search modules
-import {AssetSearchOptions, AssetsResponse} from "~/lib/assets/asset-types";
-import {newAssetsAjax, getRelatedAssetsByTags} from "~/lib/assets/asset-api";
+import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {newAssetsAjax, getRelatedAssetsByTags} from "~/modules/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
 import Modals from "~/modules/modals/Modals.vue";

@@ -1,4 +1,4 @@
-import {BundleResponse, BundlesResponse} from "~/lib/bundles/bundle-types";
+import {BundleResponse, BundlesResponse} from "~/modules/bundles/bundle-types";
 import api from "~/lib/api";
 import {Ajax, newAjax} from "~/lib/ajax";
 

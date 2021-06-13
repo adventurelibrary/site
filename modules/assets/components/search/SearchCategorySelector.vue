@@ -13,8 +13,8 @@
 import {Component, Watch} from "nuxt-property-decorator";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
 import {SelectOption} from "~/lib/helpers";
-import {CATEGORIES, CategoryOptionsPlural} from "~/lib/categories/categories-consts";
-import {Category} from "~/lib/categories/categories-types";
+import {CATEGORIES, CategoryOptionsPlural} from "~/modules/categories/categories-consts";
+import {Category} from "~/modules/categories/categories-types";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
