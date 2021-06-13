@@ -41,6 +41,8 @@
 import {Component, State, Vue, Prop, Getter} from "nuxt-property-decorator";
 import {User} from "~/modules/users/user-types"
 
+// This component is like a mini-layout for the routes at `/user/XXX`
+// It accepts a slot for the specific page's content
 @Component({
 	middleware: ['require_auth']
 })

@@ -1,7 +1,7 @@
 <template>
-	<div>
-        CONTACT
-	</div>
+	<article>
+        CONTACT US
+	</article>
 </template>
 
 
@@ -9,9 +9,8 @@
 import {Component, State, Vue} from "nuxt-property-decorator";
 import {User} from "~/modules/users/user-types"
 
+@Component
 export default class Contact extends Vue {
 	@State('user') user : User
-
-
 }
 </script>

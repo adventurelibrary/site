@@ -5,7 +5,6 @@
 			<ul>
 				<li v-for="bundle in bundles" :key="bundle.id">
 					<div>
-						<!--<BundleLink :asset="asset" class="link"></BundleLink>-->
 						<BundleCard :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)">{{bundle.name}}</BundleCard>
 					</div>
 				</li>

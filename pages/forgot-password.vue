@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<article>
 		Forgot Password
 		<div v-if="done">
 			Success! Check your email for a code and a link.
@@ -7,7 +7,7 @@
 		<div v-else>
 			<ForgotPasswordForm @success="onSuccess" />
 		</div>
-	</div>
+	</article>
 </template>
 <script>
 import Vue from 'vue'

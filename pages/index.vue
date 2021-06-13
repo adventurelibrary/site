@@ -41,13 +41,6 @@ class HomePage extends Vue {
 			featured: assetsRes.assets
 		}
 	}
-
-	submitSearch (options: AssetSearchOptions) {
-		this.$router.push({
-			name: 'assets',
-			query: assetSearchOptionsToQuery(options)
-		})
-	}
 }
 
 export default HomePage

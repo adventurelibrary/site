@@ -57,7 +57,7 @@ import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue
 import TagList from "~/modules/tags/TagList.vue";
 
 // related assets and search modules
-import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {AssetsResponse} from "~/modules/assets/asset-types";
 import {newAssetsAjax, getRelatedAssetsByTags} from "~/modules/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
@@ -76,10 +76,6 @@ import Modals from "~/modules/modals/Modals.vue";
 class AssetPage extends Vue {
 	public assetAjax : Ajax<Asset>
 	public relatedAssets : AssetsResponse
-
-	// search setup
-	public search : AssetSearchOptions
-	// search.filters
 
 	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
 	skip = 0
@@ -141,7 +137,7 @@ class AssetPage extends Vue {
 	async asyncData (ctx: Context) {
 		const assetRes = await getAssetAjax(ctx.params.slug)
 		let relatedAssets
-		if (assetRes.data != undefined) {
+		if (assetRes.data) {
 			relatedAssets = await getRelatedAssetsByTags(assetRes.data)
 		}
 		return {
