@@ -2,18 +2,14 @@
 	<ProfilePage active-tab="bundles">
 		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
 			<div>Showing {{bundles.length}}. Total: {{totalBundles}}</div>
-			<ul>
-				<li v-for="bundle in bundles" :key="bundle.id">
-					<div>
-						<BundleCard :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)">{{bundle.name}}</BundleCard>
-					</div>
-				</li>
-			</ul>
+      <ol class="bundles-list">
+        <BundleCard v-for="bundle in bundles" :key="bundle.id" :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)" />
+      </ol>
 			<Pagination
-					:items-per-page="20"
-					:total-items="totalBundles"
-					:active-page="activePage"
-					:to="{name: 'bundles'}"
+        :items-per-page="20"
+        :total-items="totalBundles"
+        :active-page="activePage"
+        :to="{name: 'bundles'}"
 			/>
 		</LoadingContainer>
 	</ProfilePage>
@@ -84,3 +80,4 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	}
 }
 </script>
+</style>
