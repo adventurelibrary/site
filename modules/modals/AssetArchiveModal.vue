@@ -31,7 +31,7 @@ import {archiveAsset} from "~/lib/assets/asset-api";
 		Modal: Modal,
 	}
 })
-export default class ArchiveAssetModal extends Vue {
+export default class AssetArchiveModal extends Vue {
 
 	@State('archiveAsset') asset : Asset
 

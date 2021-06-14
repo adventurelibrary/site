@@ -283,7 +283,7 @@ export const actions = {
 			value: false
 		})
 	},
-	openArchiveAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
+	openAssetArchiveModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
 		commit('modal', {
 			key: 'archiveAsset',
 			value: true
@@ -302,7 +302,7 @@ export const actions = {
 			value: false
 		})
 	},
-	openReportAssetModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
+	openAssetReportModal ({commit} : ActionParams, {asset} : {asset: Asset}) {
 		commit('modal', {
 			key: 'reportAsset',
 			value: true

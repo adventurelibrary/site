@@ -13,7 +13,7 @@ export default class AssetReportButton extends Vue {
 	@Prop() asset : Asset
 
 	openModal () {		
-		this.$store.dispatch('openReportAssetModal', {
+		this.$store.dispatch('openAssetReportModal', {
 			asset: this.asset
 		})
 

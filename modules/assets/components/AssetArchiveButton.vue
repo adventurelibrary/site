@@ -38,7 +38,7 @@ export default class AssetArchiveButton extends Vue {
 
 	openModal () {
 		// temp until login works again
-		this.$store.dispatch('openArchiveAssetModal', {
+		this.$store.dispatch('openAssetArchiveModal', {
 			asset: this.asset
 		})
 

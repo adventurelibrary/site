@@ -50,7 +50,7 @@ import {reportAsset} from "~/lib/assets/asset-api";
 		FormGroup: FormGroup
 	}
 })
-export default class ReportAssetModal extends Vue {
+export default class AssetReportModal extends Vue {
 	@State('user') user : User
 	@Getter('isLoggedIn') isLoggedIn : boolean
 	@State('reportAsset') asset : Asset
