@@ -10,8 +10,7 @@
 				<form v-on:submit="sendReport()" class="report-form">
 					<FormGroup label="Report category">
 						<select v-model='reportCategory'>
-							<option v-for="option in options" v-bind:key="option.value">
-								some text
+							<option v-for="option in options" v-bind:key="option.value">								
 								{{ option.text }}
 							</option>
 						</select>
@@ -22,11 +21,11 @@
 						<input v-model="name" placeholder="Your name." />
 					</FormGroup>
 
-					<FormGroup label="Name">
+					<FormGroup label="Email">
 						<input v-model="email" placeholder="Your email address." />
 					</FormGroup>
 
-					<FormGroup label="Name" class="text-area">
+					<FormGroup label="Message" class="text-area">
 						<textarea v-model="message" placeholder="Leave your message here."></textarea>
 					</FormGroup>
 					<button>Send Report</button>
