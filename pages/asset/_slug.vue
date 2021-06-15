@@ -12,7 +12,7 @@
 			<h3 class="asset-author">
 				<!-- Will be a link to the author profile -->
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
-				<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i>
+				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
 				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->				
 			</h3>
 			<div class="asset-description">

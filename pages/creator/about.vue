@@ -27,15 +27,35 @@ import {Component, State, Vue} from "nuxt-property-decorator";
 import {User} from "~/lib/users/user-types"
 import {Creator} from "~/modules/creators/creator-types";
 
+/*  export default {
+    async asyncData({ params }) {
+        console.log("params: ", params)
+      const post = alert(params) //await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
+      return { post }
+    }
+  }
+*/
+
 export default class CreatorAbout extends Vue {
 	@State('user') user : User	
 
-/*
-    async asyncData({ $route.params, $http }) {
+    CreatorAbout() {
+        alert('test')
+    }
+
+    async asyncData() {
+        console.log("params ")
       // v1/creator/{creatorID}
-      const creator = await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
-      return { creator }
-    }*/
+      //
+      const creator = '' // await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
+      const user = ''
+      const creatorAssets = ''
+      return { 
+          creator,
+          user,
+          creatorAssets
+        }
+    }
 }
 
 
