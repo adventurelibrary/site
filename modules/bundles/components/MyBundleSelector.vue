@@ -26,6 +26,11 @@ import {Fragment} from "vue-fragment";
 type BundleItem = Bundle & {
 	active: boolean
 }
+
+// This component creates a searchable list containing the currently logged in user's bundles
+// They can then select one, none, or many of those bundles
+// The parent component can use the v-model directive to get the IDs of the bundles they have selected
+// as an array of strings
 @Component({
 	components: {
 		LoadingContainer,

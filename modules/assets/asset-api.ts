@@ -13,10 +13,12 @@ import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/modules/assets/asset-helpers";
 import {objectToQueryString} from "~/lib/helpers";
 
+
+// These next two functions are called to ensure that our options have a sort direction, and will default to something
+// if none has been set by the user
 export function getSearchOptionsSortField (opts: AssetSearchOptions) : string {
 	return opts.sortField || SORT_FIELD_DEFAULT
 }
-
 export function getSearchOptionsSortDirection (opts: AssetSearchOptions) : SortDirection {
 	return opts.sortDirection || SORT_DIR_DEFAULT
 }
@@ -24,6 +26,7 @@ export function getSearchOptionsSortDirection (opts: AssetSearchOptions) : SortD
 // This function is used to create the object that our API expects to receive to search for assets
 // It takes in the options, which are assembled by the user, and converts them into
 // a format that our API expects
+// The result of this function is converted into GET query params send with an API call
 export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record<string, string> => {
 	const search = (opts.query || '').toLowerCase().trim()
 	const filters = opts.filters
