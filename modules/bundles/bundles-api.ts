@@ -23,10 +23,9 @@ export async function getBundle (id: string)  : Promise<BundleResponse> {
 
 export async function getMyBundles (page = 1) : Promise<BundlesResponse> {
 	const limit = 20
-	const start = (page - 1) * limit
-	console.log('Get the from ' + start + ' to ' + (start+limit) + ', more or less')
+	const skip = (page - 1) * limit
 
-	const res = await api.get<Promise<BundlesResponse>>(`/bundles/mine`)
+	const res = await api.get<Promise<BundlesResponse>>(`/bundles/mine?limit=${limit}&skip=${skip}`)
 	return res.data
 }
 

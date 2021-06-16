@@ -43,6 +43,9 @@ export default class AddAssetToBundleModal extends Vue {
 		})
 	}
 
+	// This happens when the user clicks the "Add To Bundles" button
+	// They do this after they've searched and filtered through their list of bundles
+	// and selected one or more bundles for the chosen asset to be added to
 	async addToBundles () {
 		try {
 			await addAssetToBundles(this.asset.id, this.bundleIds)

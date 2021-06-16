@@ -1,9 +1,9 @@
 <template>
 	<Modal
-			:show="true"
-			title="Edit Bundle"
-			class-name="edit-bundle"
-			@close="closeModal">
+		:show="true"
+		title="Edit Bundle"
+		class-name="edit-bundle"
+		@close="closeModal">
 		<slot>
 			<EditBundleForm :bundle="bundle" @success="onSuccess" />
 		</slot>
