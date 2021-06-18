@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import {Component, State, Vue} from "nuxt-property-decorator";
-import {User} from "~/lib/users/user-types"
+import {User} from "~/modules/users/user-types"
 import {Creator} from "~/modules/creators/creator-types";
 
 /*  export default {
@@ -36,8 +36,9 @@ import {Creator} from "~/modules/creators/creator-types";
   }
 */
 
+@Component
 export default class CreatorAbout extends Vue {
-	@State('user') user : User	
+	@State('user') user : User
 
     CreatorAbout() {
         alert('test')
@@ -50,7 +51,7 @@ export default class CreatorAbout extends Vue {
       const creator = '' // await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
       const user = ''
       const creatorAssets = ''
-      return { 
+      return {
           creator,
           user,
           creatorAssets

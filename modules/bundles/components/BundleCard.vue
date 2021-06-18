@@ -1,9 +1,9 @@
 <template>
-	<div class="bundle-card">
-    <BundleLink :bundle="bundle" :style="{backgroundImage: `url(${bundle.cover_thumbnail})`}">
-      <span>{{bundle.name}}</span>
-    </BundleLink>
-	</div>
+	<li class="bundle-card">
+		<BundleLink :bundle="bundle" :style="{backgroundImage: `url(${bundle.cover_thumbnail})`}">
+			<span>{{bundle.name}}</span>
+		</BundleLink>
+	</li>
 </template>
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
