@@ -5,7 +5,6 @@
 				<h1>{{bundle.name}}</h1>
 				<div class="asset-description">
 					{{bundle.description}}
-					ID: {{bundle.id}}
 				</div>
 				<div>
 					<button type="button" @click="clickDeleteBundle">Delete</button>
@@ -20,7 +19,11 @@
 					<li v-if="!assets.length">No assets.</li>
 					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-						<Fragment slot="extra-actions"><button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">X</button></Fragment>
+						<Fragment slot="extra-actions">
+							<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
+								<img style="object-fit: contain;" src="~/assets/coolicons/svg/edit/off_close.svg">
+							</button>
+						</Fragment>
 					</AssetCard>
 				</ul>
 			</section>

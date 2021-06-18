@@ -6,7 +6,7 @@
 <script lang="ts">
 
 import {Component, Prop, Vue} from "nuxt-property-decorator";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 
 @Component
 export default class AssetThumbnail extends Vue {
