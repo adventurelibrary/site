@@ -109,7 +109,8 @@ export async function forgotPassword (username: string) {
 
 export async function forgotPasswordSubmit (username: string, code: string, newPassword: string) {
 	try {
-		return Auth.forgotPasswordSubmit(username, code, newPassword)
+		const res = await Auth.forgotPasswordSubmit(username, code, newPassword)
+		return res
 	} catch (ex) {
 		throw new Error(convertErr(ex))
 	}
