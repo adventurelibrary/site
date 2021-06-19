@@ -6,7 +6,10 @@
 		</div>
 		<div>
 			<div>Hello <strong>{{username}}</strong>, please check your email for a <strong>verification code</strong>. Enter it and your new password below.</div>
-			<form @submit="submit">
+			<div v-if="done">
+				Done! Logging you in.
+			</div>
+			<form v-else @submit="submit">
 				<FormErrors :error="form.error" />
 				<InputGroup
 					label="Verification Code"
@@ -50,9 +53,14 @@ export default class ResetPassword extends mixins(FormMixin) {
 	password = ''
 	passwordConfirm = ''
 	username = ''
+	done = false
 
 	created () {
 		this.username = this.$route.query.username || ''
+		if (this.$store.getters.isLoggedIn) {
+			this.notifySuccess('You are already logged in. Redirecting...')
+			this.$router.push('/')
+		}
 	}
 
 	validateForm(): string {
