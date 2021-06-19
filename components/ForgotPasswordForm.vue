@@ -36,7 +36,7 @@ export default class ForgotPasswordForm extends mixins(FormMixin) {
 
 	async formAction () {
 		await forgotPassword(this.identifier)
-		this.$emit('success')
+		this.$emit('success', this.identifier)
 	}
 }
 </script>

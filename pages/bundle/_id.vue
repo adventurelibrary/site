@@ -12,7 +12,6 @@
 				</div>
 			</section>
 
-
 			<section class="bundle-assets">
 				<h3>Bundle Assets</h3>
 				<ul class="search-results">

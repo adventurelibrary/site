@@ -2,14 +2,14 @@
 	<article>
 		Forgot Password
 		<div v-if="done">
-			Success! Check your email for a code and a link.
+			Success! Redirecting...
 		</div>
 		<div v-else>
 			<ForgotPasswordForm @success="onSuccess" />
 		</div>
 	</article>
 </template>
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator"
 import ForgotPasswordForm from '@/components/ForgotPasswordForm'
@@ -21,9 +21,15 @@ import ForgotPasswordForm from '@/components/ForgotPasswordForm'
 })
 export default class ForgotPassword extends Vue {
 	done = false
-	onSuccess () {
+	onSuccess (username: string) {
 		this.done = true
 		this.notifySuccess('Check your email')
+		this.$router.push({
+			name: 'reset-password',
+			query: {
+				username: username
+			}
+		})
 	}
 }
 </script>

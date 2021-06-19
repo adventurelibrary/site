@@ -53,9 +53,7 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		console.log('before sign in')
 		await signIn(this.identifier, this.password)
-		console.log('after sign in')
 		await this.$store.dispatch('fetchSession')
 		this.$emit('success')
 	}
