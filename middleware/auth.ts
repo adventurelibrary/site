@@ -1,6 +1,8 @@
 import {Context} from "@nuxt/types";
 import {setJWT} from "~/lib/api"
 
+// This middleware fetches the session data for the currently logged in user
+// when doing SSR
 export default async function (ctx: Context) {
 	let jwt = ''
 	const {req} = ctx

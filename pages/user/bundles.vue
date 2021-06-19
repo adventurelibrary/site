@@ -1,5 +1,8 @@
 <template>
 	<ProfilePage active-tab="bundles">
+		<Fragment slot="actions">
+			<a class="button upgrade" @click="createBundle">Create Bundle</a>
+		</Fragment>
 		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
 			<div>Showing {{bundles.length}}. Total: {{totalBundles}}</div>
       <ol class="bundles-list">
@@ -24,11 +27,13 @@ import {Context} from "@nuxt/types";
 import BundleCard from "~/modules/bundles/components/BundleCard.vue";
 import ProfilePage from "~/pages/user/components/ProfilePage.vue";
 import LoadingContainer from "~/components/LoadingContainer.vue";
+import {Fragment} from "vue-fragment";
 
 @Component({
 	middleware: ['require_auth'],
 	components: {
 		ProfilePage,
+		Fragment: Fragment,
 		BundleCard,
 		LoadingContainer: LoadingContainer
 	}
@@ -84,6 +89,10 @@ export default class MyBundles extends mixins(PaginationMixin) {
 			return
 		}
 		this.bundlesAjax.data.bundles = this.bundlesAjax.data.bundles.filter(x => x.id != id)
+	}
+
+	createBundle () {
+		alert('Not implemented')
 	}
 }
 </script>

@@ -6,7 +6,7 @@
 			<p>File should be jpg, png, or svg.</p>
 		</section>
 		<section class="upload-controls">
-			<a class="button add-file basic">+Add Upload</a>
+			<label class="button add-file basic" for="add-file">+Add Upload</label>
 			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
 
@@ -153,7 +153,7 @@ export default Vue.extend({
 		addFile (file : File) {
 			const name = filenameToTitle(file.name)
 
-			this.newAssets.push({
+			this.newAssets.unshift({
 				asset: {
 					tags: [],
 					tagObjects: [],
