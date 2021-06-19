@@ -29,8 +29,7 @@
 					:class="{active: activeTab === 'assets'}">
 				My Assets
 			</nuxt-link>
-			<a v-if="!isCreator" @click="becomeAnArtist" class="button upgrade">Become An Artist</a>
-			<nuxt-link v-else @click="becomeAnArtist" :to="{name: 'upload'}" class="button upgrade">Upload Assets</nuxt-link>
+			<slot name="actions"></slot>
 		</nav>
 		<section class="tab active">
 			<slot></slot>

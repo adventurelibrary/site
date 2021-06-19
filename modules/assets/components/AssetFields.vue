@@ -1,31 +1,31 @@
 <template>
 	<section class="asset-fields basic-form">
 		<Input
-				label="Title"
-				:value="copy.name"
-				v-on:input="(val) => fieldChanged('name', val)"
+			label="Title"
+			:value="copy.name"
+			v-on:input="(val) => fieldChanged('name', val)"
 		/>
 		<Textarea
-				label="Description"
-				:value="copy.description"
-				v-on:input="(val) => fieldChanged('description', val)"
+			label="Description"
+			:value="copy.description"
+			v-on:input="(val) => fieldChanged('description', val)"
 		/>
 		<FormGroup label="Tags">
 			<TagsInput
-					v-model="copy.tagObjects"
+				v-model="copy.tagObjects"
 				/>
 		</FormGroup>
 		<CategorySelect
-				label="Type"
-				:value="copy.category"
-				v-on:input="(val) => fieldChanged('category', val)"
+			label="Type"
+			:value="copy.category"
+			v-on:input="(val) => fieldChanged('category', val)"
 		/>
 		<Select
-				v-if="!hideVisibility"
-				label="Visibility"
-				:options="visOptions"
-				:value="copy.visibility"
-				v-on:input="(val) => fieldChanged('visibility', val)" />
+			v-if="!hideVisibility"
+			label="Visibility"
+			:options="visOptions"
+			:value="copy.visibility"
+			v-on:input="(val) => fieldChanged('visibility', val)" />
 	</section>
 </template>
 
@@ -43,6 +43,9 @@ import {SelectOption} from "~/lib/helpers";
 
 export const fieldNames = ['name', 'description', 'type']
 
+// This component is used to edit the data on an asset.
+// The asset might be one that already exists in our db and is being updated
+// or it might be a new asset that is about to be uploaded
 export default Vue.extend({
 	props: {
 		asset: {

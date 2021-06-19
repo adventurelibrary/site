@@ -1,5 +1,8 @@
 <template>
 	<ProfilePage active-tab="assets">
+		<Fragment slot="actions">
+			<nuxt-link v-if="isCreator" :to="{name: 'upload'}" class="button upgrade">Upload Assets</nuxt-link>
+		</Fragment>
 		<h1>My Assets</h1>
 		<nuxt-link :to="{name: 'upload'}">Upload Assets</nuxt-link>
 		<div class="assets">
@@ -9,22 +12,26 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
-import {Component} from "nuxt-property-decorator";
+import {Component, Getter} from "nuxt-property-decorator";
 import ProfilePage from "@/pages/user/components/ProfilePage.vue";
 import {newAssetsAjax, searchAssets} from "~/modules/assets/asset-api";
 import {computeAjaxList, computeAjaxTotal, doAjax} from "@/lib/ajax";
 import {newSearchOptions} from "~/modules/assets/asset-helpers";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetManageItem from "~/modules/assets/components/AssetManageItem.vue";
+import {Fragment} from "vue-fragment";
 
 @Component({
 	middleware: ['require_auth'],
 	components: {
 		ProfilePage,
+		Fragment: Fragment,
 		AssetManageItem: AssetManageItem
 	}
 })
 export default class UserAssets extends Vue {
+	@Getter('isCreator') isCreator : boolean
+
 	assetsAjax = newAssetsAjax()
 	async asyncData () {
 		const ajax = newAssetsAjax()
