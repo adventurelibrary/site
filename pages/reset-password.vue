@@ -82,6 +82,7 @@ export default class ResetPassword extends mixins(FormMixin) {
 	async formAction () {
 		// This will update their password
 		await forgotPasswordSubmit(this.username, this.code, this.password)
+		this.done = true
 	}
 
 	async formSuccess () {
