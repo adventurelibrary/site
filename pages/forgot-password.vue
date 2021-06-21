@@ -12,7 +12,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator"
-import ForgotPasswordForm from '@/components/ForgotPasswordForm'
+import ForgotPasswordForm from "~/components/ForgotPasswordForm.vue"
 
 @Component({
 	components: {

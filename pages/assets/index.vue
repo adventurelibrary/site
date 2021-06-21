@@ -29,7 +29,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch} from "nuxt-property-decorator"
+import {Component, Watch, mixins} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
@@ -47,10 +47,9 @@ import {commaAndJoin, getElOffset} from "~/lib/helpers";
 	components: {
 		AssetSearch,
 		AssetCard,
-	},
-	mixins: [PaginationMixin]
+	}
 })
-class AssetsIndexPage extends Vue {
+class AssetsIndexPage extends mixins(PaginationMixin) {
 	public search : AssetSearchOptions
 	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
 	skip = 0
@@ -66,6 +65,13 @@ class AssetsIndexPage extends Vue {
 
 	mounted () {
 		window.addEventListener('scroll', this.onScroll)
+		if (process.client && this.assetsAjax.loading) {
+			const search = this.search
+			const fn = async () => {
+				return await searchAssets(search)
+			}
+			doAjax<AssetsResponse>(this.assetsAjax, fn)
+		}
 	}
 
 	destroyed () {
@@ -100,10 +106,18 @@ class AssetsIndexPage extends Vue {
 
 	async asyncData (ctx: Context) {
 		const search = getRouteAssetSearchOptions(ctx.route)
+		const assetsAjax = newAssetsAjax()
+		if (process.client) {
+			console.log('client, return with loading')
+			assetsAjax.loading = true
+			return {
+				search,
+				assetsAjax
+			}
+		}
 		const fn = async () => {
 			return await searchAssets(search)
 		}
-		const assetsAjax = newAssetsAjax()
 		await doAjax<AssetsResponse>(assetsAjax, fn)
 		return {
 			search: search,
