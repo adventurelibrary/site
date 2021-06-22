@@ -56,7 +56,7 @@ export default class ResetPassword extends mixins(FormMixin) {
 	done = false
 
 	created () {
-		this.username = this.$route.query.username || ''
+		this.username = (this.$route.query.username.toString()) || ''
 		if (this.$store.getters.isLoggedIn) {
 			this.notifySuccess('You are already logged in. Redirecting...')
 			this.$router.push('/')
