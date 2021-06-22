@@ -30,8 +30,8 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
-			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<AssetDownload :asset="asset" />
+			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<slot name="extra-actions"></slot>
 		</figure>
 	</li>
