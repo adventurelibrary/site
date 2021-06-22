@@ -1,6 +1,6 @@
 <template>
 	<button class="asset-action action-add-asset-to-bundle" @click="openModal" type="button">
-		+
+		<i class="ci-plus"></i>
 	</button>
 </template>
 <script lang="ts">
