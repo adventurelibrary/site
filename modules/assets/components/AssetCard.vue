@@ -24,6 +24,7 @@
 			<div class="description">
 				{{asset.description}}
 			</div>
+			<slot name="extra-details"></slot>
 			<div class="search-meta">
 				<Category :category="asset.category" />
 				<TagList :tags="asset.tags" />
