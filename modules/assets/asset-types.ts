@@ -75,7 +75,8 @@ export type AssetsResponse = {
 
 export type AssetTag = {
 	id: string,
-	label: string
+	label: string,
+	aliases: string[]
 }
 
 export type AssetSearchAction = {

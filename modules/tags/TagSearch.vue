@@ -62,8 +62,27 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 			return
 		}
+		const query = this.query.toLowerCase()
+		console.log('query', query)
 		this.items = ASSET_TAGS.filter((tag: AssetTag) : boolean => {
-			return tag.label.toLowerCase().indexOf(this.query.toLowerCase()) >= 0
+			const lablMatch = tag.label.toLowerCase().indexOf(query) >= 0
+			console.log('labelMatch', lablMatch)
+			if (lablMatch) {
+				return true
+			}
+
+			for (let i = 0; i < tag.aliases.length; i++) {
+				const alias = tag.aliases[i]
+				console.log('alias', alias)
+				if (!alias) {
+					continue
+				}
+				if (alias.toLowerCase().indexOf(query) >= 0) {
+					return true
+				}
+			}
+
+			return false
 		})
 
 		this.activeItem = 0

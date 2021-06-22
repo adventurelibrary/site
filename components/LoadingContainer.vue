@@ -18,7 +18,6 @@
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {Fragment} from "vue-fragment";
 
 @Component
 export default class LoadingContainer extends Vue {
