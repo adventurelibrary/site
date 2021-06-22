@@ -20,7 +20,7 @@
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
 						<Fragment slot="extra-actions">
 							<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
-								<img style="object-fit: contain;" src="~/assets/coolicons/svg/edit/off_close.svg">
+								<i class="ci-off_close"></i>
 							</button>
 						</Fragment>
 					</AssetCard>

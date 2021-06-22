@@ -24,14 +24,15 @@
 			<div class="description">
 				{{asset.description}}
 			</div>
+			<slot name="extra-details"></slot>
 			<div class="search-meta">
 				<Category :category="asset.category" />
 				<TagList :tags="asset.tags" />
 			</div>
 		</div>
 		<figure class="asset-actions">
-			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<AssetDownload :asset="asset" />
+			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<slot name="extra-actions"></slot>
 		</figure>
 	</li>

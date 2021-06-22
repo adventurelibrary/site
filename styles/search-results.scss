@@ -110,19 +110,14 @@
 		top: .3em;
 		right: .3em;
 		margin: 0;
-		display: flex;
-	}
-
-	.asset-action.action-add-asset-to-bundle {
-		margin-right: 3px;
-		padding: 0.3em 0.5em;
-	}
-	.asset-action.action-remove-asset-from-bundle {
-		margin-left: 3px;
+		display: grid;
+		grid-auto-flow: column;
+		gap: .2em;
 	}
 
 	.asset-action {
-		background-color: rgba(0, 0, 0, 0.4);
+		$action-bg: rgba(0, 0, 0, 0.4);
+		background-color: $action-bg;
 		border-radius: .3em;
 		padding: .3em;
 		line-height: 1em;
@@ -135,11 +130,11 @@
 			padding: 0px;
 
 			option {
-				background: rgba(0, 0, 0, 0.4);
+				background: $action-bg;
 			}
 		}
 		&:hover .download-format {
-			display: inline-block;
+			display: inline-grid;
 		}
 		.button {
 			padding: 0;

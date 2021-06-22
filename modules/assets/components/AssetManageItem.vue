@@ -1,26 +1,28 @@
 <template>
-	<div class="manage-asset">
-		<div class="thumbnail" :style="`background-image: url(${asset.thumbnail});`">
-			<!-- This Element Intentionally Left Empty -->
+	<AssetCard :key="asset.id" :asset="asset">
+		<div class="extra-details" slot="extra-details">
+			{{asset.visibility}}
 		</div>
-		<div>
-			<strong>{{asset.name}}</strong>
-			<br />{{asset.visibility}}
-		</div>
-		<div class="actions">
-			<button type="button" @click="clickEditAsset">Edit Asset</button>
-		</div>
-	</div>
+		<Fragment slot="extra-actions">
+			<button type="button" @click="clickEditAsset"  class="asset-action action-edit-asset">
+				<i class="ci-edit"></i>
+			</button>
+		</Fragment>
+	</AssetCard>
 </template>
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
+import {Fragment} from "vue-fragment";
+import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
 @Component({
 	components: {
-		AssetLink: AssetLink
+		AssetLink: AssetLink,
+		AssetCard,
+		Fragment
 	}
 })
 class AssetManageItem  extends Vue {
