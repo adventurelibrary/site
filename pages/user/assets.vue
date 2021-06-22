@@ -5,9 +5,9 @@
 		</Fragment>
 		<h1>My Assets</h1>
 		<nuxt-link :to="{name: 'upload'}">Upload Assets</nuxt-link>
-		<div class="assets">
+		<ul class="assets">
 			<AssetManageItem v-for="asset in assets" :key="asset.id" :asset="asset"></AssetManageItem>
-		</div>
+		</ul>
 	</ProfilePage>
 </template>
 <script lang="ts">
