@@ -30,7 +30,7 @@ export default class EditAssetForm extends mixins(FormMixin) {
 			return
 		}
 		await saveAsset(this.asset.id, this.form.data)
-		this.$emit('success')
+		this.$emit('success', this.form.data)
 	}
 
 	dataChanged (data: any) {
