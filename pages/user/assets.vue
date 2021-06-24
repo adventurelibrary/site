@@ -58,6 +58,7 @@ export default class UserAssets extends Vue {
 					for (let k in data) {
 						Vue.set(this.assetsAjax.data.assets[i], k, data[k])
 					}
+					break
 				}
 			}
 		})
