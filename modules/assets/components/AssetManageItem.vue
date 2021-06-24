@@ -4,7 +4,7 @@
 			{{asset.visibility}}
 		</div>
 		<Fragment slot="extra-actions">
-			<button type="button" @click="clickEditAsset"	class="asset-action action-edit-asset">
+			<button type="button" @click="clickEditAsset" class="asset-action action-edit-asset">
 				<i class="ci-edit"></i>
 			</button>
 		</Fragment>
