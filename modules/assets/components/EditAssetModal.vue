@@ -29,9 +29,14 @@ export default class EditAssetModal extends Vue {
 		this.$store.dispatch('closeAllModals')
 	}
 
-	onSuccess () {
+	onSuccess (formData: any) {
 		this.notifySuccess('Asset saved')
 		this.$store.dispatch('closeAllModals')
+		//@ts-ignore
+		formData.id = this.asset.id
+		// We emit this event so that pages that open up this modal can
+		// update the asset t
+		this.$root.$emit('assetUpdated', formData)
 	}
 }
 </script>

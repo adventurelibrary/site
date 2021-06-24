@@ -45,6 +45,24 @@ export default class UserAssets extends Vue {
 		}
 	}
 
+	created () {
+		// This event is emitted from the EditAssetModal when the form is successfully submitted
+		// The data passed in is the data from the edit form
+		this.$root.$on('assetUpdated', (data: any) => {
+			if (!this.assetsAjax.data || !this.assetsAjax.data.assets) {
+				return
+			}
+			for (let i = 0; i < this.assetsAjax.data.assets.length; i++) {
+				const asset = this.assetsAjax.data.assets[i]
+				if (asset.id === data.id) {
+					for (let k in data) {
+						Vue.set(this.assetsAjax.data.assets[i], k, data[k])
+					}
+				}
+			}
+		})
+	}
+
 	get assets () : Asset[] {
 		return computeAjaxList(this.assetsAjax, 'assets')
 	}
