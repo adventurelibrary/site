@@ -86,7 +86,7 @@ B
 						</a>
 					</li>
 					<li>
-						<a href="https://discord.com/channels/807488484382212146/809345389504364574/839338867652034590"
+						<a href="https://tinyletter.com/AdventureLibrary"
 							title="Newsletter">
 							<i class="ci-mail"></i>
 						</a>
