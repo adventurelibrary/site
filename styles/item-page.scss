@@ -1,5 +1,5 @@
 .item-page {
-	@include medium { min-width: 55em; }
+	//@include medium { min-width: 55em; }
 
 	display: grid;
 	grid-template-rows: 20em repeat(3, min-content);
@@ -70,5 +70,16 @@
 		padding: var(--padding);
 		align-content: start;
 		gap: .5em;
+	}
+
+	.search-results {
+		--columns: 2;
+		--col-width: 12em;
+
+		@include medium {
+			--col-width: 14em;
+		}
+		@include normal { --columns: 3; }
+		@include large  { --col-width: 18em; }
 	}
 }

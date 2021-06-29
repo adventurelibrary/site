@@ -10,8 +10,12 @@
 	grid-auto-flow: row;
 	justify-content: center;
 	gap: 1.25em;
-	grid-template-columns: repeat(auto-fill, 22em);
-	grid-auto-rows: 22.5em;
+
+	--columns: auto-fill;
+	--col-width: 22em;
+	
+	grid-template-columns: repeat(var(--columns), var(--col-width));
+	grid-auto-rows: calc(var(--col-width) * 1.05);
 }
 
 .asset-card {
