@@ -1,7 +1,7 @@
 <template>
 	<article class="bundle-page item-page">
 		<fragment v-if="bundle">
-			<section class="preview" :style="`background-image: url(${bundle.previewLink});`">
+			<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
 				<!-- Empty -->
 			</section>
 			<section class="info">
