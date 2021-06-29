@@ -1,0 +1,14 @@
+.bundle-page {
+	.bundle-assets {
+		grid-area: body;
+		padding: 1em;
+
+		.search-results {
+			grid-template-columns: repeat(auto-fill, 15em);
+			grid-auto-rows: 16.5em;
+		}
+	}
+	.actions {
+		grid-auto-flow: column;
+	}
+}
