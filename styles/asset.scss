@@ -14,3 +14,40 @@
 .asset-thumbnail {
 	background-size: cover;
 }
+
+.tags-input {
+	display: grid;
+	grid-auto-flow: row;
+
+	.search-box {
+		display: grid;
+		position: relative;
+	}
+
+	.tag-search {
+		display: none;
+	}
+	&:focus-within {
+		.tag-search {
+			display: grid;
+		}
+	}
+
+	.form-control {
+		&:focus {
+			outline: none;
+			box-shadow: 0 3px 3px $shadow-light;
+			border-radius: .25em .25em 0 0;
+		}
+	}
+
+	.search-filters {
+		max-width: 26em;
+		grid-area: unset;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		.filter-type { display: none; }
+	}
+}

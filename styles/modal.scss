@@ -95,6 +95,9 @@
 		&.text-area {
 			grid-template-rows: 1em 8em;
 		}
+		&.advanced {
+			grid-template-rows: 1em auto;
+		}
 	}
 	.control-row {
 		display: grid;
