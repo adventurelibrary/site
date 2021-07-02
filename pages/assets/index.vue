@@ -11,7 +11,7 @@
 			</div-->
 		</header>
 		<main class="page-body">
-			<section v-if="assetsAjax.loading">LOADING</section>
+			<section v-if="$fetchState.pending">LOADING</section>
 			<section v-else>
 				<h3 class="results-count">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
@@ -35,13 +35,12 @@ import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
-import {newAssetsAjax, searchAssets} from "~/modules/assets/asset-api";
-import {Ajax, computeAjaxList, computeAjaxTotal, doAjax} from "~/lib/ajax";
+import { searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
-import {commaAndJoin, getElOffset} from "~/lib/helpers";
+import {commaAndJoin, getElOffset, sleep} from "~/lib/helpers";
 
 @Component({
 	components: {
@@ -52,7 +51,10 @@ import {commaAndJoin, getElOffset} from "~/lib/helpers";
 })
 class AssetsIndexPage extends Vue {
 	public search : AssetSearchOptions
-	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
+	assetsResponse : AssetsResponse = {
+		total: 0,
+		assets: []
+	}
 	skip = 0
 	perPage = 20
 	loadingMore = false
@@ -62,6 +64,10 @@ class AssetsIndexPage extends Vue {
 		return {
 			title: this.getPageTitle()
 		}
+	}
+
+	async fetch () {
+		this.assetsResponse = await searchAssets(this.search)
 	}
 
 	mounted () {
@@ -95,28 +101,19 @@ class AssetsIndexPage extends Vue {
 	async routeChanged (newRoute: Route) {
 		const search = getRouteAssetSearchOptions(newRoute)
 		this.search = search
-		await this.loadSearch()
+		this.$fetch()
 	}
 
 	async asyncData (ctx: Context) {
 		const search = getRouteAssetSearchOptions(ctx.route)
-		const fn = async () => {
-			return await searchAssets(search)
-		}
-		const assetsAjax = newAssetsAjax()
-		await doAjax<AssetsResponse>(assetsAjax, fn)
 		return {
 			search: search,
-			assetsAjax
 		}
 	}
 
 	async loadMore ()  {
-		if (!this.assetsAjax.data || !this.assetsAjax.data.assets) {
-			return
-		}
 		const newFrom = this.search.from + this.search.size
-		if (newFrom > this.assetsAjax.data.total) {
+		if (newFrom > this.assetsResponse.total) {
 			return
 		}
 
@@ -124,13 +121,13 @@ class AssetsIndexPage extends Vue {
 		this.search.from = newFrom
 		try {
 			const res = await searchAssets(this.search)
-			let current = this.assetsAjax.data.assets
+			let current = this.assetsResponse.assets
 			if (!current) {
 				current = []
 			}
 			const newResults = current.concat(res.assets)
-			if (this.assetsAjax.data) {
-				Vue.set(this.assetsAjax.data, 'assets', newResults)
+			if (this.assetsResponse) {
+				Vue.set(this.assetsResponse, 'assets', newResults)
 			} else {
 				throw new Error('Cannot set new results on empty data')
 			}
@@ -140,24 +137,12 @@ class AssetsIndexPage extends Vue {
 		this.loadingMore = false
 	}
 
-	// Performs a search based on the current parmeters stored in this.search, then overrites
-	// the local list of assets
-	async loadSearch (skipLoading = false) {
-		const fn = async () => {
-			return await searchAssets(this.search)
-		}
-		await doAjax<AssetsResponse>(this.assetsAjax, fn, skipLoading)
-		const t = this.getPageTitle()
-		// TODO: Add some kind
-		document.title = t
-	}
-
 	get assets () : any[] {
-		return computeAjaxList(this.assetsAjax, 'assets')
+		return this.assetsResponse.assets || []
 	}
 
 	get totalAssets () : number {
-		return computeAjaxTotal(this.assetsAjax)
+		return (this.assetsResponse.total || 0) + 100
 	}
 
 	getPageTitle () {
