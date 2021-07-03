@@ -1,6 +1,5 @@
 <template>
 	<article class="asset item-page" v-if="asset">
-
 		<section class="preview" :style="`background-image: url(${asset.previewLink});`">
 			<!-- Empty -->
 		</section>
@@ -13,7 +12,7 @@
 				<!-- Will be a link to the author profile -->
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
 				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
-				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->				
+				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->
 			</h3>
 			<div class="description">
 				{{asset.description}}
@@ -49,8 +48,7 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/modules/assets/asset-types";
-import {getAssetAjax} from "~/modules/assets/asset-api";
-import {Ajax, getAjaxData} from "~/lib/ajax";
+import {getAssetBySlug} from "~/modules/assets/asset-api";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
 import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue";
@@ -58,10 +56,11 @@ import TagList from "~/modules/tags/TagList.vue";
 
 // related assets and search modules
 import {AssetsResponse} from "~/modules/assets/asset-types";
-import {newAssetsAjax, getRelatedAssetsByTags} from "~/modules/assets/asset-api";
+import {getRelatedAssetsByTags} from "~/modules/assets/asset-api";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
 import Modals from "~/modules/modals/Modals.vue";
+import {Fragment} from "vue-fragment";
 
 @Component({
 	components: {
@@ -70,18 +69,14 @@ import Modals from "~/modules/modals/Modals.vue";
 		AssetCard,
 		Modals: Modals,
 		AssetArchiveButton: AssetArchiveButton,
-		AssetReportButton: AssetReportButton
+		AssetReportButton: AssetReportButton,
+		Fragment: Fragment
 	}
 })
 class AssetPage extends Vue {
-	public assetAjax : Ajax<Asset>
-	public relatedAssets : AssetsResponse
-
-	assetsAjax : Ajax<AssetsResponse> = newAssetsAjax()
-	skip = 0
-	perPage = 5
-	loadingMore = false
-	scrollTimeout : NodeJS.Timeout
+	relatedAssets : Asset[]
+	asset : null | Asset
+	slug: string
 
 	// setting header meta tags
 	head () {
@@ -124,25 +119,18 @@ class AssetPage extends Vue {
 		}
 	}
 
-
-	get asset () : Asset | null {
-		const res = getAjaxData<Asset>(this.assetAjax)
-		if (!res) {
-			return null
-		}
-		return res
+	async fetch () {
+		this.asset = await getAssetBySlug(this.slug)
+		const relatedRes = await getRelatedAssetsByTags(this.asset)
+		this.relatedAssets = relatedRes.assets
 	}
 
 	// fetching asset data and related assets array
 	async asyncData (ctx: Context) {
-		const assetRes = await getAssetAjax(ctx.params.slug)
-		let relatedAssets
-		if (assetRes.data) {
-			relatedAssets = await getRelatedAssetsByTags(assetRes.data)
-		}
 		return {
-			assetAjax: assetRes,
-			relatedAssets: relatedAssets
+			slug: ctx.params.slug,
+			asset: null,
+			relatedAssets: []
 		}
 	}
 
