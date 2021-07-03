@@ -11,8 +11,8 @@
 			</div-->
 		</header>
 		<main class="page-body">
-			<section v-if="$fetchState.pending">LOADING</section>
-			<section v-else>
+			<section v-show="$fetchState.pending">LOADING</section>
+			<section v-show="!$fetchState.pending">
 				<h3 class="results-count">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
 				</h3>
