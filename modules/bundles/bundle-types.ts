@@ -19,9 +19,9 @@ export type Bundle = BundleFields & {
 	user_id: string
 }
 
+export type BundleResponse = Bundle | undefined
+
 export type BundlesResponse = {
 	bundles: Bundle[]
 	total: number
 }
-
-export type BundleResponse = undefined | Bundle
