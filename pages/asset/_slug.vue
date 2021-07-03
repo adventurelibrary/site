@@ -120,7 +120,7 @@ class AssetPage extends Vue {
 	}
 
 	async fetch () {
-		this.asset = await getAssetBySlug(this.slug)
+		this.asset = await getAssetBySlug(this.$nuxt.context.params.slug)
 		const relatedRes = await getRelatedAssetsByTags(this.asset)
 		this.relatedAssets = relatedRes.assets
 	}

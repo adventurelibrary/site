@@ -114,6 +114,12 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 	return await queryAssets(apiQuery)
 }
 
+export const getMyAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
+	search.mine = true
+	search.visibility = 'all'
+	return searchAssets(search)
+}
+
 // This is the search for our admin area
 // It does all the same stuff as searchAssets AND it also
 // specififes that we want to view ALL assets, not just the visible ones
