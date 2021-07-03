@@ -11,8 +11,10 @@
 				</div>
 			</section>
 			<section class="actions">
-				<button type="button" @click="clickDeleteBundle">Delete</button>
-				<button type="button" @click="clickEditBundle">Edit</button>
+				<Fragment v-if="isOwner">
+					<button type="button" @click="clickDeleteBundle">Delete</button>
+					<button type="button" @click="clickEditBundle">Edit</button>
+				</Fragment>
 			</section>
 
 			<section class="bundle-assets">
@@ -35,11 +37,9 @@
 	</article>
 </template>
 <script lang="ts">
-import { Context } from '@nuxt/types'
 import Vue from 'vue'
-import {Component} from "nuxt-property-decorator";
+import {Component, Getter} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
-import {doAjax, getAjaxData} from "~/lib/ajax";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
 import {Fragment} from "vue-fragment";
@@ -47,10 +47,9 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import {
 	deleteBundle,
 	getBundle,
-	newBundleAjax,
 	removeAssetFromBundle,
 } from "~/modules/bundles/bundles-api";
-import {Bundle, BundleResponse} from "~/modules/bundles/bundle-types";
+import {Bundle} from "~/modules/bundles/bundle-types";
 
 @Component({
 	components: {
@@ -61,11 +60,16 @@ import {Bundle, BundleResponse} from "~/modules/bundles/bundle-types";
 	}
 })
 class BundlePage extends Vue {
-	bundleAjax = newBundleAjax()
-	skip = 0
-	perPage = 5
-	loadingMore = false
-	scrollTimeout : NodeJS.Timeout
+	bundle : Bundle
+
+	@Getter('isLoggedIn') isLoggedIn : boolean
+
+	async fetch () {
+		const res = await getBundle(this.$nuxt.context.params.id)
+		if (res) {
+			this.bundle = res
+		}
+	}
 
 	// setting header meta tags
 	head () {
@@ -101,14 +105,6 @@ class BundlePage extends Vue {
 		}
 	}
 
-	get bundle () : Bundle | undefined {
-		const data = getAjaxData<BundleResponse>(this.bundleAjax)
-		if (!data) {
-			return undefined
-		}
-		return data
-	}
-
 	get assets () : Asset[] {
 		if (!this.bundle || !this.bundle.assets) {
 			return []
@@ -116,16 +112,12 @@ class BundlePage extends Vue {
 		return this.bundle.assets
 	}
 
-	// fetching asset data and related assets array
-	async asyncData (ctx: Context) {
-		const fn = async () => {
-			return await getBundle(ctx.params.id)
+	get isOwner () : boolean {
+		if (!this.isLoggedIn) {
+			return false
 		}
-		const ajax = newBundleAjax()
-		await doAjax<BundleResponse>(ajax, fn)
-		return {
-			bundleAjax: ajax,
-		}
+
+		return this.bundle.user_id === this.$store.state.user.id
 	}
 
 	async clickRemoveAsset (asset: Asset) {
@@ -133,13 +125,12 @@ class BundlePage extends Vue {
 			return
 		}
 		await removeAssetFromBundle(this.bundle.id, asset.id)
-		if (this.bundleAjax.data  && this.bundleAjax.data.assets) {
-			this.bundleAjax.data.assets = this.bundleAjax.data.assets.filter((a) => {
+		if (this.bundle  && this.bundle.assets) {
+			this.bundle.assets = this.bundle.assets.filter((a: any) => {
 					return a.id !== asset.id
 			})
 		}
 	}
-
 
 	async clickDeleteBundle () {
 		if (prompt('Type DELETE to delete bundle') !== 'DELETE') {
@@ -159,8 +150,6 @@ class BundlePage extends Vue {
 		this.$store.dispatch('openEditBundleModal', {
 			bundle: this.bundle
 		})
-		// TODO: emit the changed bundle and watch for that change here
-		// then update the bundle on the page
 	}
 }
 
