@@ -1,0 +1,9 @@
+.bundle-page {
+	.bundle-assets {
+		grid-area: body;
+		padding: 1em;
+	}
+	.actions {
+		grid-auto-flow: column;
+	}
+}

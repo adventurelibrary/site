@@ -30,65 +30,6 @@
 			background: none;
 		}
 	}
-
-	.search-filters {
-		grid-area: filters;
-		display: grid;
-		grid-auto-flow: row;
-		grid-template-columns: repeat(var(--search-tag-column-max), auto);
-		grid-auto-rows: 1.6em;
-		justify-items: center;
-		column-gap: .25em;
-		row-gap: .2em;
-
-		align-content: center;
-		align-items: center;
-		padding: .25em 0;
-		margin: 0;
-
-		&:empty {
-			display: none;
-		}
-
-
-		li {
-			font-size: .75em;
-			background-color: $filter-light;
-			padding: .3em .7em;
-			border-radius: .3em;
-			display: block;
-			white-space: nowrap;
-
-			&.active {
-			  background-color: $filter-dark;
-			}
-		}
-		.filter-type {
-			text-transform: capitalize;
-			color: $white3;
-
-			&::after {
-				content: ":";
-			}
-		}
-		.filter-value {
-			text-transform: lowercase;
-			color: $white4;
-		}
-		.filter-delete {
-			display: inline-block;
-			width: 1ch;
-			height: 1em;
-			margin-left: .5ch;
-
-			&:hover {
-				text-shadow: 0 0 3px currentColor;
-			}
-			&::before {
-				content: "x";
-			}
-		}
-	}
 	.search-input {
 		grid-area: input;
 		border: none;
@@ -154,7 +95,70 @@
 	}
 }
 
-.asset-search .actions {
+.search-filters {
+	grid-area: filters;
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: repeat(var(--search-tag-column-max), auto);
+	grid-auto-rows: 1.6em;
+	justify-items: center;
+	column-gap: .25em;
+	row-gap: .2em;
+
+	align-content: center;
+	align-items: center;
+	padding: .25em 0;
+	margin: 0;
+
+	&:empty {
+		display: none;
+	}
+
+
+	li {
+		font-size: .75em;
+		background-color: $filter-light;
+		padding: .3em .7em;
+		border-radius: .3em;
+		display: block;
+		white-space: nowrap;
+
+		&.active {
+			background-color: $filter-dark;
+		}
+	}
+
+	.filter-type {
+		text-transform: capitalize;
+		color: $white3;
+
+		&::after {
+			content: ":";
+		}
+	}
+
+	.filter-value {
+		text-transform: lowercase;
+		color: $white4;
+	}
+
+	.filter-delete {
+		display: inline-block;
+		width: 1ch;
+		height: 1em;
+		margin-left: .5ch;
+
+		&:hover {
+			text-shadow: 0 0 3px currentColor;
+		}
+
+		&::before {
+			content: "x";
+		}
+	}
+}
+
+.asset-search .actions, .tag-search {
 	position: absolute;
 	width: 100%;
 	top: 100%;

@@ -14,9 +14,17 @@ export const CATEGORIES : Category[] = [{
 	singular: 'Scene',
 	plural: 'Scenes'
 }, {
+	id: 'panel',
+	singular: 'Panel',
+	plural: 'Panels'
+}, {
 	id: 'character',
 	singular: 'Character',
 	plural: 'Characters'
+}, {
+	id: 'item',
+	singular: 'Item',
+	plural: 'Items'
 }]
 
 export const CategoryOptionsPlural : SelectOption[] = CATEGORIES.map((type: Category) : SelectOption => {

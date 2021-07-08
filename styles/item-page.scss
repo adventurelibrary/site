@@ -1,0 +1,85 @@
+.item-page {
+	//@include medium { min-width: 55em; }
+
+	display: grid;
+	grid-template-rows: 20em repeat(3, min-content);
+	grid-template-areas:
+		"preview"
+		"info"
+		"actions"
+		"body";
+
+	@include normal {
+		grid-template-rows: 30em repeat(2, min-content);
+		grid-template-columns: 2fr 1fr;
+		grid-template-areas:
+			"preview preview"
+			"info actions"
+			"body body";
+
+		.actions {
+			justify-self: end;
+		}
+	}
+
+	background: $black4;
+	--padding: 2em;
+
+	.preview {
+		grid-area: preview;
+
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+	.info {
+		grid-area: info;
+		display: grid;
+		padding: var(--padding);
+		gap: .5em;
+		align-content: start;
+
+		.title {
+			margin: 0;
+			font-size: 2em;
+		}
+		.author {
+			margin: 0;
+			font-size: 1.1em;
+			color: $gray2;
+			font-weight: normal;
+
+			a { color: currentColor; }
+			.author-icon {
+				display: inline-grid;
+				margin: 0 .15ch;
+			}
+		}
+		.control {
+			display: grid;
+			gap: 2ch;
+			grid-auto-flow: column;
+			justify-content: start;
+			color: $gray2;
+			font-size: .8em;
+		}
+	}
+	.actions {
+		grid-area: actions;
+		display: grid;
+		padding: var(--padding);
+		align-content: start;
+		gap: .5em;
+	}
+
+	.search-results {
+		--columns: 2;
+		--col-width: 12em;
+
+		@include medium {
+			--col-width: 14em;
+		}
+		@include normal { --columns: 3; }
+		@include large  { --col-width: 18em; }
+	}
+}

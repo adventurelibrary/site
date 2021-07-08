@@ -1,6 +1,13 @@
 <template>
 	<div class="tags-input">
-		<div class="">
+		<ul class="search-filters">
+			<SearchFilter
+				v-for="(tag, idx) in tagsLocal" :key="tag.key"
+				:filter="tag"
+				@remove="() => removeTag(idx)"
+			/>
+		</ul>
+		<section class="search-box">
 			<input class="form-control"
 				v-model="query"
 				@keypress.enter="enter"
@@ -9,18 +16,15 @@
 				@keydown.right="keyDownRightArrow"
 				@keydown.down="keyDownRightArrow"
 			/>
-		</div>
-		<TagSearch
-			:bus="bus"
-			:filters="[]"
-			:exclude="excluded"
-			:query="query"
-			:active="true"
-			@clickTag="tagClicked"
-		/>
-		<div>
-			<span v-for="(tag, idx) in tagsLocal" :key="tag.key">{{tag.label}}&nbsp;<button type="button" @click="() => removeTag(idx)">X</button></span>
-		</div>
+			<TagSearch
+				:bus="bus"
+				:filters="[]"
+				:exclude="excluded"
+				:query="query"
+				:active="true"
+				@clickTag="tagClicked"
+			/>
+		</section>
 	</div>
 </template>
 <script lang="ts">
@@ -28,10 +32,12 @@ import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
 import TagSearch from "~/modules/tags/TagSearch.vue";
 import {AssetTag} from "~/modules/assets/asset-types";
+import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 
 @Component({
 	components: {
-		TagSearch: TagSearch
+		TagSearch: TagSearch,
+		SearchFilter: SearchFilter,
 	}
 })
 export default class TagsInput extends Vue {

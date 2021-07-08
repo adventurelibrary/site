@@ -1,76 +1,13 @@
 .asset {
-	display: grid;
-	grid-template-rows: 20em repeat(3, min-content);
-	grid-template-areas:
-		"preview"
-		"info"
-		"download"
-		"similar";
-
-	background: $black4;
-	--padding: 2em;
-
-	.asset-preview {
-		grid-area: preview;
-
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-	}
-	.asset-info {
-		grid-area: info;
-		display: grid;
-		padding: var(--padding);
-		gap: .5em;
-		align-content: start;
-
-		.asset-title {
-			margin: 0;
-			font-size: 2em;
-		}
-		.asset-author {
-			margin: 0;
-			font-size: 1.1em;
-			color: $gray2;
-			font-weight: normal;
-
-			a { color: currentColor; }
-			.author-icon {
-				display: inline-grid;
-				margin: 0 .15ch;
-			}
-		}
-		.asset-control {
-			display: grid;
-			gap: 2ch;
-			grid-auto-flow: column;
-			justify-content: start;
-			color: $gray2;
-			font-size: .8em;
-		}
-	}
-	.asset-downloads {
-		grid-area: download;
-		display: grid;
-		padding: var(--padding);
-		align-content: start;
-		gap: .5em;
-
-		.asset-download {
-			grid-template-columns: minmax(11em, 16em);
-			align-content: center;
-			display: grid;
-			gap: .5em;
-		}
-	}
 	.similar-assets {
-		grid-area: similar;
+		grid-area: body;
 		padding: 1em;
-
-		.search-results {
-			grid-template-columns: repeat(auto-fill, 15em);
-			grid-auto-rows: 16.5em;
-		}
+	}
+	.actions .download {
+		grid-template-columns: minmax(11em, 16em);
+		align-content: center;
+		display: grid;
+		gap: .5em;
 	}
 }
 
@@ -78,17 +15,39 @@
 	background-size: cover;
 }
 
-@media (min-width: 800px) {
-	.asset {
-		grid-template-rows: 30em repeat(2, min-content);
-		grid-template-columns: 2fr 1fr;
-		grid-template-areas:
-			"preview preview"
-			"info download"
-			"similar similar";
+.tags-input {
+	display: grid;
+	grid-auto-flow: row;
 
-		.asset-downloads {
-			justify-self: end;
+	.search-box {
+		display: grid;
+		position: relative;
+	}
+
+	.tag-search {
+		display: none;
+	}
+	&:focus-within {
+		.tag-search {
+			display: grid;
 		}
+	}
+
+	.form-control {
+		&:focus {
+			outline: none;
+			box-shadow: 0 3px 3px $shadow-light;
+			border-radius: .25em .25em 0 0;
+		}
+	}
+
+	.search-filters {
+		max-width: 26em;
+		grid-area: unset;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		.filter-type { display: none; }
 	}
 }

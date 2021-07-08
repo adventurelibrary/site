@@ -1,19 +1,21 @@
 <template>
-	<div class="bundle-page">
+	<article class="bundle-page item-page">
 		<fragment v-if="bundle">
-			<section class="bundle-info">
-				<h1>{{bundle.name}}</h1>
-				<div class="asset-description">
+			<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
+				<!-- Empty -->
+			</section>
+			<section class="info">
+				<h1 class="title">{{bundle.name}}</h1>
+				<div class="description">
 					{{bundle.description}}
 				</div>
-				<div>
-					<button type="button" @click="clickDeleteBundle">Delete</button>
-					<button type="button" @click="clickEditBundle">Edit</button>
-				</div>
+			</section>
+			<section class="actions">
+				<button type="button" @click="clickDeleteBundle">Delete</button>
+				<button type="button" @click="clickEditBundle">Edit</button>
 			</section>
 
 			<section class="bundle-assets">
-				<h3>Bundle Assets</h3>
 				<ul class="search-results">
 					<li v-if="!assets.length">No assets.</li>
 					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
@@ -30,7 +32,7 @@
 		<fragment v-else>
 			<div>Could not find that bundle.</div>
 		</fragment>
-	</div>
+	</article>
 </template>
 <script lang="ts">
 import { Context } from '@nuxt/types'

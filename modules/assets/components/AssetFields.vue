@@ -10,7 +10,7 @@
 			:value="copy.description"
 			v-on:input="(val) => fieldChanged('description', val)"
 		/>
-		<FormGroup label="Tags">
+		<FormGroup label="Tags" class="advanced">
 			<TagsInput
 				v-model="copy.tagObjects"
 				/>
