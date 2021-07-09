@@ -32,7 +32,7 @@
 			</section>
 		</fragment>
 		<fragment v-else>
-			<div>Could not find that bundle.</div>
+			Could not find that bundle.
 		</fragment>
 	</article>
 </template>
