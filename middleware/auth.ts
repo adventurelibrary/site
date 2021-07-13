@@ -27,7 +27,10 @@ export default async function (ctx: Context) {
 
 	// For the client we don't handle that here, the lib/api file can detect
 	// clientside cookies just find with the getCookie function, so that's done there
+	const user = ctx.store.state.user
+	if (!user) {
+		await ctx.store.dispatch('fetchSession')
 
-	await ctx.store.dispatch('fetchSession')
+	}
 	return null
 }
