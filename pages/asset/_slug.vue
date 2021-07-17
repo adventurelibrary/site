@@ -5,19 +5,20 @@
 		</section>
 
 		<section class="info">
-			<h1 class="title">{{asset.name}}</h1>
-			<!-- <nuxt-link :to="{name: 'contact-reportAsset', params: {assetId: asset.id}}">Report</nuxt-link> -->
+			<h1 class="title">{{asset.name}}</h1>			
 
-			<h3 class="author">
-				<!-- Will be a link to the author profile -->
+			<h3 class="author">				
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
 				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
 				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->
 			</h3>
+
 			<div class="description">
 				{{asset.description}}
 			</div>
+
 			<TagList :tags="asset.tags" />
+
 			<div class="control">
 				<AssetArchiveButton :asset="asset" />
 				<AssetReportButton :asset="asset" />
@@ -30,7 +31,6 @@
 				<span class="count">{{asset.downloads || 0}}</span>
 				<span class="label">downloads</span>
 			</span>
-
 		</section>
 
 		<section class="similar-assets">
@@ -40,6 +40,7 @@
 				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
 			</ul>
 		</section>
+
 	</article>
 </template>
 <script lang="ts">
