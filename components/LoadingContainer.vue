@@ -5,14 +5,14 @@
 				<div class="loading-message">Loading...</div>
 			</slot>
 		</template>
-		<template v-if="error">
+		<template v-if="!loading && errorMessage">
 			<slot name="error">
 				<div class="error">
-					{{error}}
+					{{errorMessage}}
 				</div>
 			</slot>
 		</template>
-		<template v-if="!loading && !error">
+		<template v-if="!loading && !errorMessage">
 			<slot />
 		</template>
 	</Fragment>
@@ -28,6 +28,16 @@ import {Fragment} from "vue-fragment"
 })
 export default class LoadingContainer extends Vue {
 	@Prop() loading: boolean
-	@Prop() error: string
+	@Prop() error: any
+
+	get errorMessage () : string {
+		if (this.error.message) {
+			return this.error.message
+		}
+		if (typeof this.error === 'object' && Object.keys(this.error).length === 0) {
+			return ''
+		}
+		return this.error
+  }
 }
 </script>

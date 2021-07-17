@@ -5,6 +5,7 @@ import {UserTracking} from "~/modules/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
+import {unlockAsset} from "~/modules/assets/asset-api";
 Vue.use(Vuex)
 
 type State = {
@@ -323,6 +324,9 @@ export const actions = {
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
 		commit('user', user)
+	},
+	async unlockAsset ({commit, dispatch} : ActionParams, {asset} : {asset: Asset}) {
+		await unlockAsset(asset.id)
 	}
 }
 
