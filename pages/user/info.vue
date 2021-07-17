@@ -40,7 +40,7 @@ import {User} from "~/modules/users/user-types"
 @Component({
 	middleware: ['require_auth']
 })
-export default class ChangePassword extends Vue {
+export default class UserInfoPage extends Vue {
 	@State('user') user : User
 
 

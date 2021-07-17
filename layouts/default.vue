@@ -1,4 +1,3 @@
-B
 <template>
 <main class="body" :class="pageClass">
 		<div class="shade"
@@ -29,14 +28,14 @@ B
 							<i class="ci-user"></i>
 							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
 						</figure>
-						<nuxt-link :to="{name: 'account'}" class="account-link">{{user.username}}</nuxt-link>
+						<nuxt-link :to="{name: 'user'}" class="account-link">{{user.username}}</nuxt-link>
 					</template>
 					<template v-else>
 						<a @click="openLogin">Login</a>
 						<a @click="openRegister">Register</a>
 					</template>
 				</li>
-				<li><nuxt-link :to="{name: 'about-us'}">About Us</nuxt-link></li>
+				<li><nuxt-link :to="{name: 'info-about-us'}">About Us</nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user'}">My Account</nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user-bundles'}">My Bundles</nuxt-link></li>
 				<li v-if="isCreator"><nuxt-link :to="{name: 'user-assets'}">My Assets</nuxt-link></li>
@@ -52,11 +51,11 @@ B
 			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
 				<ul>
-					<li><a href="">About Us</a></li>
-					<li><a href="">Terms of Service</a></li>
-					<li><a href="">FAQ</a></li>
-					<li><a href="">Feedback &amp; Support</a></li>
-					<li><a href="">Contact Us</a></li>
+					<li><nuxt-link :to="{name: 'info-about-us'}">About Us</nuxt-link></li>
+					<li><nuxt-link :to="{name: 'info-terms-of-service'}">Terms of Service</nuxt-link></li>
+					<li><nuxt-link :to="{name: 'info-faq'}">FAQ</nuxt-link></li>
+					<li><nuxt-link :to="{name: 'info-feedback-and-support'}">Feedback &amp; Support</nuxt-link></li>
+					<li><nuxt-link :to="{name: 'info-contact-us'}">Contact Us</nuxt-link></li>
 				</ul>
 			</nav>
 			<section class="social-media">
