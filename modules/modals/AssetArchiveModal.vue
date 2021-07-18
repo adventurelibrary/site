@@ -7,8 +7,8 @@
 		<slot>
 			<form class="archive-asset-form" @submit="archiveAsset">
 				<AssetThumbnail :asset="asset" />
-				<p>If no one has unlocked this asset, it will be <strong>deleted entirely</strong></p>
-				<p>If anyone has unlocked this asset, it will be <strong>hidden from future searches</strong></p>
+				<p>If no one has purchased this asset, it will be <strong>deleted entirely</strong></p>
+				<p>If anyone has purchased this asset, it will be <strong>hidden from future searches</strong></p>
 				<input type="text" v-model="confirmText" placeholder="Type DELETE to confirm"/>
 
 				<button :disabled='deleteDisabled' type="submit" class="create">
