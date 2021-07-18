@@ -23,6 +23,7 @@
 			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li class="account-actions">
 					<template v-if="isLoggedIn">
+						<UserCoins />
 						<a class="logout-button" @click="logout">Logout</a>
 						<figure class="member-avatar">
 							<i class="ci-user"></i>
@@ -108,11 +109,13 @@ import {Toast} from "~/store";
 import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/modules/users/user-types"
 import {UserTracking} from "~/modules/users/user-tracking"
+import UserCoins from "~/modules/users/components/UserCoins.vue";
 
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
-		Modals: Modals
+		Modals: Modals,
+		UserCoins: UserCoins
 	}
 })
 export default class Default extends Vue {

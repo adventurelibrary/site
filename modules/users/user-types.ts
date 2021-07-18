@@ -4,4 +4,5 @@ export type User = {
 	is_creator: boolean
 	email: string
 	username: string
+	num_coins: number
 }

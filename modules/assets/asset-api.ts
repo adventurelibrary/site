@@ -3,7 +3,7 @@ import {
 	AssetFormData,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
+	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection, UnlockAssetResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../../lib/ajax";
 import {ActiveUpload} from "~/modules/assets/asset-uploads";
@@ -255,8 +255,11 @@ export async function syncAssets () {
 
 // When a user wants to unlock an asset by spending their coins on it, so that they can download
 // the asset
-export async function unlockAsset (assetId: string) {
-	return true
+export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
+	console.log('unlocking', assetId)
+	return {
+		numCoins: 12
+	}
 	//return await api.post(`/assets/${assetId}/unlock`)
 }
 

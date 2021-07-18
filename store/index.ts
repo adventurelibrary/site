@@ -16,6 +16,7 @@ type State = {
 	breadcrumbs: any[],
 	createBundleAsset: Asset | null
 	editBundle: Bundle | null,
+	userCoins: number,
 	login: {
 		working: boolean,
 		error: string
@@ -79,6 +80,7 @@ export const state = () : State => {
 		editAsset: null,
 		toasts: [],
 		user: null,
+		userCoins: 0,
 		userTracking: {
 			id: "",
 			sessionId: "",
@@ -108,6 +110,10 @@ export const mutations = {
 	},
 	userTrackingPath (state: State, path: string) {
 		state.userTracking.activePath = path
+	},
+	userCoins (state: State, numCoins: number) {
+		console.log('numCoins to set to', numCoins)
+		state.userCoins = numCoins
 	},
 	breadcrumbs (state: State, crumbs: any[]) {
 		crumbs.unshift({
@@ -323,10 +329,17 @@ export const actions = {
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
+		console.log('user', user)
 		commit('user', user)
+		if (user) {
+			commit('userCoins', user.num_coins)
+		} else {
+			commit('userCoins', 0)
+		}
 	},
-	async unlockAsset ({commit, dispatch} : ActionParams, {asset} : {asset: Asset}) {
-		await unlockAsset(asset.id)
+	async unlockAsset ({commit} : ActionParams, {asset} : {asset: Asset}) {
+		const result = await unlockAsset(asset.id)
+		commit('userCoins', result.numCoins)
 	}
 }
 
