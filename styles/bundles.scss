@@ -1,0 +1,234 @@
+.modal.bundle-add-assets-modal {
+	@include medium { width: 45em; }
+	min-height: 50vh;
+
+	$size: 12em;
+	$gap: 1em;
+	$rows: 3;
+	$cols: 3;
+
+	.modal-body {
+		gap: 1em;
+		grid-template-rows: 2.5em auto;
+
+		.asset-search {
+			z-index: 1;
+			gap: .5em;
+		}
+	}
+
+	[role="loading-container"] {
+		display: block;
+	}
+
+	.results {
+		display: grid;
+		grid-template-columns: repeat($cols, $size);
+		grid-auto-rows: $size;
+		grid-auto-flow: row;
+		gap: $gap;
+
+		margin: 0;
+		padding: 0 1em;
+
+		max-height: ($size * $cols) + ($gap * ($rows - 1));
+		overflow-y: scroll;
+
+		.result {
+			display: grid;
+			position: relative;
+			grid-template-rows: 1fr 1.5em 1.2em;
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				"image"
+				"title"
+				"category";
+
+			border-radius: .4em;
+
+			.thumbnail {
+				grid-row: image-start / -1;
+				grid-column: image-start / image-end;
+				background: $asset-card-background;
+			}
+			h3, h4 {
+				margin: 0;
+				padding: 0 .5em;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				background-color: $asset-card-meta;
+			}
+			h3 {
+				font-size: 1em;
+				grid-area: title;
+			}
+			h4 {
+				font-size: .8em;
+				font-style: italic;
+				font-weight: normal;
+				grid-area: category;
+				text-align: right;
+			}
+			.asset-action {
+				margin: 0;
+				position: absolute;
+				top: .5em;
+				right: .5em;
+
+				button { padding: .25em; }
+			}
+		}
+	}
+}
+
+.modal.add-asset-to-bundle {
+	@include medium { width: 45em; }
+
+	.modal-body {
+		grid-template-rows: 2em 2em auto 2em;
+		grid-template-columns: auto auto;
+		grid-template-areas:
+			"heading create"
+			"filter ."
+			"list list"
+			". controls";
+		gap: 1em;
+
+		h1 {
+			grid-area: heading;
+			font-size: 1.5em;
+		}
+	}
+
+	.filter {
+		grid-area: filter;
+	}
+	.loading-container {
+		grid-area: list;
+	}
+	button {
+		justify-self: end;
+	}
+	button.create {
+		grid-area: create;
+	}
+	button.add {
+		grid-area: controls;
+	}
+}
+
+.modal.edit-bundle {
+	@include medium { width: 45em; }
+
+	.modal-body form {
+		display: grid;
+		grid-template-rows: 1fr auto 1fr auto auto;
+	}
+
+	textarea {
+		min-height: 8em;
+	}
+}
+
+.create-bundle-asset-item {
+	display: flex;
+	align-items: center;
+
+	.thumbnail {
+		flex: 40px 0 0;
+		height: 40px;
+		margin-right: 0.5em;
+	}
+}
+
+.bundle-selector {
+	display: grid;
+	grid-auto-rows: 5.5em;
+	gap: 1em;
+	user-select: none;
+	max-height: 50vh;
+	overflow-y: auto;
+
+	.bundle {
+		display: grid;
+		grid-template-columns: 2em max-content 1fr 6em;
+		grid-template-rows: 1fr 1fr;
+		grid-template-areas:
+			"circle title link image"
+			"circle description . image";
+
+		align-items: center;
+		column-gap: .5em;
+		cursor: pointer;
+
+		border: 2px solid $gray4;
+		border-radius: 3px;
+
+		padding: 0 1em;
+
+		&:hover {
+			background: $black6;
+		}
+	}
+	.fake-image {
+		justify-self: end;
+	}
+
+	.title, .link { align-self: end; }
+	.description { align-self: start; }
+
+	.circle { grid-area: circle; }
+	.title { grid-area: title; }
+	.description {
+		grid-area: description;
+		font-size: .8em;
+	}
+	img {
+		place-self: stretch;
+		object-fit: cover;
+		grid-area: image;
+	}
+	.link {
+		grid-area: link;
+		color: currentColor;
+		text-decoration: underline;
+		justify-self: start;
+	}
+}
+
+.bundles-list {
+	display: grid;
+	grid-template-columns: repeat(2, 18em);
+	grid-auto-rows: 18em;
+	gap: 1em;
+
+	@include medium { grid-template-columns: repeat(3, 18em); }
+}
+
+.bundle-card {
+	border-radius: .5em;
+	overflow: hidden;
+	display: grid;
+
+	> a {
+		display: grid;
+		place-content: center;
+		color: $white;
+		font-size: 1.2em;
+		text-decoration: none;
+		background: #333;
+		background-size: cover;
+
+		&:hover > span {
+			background: $cta-blue-light;
+		}
+
+		> span {
+			padding: 0.5em;
+			background: rgba(0,0,0,0.5);
+			display: block;
+			border-radius: .5em;
+		}
+	}
+}

@@ -1,29 +1,33 @@
 <template>
-	<div class="d-flex">
-		<form ref="fileform" class="p-2" style="flex: 0 0 50%;">
-			<input type="file" multiple @change="fileInputChanged" />
-      <AssetFilePreview :file="asset.file" />
-			<div class="drop-files" style="border: 1px solid #ccc; padding: 5em; text-align: center;">Current file: {{asset.file.name}} {{asset.file.size}}<br />Drop Here to replace</div>
-		</form>
-		<div class="p-2" style="flex: 0 0 50%;">
+	<li class="new-asset">
+		<form ref="fileform" class="new-asset-file">
+			<div class="drop-files">
+				<div class="preview">
+					<AssetFilePreview :file="newAsset.file" />
+				</div>
+				<h4>Drag &amp; drop replacement file here.</h4>
+				<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
+			</div>
 			<AssetFields
-					:asset="asset"
-					v-on:assetChanged="assetChanged"
+				:asset="newAsset.asset"
+				v-on:assetChanged="assetChanged"
+				:hide-visibility="true"
 			/>
-		</div>
-	</div>
+		</form>
+	</li>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {stopEvents} from "~/lib/file-helpers";
-import {NewAsset} from "~/lib/assets/asset-types";
+import {NewAsset} from "~/modules/assets/asset-types";
 import AssetFields from "./AssetFields.vue";
 import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
+import {ACCEPTED_IMAGE_TYPES} from "~/modules/assets/asset-consts";
 
 export default Vue.extend({
 	name: 'NewAsset',
 	props: {
-		asset: {
+		newAsset: {
 			type: Object as PropType<NewAsset>,
 			required: true
 		}
@@ -32,14 +36,17 @@ export default Vue.extend({
     AssetFilePreview,
 		AssetFields: AssetFields,
 	},
-
+	data () {
+		return {
+			acceptedImageTypes: ACCEPTED_IMAGE_TYPES
+		}
+	},
 	mounted () {
 		const fileform = this.$refs.fileform as any
 		stopEvents(fileform)
 		fileform.addEventListener('drop', (e: any) => {
 			this.changeFiles(e.dataTransfer.files)
 		})
-    console.log('this asset file', this.asset.file)
 	},
 	methods: {
 		updateFile (file: any) {

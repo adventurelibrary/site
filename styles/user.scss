@@ -1,0 +1,136 @@
+.user-profile {
+	@include medium { min-width: 55em; }
+
+	$image-dims: 8em;
+
+	display: grid;
+	grid-template-rows: $image-dims 4em auto;
+	grid-template-columns: auto;
+	grid-template-areas: 
+		"profile"
+		"nav"
+		"body";
+
+	gap: 1.5em;
+
+	.profile-details {
+		grid-area: profile;
+		display: grid;
+		grid-template-columns: $image-dims auto;
+		grid-template-rows: 1fr 1fr;
+		grid-template-areas:
+			"image name"
+			"image details";
+
+		column-gap: 1.5em;
+		row-gap: 1.2em;
+
+		line-height: 1em;
+		
+		.profile-image {
+			grid-area: image;
+			background-color: white;
+			border-radius: 50%;
+			place-self: stretch;
+		}
+		.username {
+			grid-area: name;
+			align-self: end;
+			font-size: 2em;
+		}
+		.user-meta {
+			grid-area: details;
+			align-self: start;
+			display: grid;
+			grid-auto-flow: column;
+			justify-content: start;
+			gap: 1ch;
+
+			li { 
+				padding: 0;
+				display: grid;
+
+				&:not(:first-of-type) {
+					border-left: 1px solid currentColor;
+					padding-left: 1ch;
+				}
+			}
+		}
+	}
+	.tabs {
+		grid-area: nav;
+		background: $black4;
+		padding: .5em;
+		display: flex;
+		align-items: center;
+		gap: 1ch;
+
+		.upgrade {
+			margin-left: auto;
+			text-decoration: none;
+		}
+	}
+	.tab-control {
+		padding: .75em 1em;
+		border-radius: .25em;
+		color: currentColor;
+		text-decoration: none;
+		text-align: center;
+		display: grid;
+		place-content: center;
+
+		&.active { background-color: $black-trans; }
+	}
+	.tab {
+		grid-area: body;
+		background: $black4;
+		display: none; 
+		padding: 1em;
+
+		&.active { display: grid; }
+	}
+
+	.inventory {
+		grid-template-rows: 3em auto;
+	}
+
+	.view-toggle {
+		display: grid;
+		justify-self: center;
+		grid-template-columns: 1fr 1fr;
+		gap: em;
+		background-color: $black-trans;
+
+		border-radius: 1.5em;
+		place-items: stretch;
+
+		.toggle {
+			font-size: 1.2em;
+			color: currentColor;
+			text-decoration: none;
+			border-radius: 1.5em;
+			display: grid;
+			place-content: center;
+			padding: 0 1ch;
+
+			&.active { background-color: $cta-blue-light; }
+		}
+	}
+}
+
+.page-user-assets {
+	.assets {
+		--cell-size: 14em;
+		--columns: 2;
+		@include medium { 
+			--cell-size: 18em;
+			--columns: 3;
+		}
+
+		display: grid;
+		grid-template-columns: repeat(var(--columns), var(--cell-size));
+		grid-auto-rows: var(--cell-size);
+		grid-auto-flow: row;
+		gap: 1em;
+	}
+}

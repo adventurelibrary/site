@@ -1,1 +1,63 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+@import "variables";
+
+@import "media-queries";
+
+@import "base-page";
+@import "upload";
+@import "search";
+@import "modal";
+@import "controls";
+@import "item-page";
+@import "asset";
+@import "bundle";
+@import "bundles";
+@import "toasts";
+@import "layout";
+@import "asset";
+@import "user";
+
 /* SCSS */
+
+.home-page {
+	.page-header img {
+		min-width: 50vw;
+		max-width: 95vw;
+	}
+}
+
+.pagination {
+	ol {
+		display: grid;
+		grid-auto-flow: column;
+		gap: 1ch;
+		padding: 0;
+		margin: 0;
+
+		li {
+			display: grid;
+		}
+		a {
+			color: currentColor;
+		}
+	}
+}
+.body {
+	::-webkit-scrollbar,
+	::-webkit-scrollbar-track,
+	::-webkit-scrollbar-track-piece {
+		background-color: $black8;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: $black-teal;
+		border: 1px solid darken($black-teal, 5);
+	}
+}
+
+[role="loading-container"] {
+	display: grid;
+}

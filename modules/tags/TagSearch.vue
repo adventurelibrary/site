@@ -1,25 +1,25 @@
 <template>
 	<div class="tag-search">
-		<div v-if="shownResults.length == 0">
-			<div v-if="query.length">Can't find any tags</div>
-			<div v-else>Type to search for tags</div>
-		</div>
-		<div class="items">
-			<div v-for="(tag, idx) in shownResults"
+		<ul class="action-list items" v-if="shownItems.length">
+			<li v-for="(tag, idx) in shownItems"
 				:key="tag.key"
-				class="btn"
-				:class="{'btn-primary': activeItem === idx}"
+				class="action"
+				:class="{'active': activeItem === idx}"
 				@click="() => clickTag(tag)">
 				{{tag.label}}
-			</div>
+			</li>
+		</ul>
+		<div v-else>
+			<span v-if="query.length">Can't find any tags</span>
+			<span v-else>Type to search for tags</span>
 		</div>
 	</div>
 </template>
 <script lang="ts">
-import {Component, Watch} from "nuxt-property-decorator";
-import {AssetTag} from "~/lib/assets/asset-types";
+import {Component, Watch, Prop} from "nuxt-property-decorator";
+import {AssetTag} from "~/modules/assets/asset-types";
 import SearchArrowNavMixin from "~/mixins/SearchArrowNavMixin.vue";
-import {AssetTags} from "~/lib/assets/asset-consts";
+import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 
 @Component({
 	mixins: [SearchArrowNavMixin]
@@ -27,6 +27,9 @@ import {AssetTags} from "~/lib/assets/asset-consts";
 export default class TagSearch extends SearchArrowNavMixin {
 	error : string = '';
 	items : AssetTag[] = [];
+
+	@Prop()
+	exclude : string[];
 
 	@Watch('query')
 	queryWatch () {
@@ -41,7 +44,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 	// Right now it's just grabbing the first four, but in the future
 	// we can prioritize based on which tags are most popular
 	getFeaturedTags () : AssetTag[] {
-		const clone = AssetTags.slice()
+		const clone = ASSET_TAGS.slice()
 		const maxLen = Math.min(clone.length, 4)
 		return clone.splice(0, maxLen)
 	}
@@ -59,8 +62,27 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 			return
 		}
-		this.items = AssetTags.filter((tag: AssetTag) : boolean => {
-			return tag.label.toLowerCase().indexOf(this.query.toLowerCase()) >= 0
+		const query = this.query.toLowerCase()
+		console.log('query', query)
+		this.items = ASSET_TAGS.filter((tag: AssetTag) : boolean => {
+			const lablMatch = tag.label.toLowerCase().indexOf(query) >= 0
+			console.log('labelMatch', lablMatch)
+			if (lablMatch) {
+				return true
+			}
+
+			for (let i = 0; i < tag.aliases.length; i++) {
+				const alias = tag.aliases[i]
+				console.log('alias', alias)
+				if (!alias) {
+					continue
+				}
+				if (alias.toLowerCase().indexOf(query) >= 0) {
+					return true
+				}
+			}
+
+			return false
 		})
 
 		this.activeItem = 0
@@ -71,22 +93,24 @@ export default class TagSearch extends SearchArrowNavMixin {
 	}
 
 	selectItem (idx: number) {
-		this.clickTag(this.shownResults[idx])
+		this.clickTag(this.shownItems[idx])
 	}
 
 	// The shown results are the filtered tags, which have been search through
 	// MINUS the tags that are already in our list of filters
-	get shownResults () : AssetTag[] {
-		const filtered = this.items.filter((tag: AssetTag) => {
+	get shownItems () : AssetTag[] {
+		return this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]
-				if (f.type === 'tag' && f.value === tag.key) {
+				if (f.type === 'tag' && f.value === tag.id) {
 					return false
 				}
 			}
+			if (this.exclude.indexOf(tag.id) >= 0) {
+				return false
+			}
 			return true
 		})
-		return filtered
 	}
 }
 </script>

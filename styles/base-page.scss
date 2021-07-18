@@ -1,8 +1,21 @@
 .site-body {
 	display: grid;
-	grid-template-rows: 25em 1fr;
+	//
+	padding: 1em 0;
+	justify-content: center;
+	display: grid;
+
+	> article {
+		display: grid;
+		max-width: var(--body-width);
+	}
+
+	.page-wrapper {
+		display: grid;
+	}
 
 	.page-header {
+		height: 25em;
 		display: grid;
 		justify-items: center;
 		justify-content: center;
@@ -15,4 +28,9 @@
 			margin: 0;
 		}
 	}
+}
+
+.page-container {
+	display: block;
+	width: 100%;
 }

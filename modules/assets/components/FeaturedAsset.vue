@@ -1,7 +1,7 @@
 <template>
   <div class="asset featured">
     <div class="meta">
-      <h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
+      <h3><AssetLink :asset="asset">{{asset.name}}</AssetLink></h3>
       <div>
         {{asset.description}}
       </div>
@@ -11,7 +11,7 @@
 <script lang="ts">
 import {Component, Prop} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
 
 @Component({

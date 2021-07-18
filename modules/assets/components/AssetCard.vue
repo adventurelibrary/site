@@ -1,34 +1,69 @@
 <template>
-	<div class="asset">
-		<div class="thumbnail" :style="`background-image: url(${asset.thumbnailSrc});`">
-		</div>
+	<li class="asset-card">
+		<AssetLink :asset="asset" class="link">
+			<!-- This Element Intentionally Left Empty -->
+		</AssetLink>
+		<AssetThumbnail :asset="asset" />
 		<div class="meta">
-			<h3><AssetLink :asset="asset">{{asset.title}}</AssetLink></h3>
-			<div>
+			<h3 class="title">
+				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
+			</h3>
+			<h4 class="author">
+				<span class="author-label">by</span>
+				<span>
+					<!-- Should be a profile link -->
+					{{asset.creator_name}}
+				</span>
+			</h4>
+<!--			<figure class="pricing">
+				<h4 class="coin-price">
+					<span class="amount">&lt;!&ndash;{{asset.price}}&ndash;&gt;$$</span>
+					<span class="currency">Coins</span>
+				</h4>
+			</figure>-->
+			<div class="description">
 				{{asset.description}}
 			</div>
-			<div>
-				<span class="badge badge-primary">{{type.singular}}</span><span class="badge badge-success ml-1" v-for="(tag, idx) in asset.tags">
-					{{tag.label}}
-				</span>
+			<slot name="extra-details"></slot>
+			<div class="search-meta">
+				<Category :category="asset.category" />
+				<TagList :tags="asset.tags" />
 			</div>
 		</div>
-	</div>
+		<figure class="asset-actions">
+			<AssetDownload :asset="asset" />
+			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
+			<slot name="extra-actions"></slot>
+		</figure>
+	</li>
 </template>
 <script lang="ts">
-import {Component, Prop, Watch} from "nuxt-property-decorator";
+import {Component, Prop, Getter, Watch} from "nuxt-property-decorator";
 import Vue from "vue";
-import {Asset, AssetType} from "~/lib/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
-import {getAssetType} from "~/lib/assets/asset-helpers";
+import {getCategory} from "~/modules/categories/categories-api";
+import Category from "~/modules/categories/components/Category.vue";
+import TagList from "~/modules/tags/TagList.vue";
+import {Category as CategoryType} from "~/modules/categories/categories-types"
+import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
+import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundleButton.vue";
+import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 
 @Component({
 	components: {
-		AssetLink: AssetLink
+		AssetLink: AssetLink,
+		Category: Category,
+		TagList: TagList,
+		AssetDownload: AssetDownload,
+		AssetAddToBundle: AssetAddToBundleButton,
+		AssetThumbnail: AssetThumbnail
 	}
 })
 class AssetCard extends Vue {
-	type : AssetType | null
+	category : CategoryType | null
+
+	@Getter('isLoggedIn') isLoggedIn : boolean
 
 	@Prop() asset : Asset
 
@@ -36,30 +71,8 @@ class AssetCard extends Vue {
 		immediate: true
 	})
 	typeChanged () {
-		this.type = getAssetType(this.asset.type)
+		this.category = getCategory(this.asset.category)
 	}
 }
 export default AssetCard
 </script>
-<style>
-.asset {
-	display: flex;
-	align-items: flex-start;
-	padding: 0.25em;
-	border: 1px solid #ccc;
-}
-
-.asset .thumbnail {
-	background: #ccc;
-	border: 1px solid #333;
-	width: 100px;
-	height: 100px;
-	flex: 0 0 100px;
-	background-size: cover;
-	background-position: center;
-}
-
-.asset .meta {
-	margin-left: 0.75em;
-}
-</style>

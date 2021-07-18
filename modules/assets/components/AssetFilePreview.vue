@@ -1,5 +1,5 @@
 <template>
-  <img class="preview" width="100" height="100" alt="Preview" />
+  <img class="preview" alt="Preview" />
 </template>
 <script lang="ts">
 import Vue from "vue"

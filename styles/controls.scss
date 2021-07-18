@@ -1,0 +1,80 @@
+.site-body, .modal-container {
+	label {
+		color: $text-color;
+		font-size: .75em;
+		display: grid;
+	}
+	input, textarea {
+		background-color: $input-background;
+		border: 2px solid $input-border;
+		color: $input-text;
+		padding: .5em;
+		border-radius: .25em;
+	}
+	button, a.button, label.button {
+		display: inline-grid;
+		place-items: center;
+		padding: .75em;
+		font-weight: bold;
+		font-size: 1em;
+		line-height: 1em;
+		color: $button-text;
+		background-color: $button-light;
+		text-transform: uppercase;
+		text-align: center;
+		border: none;
+		cursor: pointer;
+		transition: background-color .5s, text-shadow 1s;
+
+		&:hover {
+			text-shadow: 0 0 1px currentColor;
+			background-color: $button-dark;
+		}
+
+		&.basic {
+			background: none;
+			border: 1px solid $white;
+		}
+
+		&:disabled {
+			opacity: 0.75;
+		}
+	}
+	select {
+		background: $select-background;
+		color: white;
+		border: 1px solid $select-border;
+		padding: .5em 1.5ch;
+
+		&:active, &:focus, &:focus-visible, &:focus-within {
+			box-shadow: 0 0 3px $select-border;
+			outline: none;
+		}
+	}
+	.circle {
+		border-radius: 50%;
+		height: 20px;
+		width: 20px;
+		border: 2px solid $gray;
+
+		&:hover {
+			border: 2px solid $button-dark;
+		}
+	}
+
+	.active .circle {
+		border: 2px solid $button-dark;
+		background: $button-light;
+
+		&:hover {
+			background: $button-dark;
+		}
+	}
+}
+
+.form-errors {
+	border: 2px solid red;
+	background: $white2;
+	padding: 0.5em;
+	color: $black8;
+}

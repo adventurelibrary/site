@@ -1,49 +1,78 @@
 <template>
-	<div>
+	<section class="asset-fields basic-form">
 		<Input
-				label="Title"
-				v-bind:value="copy.title"
-				v-on:input="(val) => fieldChanged('title', val)"
+			label="Title"
+			:value="copy.name"
+			v-on:input="(val) => fieldChanged('name', val)"
 		/>
 		<Textarea
-				label="Description"
-				v-bind:value="copy.description"
-				v-on:input="(val) => fieldChanged('description', val)"
+			label="Description"
+			:value="copy.description"
+			v-on:input="(val) => fieldChanged('description', val)"
 		/>
-		<TypeSelect
-				label="Type"
-				v-bind:value="copy.type"
-				v-on:input="(val) => fieldChanged('type', val)"
+		<FormGroup label="Tags" class="advanced">
+			<TagsInput
+				v-model="copy.tagObjects"
+				/>
+		</FormGroup>
+		<CategorySelect
+			label="Type"
+			:value="copy.category"
+			v-on:input="(val) => fieldChanged('category', val)"
 		/>
-	</div>
+		<Select
+			v-if="!hideVisibility"
+			label="Visibility"
+			:options="visOptions"
+			:value="copy.visibility"
+			v-on:input="(val) => fieldChanged('visibility', val)" />
+	</section>
 </template>
 
 <script lang="ts">
 import Vue, {PropType} from "vue"
-import {Asset} from "~/lib/assets/asset-types";
-import Input from "~/components/forms/Input.vue";
+import {AssetFormData} from "~/modules/assets/asset-types";
+import Input from "~/components/forms/InputGroup.vue";
 import Textarea from "~/components/forms/Textarea.vue";
-import AssetTypeSelect from "./AssetTypeSelect.vue";
+import AssetCategorySelect from "~/modules/categories/components/CategorySelect.vue";
+import TagsInput from "~/components/forms/TagsInput.vue";
+import FormGroup from "~/components/forms/FormGroup.vue";
+import Select from "~/components/forms/SelectGroup.vue";
+import {VisibilityOptions} from "~/modules/assets/asset-consts";
+import {SelectOption} from "~/lib/helpers";
 
-export const fieldNames = ['title', 'description', 'type']
+export const fieldNames = ['name', 'description', 'type']
 
+// This component is used to edit the data on an asset.
+// The asset might be one that already exists in our db and is being updated
+// or it might be a new asset that is about to be uploaded
 export default Vue.extend({
 	props: {
 		asset: {
-			type: Object as PropType<Asset>,
+			type: Object as PropType<AssetFormData>,
 			required: true
+		},
+		hideVisibility: {
+			type: Boolean,
+			required: false,
+			default: false
 		}
 	},
 	components: {
 		Input: Input,
 		Textarea: Textarea,
-		TypeSelect: AssetTypeSelect
+		CategorySelect: AssetCategorySelect,
+		TagsInput: TagsInput,
+		FormGroup: FormGroup,
+		Select: Select
 	},
 	data () : {
-		copy: any
+		copy: any,
+		visOptions: SelectOption[]
 	} {
 		return {
-			copy: {}
+			copy: {},
+			visOptions: VisibilityOptions
 		}
 	},
 	watch: {

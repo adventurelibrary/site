@@ -1,0 +1,154 @@
+@import "color";
+
+.page-upload-as-id .site-body {
+	grid-template-columns: auto;
+	grid-template-rows: min-content min-content auto;
+	grid-template-areas:
+		"header"
+		"controls"
+		"upload";
+		
+	row-gap: 2.5em;
+	column-gap: 5em;
+
+	@include medium {
+		grid-template-columns: auto auto;
+		grid-template-rows: min-content auto;
+		grid-template-areas:
+			"header controls"
+			"upload upload";
+		
+		.upload-controls { justify-self: end; }
+	}
+
+	.upload-header {
+		grid-area: header;
+	}
+	.upload-controls {
+		grid-area: controls;
+		display: grid;
+		grid-auto-flow: column;
+		place-items: center;
+		gap: 1em;
+	}
+	.upload-form {
+		grid-area: upload;
+		border-top: 1px solid $dark-gray;
+		padding-top: 2.5em;
+		display: grid;
+		gap: 2.5em;
+
+		.upload-list {
+			display: grid;
+			gap: 2.5em;
+		}
+		
+		.new-asset {
+			display: grid;
+		}
+
+		.new-asset-file {
+			display: grid;
+			grid-template-columns: 24em;
+			grid-template-rows: 24em auto;
+			row-gap: 2.5em;
+			column-gap: 5em;
+
+			@include medium {
+				grid-template-columns: 24em minmax(24em, auto);
+				grid-template-rows: 24em;
+			}
+		}
+
+		.drop-files {
+			border: .25em dashed $dark-gray2;
+			border-radius: 2.5em;
+			padding: .5em;
+			display: grid;
+			place-content: center;
+
+			grid-template-rows: 1fr 1fr;
+			grid-template-columns: 1fr;
+			justify-items: center;
+
+			h4, input {
+				grid-column: 1 / -1;
+				visibility: hidden;
+			}
+			&:hover { 
+					h4, input {
+					visibility: visible;
+				}
+			}
+			&.start { 
+				padding: 2.5em;
+
+				h4, input {
+					visibility: visible;
+				}
+			}
+			h4 { 
+				grid-row: 1 / 2; 
+				align-self: end;
+				margin: none;
+			}
+			input { 
+				grid-row: 2 / -1;
+				align-self: start;
+			}
+			img.preview {
+				object-fit: contain;
+				border-radius: 2.5em;
+				max-width: 100%;
+				max-height: 100%;
+			}
+			div.preview {
+				grid-row: 1 / -1;
+				grid-column: 1 / -1;
+				display: grid;
+			}
+		}
+		.asset-fields {
+			display: grid;
+			align-content: start;
+		}
+	}
+	.upload-status, .upload-errors {
+		grid-area: upload;
+	}
+}
+/*
+input.file {
+	display: none;
+}
+
+label.btn.btn-add-file {
+	background: transparent;
+	border: 2px solid $color-secondary;
+	padding: 5px;
+	color: white;
+}
+
+.new-asset-file,
+.new-asset-fields {
+	flex: 0 0 50%;
+}
+
+.new-asset-fields {
+	padding-left: 1em;
+}
+
+.new-asset-file {
+	padding-right: 1em;
+	text-align: center;
+}
+
+.new-asset-file img {
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.new-asset-file .drop-files {
+	padding: 1em;
+}
+*/

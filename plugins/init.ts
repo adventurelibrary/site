@@ -1,5 +1,3 @@
-import {setBaseURL} from "~/lib/api";
-
-export default function () {
-	setBaseURL(<string>process.env.ADVL_BASE_URL)
-}
+import Vue from 'vue'
+import S from "~/components/S.vue"
+Vue.component('s', S)

@@ -1,79 +1,41 @@
 <template>
-	<section class="container">
-		<section class="hero">
-			<AssetSearch :options="searchOptions" v-on:submit="submitSearch" />
+	<div class="page-wrapper header-page home-page">
+		<!--header class="page-header">
+			<img src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+			<h2>Featured Assets</h2>
+		</header-->
+		<section class="featured-assets search-page">
+			<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+				<ul class="search-results">
+					<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
+				</ul>
+			</LoadingContainer>
 		</section>
-		<section class="featured-assets">
-			<h3>Featured Assets!!! ({{numFeatured}})</h3>
-			<div>
-				<FeaturedAsset v-for="asset in featured" :asset="asset" :key="asset.slug" />
-			</div>
-		</section>
-	</section>
+	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
-import {Asset, AssetSearchOptions} from "~/lib/assets/asset-types";
-import {getFeaturedAssets} from "~/lib/assets/asset-api";
-import {Context} from "@nuxt/types";
+import {Asset} from "~/modules/assets/asset-types";
+import {getFeaturedAssets} from "~/modules/assets/asset-api";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
-import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
-import {assetSearchOptionsToQuery, newSearchOptions} from "~/lib/assets/asset-helpers";
+import AssetCard from "~/modules/assets/components/AssetCard.vue";
 
 @Component({
 	components: {
 		FeaturedAsset,
-		AssetSearch,
+		AssetCard:AssetCard,
 	}
 })
 class HomePage extends Vue {
-	public featured: Asset[]
-	public numFeatured : number
-	public searchOptions : AssetSearchOptions = newSearchOptions()
+	public featured: Asset[] = []
 
-	async asyncData() {
+	async fetch () {
 		const assetsRes = await getFeaturedAssets()
-		return {
-			numFeatured: assetsRes.total,
-			featured: assetsRes.results
-		}
-	}
-
-	submitSearch (options: AssetSearchOptions) {
-		this.$router.push({
-			name: 'assets',
-			query: assetSearchOptionsToQuery(options)
-		})
+		this.featured = assetsRes.assets
 	}
 }
 
 export default HomePage
 </script>
-
-<style>
-.asset-search {
-	margin: 1em;
-	padding: 1em;
-	border: 1px solid #ccc;
-	background: #E0E0E0;
-}
-
-.hero {
-	padding: 2em 0;
-}
-
-.hero .titles {
-	text-align: center;
-}
-
-.titles h1 {
-	font-size: 36px;
-}
-
-.titles h2 {
-	font-size: 26px;
-}
-
-</style>

@@ -1,24 +1,28 @@
-
-$media-medium: 700px;
-$media-large: 1220px;
-
 :root {
-	--header-width: 98vw;
+	--search-width: 100vw;
 	--header-height: 4.5em;
+	--logo-width: 1fr;
 	
 	--body-width: 92vw;
-}
 
-@media (min-width: $media-medium) {
-	:root {
-		--header-height: 9em;
+	--search-tag-column-max: 1;
+
+	@include small {
+		--search-tag-column-max: 2;
 	}
-}
-@media (min-width: $media-large) {
-	:root {
-		--header-width: 1200px;
-
+	@include medium {
+		--header-height: 8.5em;
+		--search-width: 55em;
+		--search-tag-column-max: 3;
+		--logo-width: 8em;
+	}
+	@include normal {
+		--logo-width: 12em;
+	}
+	@include large {
 		--body-width: 1110px;
+		--search-tag-column-max: 4;
+		--logo-width: 12em;
 	}
 }
 
@@ -28,7 +32,7 @@ body {
 
 :root {
 	font-size: 16px;
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: "Poppins", sans-serif;
 
 	* {
 		box-sizing: border-box;
@@ -37,60 +41,235 @@ body {
 
 .body {
 	height: fit-content;
-	min-height: 100vh;
+	min-height: 101vh;
 	display: grid;
-	justify-items: center;
+	grid-template-rows: minmax(var(--header-height), auto) 1fr auto;
+	grid-template-areas:
+		"header"
+		"body"
+		"footer";
 
-	grid-template-rows: var(--header-height) 1fr min-content;
-
-	background-color: var(--color-background);
-	color: white;
+	background-color: $main-background;
+	color: $text-color;
 	margin: 0;
 }
 
+.site-header, .site-footer {
+	box-shadow: 0 0 3px $shadow-light;
+}
+
 .site-header {
-	grid-row: 1;
-	background-color: var(--color-primary);
+	position: relative;
+	grid-area: header;
+	background-color: $color-primary;
 	display: grid;
-	width: 100%;
-	height: 100%;
-	padding: .1em calc(calc(100% - var(--header-width)) / 2);
-	grid-template-rows: 1fr 1fr;
-	grid-template-columns: 3em 1fr 20ch;
+	justify-content: center;
+	align-items: center;
+	
+	grid-template-rows: 1fr;
+	grid-template-columns: var(--logo-width) 3em 3em;
+	grid-template-areas: 
+		"branding search-button menu-button";
+		
+	padding: .5em 2.5em;
+
+	@include medium {
+		grid-template-rows: auto auto;
+		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width));
+		grid-template-areas: 
+			"branding navigation"
+			"branding search    ";
+		
+		padding: 1em 2.5em;
+	}
+
+	column-gap: 1.2em;
+	z-index: 1;
+
+	a[href] {
+		color: currentColor;
+		text-decoration: none;
+	}
+
+	.branding {
+		margin: 0;
+		grid-area: branding;
+		display: grid;
+		
+		background-position: left;
+		background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
+	
+		@include medium {
+			background-position: center;
+			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
+		}
+
+		background-repeat: no-repeat;
+		background-size: contain;
+
+		align-self: stretch;
+
+		color: currentColor;
+
+		.site-name {
+			display: none;
+			@include small { font-size: 1.5em; }
+		}
+	}
+
+	.asset-search {
+		display: none;
+		width: var(--search-width);
+		min-height: 4.5em;
+		position: fixed;
+		z-index: 1;
+		top: 0px;
+		left: 0px;
+
+		@include medium {
+			display: grid;
+			position: relative;
+			grid-area: search;
+			min-height: 2.6em;
+			width: unset;
+			margin: .25em 0;
+		}
+	}
+
+	> button {
+		@include medium { display: none; }
+
+		font-size: 2em;
+		background: none;
+		border: none;
+		color: $button-text;
+		cursor: pointer;
+
+		&:hover {
+			filter: drop-shadow(0 0 2px currentColor);
+		}
+	}
+
+	.account-actions {
+		grid-auto-flow: column;
+		justify-content: start;
+		align-items: center;
+		column-gap: 1ch;
+
+		.member-avatar {
+			display: grid;
+			place-items: center;
+			margin: 0;
+			width: 2.65em;
+			height: 2.65em;
+			border-radius: 50%;
+			background-color: $main-teal;
+			overflow: hidden;
+			grid-template: 
+				"icon" 2.65em / 2.65em;
+
+			.ci-user {
+				grid-area: icon;
+				font-size: 1.25em;
+			}
+			img {
+				width: 100%;
+				height: 100%;
+				grid-area: icon;
+				object-fit: cover;
+			}
+		}
+	}
 
 	.main-navigation {
-		ul {
+		display: none;
+
+		&[visible] {
 			display: grid;
-			grid-auto-flow: column;
-			gap: 2em;
+		}
+
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100vw;
+		z-index: 1;
+
+		grid-auto-flow: row;
+		align-items: center;
+		
+		column-gap: 2em;
+		row-gap: 1em;
+		margin: 0;
+		padding: 1em 2em;
+
+		background-color: inherit;
+
+		@include medium {
+			position: static;
+			display: flex;
+			flex-wrap: wrap;
+			grid-area: navigation;
+			z-index: unset;
+			width: unset;
 			padding: 0;
 
-			li {
-				display: block;
-				white-space: nowrap;
+			.account-actions {
+				flex-grow: 1;
+				order: 2;
+				justify-content: end;
 			}
-			a {
-				color: var(--heading-color);
-				text-transform: uppercase;
-				text-decoration: none;
-			}
+		}
+
+		li {
+			display: grid;
+			white-space: nowrap;
+
+			@include medium { order: 1; }
+		}
+		a {
+			color: $heading-color;
+			text-transform: uppercase;
+			text-decoration: none;
+		}
+	}
+
+	&.menu-active {
+		.account-actions {
+			display: grid;
+		}
+		.main-navigation {
+			display: grid;
 		}
 	}
 }
 
+.shade[visible] {
+	display: grid;
+	@include medium { display: none; }
+
+	content: " ";
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, .5);
+	z-index: 1;
+}
+
 .site-body {
-	grid-row: 2;
-	width: var(--body-width);
+	grid-area: body;
 }
 
 .site-footer {
 	display: grid;
-	grid-row: 3;
-	background-color: var(--color-primary);
-	width: 100%;
-	padding: 0 calc(calc(100% - var(--body-width)) / 2);
+	grid-area: footer;
+	background-color: $color-primary;
+	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
+	padding: 0 2em 2em 2em;
+	row-gap: 2em;
 
 	.copyright-notice {
 		text-align: center;
@@ -98,12 +277,22 @@ body {
 	.footer-links ul, .social-media ul {
 		display: grid;
 		grid-auto-flow: column;
-		gap: 4em;
+		gap: 1em;
 		padding: 0;
 		justify-content: center;
+		align-items: center;
+
+		@include medium { gap: 3em; }
 
 		li {
-			display: block;
+			display: grid;
 		}
+		a {
+			color: currentColor;
+			text-decoration: none;
+		}
+	}
+	.social-media {
+		font-size: 1.5em;
 	}
 }

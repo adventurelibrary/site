@@ -1,7 +1,7 @@
-import {Asset, AssetSearchOptions, AssetTag} from "~/lib/assets/asset-types";
-import {newSearchOptions, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/lib/assets/asset-helpers";
-import {AssetSearchFilter, stringToFilterType} from "~/lib/assets/search-filters";
-import {AssetTags} from "~/lib/assets/asset-consts";
+import {AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
+import {newSearchOptions, SORT_DEFAULT_SIZE, SORT_DIR_DEFAULT, SORT_FIELD_DEFAULT} from "~/modules/assets/asset-helpers";
+import {AssetSearchFilter, stringToFilterType} from "~/modules/assets/search-filters";
+import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 
 export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	if (!$route) {
@@ -40,8 +40,8 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 			let label = suffix
 
 			if (type === 'tag') {
-				const tag = AssetTags.find((x : AssetTag) => {
-					return x.key === suffix
+				const tag = ASSET_TAGS.find((x : AssetTag) => {
+					return x.id === suffix
 				})
 				if (tag) {
 					label = tag.label
@@ -70,10 +70,24 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 		}
 	}
 
+	let pageS = $route.query.page
+	let page = 1
+
+	if (pageS) {
+		page = parseInt(pageS)
+		if (!page) {
+			page = 1
+		}
+	}
+	const size = SORT_DEFAULT_SIZE
+	const from = (page - 1) * size
+
 	return {
 		query: $route.query.search || '',
 		filters: filters,
 		sortField: sortField,
-		sortDirection: sortDirection
+		sortDirection: sortDirection,
+		from: from,
+		size: size
 	}
 }

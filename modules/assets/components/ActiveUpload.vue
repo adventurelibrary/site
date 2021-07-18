@@ -1,14 +1,14 @@
 <template>
-	<div class="uploading-asset" style="padding: 3em; font-size: 2em; text-align: center;">
-		<div><h3>{{upload.title}}</h3></div>
+	<div class="uploading-asset" style="">
+		<div class="preview">
+			<AssetFilePreview :file="upload.file" />
+		</div>
+		<h3>{{upload.title}}</h3>
 		<div v-if="upload.status === 'waiting'">Waiting...</div>
 		<div v-if="upload.status === 'signing'">Fetching signature...</div>
 		<div v-if="upload.status === 'signed'">Preparing upload...</div>
 		<div v-if="upload.status === 'uploading'">
-			Uploading ({{upload.progress}}%)<br />{{upload.signature}}
-			<div style="border: 1px solid black; height: 20px;">
-				<div :style="'background: black; float: left; height: 20px; width: ' + upload.progress + '%'"></div>
-			</div>
+			Uploading...
 		</div>
 		<div v-if="upload.status === 'complete'">Done!</div>
 		<div v-if="upload.status === 'error'">Error: {{upload.error}}</div>
@@ -16,10 +16,12 @@
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
-import {ActiveUpload} from "~/lib/assets/asset-uploads";
+import {ActiveUpload} from "~/modules/assets/asset-uploads";
+import AssetFilePreview from "~/modules/assets/components/AssetFilePreview.vue";
 
 export default Vue.extend({
 	name: 'ActiveUpload',
+	components: {AssetFilePreview},
 	props: {
 		upload: {
 			type: Object as PropType<ActiveUpload>,
@@ -28,7 +30,6 @@ export default Vue.extend({
 	},
 	watch: {
 		'upload.status' () {
-			console.log('status changed')
 		}
 	},
 	computed: {
@@ -38,3 +39,21 @@ export default Vue.extend({
 	}
 })
 </script>
+<style>
+.uploading-asset {
+	padding: 3em;
+	font-size: 2em;
+	text-align: center;
+	border: 1px solid #ccc;
+	margin: 0 0 1em 0;
+}
+
+.uploading-asset .preview {
+	height: 40px;
+}
+
+.uploading-asset .preview img {
+	max-height: 100%;
+	max-width: 100%;
+}
+</style>

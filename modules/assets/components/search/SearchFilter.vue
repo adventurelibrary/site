@@ -1,38 +1,30 @@
 <template>
-	<div class="" :class="classes" style="padding: 10px 8px;">
-		{{filter.label}}
-		<a class="p-0" style="color: black; margin-left: 3px;" @click="remove">
-			x
-		</a>
-	</div>
+	<li class="" :class="classes">
+		<span class="filter-type">{{filter.type}}</span>
+		<span class="filter-value">{{filter.label}}</span>
+		<a class="filter-delete" @click="remove"></a>
+	</li>
 </template>
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
-import {AssetSearchFilter} from "~/lib/assets/search-filters";
+import {AssetSearchFilter} from "~/modules/assets/search-filters";
 
 @Component
 export default class SearchFilter extends Vue {
 	@Prop() filter : AssetSearchFilter
 	@Prop() active : boolean
 
-	get badgeColor() : string {
-		if (this.filter.type === 'tag') {
-			return 'badge-success'
-		}
-		return 'badge-primary'
-	}
-
 	get classes () {
-		const classes = ['search-filter badge mr-1', this.badgeColor]
+		const classes = ["search-filter", this.filter.type]
 		if (this.active) {
-			classes.push('active')
+			classes.push("active")
 		}
 		return classes
 	}
 
 	remove () {
-		this.$emit('remove')
+		this.$emit("remove")
 	}
 }
 </script>

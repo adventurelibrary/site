@@ -1,66 +1,74 @@
 <template>
 	<form @submit="submit" class="asset-search">
-		<div class="query-container d-flex">
-			<input placeholder="Search"
-						type="text"
-						v-model="query"
-						role="query"
-						@keypress.enter="enter"
-						@keydown.up="keyUpLeftArrow"
-						@keydown.left="keyUpLeftArrow"
-						@keydown.right="keyDownRightArrow"
-						@keydown.down="keyDownRightArrow"
-						@keydown.delete="deleteKey"
-						@focus="inputFocused = true"
-						@blur="inputFocused = false"
+		<button class="search-trigger">
+			<img src="~/assets/coolicons/svg/edit/search.svg" alt="Search Now">
+		</button>
+		<ul class="search-filters">
+			<SearchFilter
+				v-for="(filter, idx) in searchFilters" :key="idx"
+				:filter="filter"
+				:active="idx === activeFilter"
+				@remove="() => removeFilter(idx)"
 			/>
-			<select v-model="sortField">
-				<option value="title">Title</option>
-				<option value="date">Date</option>
-			</select>
-			<select v-model="sortDirection">
-				<option value="asc">Asc</option>
-				<option value="desc">Desc</option>
-			</select>
-			<button>Go</button>
-		</div>
+		</ul>
+		<input placeholder="Search"
+			class="search-input"
+			type="text"
+			v-model="query"
+			role="query"
+			@keypress.enter="enter"
+			@keydown.up="keyUpArrow"
+			@keydown.down="keyDownArrow"
+			@keydown.delete="deleteKey"
+			@keydown.tab="tabKey"
+			@focus="onInputFocus"
+			@blur="onInputBlur"
+		/>
+		<figure class="order-select" title="Sort Order">
+			<button class="ascend"
+				@click="sortDirection = 'asc'">
+				<i class="ci-chevron_big_up"></i>
+			</button>
+			<button class="descend"
+				@click="sortDirection = 'desc'">
+				<i class="ci-chevron_big_down"></i>
+			</button>
+		</figure>
+		<select v-model="sortField" class="filter-select sort-select">
+			<option :value="'name'">Name</option>
+			<option :value="'date'">Date</option>
+		</select>
+
 		<div v-show="showDropdown" class="actions">
 			<div class="filter-container" v-show="showActionSuggestions">
+				<h3>Filter Options</h3>
 				<SearchActions
 					:bus="bus"
 					:filters="searchFilters"
 					:query="actionQuery"
 					:active="showActionSuggestions"
 					@action:clicked="actionClicked"
-					@prevBeyond="selectPreviousFilter"
 				/>
 			</div>
-			<div class="filter-container" v-show="action === 'type'">
-				<label>Types</label>
-				<TypeSelector
-					:bus="bus"
-          :filters="searchFilters"
-					:query="actionQuery"
-					:active="action === 'type'"
-					@type:clicked="typeClicked" />
-			</div>
-			<div class="filter-container" v-show="action === 'tag'">
-				<label>Tags</label>
-				<TagSearch
+			<div class="filter-container" v-show="action === 'category'">
+				<h3>Categories</h3>
+				<CategorySelector
 					:bus="bus"
 					:filters="searchFilters"
+					:query="actionQuery"
+					:active="action === 'category'"
+					@category:clicked="categoryClicked" />
+			</div>
+			<div class="filter-container" v-show="action === 'tag'">
+				<h3>Tags</h3>
+				<TagSearch
+					:bus="bus"
+					:filters="[]"
+					:exclude="excludedTags"
 					:query="actionQuery"
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
-		</div>
-		<div class="search-filters d-flex">
-			<SearchFilter
-					v-for="(filter, idx) in searchFilters" :key="idx"
-					:filter="filter"
-					:active="idx === activeFilter"
-					@remove="() => removeFilter(idx)"
-			/>
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -77,26 +85,26 @@ Show Actions: {{showActionSuggestions}}
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
-import {AssetSearchAction, AssetSearchOptions, AssetTag, AssetType} from "~/lib/assets/asset-types";
+import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetTypeToFilter, tagToFilter} from "~/lib/assets/search-filters";
-import TypeSelector from "~/modules/assets/components/search/TypeSelector.vue";
+import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/modules/assets/search-filters";
+import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
-import {stringToSortDirection} from "~/lib/assets/asset-helpers";
+import {newSearchOptions, stringToSortDirection} from "~/modules/assets/asset-helpers";
+import {Category} from "~/modules/categories/categories-types";
 
-const actions = ['tag', 'creator', 'type']
+const actions = ['category', 'creator', 'tag']
 
 @Component({
 	components: {
 		TagSearch,
-		TypeSelector,
+		CategorySelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
 	},
 })
 class AssetSearch extends Vue {
-	showAdvanced : boolean = true
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''
@@ -104,11 +112,14 @@ class AssetSearch extends Vue {
 	sortDirection : string;
 	bus : Vue = new Vue()
 	inputFocused = false;
+	inputFocusTimeout : NodeJS.Timeout
 
 	// The index of the active highlighted item from the child component
 	activeChildActiveItem : number
 
-	@Prop() options : AssetSearchOptions
+	@Prop({
+		default: newSearchOptions
+	}) options : AssetSearchOptions
 
 	enter (e : any) {
 		if (e) {
@@ -139,15 +150,21 @@ class AssetSearch extends Vue {
 	}
 
 	getSearchOptions () : AssetSearchOptions {
+		// TODO: Figure out if from/size are set here. They might be set in the parent component
 		return {
 			query: this.query.trim(),
 			filters: this.searchFilters,
 			sortField: this.sortField,
-			sortDirection: stringToSortDirection(this.sortDirection)
+			sortDirection: stringToSortDirection(this.sortDirection),
+			from: 0,
+			size: 0
 		}
 	}
 
 	created () {
+		if (!this.options) {
+			return
+		}
 		this.searchFilters = this.options.filters
 		this.query = this.options.query
 		this.sortField = this.options.sortField
@@ -176,7 +193,7 @@ class AssetSearch extends Vue {
 	}
 
 	get showActionSuggestions () : boolean {
-		return this.query.length === 0
+		return this.action === null
 	}
 
 	get action() : string | null {
@@ -207,9 +224,31 @@ class AssetSearch extends Vue {
 		return this.query
 	}
 
+	get excludedTags () : string[] {
+		const tags : string[] = []
+		this.searchFilters.forEach((sf) => {
+			if (sf.type === 'tag') {
+				tags.push(sf.value)
+			}
+		})
+
+		return tags;
+	}
+
 	actionClicked (action: AssetSearchAction) {
 		this.query = action.prefix + ':'
 		this.focusInput()
+	}
+
+	onInputFocus () {
+		clearTimeout(this.inputFocusTimeout)
+		this.inputFocused = true
+	}
+
+	onInputBlur () {
+		this.inputFocusTimeout = setTimeout(() => {
+			this.inputFocused = false
+		}, 100)
 	}
 
 	tagClicked (tag: AssetTag) {
@@ -218,8 +257,11 @@ class AssetSearch extends Vue {
 	}
 
 	// User has clicked on one of the types
-	typeClicked (assetType: AssetType) {
-		const filter = assetTypeToFilter(assetType)
+	categoryClicked (cat: Category) {
+		if (!cat) {
+			throw new Error('Bad category')
+		}
+		const filter = assetCategoryToFilter(cat)
 		this.toggleFilter(filter)
 	}
 
@@ -251,7 +293,7 @@ class AssetSearch extends Vue {
 		this.searchFilters.push(filter)
 		const find = filter.type + ':'
 		const idx = this.query.indexOf(find)
-		this.query = this.query.substr(0, idx-1) + ' '
+		this.query = this.query.substr(0, idx-1)
 	}
 
 	findFilter(filter: AssetSearchFilter) : number {
@@ -271,6 +313,12 @@ class AssetSearch extends Vue {
 		if (this.query.length) {
 			this.activeFilter = -1
 		}
+	}
+
+	tabKey (e: any) {
+		e.preventDefault()
+		this.emitTab(e)
+		return
 	}
 
 	deleteKey (e : any) {
@@ -305,11 +353,23 @@ class AssetSearch extends Vue {
 		}
 	}
 
-	keyDownRightArrow (e: any) {
-		if (this.query.length && e.target.selectionStart < this.query.length && this.activeFilter == -1) {
-			return
-		}
+	emitClearSelection () {
+		this.bus.$emit('clearSelection')
+	}
 
+	emitTab (e: any) {
+		this.bus.$emit('tab', e)
+	}
+
+	emitNext () {
+		this.bus.$emit('next')
+	}
+
+	emitPrev () {
+		this.bus.$emit('prev')
+	}
+
+	keyDownArrow (e: any) {
 		e.preventDefault()
 		// With no children active, this event is for filtering through this
 		// parent componenent's lists of filters
@@ -317,23 +377,30 @@ class AssetSearch extends Vue {
 			this.selectNextFilter()
 			return
 		}
-		this.activeFilter = -1
-		this.bus.$emit('next')
-	}
-
-	keyUpLeftArrow (e: any) {
-		if (this.query.length && e.target.selectionStart > 0) {
+		if (this.action && this.activeChildActiveItem >= 0) {
+			this.emitNext()
 			return
 		}
+		this.activeFilter = -1
+		this.emitNext()
+	}
 
-		// With no children active, this event is for filtering through this
-		// parent componenent's lists of filters
+	keyUpArrow (e: any) {
+		e.preventDefault()
+
 		if (!this.action) {
+			if (this.activeChildActiveItem > 0) {
+				this.emitPrev()
+				return
+			}
+			if (this.activeChildActiveItem == 0) {
+				this.emitClearSelection()
+				return
+			}
 			this.selectPreviousFilter()
 			return
 		}
-		e.preventDefault()
-		this.bus.$emit('prev')
+		this.emitPrev()
 	}
 
 	selectAdjacentFilter (direction : 1 | -1) {
@@ -359,37 +426,3 @@ class AssetSearch extends Vue {
 }
 export default AssetSearch
 </script>
-<style>
-.query-container {
-}
-
-.asset-search {
-	position: relative;
-}
-
-.actions {
-	position: absolute;
-	width: 90%;
-	top: 43px;
-	background: #ccc;
-	border: 1px solid #333;
-	padding: 10px;
-}
-
-.query-container input {
-	padding: 3px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background: white;
-	margin: 0 5px 0 0;
-}
-.query-container input:focus {
-	outline: none;
-}
-.submit-container {
-	padding-top: 1em;
-}
-.filter-container > label {
-	font-weight: bold;
-}
-</style>

@@ -1,10 +1,11 @@
 <template>
-  <FormGroup :label="label">
-<textarea
-    class="form-control"
-    v-bind:value="value"
-    v-on:input="input"
-/>
+  <FormGroup :label="label" class="text-area">
+		<textarea
+			class="form-control"
+			v-bind:value="value"
+			v-on:input="input"
+			:placeholder="placeholder"
+		/>
   </FormGroup>
 </template>
 <script lang="ts">
@@ -13,7 +14,7 @@ import FormGroup from "./FormGroup.vue";
 
 export default Vue.extend({
 	name: 'Textarea',
-	props: ['value', 'label'],
+	props: ['value', 'label', 'placeholder'],
 	components: {
 		FormGroup: FormGroup,
 	},
