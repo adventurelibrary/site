@@ -5,13 +5,16 @@
 			class-name="archive-asset"
 			@close="closeModal">
 		<slot>
-			<form class="archive-asset-form">
-				<h3>Are you sure you want to delete the "{{asset.name}}" Asset?</h3>
+			<form class="archive-asset-form" @submit="archiveAsset">
+				<AssetThumbnail :asset="asset" />
+				<p>If no one has unlocked this asset, it will be <strong>deleted entirely</strong></p>
+				<p>If anyone has unlocked this asset, it will be <strong>hidden from future searches</strong></p>
+				<input type="text" v-model="confirmText" placeholder="Type DELETE to confirm"/>
 
-				<input id="confirmArchiveText" type="text" v-on:input="trackEntry()" placeholder="Type in DELETE to enable the Delete button."/>
-				<span>Type in DELETE to enable the Delete button.</span>
-
-				<button id="archiveButton" @click="archiveAsset" type="button" class="create" disabled>Delete Asset</button>
+				<button :disabled='deleteDisabled' type="submit" class="create">
+					<span v-show="deleting">Deleting...</span>
+					<span v-show="!deleting">Delete Asset</span>
+				</button>
 				<button @click="closeModal" type="button" class="create">Cancel</button>
 			</form>
 		</slot>
@@ -19,60 +22,59 @@
 </template>
 
 <script lang="ts">
-
 import {Component, State} from "nuxt-property-decorator";
 import Modal from "~/modules/modals/Modal.vue";
 import Vue from "vue";
 import {Asset} from "~/modules/assets/asset-types";
 import {archiveAsset} from "~/modules/assets/asset-api";
+import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 
 @Component({
 	components: {
 		Modal: Modal,
+		AssetThumbnail: AssetThumbnail
 	}
 })
 export default class AssetArchiveModal extends Vue {
-
+	confirmText = ''
+	deleting = false
 	@State('archiveAsset') asset : Asset
 
 	closeModal () {
 		this.$store.dispatch('closeAllModals')
 	}
 
-
-	// tracks text typed in the 'confirmArchiveText' input field
-	// if DELETE is typed, the archive button is enabled, otherwise its disabled
-	trackEntry() {
-		const inputField = (document.getElementById("confirmArchiveText") as HTMLInputElement)
-		const archiveButton = (document.getElementById("archiveButton") as HTMLButtonElement)
-
-		// toggle archive button enabled status
-		if (inputField.value == "DELETE") {
-
-			archiveButton.disabled = false
-			console.log("DELETE typed, button enabled")
-		}
-		else {
-			archiveButton.disabled = true
-			console.log("DELETE not typed, button disabled")
-		}
-	}
-
 	// handles archiving of the asset
-	async archiveAsset () {
+	async archiveAsset (e: any) {
+		e.preventDefault()
+		if (this.deleteDisabled) {
+			return
+		}
+		if (this.deleting) {
+			return
+		}
+		this.deleting = true
 		try {
-			await archiveAsset(this.asset.id)
+			const result = await archiveAsset(this.asset.id)
 			this.closeModal()
 
-			// send message for user
-			//this.$store.dispatch('notifySuccess', "Asset deleted successfully.")
-			this.notifySuccess("Asset " + this.asset.name + " deleted successfully.")
+			if (result === 'delete') {
+				this.notifySuccess(this.asset.name + " deleted")
+			} else {
+				this.notifySuccess(this.asset.name + " hidden")
+			}
+			this.$root.$emit('assetDeleted', this.asset.id)
 		}
 		catch (ex) {
 			console.log('ex ', ex)
 			this.notifyError(ex.toString())
 		}
+		this.deleting = false
 	}
 
+	get deleteDisabled () : boolean {
+		const del = this.confirmText !== 'DELETE'
+		return del
+	}
 }
 </script>

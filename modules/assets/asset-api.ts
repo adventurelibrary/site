@@ -329,11 +329,16 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	return payload
 }
 
+// Will hard delete if nobody has bought this asset, otherwise it will
+// archive it
+// The 'result' prop that is returned will be "deleted" or "hidden"
 export async function archiveAsset (assetId: string) {
-	console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
+	const res = await api.post(`/assets/${assetId}/delete`)
+	return res.data.result
+	/*console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 
 	// update asset visible to hidden
-	await api.put('/assets/update', [{id: assetId, visibility: 'HIDDEN'}])
+	await api.put('/assets/update', [{id: assetId, visibility: 'HIDDEN'}])*/
 }
 
 // recieves reports of assets, sends report to Notion
