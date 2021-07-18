@@ -53,11 +53,8 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		console.log('do the sign in')
 		await signIn(this.identifier, this.password)
-		console.log('do the session fetch')
 		await this.$store.dispatch('fetchSession')
-		console.log('emit stuff')
 		this.$emit('success') //
 		// Tell the whole site the user is now logged in
 		// Individual pages can then decide if they need to refetch their content or not
