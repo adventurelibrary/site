@@ -31,6 +31,9 @@ export default class LoadingContainer extends Vue {
 	@Prop() error: any
 
 	get errorMessage () : string {
+		if (!this.error) {
+			return ''
+		}
 		if (this.error.message) {
 			return this.error.message
 		}
