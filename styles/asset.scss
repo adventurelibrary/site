@@ -51,3 +51,11 @@
 		.filter-type { display: none; }
 	}
 }
+
+.archive-asset {
+	.asset-thumbnail {
+		height: 200px;
+		background: center center no-repeat;
+		background-size: contain;
+	}
+}

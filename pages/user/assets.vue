@@ -41,20 +41,8 @@ export default class UserAssets extends Vue {
 	created () {
 		// This event is emitted from the EditAssetModal when the form is successfully submitted
 		// The data passed in is the data from the edit form
-		this.$root.$on('assetUpdated', (data: any) => {
-			if (!this.assetsResponse || !this.assetsResponse.assets) {
-				return
-			}
-			for (let i = 0; i < this.assetsResponse.assets.length; i++) {
-				const asset = this.assetsResponse.assets[i]
-				if (asset.id === data.id) {
-					for (let k in data) {
-						Vue.set(this.assetsResponse.assets[i], k, data[k])
-					}
-					break
-				}
-			}
-		})
+		this.$root.$on('assetUpdated', this.onAssetUpdated)
+		this.$root.$on('assetDeleted', this.onAssetDeleted)
 	}
 
 	get assets() : Asset[] {
@@ -68,6 +56,35 @@ export default class UserAssets extends Vue {
 		const search = newSearchOptions()
 		const myAssets = await getMyAssets(search)
 		this.assetsResponse = myAssets
+	}
+
+	onAssetUpdated (data: any) {
+		if (!this.assetsResponse || !this.assetsResponse.assets) {
+			return
+		}
+		for (let i = 0; i < this.assetsResponse.assets.length; i++) {
+			const asset = this.assetsResponse.assets[i]
+			if (asset.id === data.id) {
+				for (let k in data) {
+					Vue.set(this.assetsResponse.assets[i], k, data[k])
+				}
+				break
+			}
+		}
+	}
+
+	onAssetDeleted (assetId: string) {
+		console.log('deleted', assetId)
+		if (!this.assetsResponse || !this.assetsResponse.assets) {
+			return
+		}
+		for (let i = 0; i < this.assetsResponse.assets.length; i++) {
+			const asset = this.assetsResponse.assets[i]
+			if (assetId === asset.id) {
+				this.assetsResponse.assets.splice(i, 1)
+				break
+			}
+		}
 	}
 }
 </script>
