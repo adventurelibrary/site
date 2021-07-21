@@ -5,9 +5,9 @@
 			<h1 class="username">{{user.username}}</h1>
 			<ul class="user-meta">				
 				<li class="join-date">Date Joined: {{user.dateJoined}}</li>
-				<li>My Coins: {{user.coins}}</li>
-<!--				<li class="status">Status: {{user.status}}</li>-->
-<!--				<li class="asset-count">Assets: {{user.assetCount}}</li>-->
+				<li>My Coins: {{numCoins}}</li>
+<!--			<li class="status">Status: {{user.status}}</li>-->
+<!--			<li class="asset-count">Assets: {{user.assetCount}}</li>-->
 			</ul>
 		</section>
 		<nav class="tabs">
@@ -55,6 +55,7 @@ import {User} from "~/modules/users/user-types"
 export default class ProfilePage extends Vue {
 	@Getter('isCreator') isCreator : boolean
 	@State('user') user : User
+	@State('userCoins') numCoins : number
 	@Prop() activeTab : string
 }
 </script>
