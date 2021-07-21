@@ -4,7 +4,10 @@
 			{{asset.visibility}}
 		</div>
 		<Fragment slot="extra-actions">
-			<button type="button" @click="clickEditAsset" class="asset-action action-edit-asset">
+			<button type="button" @click="clickDeleteAsset" class="asset-action action-delete-asset" title="Delete Asset">
+				<i class="ci-trash_full"></i>
+			</button>
+			<button type="button" @click="clickEditAsset" class="asset-action action-edit-asset" >
 				<i class="ci-edit"></i>
 			</button>
 		</Fragment>
@@ -27,6 +30,12 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 })
 class AssetManageItem  extends Vue {
 	@Prop() asset : Asset
+
+	clickDeleteAsset () {
+		this.$store.dispatch('openAssetArchiveModal', {
+			asset: this.asset
+		})
+	}
 
 	clickEditAsset () {
 		this.$store.dispatch('openEditAssetModal', {
