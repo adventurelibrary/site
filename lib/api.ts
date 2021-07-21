@@ -1,12 +1,12 @@
 import axios from 'axios'
 import {getCookie} from "~/lib/helpers";
 
-const base = <string>process.env.ADVL_BASE_URL
-console.log('API URL', base)
+export const baseURL = <string>process.env.ADVL_BASE_URL
+console.log('API URL', baseURL)
 
 let jwt = ''
 export const api = axios.create({
-	baseURL: base,
+	baseURL: baseURL,
 })
 api.interceptors.response.use((response) => {
 	return response
