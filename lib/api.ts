@@ -11,13 +11,22 @@ export const api = axios.create({
 api.interceptors.response.use((response) => {
 	return response
 }, (err) => {
+	let msg = 'A server error occured'
 	if (err.response && err.response.data && err.response.data.error) {
 		if (err.response.data.error.message) {
-			return Promise.reject(err.response.data.error.message)
+			msg = err.response.data.error.message
+		} else {
+			msg = JSON.stringify(err.response.data.error)
 		}
-		return Promise.reject(JSON.stringify(err.response.data.error))
+	} else {
+		msg = err.toString()
 	}
-	return Promise.reject(err.toString())
+
+	const throwingError = new Error(msg)
+	// @ts-ignore
+	throwingError.statusCode = err.response.status
+	// @ts-ignore
+	throw throwingError
 })
 
 api.interceptors.request.use(function (config) {
