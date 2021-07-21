@@ -5,5 +5,5 @@ export type User = {
 	email: string
 	username: string
 	dateJoined: Date
-	coins: number
+	num_coins: number
 }
