@@ -4,6 +4,6 @@ export type User = {
 	is_creator: boolean
 	email: string
 	username: string
-	dateJoined: Date
+	join_date: Date
 	num_coins: number
 }

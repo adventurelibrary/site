@@ -3,7 +3,7 @@ import {
 	AssetFormData,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
+	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection, UnlockAssetResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../../lib/ajax";
 import {ActiveUpload} from "~/modules/assets/asset-uploads";
@@ -144,6 +144,10 @@ export function transformAsset (asset: Asset) : Asset {
 
 	asset.tagObjects = newTags
 
+	// This is just a testing hack so that different assets have different is_unlocked values
+	// that are consistent on page reload
+	asset.is_unlocked = asset.name.length % 2 == 0
+
 	return asset
 }
 
@@ -250,6 +254,16 @@ export async function syncAssets () {
 	return await api.post('/database/sync')
 }
 
+// When a user wants to unlock an asset by spending their coins on it, so that they can download
+// the asset
+export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
+	console.log('unlocking', assetId)
+	return {
+		numCoins: 12
+	}
+	//return await api.post(`/assets/${assetId}/unlock`)
+}
+
 // This used when a user selects multiple assets and wants to mark them all as
 // VISIBLE or HIDDEN
 export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
@@ -269,6 +283,7 @@ export const newAsset = () : Asset => {
 		creator_id: '',
 		creator_name: '',
 		description: '',
+		is_unlocked: false,
 		name: '',
 		slug: '',
 		tags: [],
