@@ -13,6 +13,7 @@
 	}
 	button, a.button, label.button {
 		display: inline-grid;
+		text-decoration: none;
 		place-items: center;
 		padding: .75em;
 		font-weight: bold;

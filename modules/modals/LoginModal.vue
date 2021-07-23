@@ -38,7 +38,8 @@ export default class LoginModal extends Vue {
 
 	onSuccess () {
 		this.$store.dispatch('closeAllModals')
-		window.location.reload()
+		//window.location.reload()
+
 	}
 }
 </script>

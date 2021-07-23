@@ -20,6 +20,7 @@ export type Asset = AssetFields & {
 	id: string
 	creator_name: string
 	creator_id: string
+	is_unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
 	slug: string
 	thumbnail: string
 }
@@ -100,4 +101,10 @@ export type AssetDownloadResponse = {
 
 export type AssetDownloadOptions = {
 	file: string
+}
+
+// This is the info that the server sends back to us after
+// a user has unlocked an asset
+export type UnlockAssetResponse = {
+	numCoins: number // Their new balance
 }
