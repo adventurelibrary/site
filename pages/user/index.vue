@@ -1,18 +1,29 @@
 <template>
 	<ProfilePage active-tab="settings">
+
+		<!-- General User Settings -->
+		<h3>General Settings</h3>
 		<nuxt-link :to="{name: 'account-change-password'}">Change Password</nuxt-link>
+		
 		<Fragment slot="actions">
 			<a v-if="!isCreator" href="https://docs.google.com/forms/d/1e_7ori6eqo7OczyuqvLpFsBSY-Ke3aNwEiVztTVygvY/viewform" target="_blank" class="button upgrade">Become An Artist</a>
 		</Fragment>		
 
-		<!-- Admin user details and links -->
+		<!-- Creator Settings  -->		
+		<div v-if="isCreator">
+			<h3>Creator Settings</h3>
+			<nuxt-link :to="{name: 'upload'}">Upload Asset</nuxt-link>
+		</div>
+		
+		<!-- Admin Settings -->
 		<div v-if="user.admin==true">
-			<h2>Administrator Section</h2>
+			<h3>Administrator Settings</h3>			
 			User to Creator<br/>
 			Creator to User<br/>
 			Creator to Admin<br/>
 			Admin to Creator<br/>
 		</div>
+
 	</ProfilePage>
 </template>
 <script lang="ts">
