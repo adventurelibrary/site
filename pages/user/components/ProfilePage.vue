@@ -6,6 +6,7 @@
 			<ul class="user-meta">				
 				<li class="join-date">Date Joined: {{user.dateJoined}}</li>
 				<li>My Coins: {{numCoins}}</li>
+
 <!--			<li class="status">Status: {{user.status}}</li>-->
 <!--			<li class="asset-count">Assets: {{user.assetCount}}</li>-->
 			</ul>
