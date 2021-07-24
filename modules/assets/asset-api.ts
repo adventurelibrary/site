@@ -3,7 +3,7 @@ import {
 	AssetFormData,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection
+	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection, UnlockAssetResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../../lib/ajax";
 import {ActiveUpload} from "~/modules/assets/asset-uploads";
@@ -114,6 +114,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 	return await queryAssets(apiQuery)
 }
 
+// This is to fetch all the assets you have access for, as a creator
 export const getMyAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
 	search.mine = true
 	search.visibility = 'all'
@@ -142,6 +143,10 @@ export function transformAsset (asset: Asset) : Asset {
 	}
 
 	asset.tagObjects = newTags
+
+	// This is just a testing hack so that different assets have different is_unlocked values
+	// that are consistent on page reload
+	asset.is_unlocked = asset.name.length % 2 == 0
 
 	return asset
 }
@@ -249,6 +254,16 @@ export async function syncAssets () {
 	return await api.post('/database/sync')
 }
 
+// When a user wants to unlock an asset by spending their coins on it, so that they can download
+// the asset
+export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
+	console.log('unlocking', assetId)
+	return {
+		numCoins: 12
+	}
+	//return await api.post(`/assets/${assetId}/unlock`)
+}
+
 // This used when a user selects multiple assets and wants to mark them all as
 // VISIBLE or HIDDEN
 export async function updateAssetsVisibilities(ids: string[], vis: AssetVisibility) {
@@ -268,6 +283,7 @@ export const newAsset = () : Asset => {
 		creator_id: '',
 		creator_name: '',
 		description: '',
+		is_unlocked: false,
 		name: '',
 		slug: '',
 		tags: [],
@@ -328,11 +344,16 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	return payload
 }
 
+// Will hard delete if nobody has bought this asset, otherwise it will
+// archive it
+// The 'result' prop that is returned will be "deleted" or "hidden"
 export async function archiveAsset (assetId: string) {
-	console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
+	const res = await api.post(`/assets/${assetId}/delete`)
+	return res.data.result
+	/*console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 
 	// update asset visible to hidden
-	await api.put('/assets/update', [{id: assetId, visibility: 'HIDDEN'}])
+	await api.put('/assets/update', [{id: assetId, visibility: 'HIDDEN'}])*/
 }
 
 // recieves reports of assets, sends report to Notion

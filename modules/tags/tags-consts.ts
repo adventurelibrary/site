@@ -495,9 +495,11 @@ export const ASSET_TAGS = [
 		"aliases": []
 	},
 	{
-		"name": "sci-fi",
+		"name": "Science Fiction",
 		"aliases": [
-			"Science Fiction"
+			"sci-fi",
+			"scifi",
+			"sci fi",
 		]
 	},
 	{

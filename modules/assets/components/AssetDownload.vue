@@ -9,7 +9,7 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			Unlock for {{asset.cost}}
+			<span @click="clickUnlockAsset">Unlock</span>
 		</template>
 	</div>
 </template>
@@ -30,12 +30,11 @@ export default class AssetDownload extends Vue {
 
 	@Prop() asset : Asset
 
-	// These will later be based on the user in the VueX store
 	get canDownload () : boolean {
-		return true
+		return this.asset.is_unlocked
 	}
 	get mustUnlock () : boolean {
-		return false
+		return !this.asset.is_unlocked
 	}
 
 	async download (e: Event) {
@@ -47,6 +46,19 @@ export default class AssetDownload extends Vue {
 			console.log('ex', ex)
 			this.notifyError('Error downloading asset: ' + ex.toString())
 		}
+	}
+
+	async clickUnlockAsset () {
+		try {
+			await this.$store.dispatch('unlockAsset', {
+				asset: this.asset
+			})
+		} catch (ex) {
+			this.notifyError(ex.toString())
+			return
+		}
+		this.notifySuccess(`Unlocked ${this.asset.name}`)
+		this.asset.is_unlocked = true
 	}
 
 	getDownloadOptions () : AssetDownloadOptions {

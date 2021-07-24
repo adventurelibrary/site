@@ -58,3 +58,60 @@ Edit config: `sudo vim /etc/nginx/nginx.conf`
 Test config to check for errors: `sudo nginx -t`
 
 Restart nginx: `sudo nginx -s reload`
+
+# Automated Deploy on EC2
+The following scripts need to exist in the same directory as the Nuxt folder. For example: "/home/ec2-user/site"
+
+### `deploy.sh`
+
+```bash
+git pull origin master
+npm install
+npm run build
+sudo systemctl restart testing.adventurelibrary.art.service`
+```
+
+### `deploy-checker.sh`
+
+```bash
+#!/bin/bash
+
+cd /home/ec2-user/site
+
+PREV_FILE="./prev-log.txt"
+CURR_FILE="./curr-log.txt"
+
+LAST_LOG=`cat $PREV_FILE`
+
+echo "Last log: $LAST_LOG"
+
+git fetch origin master
+git log -n 1 --pretty=short > $CURR_FILE
+
+CURR_LOG=`cat $CURR_FILE`
+
+echo "Curr Log: $CURR_LOG"
+
+if [ "$LAST_LOG" = "$CURR_LOG" ]; then
+        echo "No changes"
+else
+        echo "Log has changed! Time to redeploy."
+        echo "Saving current log to prev-log.txt"
+        cp ./curr-log.txt ./prev-log.txt
+        echo "Running redeploy script"
+        ./deploy.sh
+fi
+```
+
+You must run **chmod +x {file}** on each so that they can be executed.
+
+You can **manually redeploy** by running `./deploy.sh` in the site folder.
+
+## Redeploy Cronjob
+Run `crontab -e` to edit the crontab, then add this line:
+
+`*/5 * * * * /home/ec2-user/site/deploy-checker.sh` to check for new code every 5 minutes.
+
+If you want to change the timing, here are some examples: https://crontab.guru/examples.html
+
+You can **view the logs** with: `tail /var/spool/mail/ec2-user -n 200`

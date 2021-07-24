@@ -3,10 +3,12 @@
 		<section class="profile-details">
 			<img src="~/assets/coolicons/svg/user/user.svg" class="profile-image">
 			<h1 class="username">{{user.username}}</h1>
-			<ul class="user-meta">
-				<li class="join-date">Date Joined: N/A</li>
-<!--				<li class="status">Status: {{user.status}}</li>-->
-<!--				<li class="asset-count">Assets: {{user.assetCount}}</li>-->
+			<ul class="user-meta">				
+				<li class="join-date">Date Joined: {{user.dateJoined}}</li>
+				<li>My Coins: {{numCoins}}</li>
+
+<!--			<li class="status">Status: {{user.status}}</li>-->
+<!--			<li class="asset-count">Assets: {{user.assetCount}}</li>-->
 			</ul>
 		</section>
 		<nav class="tabs">
@@ -29,6 +31,12 @@
 					:class="{active: activeTab === 'assets'}">
 				My Assets
 			</nuxt-link>
+			<nuxt-link
+					:to="{name: 'user-info'}"
+					class="tab-control"
+					:class="{active: activeTab === 'info'}">
+				Information
+			</nuxt-link>			
 			<slot name="actions"></slot>
 		</nav>
 		<section class="tab active">
@@ -48,10 +56,7 @@ import {User} from "~/modules/users/user-types"
 export default class ProfilePage extends Vue {
 	@Getter('isCreator') isCreator : boolean
 	@State('user') user : User
+	@State('userCoins') numCoins : number
 	@Prop() activeTab : string
-
-	becomeAnArtist () {
-		alert('Google Form coming')
-	}
 }
 </script>
