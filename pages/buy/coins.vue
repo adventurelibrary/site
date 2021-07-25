@@ -50,7 +50,7 @@ export default class BuyCoinsPage extends Vue {
 
 	async mounted () {
 		if (!this.$store.getters.isLoggedIn) {
-			console.log('no logged in')
+			console.log('not logged in')
 			return
 		}
 

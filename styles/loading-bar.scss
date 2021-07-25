@@ -1,0 +1,25 @@
+@keyframes loading-bar-animation {
+    // v1 orange to read
+    // v2 white to header primary color (green)
+    from {
+        //background-color: #ffc422;  //v1
+        background-color: #ffffff;  //v2
+    }
+    to {
+        //background-color: #c0392b; //v1
+        background-color: $color-primary; //v2
+    }
+}
+.loading-bar {
+    content:" ";
+    display:block;
+    position:fixed;
+    z-index:10;
+    height:4px;
+    width:100%;
+    top:0;
+    left:0;
+    background-color:#06D;
+    animation: loading-bar-animation infinite ease-out 2s;
+    box-shadow:0 2px 2px rgba(0,0,0,.2);
+}

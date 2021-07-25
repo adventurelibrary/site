@@ -2,6 +2,7 @@
 	<Fragment role="loading-container" class="loading-container">
 		<template v-if="loading">
 			<slot name="loading">
+				<div class="loading-bar"></div>
 				<div class="loading-message">Loading...</div>
 			</slot>
 		</template>
@@ -17,6 +18,7 @@
 		</template>
 	</Fragment>
 </template>
+
 <script lang="ts">
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
@@ -41,6 +43,18 @@ export default class LoadingContainer extends Vue {
 			return ''
 		}
 		return this.error
-  }
+  	}
+
+  	mounted () {
+
+		// display Nuxt loading		
+		/*
+		this.$nextTick(() => {
+			console.log('display Nuxt loading bar, from LoadingContainer')
+			this.$nuxt.$loading.start()
+			setTimeout(() => this.$nuxt.$loading.finish(), 500)
+		})
+		*/	
+	}
 }
 </script>

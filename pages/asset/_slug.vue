@@ -4,6 +4,9 @@
 			<!-- Empty -->
 		</section>
 
+		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+		</LoadingContainer>
+
 		<section class="info">
 			<h1 class="title">{{asset.name}}</h1>			
 
