@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from "vue";
 import {Component, Getter} from "nuxt-property-decorator";
-import ProfilePage from "@/pages/user/components/ProfilePage.vue";
+import ProfilePage from "@/pages/user/-components/ProfilePage.vue";
 import {newSearchOptions} from "~/modules/assets/asset-helpers";
 import {Asset, AssetsResponse} from "~/modules/assets/asset-types";
 import AssetManageItem from "~/modules/assets/components/AssetManageItem.vue";
