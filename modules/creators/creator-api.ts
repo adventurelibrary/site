@@ -40,6 +40,7 @@ export const newCreatorAjax = () : Ajax<Creator> => {
 	return newAjax<Creator>(newCreator())
 }
 
+// This is used in the management area, where the route params use the creator's ID
 export async function getCreatorById (id: string) : Promise<Creator> {
 	const res = await api.get('/creator/' + id)
 	return res.data

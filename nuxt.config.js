@@ -22,7 +22,9 @@ const css = [
    // @import and additional .scss files in styles.scss
   'styles/styles.scss'
 ]
-const ignore = []
+const ignore = [
+  'pages/**/-components/*'
+]
 const plugins = [
   'mixins/global.ts'
 ]
