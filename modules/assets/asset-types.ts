@@ -67,6 +67,7 @@ export type AssetSearchOptions = {
 	size: number
 	mine?: boolean
 	visibility?: string
+	creator_id?: string
 }
 
 export type AssetsResponse = {

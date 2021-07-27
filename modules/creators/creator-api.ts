@@ -1,6 +1,8 @@
 import {Ajax, newAjax} from "~/lib/ajax";
-import {Creator, CreatorFormData, CreatorsResponse} from "~/modules/creators/creator-types";
+import {Creator, CreatorFormData, CreatorsResponse, ManageCreatorAssets} from "~/modules/creators/creator-types";
 import api from "~/lib/api";
+import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {assetSearchOptionsToAPIQuery, newAsset, searchAssets} from "~/modules/assets/asset-api";
 
 export const CREATORS = [{
 	name: 'Eowyn',
@@ -45,6 +47,32 @@ export async function getCreatorById (id: string) : Promise<Creator> {
 	const res = await api.get('/creator/' + id)
 	return res.data
 }
+
+// Returns the assets from a specific reator that you have access to view
+// This is for the management pages, not for public viewing
+export const getManageCreatorAssets = async (creatorId: string, search: AssetSearchOptions) : Promise<ManageCreatorAssets> => {
+	/*const searchQuery = assetSearchOptionsToAPIQuery(search)
+	const res = await api.get(`/creator/${creatorId}/assets`, {
+		params: searchQuery
+	})
+	return res.data*/
+	console.log('searching for', search)
+	return new Promise((res, _) => {
+		setTimeout(() => {
+			res({
+				creator: {
+					name: 'Fake Creator',
+					id: creatorId
+				},
+				assets: {
+					total: 1,
+					assets: [newAsset()]
+				}
+			})
+		}, 500)
+	})
+}
+
 
 export function creatorToFormData (creator: Creator) : CreatorFormData {
 	return {
