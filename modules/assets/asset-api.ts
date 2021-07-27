@@ -115,9 +115,8 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 }
 
 // This is to fetch all the assets you have access for, as a creator
-export const getMyAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
+export const getMyUnlockedAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
 	search.mine = true
-	search.visibility = 'all'
 	return searchAssets(search)
 }
 

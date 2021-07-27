@@ -12,6 +12,7 @@ import {Component, mixins} from "nuxt-property-decorator";
 import CreatorsManage from "~/mixins/CreatorsManage";
 import CreatorPage from "~/pages/creators/-components/CreatorPage.vue";
 import {getCreatorById} from "~/modules/creators/creator-api";
+import {Creator} from "~/modules/creators/creator-types";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import UploadAssets from "~/modules/assets/components/UploadAssets.vue";
 @Component({

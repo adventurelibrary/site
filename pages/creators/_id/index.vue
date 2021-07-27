@@ -13,6 +13,7 @@ import CreatorsManage from "~/mixins/CreatorsManage";
 import CreatorPage from "~/pages/creators/-components/CreatorPage.vue";
 import {getCreatorById} from "~/modules/creators/creator-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
+import {Creator} from "~/modules/creators/creator-types";
 @Component({
 	components: {
 		LoadingContainer,
@@ -20,7 +21,7 @@ import LoadingContainer from "~/components/LoadingContainer.vue";
 	}
 })
 export default class CreatorsCreatorIndex extends mixins(CreatorsManage) {
-	creator : Creator | undefined
+	creator : Creator
 	async fetch () {
 		const creator = await getCreatorById(this.creatorId)
 		this.creator = creator
