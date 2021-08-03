@@ -329,7 +329,6 @@ export const actions = {
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
-		console.log('user', user)
 		commit('user', user)
 		if (user) {
 			commit('userCoins', user.num_coins)
