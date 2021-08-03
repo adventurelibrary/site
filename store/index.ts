@@ -328,7 +328,7 @@ export const actions = {
 		commit('createBundleAsset', asset)
 	},
 	async fetchSession ({commit} : ActionParams) {
-		const user = await getSession()		
+		const user = await getSession()
 		commit('user', user)
 		if (user) {
 			commit('userCoins', user.num_coins)
