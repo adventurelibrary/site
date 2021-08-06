@@ -9,6 +9,10 @@ export const AssetSearchActions : AssetSearchAction[] = [{
 	key: 'tag',
 	prefix: 'tag',
 	description: 'find assets with specific tags',
+}, {
+	key: 'creator',
+	prefix: 'creator',
+	description: 'search by creator name'
 }]
 
 

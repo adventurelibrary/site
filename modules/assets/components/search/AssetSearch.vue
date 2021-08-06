@@ -69,6 +69,16 @@
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
+			<div class="filter-container" v-show="action === 'creator'">
+				<h3>Creators</h3>
+				<CreatorSearch
+					:bus="bus"
+					:filters="[]"
+					:exclude="excludedTags"
+					:query="actionQuery"
+					:active="action === 'tag'"
+					@clickTag="creatorClicked" />
+			</div>			
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -87,18 +97,21 @@ import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
 import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/modules/assets/search-filters";
+import {AssetSearchFilter, assetCategoryToFilter, tagToFilter, creatorToFilter} from "~/modules/assets/search-filters";
 import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 import {newSearchOptions, stringToSortDirection} from "~/modules/assets/asset-helpers";
 import {Category} from "~/modules/categories/categories-types";
+import {Creator} from "~/modules/creators/creator-types";
+import CreatorSearch from "~/modules/creators/CreatorSearch.vue"
 
 const actions = ['category', 'creator', 'tag']
 
 @Component({
 	components: {
 		TagSearch,
+		CreatorSearch,
 		CategorySelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
@@ -262,6 +275,12 @@ class AssetSearch extends Vue {
 			throw new Error('Bad category')
 		}
 		const filter = assetCategoryToFilter(cat)
+		this.toggleFilter(filter)
+	}
+
+	creatorClicked (creator: Creator) {
+		console.log('creatorClicked')
+		const filter = creatorToFilter(creator)
 		this.toggleFilter(filter)
 	}
 
