@@ -2,21 +2,23 @@
 	<article>
 		<h1>Purchase Coins</h1>
 		<p>Support text to motivate people to buy coins.</p>
-		<ul class="buy-coins-packages">
+		<ul class="buy-coins-packages" :class="{buying: buying}">
 			<li v-for="(option, idx) in options" :key="idx">
 				<img :src="require('~/assets/' + option.image)" alt="Coins" />
 				<h4>{{option.coins}} Coins</h4>
 				<p>{{option.price}}</p>
-				<a class="button" :href="option.href">Buy Coins</a>
+				<a class="button" @click="() => buyCoins(option.coins)">
+					<span v-show="buying">Working...</span>
+					<span v-hide="buying">Buy Coins</span>
+				</a>
 			</li>
 		</ul>
 	</article>
 </template>
 <script lang="ts">
-
 import {Component, Vue} from "nuxt-property-decorator";
 import {baseURL} from "~/lib/api";
-import getCheckoutLinks from "~/modules/buy/buy-api";
+import {getCheckoutLink} from "~/modules/buy/buy-api";
 
 type PurchaseOption = {
 	coins: number
@@ -27,6 +29,7 @@ type PurchaseOption = {
 
 @Component
 export default class BuyCoinsPage extends Vue {
+	buying = false
 	options : PurchaseOption[] = [
 		{
 			coins: 500,
@@ -48,12 +51,26 @@ export default class BuyCoinsPage extends Vue {
 		},
 	]
 
+	async buyCoins (amount: number) {
+		if (this.buying) {
+			return
+		}
+		this.buying = true
+		try {
+			const url = await getCheckoutLink(amount)
+			window.location = url
+		} catch (ex) {
+			this.notifyError(ex)
+		}
+		this.buying = false
+	}
+
 	async mounted () {
 		if (!this.$store.getters.isLoggedIn) {
 			console.log('not logged in')
 			return
 		}
-
+/*
 		// After the page renders, we make a request to our server to create the Checkout sessions
 		// and make the Checkout links
 		// Then we update the links on the page
@@ -73,7 +90,7 @@ export default class BuyCoinsPage extends Vue {
 			})
 		} catch (ex) {
 			console.error(ex)
-		}
+		}*/
 
 	}
 }

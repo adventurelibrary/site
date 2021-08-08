@@ -1,9 +1,9 @@
-import {CheckoutLinksResponse} from "~/modules/buy/buy-types";
+import {CheckoutLink, CheckoutLinksResponse} from "~/modules/buy/buy-types";
 import api from "~/lib/api";
 
 // This fetches the actual Stripe checkout links from our server for a user if they are logged in
 // The URLs returned will take them directly to the checkout page for Stripe
-export default async function getCheckoutLinks () : Promise<CheckoutLinksResponse> {
+export async function getCheckoutLinks () : Promise<CheckoutLinksResponse> {
 	/*const res = await api.get('/buy/checkout-links')
 	return res.data*/
 	return new Promise((res) => {
@@ -17,4 +17,11 @@ export default async function getCheckoutLinks () : Promise<CheckoutLinksRespons
 			})
 		}, 250)
 	})
+}
+
+export async function getCheckoutLink (amountCoins: number) : Promise<string> {
+	const res = await api.post<CheckoutLink>('/coins/purchase', {
+		coins: amountCoins
+	})
+	return res.data.url
 }
