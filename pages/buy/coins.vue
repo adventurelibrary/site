@@ -58,7 +58,7 @@ export default class BuyCoinsPage extends Vue {
 		this.buying = true
 		try {
 			const url = await getCheckoutLink(amount)
-			window.location = url
+			window.location.href = url
 		} catch (ex) {
 			this.notifyError(ex)
 		}
