@@ -15,12 +15,12 @@
 					{{asset.creator_name}}
 				</span>
 			</h4>
-<!--			<figure class="pricing">
+			<figure class="pricing">
 				<h4 class="coin-price">
-					<span class="amount">&lt;!&ndash;{{asset.price}}&ndash;&gt;$$</span>
+					<span class="amount">{{asset.unlock_price}}</span>
 					<span class="currency">Coins</span>
 				</h4>
-			</figure>-->
+			</figure>
 			<div class="description">
 				{{asset.description}}
 			</div>

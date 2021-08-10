@@ -72,6 +72,9 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	if (opts.mine) {
 		query.mine = '1'
 	}
+	if (opts.unlocked) {
+		query.unlocked = '1'
+	}
 	if (opts.visibility) {
 		query.visibility = opts.visibility
 	}
@@ -116,7 +119,7 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 
 // This is to fetch all the assets you have access for, as a creator
 export const getMyUnlockedAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
-	search.mine = true
+	search.unlocked = true
 	return searchAssets(search)
 }
 
@@ -145,7 +148,7 @@ export function transformAsset (asset: Asset) : Asset {
 
 	// This is just a testing hack so that different assets have different is_unlocked values
 	// that are consistent on page reload
-	asset.is_unlocked = asset.name.length % 2 == 0
+	asset.unlocked = asset.name.length % 2 == 0
 
 	return asset
 }
@@ -256,11 +259,8 @@ export async function syncAssets () {
 // When a user wants to unlock an asset by spending their coins on it, so that they can download
 // the asset
 export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
-	console.log('unlocking', assetId)
-	return {
-		numCoins: 12
-	}
-	//return await api.post(`/assets/${assetId}/unlock`)
+	const res = await api.post(`/assets/${assetId}/unlock`)
+	return res.data
 }
 
 // This used when a user selects multiple assets and wants to mark them all as
@@ -282,7 +282,7 @@ export const newAsset = () : Asset => {
 		creator_id: '',
 		creator_name: '',
 		description: '',
-		is_unlocked: false,
+		unlocked: false,
 		name: '',
 		slug: '',
 		tags: [],

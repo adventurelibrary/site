@@ -25,7 +25,6 @@
 				My Bundles
 			</nuxt-link>
 			<nuxt-link
-					v-if="user.is_creator"
 					:to="{name: 'user-assets'}"
 					class="tab-control"
 					:class="{active: activeTab === 'assets'}">
