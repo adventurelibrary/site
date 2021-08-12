@@ -24,7 +24,6 @@
 				<li class="account-actions">
 					<template v-if="isLoggedIn">
 						<UserCoins />
-						<a class="logout-button" @click="logout">Logout</a>
 						<figure class="member-avatar">
 							<i class="ci-user"></i>
 							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
@@ -184,14 +183,6 @@ export default class Default extends Vue {
 		this.setTrackingPath()
 
 		this.$store.dispatch('openRegisterModal')
-	}
-
-
-	async logout () {
-		this.setTrackingPath()
-
-		await this.$store.dispatch('logout')
-		this.notifySuccess('Logged out')
 	}
 }
 </script>

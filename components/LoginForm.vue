@@ -52,12 +52,23 @@ export default class LoginForm extends mixins(FormMixin) {
 		this.$emit('register')
 	}
 
+	mounted () {
+		const emailInput = this.$el.querySelector<HTMLInputElement>('input[type=text]')
+		if (emailInput) {
+			emailInput.focus()
+		}
+	}
+
 	async formAction () {
+		console.log('do the sign in')
 		await signIn(this.identifier, this.password)
+		console.log('do a fetch')
 		await this.$store.dispatch('fetchSession')
+		console.log('emit success')
 		this.$emit('success') //
 		// Tell the whole site the user is now logged in
 		// Individual pages can then decide if they need to refetch their content or not
+		console.log('emit global logged in')
 		this.$root.$emit('loggedIn')
 	}
 }

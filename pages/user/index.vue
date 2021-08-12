@@ -4,20 +4,21 @@
 		<!-- General User Settings -->
 		<h3>General Settings</h3>
 		<nuxt-link :to="{name: 'account-change-password'}">Change Password</nuxt-link>
-		
+		<a class="logout-button" @click="logout">Logout</a>
+
 		<Fragment slot="actions">
 			<a v-if="!isCreator" href="https://docs.google.com/forms/d/1e_7ori6eqo7OczyuqvLpFsBSY-Ke3aNwEiVztTVygvY/viewform" target="_blank" class="button upgrade">Become An Artist</a>
-		</Fragment>		
+		</Fragment>
 
-		<!-- Creator Settings  -->		
+		<!-- Creator Settings  -->
 		<div v-if="isCreator">
 			<h3>Creator Settings</h3>
 			<nuxt-link :to="{name: 'upload'}">Upload Asset</nuxt-link>
 		</div>
-		
+
 		<!-- Admin Settings -->
 		<div v-if="user.admin==true">
-			<h3>Administrator Settings</h3>			
+			<h3>Administrator Settings</h3>
 			User to Creator<br/>
 			Creator to User<br/>
 			Creator to Admin<br/>
@@ -42,5 +43,12 @@ import {Fragment} from "vue-fragment";
 export default class UserSettings extends Vue {
 	@State('user') user : User
 	@Getter('isCreator') isCreator : boolean
+
+
+
+	async logout () {
+		await this.$store.dispatch('logout')
+		this.notifySuccess('Logged out')
+	}
 }
 </script>

@@ -329,10 +329,14 @@ export const actions = {
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
-		commit('user', user)
+		console.log('user from new session', user)
 		if (user) {
+			commit('user', user)
+			console.log('yes coins', user.num_coins)
 			commit('userCoins', user.num_coins)
 		} else {
+			console.log('no coins')
+			commit('user', null)
 			commit('userCoins', 0)
 		}
 	},
@@ -342,6 +346,7 @@ export const actions = {
 			return 'login'
 		}
 		const result = await unlockAsset(asset.id)
+		console.log('result of unlock', result)
 		commit('userCoins', result.numCoins)
 		return 'unlocked'
 	}

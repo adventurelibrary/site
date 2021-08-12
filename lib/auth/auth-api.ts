@@ -50,12 +50,7 @@ export async function getSession () : Promise<User | null> {
 	} catch (ex) {
 		return null
 	}
-	
-	if (res.status === 200 && !res.data) {
-		console.log('TODO: Remove this test data', res.data)
-		res.data.num_coins = 1000 + Math.round(Math.random()*100)
-		console.log('res data', res.data)
-	}
+
 	return res.data
 }
 
