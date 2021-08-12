@@ -144,10 +144,6 @@ export function transformAsset (asset: Asset) : Asset {
 
 	asset.tagObjects = newTags
 
-	// This is just a testing hack so that different assets have different is_unlocked values
-	// that are consistent on page reload
-	asset.is_unlocked = asset.name.length % 2 == 0
-
 	return asset
 }
 
@@ -258,10 +254,7 @@ export async function syncAssets () {
 // the asset
 export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
 	console.log('unlocking', assetId)
-	return {
-		numCoins: 12
-	}
-	//return await api.post(`/assets/${assetId}/unlock`)
+	return await api.post(`/assets/${assetId}/unlock`)
 }
 
 // This used when a user selects multiple assets and wants to mark them all as
@@ -283,7 +276,7 @@ export const newAsset = () : Asset => {
 		creator_id: '',
 		creator_name: '',
 		description: '',
-		is_unlocked: false,
+		unlocked: false,
 		name: '',
 		slug: '',
 		tags: [],
