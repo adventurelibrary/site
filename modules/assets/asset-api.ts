@@ -253,8 +253,8 @@ export async function syncAssets () {
 // When a user wants to unlock an asset by spending their coins on it, so that they can download
 // the asset
 export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
-	console.log('unlocking', assetId)
-	return await api.post(`/assets/${assetId}/unlock`)
+	const res = await api.post(`/assets/${assetId}/unlock`)
+	return res.data
 }
 
 // This used when a user selects multiple assets and wants to mark them all as
