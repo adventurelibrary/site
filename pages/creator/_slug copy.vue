@@ -37,7 +37,7 @@ import {Creator} from "~/modules/creators/creator-types";
 */
 
 @Component
-export default class CreatorAbout extends Vue {
+export default class CreatorAboutDEP extends Vue {
 	@State('user') user : User
 
     CreatorAbout() {
@@ -48,7 +48,8 @@ export default class CreatorAbout extends Vue {
         console.log("params ")
       // v1/creator/{creatorID}
       //
-      const creator = '' // await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
+      const creator = '' //await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
+      const asset = '' //await getAssetBySlug(this.$nuxt.context.params.slug)
       const user = ''
       const creatorAssets = ''
       return {

@@ -1,5 +1,7 @@
 import {AssetTag} from "./asset-types";
 import {Category} from "~/modules/categories/categories-types";
+import {getCreators} from "~/modules/creators/creator-api"
+import {Creator} from "../creators/creator-types";
 
 export type FilterType = 'tag' | 'creator' | 'price' | 'category'
 
@@ -34,6 +36,19 @@ export function tagToFilter(tag: AssetTag) : AssetSearchFilter {
 		type: 'tag',
 		label: tag.label,
 		value: tag.id
+	}
+}
+export function creatorToFilter(creator: Creator) : AssetSearchFilter {
+	console.log('creatorToFilter run')
+	const creators = getCreators()
+	console.log('creator result', creators)
+	//for (creator in creators){
+	//	console.log('creator: ', creator.name)
+	//}
+	return {
+		type: 'creator',
+		label: creator.name,
+		value: creator.id
 	}
 }
 

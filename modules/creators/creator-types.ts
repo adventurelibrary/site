@@ -6,6 +6,7 @@ export type CreatorFields = {
 //
 export type Creator = CreatorFields & {
 	id: string
+	slug: string
 }
 
 // This type is for data in our forms, that isn't necessarily stored in our DB

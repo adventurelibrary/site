@@ -15,6 +15,7 @@ export const newCreator = () : Creator => {
 	return {
 		id: '',
 		name: '',
+		slug: ''
 	}
 }
 
