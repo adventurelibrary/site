@@ -22,7 +22,7 @@ export default class TagList extends Vue {
 			return []
 		}
 		this.tags.forEach((id: string) => {
-			const tag = getTagById(id)	
+			const tag = getTagById(id)
 			if (tag) {
 				atags.push(tag)
 			}
