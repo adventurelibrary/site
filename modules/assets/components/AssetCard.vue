@@ -24,13 +24,13 @@
 					<span class="currency">Coins</span>
 				</h4>
 			</figure>-->
-			<div class="description">				
-				{{asset.description}}				
+			<div class="description">
+				{{asset.description}}
 			</div>
 			<slot name="extra-details"></slot>
 			<div class="search-meta">
 				<Category :category="asset.category" />
-				<TagList :tags="asset.tags" />				
+				<TagList :tags="asset.tags" />
 			</div>
 		</div>
 		<figure class="asset-actions">
