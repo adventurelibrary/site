@@ -104,7 +104,7 @@ const actions = ['category', 'creator', 'tag']
 		SearchActions: SearchActions,
 	},
 })
-class AssetSearch extends Vue {
+export class AssetSearch extends Vue {
 	searchFilters : AssetSearchFilter[] = []
 	activeFilter : number = -1
 	query : string = ''

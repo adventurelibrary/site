@@ -4,6 +4,9 @@
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
 		<AssetThumbnail :asset="asset" />
+		<div>
+			<TagList :tags="asset.tags" />
+		</div>
 		<div class="meta">
 			<h3 class="title">
 				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
@@ -21,13 +24,13 @@
 					<span class="currency">Coins</span>
 				</h4>
 			</figure>-->
-			<div class="description">
-				{{asset.description}}
+			<div class="description">				
+				{{asset.description}}				
 			</div>
 			<slot name="extra-details"></slot>
 			<div class="search-meta">
 				<Category :category="asset.category" />
-				<TagList :tags="asset.tags" />
+				<TagList :tags="asset.tags" />				
 			</div>
 		</div>
 		<figure class="asset-actions">
@@ -35,6 +38,7 @@
 			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<slot name="extra-actions"></slot>
 		</figure>
+		
 	</li>
 </template>
 <script lang="ts">

@@ -114,8 +114,16 @@
 		display: none;
 	}
 
+	a:link { 
+		text-decoration: none;		
+	}
 
-	li {
+	.tag-item {
+		float: left;
+		margin: 2px;
+	}
+
+	li, .tag-item {
 		font-size: .75em;
 		background-color: $filter-light;
 		padding: .3em .7em;
