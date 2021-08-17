@@ -8,10 +8,10 @@
 		</LoadingContainer>
 
 		<section class="info">
-			<h1 class="title">{{asset.name}}</h1>			
+			<h1 class="title">{{asset.name}}</h1>
 
-			<h3 class="author">				
-				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
+			<h3 class="author">
+				By <i class="author-icon ci-user"></i>{{asset.creator_name}}
 				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
 				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->
 			</h3>

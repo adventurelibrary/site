@@ -23,7 +23,7 @@ import {Context} from "@nuxt/types";
 import AdminPage from "~/admin/admin-page";
 import {Creator} from "~/modules/creators/creator-types";
 import {
-	creatorToFormData, getCreatorById,
+	creatorToFormData, getManageCreatorById,
 	newCreatorAjax, saveCreator,
 } from "~/modules/creators/creator-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
@@ -78,7 +78,7 @@ export default class EditCreatorPage extends mixins(AdminPage, FormMixin) {
 		const creatorAjax = newCreatorAjax()
 		let data : any = {}
 		try {
-			const creator = await getCreatorById(ctx.route.params.id)
+			const creator = await getManageCreatorById(ctx.route.params.id)
 			console.log('gotted', creator)
 			creatorAjax.data = creator
 			data = creatorToFormData(creator)

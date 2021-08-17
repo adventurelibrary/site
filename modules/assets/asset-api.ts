@@ -69,16 +69,6 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	query.size = size.toString()
 	query.from = from.toString()
 
-	if (opts.mine) {
-		query.mine = '1'
-	}
-	if (opts.unlocked) {
-		query.unlocked = '1'
-	}
-	if (opts.visibility) {
-		query.visibility = opts.visibility
-	}
-
 	return query
 }
 
@@ -94,6 +84,12 @@ export async function queryAssets (opts: Record<string, string>) : Promise<Asset
 
 // returns array of related assets of an asset by tags, excluding the original asset passed
 export async function getRelatedAssetsByTags (asset: Asset) : Promise<AssetsResponse> {
+	if (!asset.tags) {
+		return {
+			assets: [],
+			total: 0
+		}
+	}
 	const opts = {tags: asset.tags.join(',') };
 	const res = await api.get<AssetsResponse>('/assets?' + objectToQueryString(opts))
 	res.data.assets = res.data.assets.map(transformAsset)
@@ -119,17 +115,15 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 
 // This is to fetch all the assets you have access for, as a creator
 export const getMyUnlockedAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
-	search.unlocked = true
-	return searchAssets(search)
+	const res = await api.get('/assets/unlocked')
+	return res.data
 }
 
 // This is the search for our admin area
 // It does all the same stuff as searchAssets AND it also
 // specififes that we want to view ALL assets, not just the visible ones
 export async function searchAdminAssets (opts: AssetSearchOptions) : Promise<AssetsResponse> {
-	const apiQuery = assetSearchOptionsToAPIQuery(opts)
-	apiQuery.visibility = 'all'
-	return await queryAssets(apiQuery)
+	throw new Error(`Not implemented`)
 }
 
 // This function is used to cleanup any data that the server gives us
@@ -199,7 +193,7 @@ export async function getAssetByField(field: string, value: string) : Promise<As
 export const getAssetBySlug = async (slug: string) : Promise<Asset> => {
 	const parts = slug.split('-')
 	const id = parts[parts.length-1]
-	const path = `/assets?id=${id}`
+	const path = `/assets/${id}`
 	const res = await api.get(path)
 	return transformAsset(res.data)
 	//return getAssetById(id)
@@ -303,7 +297,7 @@ export const newAssetAjax = () : Ajax<Asset> => {
 
 // Makes a request to our server to update one or more assets
 export const saveAssets = async (payloads: AssetUpdate[]) => {
-	return await api.put('/assets/update', payloads)
+	return await api.put('/manage/assets/update', payloads)
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
@@ -331,9 +325,13 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	payload.description = data.description
 	payload.category = data.category
 	//payload.tagIDs = tagListToMap(data.tags)
-	payload.tags = data.tagObjects.map((t) => {
-		return t.label
-	})
+	if (data.tagObjects) {
+		payload.tags = data.tagObjects.map((t) => {
+			return t.label
+		})
+	} else {
+		payload.tags = []
+	}
 	payload.unlock_price = 0
 	payload.revenue_share = {}
 	return payload
@@ -343,7 +341,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 // archive it
 // The 'result' prop that is returned will be "deleted" or "hidden"
 export async function archiveAsset (assetId: string) {
-	const res = await api.post(`/assets/${assetId}/delete`)
+	const res = await api.post(`/manage/assets/${assetId}/delete`)
 	return res.data.result
 	/*console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 

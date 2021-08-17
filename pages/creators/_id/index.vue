@@ -13,7 +13,7 @@
 import {Component, mixins} from "nuxt-property-decorator";
 import CreatorsManage from "~/mixins/CreatorsManage";
 import CreatorPage from "~/pages/creators/-components/CreatorPage.vue";
-import {getCreatorById, newCreator} from "~/modules/creators/creator-api";
+import {getManageCreatorById, newCreator} from "~/modules/creators/creator-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Creator} from "~/modules/creators/creator-types";
 @Component({
@@ -25,7 +25,7 @@ import {Creator} from "~/modules/creators/creator-types";
 export default class CreatorsCreatorIndex extends mixins(CreatorsManage) {
 	public creator : Creator = newCreator()
 	async fetch () {
-		const creator = await getCreatorById(this.creatorId)
+		const creator = await getManageCreatorById(this.creatorId)
 		this.creator = creator
 		console.log('creator', creator)
 	}

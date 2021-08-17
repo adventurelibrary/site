@@ -31,8 +31,10 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
-			<AssetDownload :asset="asset" />
-			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
+			<template v-if="!hideDefaultActions">
+				<AssetDownload :asset="asset" />
+				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
+			</template>
 			<slot name="extra-actions"></slot>
 		</figure>
 	</li>
@@ -65,6 +67,7 @@ class AssetCard extends Vue {
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
 
+	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
 
 	@Watch('asset.type', {

@@ -1,17 +1,8 @@
 import {Ajax, newAjax} from "~/lib/ajax";
 import {Creator, CreatorFormData, CreatorsResponse, ManageCreatorAssets} from "~/modules/creators/creator-types";
 import api from "~/lib/api";
-import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
-import {assetSearchOptionsToAPIQuery, newAsset, searchAssets} from "~/modules/assets/asset-api";
-
-export const CREATORS = [{
-	name: 'Eowyn',
-	id: '4324254325'
-}, {
-	name: 'Galadriel',
-	id: 'dfsafdsafafsd'
-}]
-
+import {AssetSearchOptions} from "~/modules/assets/asset-types";
+import {assetSearchOptionsToAPIQuery} from "~/modules/assets/asset-api";
 
 export const newCreator = () : Creator => {
 	return {
@@ -28,13 +19,17 @@ export const newCreatorsAjax = () : Ajax<CreatorsResponse> => {
 	})
 }
 
+/**
+ * Returns all creators. This is for public users to get creators, like in the
+ * the search bar
+ */
 export async function getCreators () : Promise<CreatorsResponse> {
 	const res = await api.get('/creators')
 	return res.data
 }
 
 export async function getMyCreators () : Promise<CreatorsResponse> {
-	const res = await api.get('/creators/mine')
+	const res = await api.get('/manage/creators')
 	return res.data
 }
 
@@ -43,34 +38,19 @@ export const newCreatorAjax = () : Ajax<Creator> => {
 }
 
 // This is used in the management area, where the route params use the creator's ID
-export async function getCreatorById (id: string) : Promise<Creator> {
-	const res = await api.get('/creator/' + id)
+export async function getManageCreatorById (id: string) : Promise<Creator> {
+	const res = await api.get('/manage/creator/' + id)
 	return res.data
 }
 
 // Returns the assets from a specific reator that you have access to view
 // This is for the management pages, not for public viewing
 export const getManageCreatorAssets = async (creatorId: string, search: AssetSearchOptions) : Promise<ManageCreatorAssets> => {
-	/*const searchQuery = assetSearchOptionsToAPIQuery(search)
-	const res = await api.get(`/creator/${creatorId}/assets`, {
+	const searchQuery = assetSearchOptionsToAPIQuery(search)
+	const res = await api.get(`/manage/creator/${creatorId}/assets`, {
 		params: searchQuery
 	})
-	return res.data*/
-	console.log('searching for', search)
-	return new Promise((res, _) => {
-		setTimeout(() => {
-			res({
-				creator: {
-					name: 'Fake Creator',
-					id: creatorId
-				},
-				assets: {
-					total: 1,
-					assets: [newAsset()]
-				}
-			})
-		}, 500)
-	})
+	return res.data
 }
 
 
@@ -90,13 +70,13 @@ export function creatorFormDataToPayload (data: CreatorFormData) : any {
 
 export async function saveCreator (id: string, data: CreatorFormData) {
 	const payload = creatorFormDataToPayload(data)
-	return await api.put('/creator/' + id, payload)
+	return await api.put('/manage/creator/' + id, payload)
 }
 
 
 export async function addCreator (data: CreatorFormData) : Promise<string> {
 	const payload = creatorFormDataToPayload(data)
-	const res = await api.post('/creators', payload)
+	const res = await api.post('/manage/creators', payload)
 	return res.data.id
 }
 

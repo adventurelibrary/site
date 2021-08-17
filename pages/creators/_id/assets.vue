@@ -1,11 +1,10 @@
 <template>
 	<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
 		<template v-if="creator.id">
-			IF CREATOR
 			<CreatorPage active-tab="assets" :creator="creator">
 				<h1>{{creator.name}}'s Assets</h1>
 				<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
-					<ul class="assets">
+					<ul class="search-results">
 						<AssetManageItem v-for="asset in assets" :key="asset.id" :asset="asset"></AssetManageItem>
 					</ul>
 				</LoadingContainer>
@@ -49,11 +48,9 @@ export default class CreatorAssets extends mixins(CreatorsManage) {
 	async fetch () {
 		const search = newSearchOptions()
 		const res = await getManageCreatorAssets(this.creatorId, search)
-		console.log('res', res)
 		this.response = res
 		this.creator = res.creator
 		this.assets = res.assets.assets
-		console.log('this creator', this.creator)
 	}
 
 	onAssetUpdated (data: any) {

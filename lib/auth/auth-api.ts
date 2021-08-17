@@ -63,7 +63,8 @@ export async function signIn (identifier: string, password: string) {
 	}
 	const sess = await Auth.currentSession()
 	const jwt = sess.getIdToken().getJwtToken()
-	setCookie('jwt', jwt, 31)
+	setJWT(jwt) // Update it in memory so our Axios interceptors use it
+	setCookie('jwt', jwt, 31) // Save it for future sessions
 }
 
 

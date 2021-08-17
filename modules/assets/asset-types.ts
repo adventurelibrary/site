@@ -65,9 +65,6 @@ export type AssetSearchOptions = {
 	sortDirection: SortDirection
 	from: number
 	size: number
-	mine?: boolean
-	unlocked?: boolean
-	visibility?: string
 	creator_id?: string
 }
 

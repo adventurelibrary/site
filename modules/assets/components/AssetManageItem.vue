@@ -1,5 +1,5 @@
 <template>
-	<AssetCard :key="asset.id" :asset="asset">
+	<AssetCard :key="asset.id" :asset="asset" hide-default-actions="true">
 		<div class="extra-details" slot="extra-details">
 			{{asset.visibility}}
 		</div>
