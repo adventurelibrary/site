@@ -78,7 +78,7 @@
 					:query="actionQuery"
 					:active="action === 'tag'"
 					@clickTag="creatorClicked" />
-			</div>			
+			</div>
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">

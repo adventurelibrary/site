@@ -1,15 +1,15 @@
 <template>
 	<div class="tag-search">
 		<!--<ul class="action-list items" v-if="shownItems.length">-->
-	    <ul class="action-list items" v-if="true">
-			<li 
+		<ul class="action-list items" v-if="true">
+			<li
 				:key="1"
 				class="action"
 				:class="{'active': activeItem === idx}"
 				@click="() => clickCreator(1)">
 				Creator 1
 			</li>
-			<li 
+			<li
 				:key="2"
 				class="action"
 				:class="{'active': activeItem === idx}"
@@ -66,7 +66,7 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 		const res = await api.get<JSON>(`/creatorssearchlist`)
 		console.log('creatorSearch, fetch:', res)
 		return res.data
-    }	
+    }
 
 	// Featured tags are shown as suggestion when the user has only
 	// typed in "creator:"
@@ -87,13 +87,13 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 		*/
 
 
-		
+
 
 		const maxLen = Math.min(this.items.length, 4)
 		return this.items.splice(0, maxLen)
 	}
 
-	
+
 
 	async searchCreators () {
 		// If query is blank we want to show suggestions

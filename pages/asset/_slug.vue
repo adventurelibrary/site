@@ -5,9 +5,9 @@
 		</section>
 
 		<section class="info">
-			<h1 class="title">{{asset.name}}</h1>			
+			<h1 class="title">{{asset.name}}</h1>
 
-			<h3 class="author">						
+			<h3 class="author">
 				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
 				By<i class="author-icon ci-user"><nuxt-link :to="{name: `creator/$asset.slug`, params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i>
 				<nuxt-link :to="{name: 'creator', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>
