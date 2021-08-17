@@ -73,21 +73,7 @@
 			}
 		}
 		.author {
-			display: flex;
-			gap: .4ch;
 			grid-area: author;
-			margin: 0;
-			font-size: 1em;
-			font-weight: normal;
-			white-space: nowrap;
-
-			.author-label {
-				color: hsl(0deg, 0%, 87%);
-			}
-			a {
-				color: $a-href;
-				text-decoration: none;
-			}
 		}
 		.pricing {
 			margin: 0;
