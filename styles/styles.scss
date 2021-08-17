@@ -89,8 +89,6 @@
 		text-decoration: none;
 	}
 }
-
-.tag.category {
-	background-color: $black-teal;
+.category, .tag {
 	display: inline-grid;
 }
