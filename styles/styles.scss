@@ -63,3 +63,16 @@
 [role="loading-container"] {
 	display: grid;
 }
+
+.tag-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	column-gap: 0.25em;
+	row-gap: 0.2em;
+}
+
+.tag.category {
+	background-color: $black-teal;
+	display: inline-grid;
+}

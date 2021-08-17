@@ -9,6 +9,7 @@
 				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
 			</h3>
 			<h4 class="author">
+				<Category :category="asset.category" />
 				<span class="author-label">by</span>
 				<span>
 					<!-- Should be a profile link -->
@@ -26,7 +27,6 @@
 			</div>
 			<slot name="extra-details"></slot>
 			<div class="search-meta">
-				<Category :category="asset.category" />
 				<TagList :tags="asset.tags" />
 			</div>
 		</div>

@@ -58,7 +58,8 @@
 		grid-template-areas:
 			"title title"
 			"author price"
-			"description description";
+			"description description"
+			"tags tags";
 
 		.title {
 			grid-area: title;
@@ -72,6 +73,8 @@
 			}
 		}
 		.author {
+			display: flex;
+			gap: .4ch;
 			grid-area: author;
 			margin: 0;
 			font-size: 1em;
@@ -106,7 +109,13 @@
 			align-self: start;
 		}
 		.search-meta {
+			grid-area: tags;
 			display: none;
+			column-gap: 0.25em;
+			row-gap: 0.2em;
+		}
+		.search-meta, .author {
+			margin-left: -.3em;
 		}
 	}
 	.asset-actions {
@@ -155,6 +164,9 @@
 			box-shadow: 0px 0px 2px 2px $asset-card-meta-dark;
 		}
 		.description {
+			display: grid;
+		}
+		.search-meta {
 			display: grid;
 		}
 	}
