@@ -30,6 +30,7 @@ export default class AssetDownload extends Vue {
 
 	@Prop() asset : Asset
 
+
 	get canDownload () : boolean {
 		return this.asset.unlocked
 	}
@@ -49,16 +50,19 @@ export default class AssetDownload extends Vue {
 	}
 
 	async clickUnlockAsset () {
+		let result
 		try {
-			await this.$store.dispatch('unlockAsset', {
+			result = await this.$store.dispatch('unlockAsset', {
 				asset: this.asset
 			})
 		} catch (ex) {
 			this.notifyError(ex.toString())
 			return
 		}
-		this.notifySuccess(`Unlocked ${this.asset.name}`)
-		this.asset.unlocked = true
+		if (result === 'unlocked') {
+			this.notifySuccess(`Unlocked ${this.asset.name}`)
+			this.asset.unlocked = true
+		}
 	}
 
 	getDownloadOptions () : AssetDownloadOptions {

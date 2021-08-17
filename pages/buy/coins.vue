@@ -9,7 +9,7 @@
 				<p>{{option.price}}</p>
 				<a class="button" @click="() => buyCoins(option.coins)">
 					<span v-show="buying">Working...</span>
-					<span v-hide="buying">Buy Coins</span>
+					<span v-show="!buying">Buy Coins</span>
 				</a>
 			</li>
 		</ul>
@@ -39,7 +39,7 @@ export default class BuyCoinsPage extends Vue {
 		},
 		{
 			coins: 1000,
-			price: "$5.00 USD",
+			price: "$10.00 USD",
 			image: 'coins.svg',
 			href: baseURL + '/buy/coins/1000',
 		},

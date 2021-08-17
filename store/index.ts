@@ -331,14 +331,21 @@ export const actions = {
 		const user = await getSession()
 		commit('user', user)
 		if (user) {
+			commit('user', user)
 			commit('userCoins', user.num_coins)
 		} else {
+			commit('user', null)
 			commit('userCoins', 0)
 		}
 	},
-	async unlockAsset ({commit} : ActionParams, {asset} : {asset: Asset}) {
+	async unlockAsset ({commit, getters, dispatch} : ActionParams, {asset} : {asset: Asset}) : Promise<'unlocked' | 'login'> {
+		if (!getters.isLoggedIn) {
+			dispatch('openLoginModal')
+			return 'login'
+		}
 		const result = await unlockAsset(asset.id)
 		commit('userCoins', result.numCoins)
+		return 'unlocked'
 	}
 }
 

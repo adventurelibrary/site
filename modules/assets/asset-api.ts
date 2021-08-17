@@ -146,10 +146,6 @@ export function transformAsset (asset: Asset) : Asset {
 
 	asset.tagObjects = newTags
 
-	// This is just a testing hack so that different assets have different is_unlocked values
-	// that are consistent on page reload
-	asset.unlocked = asset.name.length % 2 == 0
-
 	return asset
 }
 
