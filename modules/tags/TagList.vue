@@ -1,7 +1,7 @@
 <template>
-	<span class="tag-list">
-		<span class="tag" v-for="tag in tagObjs" :key="tag.key">{{tag.label}}</span>
-	</span>
+	<ul class="tag-list">
+		<li class="tag" v-for="tag in tagObjs" :key="tag.key">{{tag.label}}</li>
+	</ul>
 </template>
 <script lang="ts">
 import {Component, Vue, Prop} from "nuxt-property-decorator";
@@ -29,11 +29,3 @@ export default class TagList extends Vue {
 	}
 }
 </script>
-<style>
-.tag-list .tag:before {
-	content: ", "
-}
-.tag-list .tag:nth-child(1):before {
-	content: ""
-}
-</style>

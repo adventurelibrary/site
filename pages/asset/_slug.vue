@@ -11,7 +11,12 @@
 			<h1 class="title">{{asset.name}}</h1>			
 
 			<h3 class="author">				
-				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
+				<Category :category="asset.category" />
+				<span class="author-label">by</span>
+				<span>
+					<!-- Should be a profile link -->
+					{{asset.creator_name}}
+				</span>
 				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
 				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->
 			</h3>
@@ -57,6 +62,8 @@ import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
 import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue";
 import TagList from "~/modules/tags/TagList.vue";
+import {Category as CategoryType} from "~/modules/categories/categories-types"
+import Category from "~/modules/categories/components/Category.vue";
 
 // related assets and search modules
 import {AssetsResponse} from "~/modules/assets/asset-types";
@@ -71,6 +78,7 @@ import {Fragment} from "vue-fragment";
 		AssetDownload: AssetDownload,
 		TagList: TagList,
 		AssetCard,
+		Category: Category,
 		Modals: Modals,
 		AssetArchiveButton: AssetArchiveButton,
 		AssetReportButton: AssetReportButton,
@@ -81,6 +89,7 @@ class AssetPage extends Vue {
 	relatedAssets : Asset[]
 	asset : null | Asset
 	slug: string
+	category : CategoryType | null
 
 	// setting header meta tags
 	head () {

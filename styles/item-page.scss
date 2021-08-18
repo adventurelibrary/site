@@ -66,9 +66,8 @@
 			font-size: 2em;
 		}
 		.author {
-			margin: 0;
+			margin-left: -.2em;
 			font-size: 1.1em;
-			color: $gray2;
 			font-weight: normal;
 
 			a { color: currentColor; }
@@ -84,6 +83,9 @@
 			justify-content: start;
 			color: $gray2;
 			font-size: .8em;
+		}
+		.tag-list {
+			margin-left: -.2em;
 		}
 	}
 	.actions {
