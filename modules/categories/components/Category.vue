@@ -1,5 +1,5 @@
 <template>
-	<span class="category">{{name}}</span>
+	<span class="category tag">{{name}}</span>
 </template>
 <script lang="ts">
 import Vue from "vue"

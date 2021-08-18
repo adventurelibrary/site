@@ -43,8 +43,11 @@ $search-filter-background-light: $black4;
 $search-filter-background-med: $black5;
 $search-filter-background-dark: $black6;
 
-$filter-light: $cta-blue-light;
-$filter-dark: $cta-blue-dark;
+$filter-tag-light: $cta-blue-light;
+$filter-tag-dark: $cta-blue-dark;
+
+$filter-cat-light: $black-teal;
+$filter-cat-dark: darken($black-teal, 5%);
 
 $shadow-light: $black-trans2;
 
