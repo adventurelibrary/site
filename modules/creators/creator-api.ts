@@ -43,7 +43,7 @@ export async function getManageCreatorById (id: string) : Promise<Creator> {
 	return res.data
 }
 
-// Returns the assets from a specific reator that you have access to view
+// Returns the assets from a specific creator that you have access to view
 // This is for the management pages, not for public viewing
 export const getManageCreatorAssets = async (creatorId: string, search: AssetSearchOptions) : Promise<ManageCreatorAssets> => {
 	const searchQuery = assetSearchOptionsToAPIQuery(search)
