@@ -5,16 +5,16 @@
 		</section>
 		<nav class="tabs" v-if="creator">
 			<nuxt-link
-					:to="{name: 'creators-id', params: {id: creator.id}}"
-					class="tab-control"
-					:class="{active: activeTab === 'index'}">
-				Settings
-			</nuxt-link>
-			<nuxt-link
 					:to="{name: 'creators-id-assets', params: {id: creator.id}}"
 					class="tab-control"
 					:class="{active: activeTab === 'assets'}">
 				Assets
+			</nuxt-link>
+			<nuxt-link
+					:to="{name: 'creators-id', params: {id: creator.id}}"
+					class="tab-control"
+					:class="{active: activeTab === 'index'}">
+				Settings
 			</nuxt-link>
 			<nuxt-link
 				:to="{name: 'creators-id-upload', params: {id: creator.id}}"

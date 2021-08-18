@@ -49,6 +49,7 @@ export default class UserSettings extends Vue {
 	async logout () {
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
+		this.$router.push('/')
 	}
 }
 </script>

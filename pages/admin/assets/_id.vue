@@ -7,7 +7,7 @@
 			<LoadingContainer :loading="assetAjax.loading" :error="assetAjax.error">
 				<form @submit="submit">
 					<FormErrors :error="form.error" />
-					<AssetFields :asset="data" @assetChanged="dataChanged" />
+					<AssetFields v-model="data" />
 					<div>
 						<button type="button" style="float: right;" @click="deleteAsset">Delete</button>
 						<button type="submit">Submit</button>
@@ -97,10 +97,6 @@ export default class EditAssetPage extends mixins(AdminPage, FormMixin) {
 		}
 
 		this.notifySuccess('Asset deleted (but not really yet)')
-	}
-
-	dataChanged (data: any) {
-		this.data = data
 	}
 }
 </script>

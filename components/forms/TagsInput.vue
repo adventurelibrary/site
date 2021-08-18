@@ -1,9 +1,9 @@
 <template>
-	<div class="tags-input">
+	<div class="tags-input" :class="{'show-search': showSearch}">
 		<ul class="search-filters">
 			<SearchFilter
 				v-for="(tag, idx) in tagsLocal" :key="tag.key"
-				:filter="tag"
+				:filter="{type: 'tag', label: tag.label}"
 				@remove="() => removeTag(idx)"
 			/>
 		</ul>
@@ -15,6 +15,8 @@
 				@keydown.left="keyUpLeftArrow"
 				@keydown.right="keyDownRightArrow"
 				@keydown.down="keyDownRightArrow"
+				@focus="showSearch = true"
+				@blur="startHideSearch"
 			/>
 			<TagSearch
 				:bus="bus"
@@ -43,6 +45,8 @@ import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 export default class TagsInput extends Vue {
 	bus : Vue = new Vue()
 	query : string = ''
+	showSearch  = false
+	hideSearchTimeout : any = null
 
 	@Model('changed',  {
 		type: Array as PropType<AssetTag[]>
@@ -50,8 +54,9 @@ export default class TagsInput extends Vue {
 	readonly tagsLocal! : AssetTag[]
 
 	tagClicked (tag: AssetTag) {
-		this.tagsLocal.push(tag)
-		this.emitChanged()
+		const newList = [...(this.tagsLocal || [])]
+		newList.push(tag)
+		this.$emit('changed', newList)
 		this.query = ''
 	}
 
@@ -96,6 +101,13 @@ export default class TagsInput extends Vue {
 		}
 		e.preventDefault()
 		this.bus.$emit('prev')
+	}
+
+	startHideSearch () {
+		clearTimeout(this.hideSearchTimeout)
+		this.hideSearchTimeout = setTimeout(() => {
+			this.showSearch = false
+		}, 250)
 	}
 
 }

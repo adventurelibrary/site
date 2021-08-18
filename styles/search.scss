@@ -106,7 +106,7 @@
 
 .tag {
 	background-color: $filter-tag-light;
-	
+
 	&.active {
 		background-color: $filter-tag-dark;
 	}
@@ -199,6 +199,7 @@
 	}
 	.action {
 		display: block;
+		cursor: pointer;
 
 		&.active,
 		&.active .action-prefix {

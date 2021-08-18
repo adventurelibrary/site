@@ -26,7 +26,7 @@ import {Creator} from "~/modules/creators/creator-types";
 	middleware: ['require_auth']
 })
 export default class UploadPage extends Vue {
-	creators : Creator[]
+	creators : Creator[] = []
 
 	@Getter('isCreator') isCreator : boolean
 
@@ -40,7 +40,7 @@ export default class UploadPage extends Vue {
 
 		// No need to show them the list if they only have access to one creator
 		if (this.creators.length == 1) {
-			this.$nuxt.context.redirect(`/creators/${this.creators[0].id}`)
+			this.$nuxt.context.redirect(`/creators/${this.creators[0].id}/assets`)
 			return
 		}
 	}
