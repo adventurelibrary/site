@@ -95,6 +95,31 @@
 	}
 }
 
+
+.category, .tag {
+	font-size: .75em;
+	padding: .3em .7em;
+	border-radius: .3em;
+	white-space: nowrap;
+
+}
+
+.tag {
+	background-color: $filter-tag-light;
+	
+	&.active {
+		background-color: $filter-tag-dark;
+	}
+}
+
+.category {
+	background-color: $filter-cat-light;
+
+	&.active {
+		background-color: $filter-cat-dark;
+	}
+}
+
 .search-filters {
 	grid-area: filters;
 	display: grid;
@@ -114,18 +139,8 @@
 		display: none;
 	}
 
-
-	li {
-		font-size: .75em;
-		background-color: $filter-light;
-		padding: .3em .7em;
-		border-radius: .3em;
+	.category, .tag {
 		display: block;
-		white-space: nowrap;
-
-		&.active {
-			background-color: $filter-dark;
-		}
 	}
 
 	.filter-type {
@@ -187,7 +202,7 @@
 
 		&.active,
 		&.active .action-prefix {
-		  color: $filter-light;
+		  color: $filter-tag-light;
 		}
 	}
 	.action-prefix {

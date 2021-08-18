@@ -63,3 +63,32 @@
 [role="loading-container"] {
 	display: grid;
 }
+
+.tag-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	column-gap: 0.25em;
+	row-gap: 0.2em;
+}
+
+.author {
+	display: flex;
+	gap: .4ch;
+	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
+	white-space: nowrap;
+
+	.author-label {
+		color: hsl(0deg, 0%, 87%);
+	}
+
+	a {
+		color: $a-href;
+		text-decoration: none;
+	}
+}
+.category, .tag {
+	display: inline-grid;
+}
