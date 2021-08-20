@@ -1,6 +1,10 @@
 <template>
 	<ul class="tag-list">
-		<li class="tag" v-for="tag in tagObjs" :key="tag.key">{{tag.label}}</li>
+		<li class="tag" v-for="tag in tagObjs" :key="tag.key">
+			<a class="filter-value" v-on:click="addTagToSearch(tag)">
+				{{tag.label}}
+			</a>
+		</li>
 	</ul>
 </template>
 <script lang="ts">
@@ -26,6 +30,11 @@ export default class TagList extends Vue {
 			}
 		})
 		return atags
+	}
+
+	addTagToSearch(tag: AssetTag) {
+		alert('Implement, add tag to search bar on top on click. Tag passed: '+ tag.label)
+		// AssetSearch.tagClicked (tag)
 	}
 }
 </script>
