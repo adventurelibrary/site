@@ -20,6 +20,7 @@ export type Asset = AssetFields & {
 	id: string
 	creator_name: string
 	creator_id: string
+	unlock_price: number
 	unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
 	slug: string
 	thumbnail: string

@@ -35,7 +35,7 @@
 			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			<slot name="extra-actions"></slot>
 		</figure>
-		
+
 	</li>
 </template>
 <script lang="ts">
