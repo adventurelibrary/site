@@ -145,7 +145,7 @@ class AssetsIndexPage extends Vue {
 	}
 
 	get totalAssets () : number {
-		return (this.assetsResponse.total || 0) + 100
+		return (this.assetsResponse.total || 0)
 	}
 
 	getPageTitle () {

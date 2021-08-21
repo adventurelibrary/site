@@ -23,8 +23,10 @@ api.interceptors.response.use((response) => {
 	}
 
 	const throwingError = new Error(msg)
-	// @ts-ignore
-	throwingError.statusCode = err.response.status
+	if (err.response) {
+		// @ts-ignore
+		throwingError.statusCode = err.response.status
+	}
 	// @ts-ignore
 	throw throwingError
 })

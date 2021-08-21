@@ -90,5 +90,9 @@ export default class SearchArrowNavMixin extends Vue{
 	get shownItems () : any[] {
 		return this.items
 	}
+
+	get querySanitized () : string {
+		return this.query.trim().toLowerCase()
+	}
 }
 </script>

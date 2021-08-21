@@ -24,12 +24,12 @@
 		position: relative;
 	}
 
-	.tag-search {
+	.search-typeahead-results {
 		display: none;
 	}
 
 	&.show-search {
-		.tag-search {
+		.search-typeahead-results {
 			display: block;
 		}
 	}

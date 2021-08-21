@@ -1,5 +1,5 @@
 <template>
-	<div class="tag-search">
+	<div class="search-typeahead-results tag-typeahead-results">
 		<ul class="action-list items" v-if="shownItems.length">
 			<li v-for="(tag, idx) in shownItems"
 				:key="tag.key"
@@ -50,8 +50,9 @@ export default class TagSearch extends SearchArrowNavMixin {
 	}
 
 	async searchTags () {
+		const query = this.querySanitized
 		// If query is blank we want to show suggestions
-		if (this.query == '') {
+		if (!query) {
 			this.items = this.getFeaturedTags()
 
 			if (this.items.length == 0) {
@@ -62,7 +63,6 @@ export default class TagSearch extends SearchArrowNavMixin {
 
 			return
 		}
-		const query = this.query.toLowerCase()
 		this.items = ASSET_TAGS.filter((tag: AssetTag) : boolean => {
 			const lablMatch = tag.label.toLowerCase().indexOf(query) >= 0
 			if (lablMatch) {

@@ -1,5 +1,5 @@
 <template>
-	<li class="" :class="classes">
+	<li class="search-filter" :class="classes">
 		<span class="filter-type">{{filter.type}}</span>
 		<span class="filter-value">{{filter.label}}</span>
 		<a class="filter-delete" @click="remove"></a>
@@ -28,16 +28,4 @@ export default class SearchFilter extends Vue {
 	}
 }
 </script>
-<style>
-a {
-	cursor: pointer;
-}
 
-.badge {
-	border: 2px solid transparent
-}
-
-.badge.active {
-	border-color: red;
-}
-</style>

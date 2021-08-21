@@ -32,6 +32,7 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	const filters = opts.filters
 	const tags : string[] = []
 	const categories : string[] = []
+	const creatorSlugs : string[] = []
 
 	filters.forEach((filter: AssetSearchFilter) => {
 		if (filter.type === 'tag') {
@@ -40,6 +41,10 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 		}
 		if (filter.type === 'category') {
 			categories.push(filter.value)
+			return
+		}
+		if (filter.type === 'creator') {
+			creatorSlugs.push(filter.value)
 			return
 		}
 	})
@@ -56,6 +61,9 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	}
 	if (categories.length) {
 		query.category = categories.join(',')
+	}
+	if (creatorSlugs.length) {
+		query.creator_slugs = creatorSlugs.join(',')
 	}
 
 	let size = opts.size
