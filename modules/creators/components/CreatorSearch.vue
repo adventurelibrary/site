@@ -50,13 +50,11 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 	// we can prioritize based on which creators are most popular
 	getFeaturedCreators () : Creator[] {
 		//API to return all creators from db: '/creators'
-		console.log('allCreators', this.allCreators)
 		const maxLen = Math.min(this.allCreators.length, 4)
 		return this.allCreators.slice(0, maxLen)
 	}
 
 	async fetch () {
-		console.log('i am creator fetch')
 		// We only need this list on the client side when a user starts searching for a creator:
 		// in the SearchBar. So we don't bother doing this query in SSR, this saves load time
 		if (process.server) {
@@ -68,12 +66,9 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 
 	async searchCreators () {
 		const query = this.querySanitized
-		console.log('query', query)
 		// If query is blank we want to show suggestions
 		if (!query) {
-			console.log('just do the featured ones')
 			this.items = this.getFeaturedCreators()
-			console.log('this items', this.items)
 			if (this.items.length == 0) {
 				this.activeItem = -1
 			} else {
@@ -92,7 +87,6 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 			}
 			return false
 		})
-		console.log('items', this.items)
 		this.activeItem = 0
 	}
 	clickCreator(creator: Creator) {
@@ -104,7 +98,6 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 	// The shown results are the filtered creators, which have been search through
 	// MINUS the creators that are already in our list of filters
 	get shownItems () : Creator[] {
-		console.log('filters', this.filters)
 		const shown = this.items.filter((creator: Creator) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]
@@ -117,7 +110,6 @@ export default class CreatorSearch extends SearchArrowNavMixin {
 			}
 			return true
 		})
-		console.log('shown', shown)
 		return shown
 	}
 }
