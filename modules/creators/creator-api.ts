@@ -8,6 +8,7 @@ export const newCreator = () : Creator => {
 	return {
 		id: '',
 		name: '',
+		slug: '',
 	}
 }
 
@@ -27,6 +28,25 @@ export async function getCreators () : Promise<CreatorsResponse> {
 	const res = await api.get('/creators')
 	return res.data
 }
+
+/**
+ * This loads the full list of creators for our backend once, then stores it in memory
+ * So that we only make the request once per session. Refreshing the page will make
+ * this request again
+ * This function was made for the SearchBar, so that we can lazy load our list of
+ * creators, and only load them once
+ */
+let creatorsCache : null | Creator[] = null
+export async function getCreatorsCached () : Promise<Creator[]> {
+	if (creatorsCache !== null) {
+		return creatorsCache
+	}
+	const res = await getCreators()
+	creatorsCache = res.creators
+	return creatorsCache
+}
+
+
 
 export async function getMyCreators () : Promise<CreatorsResponse> {
 	const res = await api.get('/manage/creators')

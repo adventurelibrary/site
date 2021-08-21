@@ -139,8 +139,18 @@
 		display: none;
 	}
 
-	.category, .tag {
+	.search-filter {
 		display: block;
+		font-size: .75em;
+		padding: .3em .7em;
+		border-radius: .3em;
+		white-space: nowrap;
+
+		&.creator {
+			// TODO: @Josh, pick a real color
+			// Should this be a global color on all .creator elements?
+			background: lightseagreen;
+		}
 	}
 
 	.filter-type {
@@ -173,7 +183,7 @@
 	}
 }
 
-.asset-search .actions, .tag-search {
+.asset-search .actions, .search-typeahead-results {
 	position: absolute;
 	width: 100%;
 	top: 100%;

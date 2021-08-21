@@ -25,6 +25,10 @@ import {Fragment} from "vue-fragment";
 type CreatorItem = Creator & {
 	active: boolean
 }
+
+/**
+ * This component is meant for admin areas
+ */
 @Component({
 	components: {
 		LoadingContainer,
