@@ -23,7 +23,7 @@ import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
 import {getMyBundles} from "~/modules/bundles/bundles-api";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import BundleCard from "~/modules/bundles/components/BundleCard.vue";
-import ProfilePage from "~/pages/user/components/ProfilePage.vue";
+import ProfilePage from "~/pages/user/-components/ProfilePage.vue";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
 

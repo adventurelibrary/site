@@ -16,12 +16,12 @@
 					{{asset.creator_name}}
 				</span>
 			</h4>
-<!--			<figure class="pricing">
+			<figure class="pricing">
 				<h4 class="coin-price">
-					<span class="amount">&lt;!&ndash;{{asset.price}}&ndash;&gt;$$</span>
+					<span class="amount">{{asset.unlock_price}}</span>
 					<span class="currency">Coins</span>
 				</h4>
-			</figure>-->
+			</figure>
 			<div class="description">
 				{{asset.description}}
 			</div>
@@ -31,8 +31,10 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
-			<AssetDownload :asset="asset" />
-			<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
+			<template v-if="!hideDefaultActions">
+				<AssetDownload :asset="asset" />
+				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
+			</template>
 			<slot name="extra-actions"></slot>
 		</figure>
 		
@@ -66,6 +68,7 @@ class AssetCard extends Vue {
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
 
+	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
 
 	@Watch('asset.type', {

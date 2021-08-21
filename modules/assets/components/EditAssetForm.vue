@@ -1,7 +1,7 @@
 <template>
 	<form @submit="submit" class="edit-asset">
 		<FormErrors :error="form.error" />
-		<AssetFields :asset="form.data" @assetChanged="dataChanged" />
+		<AssetFields v-model="form.data" />
 		<button type="submit">Save Asset</button>
 	</form>
 </template>
@@ -21,8 +21,9 @@ export default class EditAssetForm extends mixins(FormMixin) {
 	@Prop() asset : Asset | null
 
 	created () {
-		this.form.data = this.asset
-		console.log('data', this.form.data)
+		this.form.data = {
+			...this.asset
+		}
 	}
 
 	async formAction () {
@@ -31,10 +32,6 @@ export default class EditAssetForm extends mixins(FormMixin) {
 		}
 		await saveAsset(this.asset.id, this.form.data)
 		this.$emit('success', this.form.data)
-	}
-
-	dataChanged (data: any) {
-		this.form.data = data
 	}
 }
 </script>

@@ -1,4 +1,6 @@
 // Fields that are both in our forms and in our db
+import {AssetsResponse} from "~/modules/assets/asset-types";
+
 export type CreatorFields = {
 	name: string
 }
@@ -17,4 +19,9 @@ export type CreatorFormData = CreatorFields & {
 export type CreatorsResponse = {
 	total: number
 	creators: Creator[]
+}
+
+export type ManageCreatorAssets = {
+	creator: Creator
+	assets: AssetsResponse
 }

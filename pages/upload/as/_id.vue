@@ -8,7 +8,7 @@
 import {Component, Vue} from "nuxt-property-decorator";
 import UploadAssets from "~/modules/assets/components/UploadAssets.vue";
 import {Context} from "@nuxt/types";
-import {getCreatorById, newCreatorAjax} from "~/modules/creators/creator-api";
+import {getManageCreatorById, newCreatorAjax} from "~/modules/creators/creator-api";
 import {Creator} from "~/modules/creators/creator-types";
 
 @Component({
@@ -23,7 +23,7 @@ export default class UploadPage extends Vue {
 	async asyncData (ctx: Context) {
 		const creatorAjax = newCreatorAjax()
 		try {
-			const creator = await getCreatorById(ctx.route.params.id)
+			const creator = await getManageCreatorById(ctx.route.params.id)
 			creatorAjax.data = creator
 		} catch (ex) {
 			creatorAjax.error = ex

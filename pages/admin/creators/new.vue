@@ -21,7 +21,7 @@ import AdminPage from "~/admin/admin-page";
 import {Creator} from "~/modules/creators/creator-types";
 import {
 	addCreator,
-	creatorToFormData, getCreatorById,
+	creatorToFormData, getManageCreatorById,
 	newCreatorAjax, saveCreator,
 } from "~/modules/creators/creator-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
@@ -65,7 +65,7 @@ export default class NewCreatorPage extends mixins(AdminPage, FormMixin) {
 		const creatorAjax = newCreatorAjax()
 		let data : any = {}
 		try {
-			const creator = await getCreatorById(ctx.route.params.id)
+			const creator = await getManageCreatorById(ctx.route.params.id)
 			creatorAjax.data = creator
 			data = creatorToFormData(creator)
 		} catch (ex) {

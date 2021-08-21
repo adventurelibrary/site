@@ -117,7 +117,7 @@ class BundlePage extends Vue {
 			return false
 		}
 
-		return this.bundle.user_id === this.$store.state.user.id
+		return this.bundle.entity_id === this.$store.state.user.id
 	}
 
 	async clickRemoveAsset (asset: Asset) {

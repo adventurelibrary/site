@@ -3,7 +3,7 @@
 		<section class="profile-details">
 			<img src="~/assets/coolicons/svg/user/user.svg" class="profile-image">
 			<h1 class="username">{{user.username}}</h1>
-			<ul class="user-meta">				
+			<ul class="user-meta">
 				<li class="join-date">Date Joined: {{user.dateJoined}}</li>
 				<li>My Coins: {{numCoins}}</li>
 
@@ -25,7 +25,6 @@
 				My Bundles
 			</nuxt-link>
 			<nuxt-link
-					v-if="user.is_creator"
 					:to="{name: 'user-assets'}"
 					class="tab-control"
 					:class="{active: activeTab === 'assets'}">
@@ -36,7 +35,13 @@
 					class="tab-control"
 					:class="{active: activeTab === 'info'}">
 				Information
-			</nuxt-link>			
+			</nuxt-link>
+			<nuxt-link
+					v-if="isCreator"
+					:to="{name: 'creators'}"
+					class="tab-control highlight">
+				Creator Area
+			</nuxt-link>
 			<slot name="actions"></slot>
 		</nav>
 		<section class="tab active">

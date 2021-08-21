@@ -8,9 +8,9 @@
 		</LoadingContainer>
 
 		<section class="info">
-			<h1 class="title">{{asset.name}}</h1>			
+			<h1 class="title">{{asset.name}}</h1>
 
-			<h3 class="author">				
+			<h3 class="author">
 				<Category :category="asset.category" />
 				<span class="author-label">by</span>
 				<span>

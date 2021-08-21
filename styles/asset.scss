@@ -27,9 +27,10 @@
 	.tag-search {
 		display: none;
 	}
-	&:focus-within {
+
+	&.show-search {
 		.tag-search {
-			display: grid;
+			display: block;
 		}
 	}
 

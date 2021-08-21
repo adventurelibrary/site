@@ -2,13 +2,11 @@
 	<section class="asset-fields basic-form">
 		<Input
 			label="Title"
-			:value="copy.name"
-			v-on:input="(val) => fieldChanged('name', val)"
+			v-model="copy.name"
 		/>
 		<Textarea
 			label="Description"
-			:value="copy.description"
-			v-on:input="(val) => fieldChanged('description', val)"
+			v-model="copy.description"
 		/>
 		<FormGroup label="Tags" class="advanced">
 			<TagsInput
@@ -17,15 +15,13 @@
 		</FormGroup>
 		<CategorySelect
 			label="Type"
-			:value="copy.category"
-			v-on:input="(val) => fieldChanged('category', val)"
+			v-model="copy.category"
 		/>
 		<Select
 			v-if="!hideVisibility"
 			label="Visibility"
 			:options="visOptions"
-			:value="copy.visibility"
-			v-on:input="(val) => fieldChanged('visibility', val)" />
+			v-model="copy.visibility"
 	</section>
 </template>
 
@@ -39,25 +35,12 @@ import TagsInput from "~/components/forms/TagsInput.vue";
 import FormGroup from "~/components/forms/FormGroup.vue";
 import Select from "~/components/forms/SelectGroup.vue";
 import {VisibilityOptions} from "~/modules/assets/asset-consts";
-import {SelectOption} from "~/lib/helpers";
+import {Component, Model, Prop} from "nuxt-property-decorator";
 
 export const fieldNames = ['name', 'description', 'type']
 
-// This component is used to edit the data on an asset.
-// The asset might be one that already exists in our db and is being updated
-// or it might be a new asset that is about to be uploaded
-export default Vue.extend({
-	props: {
-		asset: {
-			type: Object as PropType<AssetFormData>,
-			required: true
-		},
-		hideVisibility: {
-			type: Boolean,
-			required: false,
-			default: false
-		}
-	},
+
+@Component({
 	components: {
 		Input: Input,
 		Textarea: Textarea,
@@ -65,30 +48,16 @@ export default Vue.extend({
 		TagsInput: TagsInput,
 		FormGroup: FormGroup,
 		Select: Select
-	},
-	data () : {
-		copy: any,
-		visOptions: SelectOption[]
-	} {
-		return {
-			copy: {},
-			visOptions: VisibilityOptions
-		}
-	},
-	watch: {
-		asset: {
-			immediate: true,
-			deep: true,
-			handler (newVal) {
-				this.copy = Object.assign({}, newVal)
-			}
-		}
-	},
-	methods: {
-		fieldChanged (field: string, value: any) {
-			this.copy[field] = value;
-			this.$emit('assetChanged', this.copy)
-		}
 	}
 })
+export default class AssetFields extends Vue {
+	visOptions = VisibilityOptions
+
+	@Model('changed',  {
+		type: Object as PropType<AssetFormData>
+	})
+	readonly copy! : AssetFormData
+
+	@Prop() hideVisibility : boolean
+}
 </script>

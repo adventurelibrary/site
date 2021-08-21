@@ -63,15 +63,14 @@ export default class TagSearch extends SearchArrowNavMixin {
 			return
 		}
 		const query = this.query.toLowerCase()
-		console.log('query', query)
 		this.items = ASSET_TAGS.filter((tag: AssetTag) : boolean => {
-			const lablMatch = tag.label.toLowerCase().indexOf(query) >= 0			
+			const lablMatch = tag.label.toLowerCase().indexOf(query) >= 0
 			if (lablMatch) {
 				return true
 			}
 
 			for (let i = 0; i < tag.aliases.length; i++) {
-				const alias = tag.aliases[i]				
+				const alias = tag.aliases[i]
 				if (!alias) {
 					continue
 				}
@@ -97,7 +96,7 @@ export default class TagSearch extends SearchArrowNavMixin {
 	// The shown results are the filtered tags, which have been search through
 	// MINUS the tags that are already in our list of filters
 	get shownItems () : AssetTag[] {
-		return this.items.filter((tag: AssetTag) => {
+		let list = this.items.filter((tag: AssetTag) => {
 			for(let i = 0;i < this.filters.length; i++) {
 				const f = this.filters[i]
 				if (f.type === 'tag' && f.value === tag.id) {
@@ -109,6 +108,12 @@ export default class TagSearch extends SearchArrowNavMixin {
 			}
 			return true
 		})
+
+		if (list.length > 15) {
+			list = list.slice(0, 14)
+		}
+
+		return list
 	}
 }
 </script>

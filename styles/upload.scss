@@ -1,13 +1,14 @@
 @import "color";
 
-.page-upload-as-id .site-body {
+.page-upload-as-id .site-body,
+.page-creators-id-upload .site-body .tab {
 	grid-template-columns: auto;
 	grid-template-rows: min-content min-content auto;
 	grid-template-areas:
 		"header"
 		"controls"
 		"upload";
-		
+
 	row-gap: 2.5em;
 	column-gap: 5em;
 
@@ -17,7 +18,7 @@
 		grid-template-areas:
 			"header controls"
 			"upload upload";
-		
+
 		.upload-controls { justify-self: end; }
 	}
 
@@ -42,7 +43,7 @@
 			display: grid;
 			gap: 2.5em;
 		}
-		
+
 		.new-asset {
 			display: grid;
 		}
@@ -75,24 +76,24 @@
 				grid-column: 1 / -1;
 				visibility: hidden;
 			}
-			&:hover { 
+			&:hover {
 					h4, input {
 					visibility: visible;
 				}
 			}
-			&.start { 
+			&.start {
 				padding: 2.5em;
 
 				h4, input {
 					visibility: visible;
 				}
 			}
-			h4 { 
-				grid-row: 1 / 2; 
+			h4 {
+				grid-row: 1 / 2;
 				align-self: end;
 				margin: none;
 			}
-			input { 
+			input {
 				grid-row: 2 / -1;
 				align-self: start;
 			}
