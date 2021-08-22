@@ -112,7 +112,6 @@ export const mutations = {
 		state.userTracking.activePath = path
 	},
 	userCoins (state: State, numCoins: number) {
-		console.log('numCoins to set to', numCoins)
 		state.userCoins = numCoins
 	},
 	breadcrumbs (state: State, crumbs: any[]) {
