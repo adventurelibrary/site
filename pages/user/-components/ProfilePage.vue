@@ -37,6 +37,12 @@
 				Information
 			</nuxt-link>
 			<nuxt-link
+					:to="{name: 'user-purchases'}"
+					class="tab-control"
+					:class="{active: activeTab === 'purchases'}">
+				Purchases
+			</nuxt-link>
+			<nuxt-link
 					v-if="isCreator"
 					:to="{name: 'creators'}"
 					class="tab-control highlight">
@@ -44,7 +50,7 @@
 			</nuxt-link>
 			<slot name="actions"></slot>
 		</nav>
-		<section class="tab active">
+		<section class="tab active" :class="'tab-' + activeTab">
 			<slot></slot>
 		</section>
 	</article>

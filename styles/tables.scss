@@ -1,0 +1,21 @@
+table.table {
+  width: 100%;
+  border-spacing: 1px;
+  background: #ccc;
+
+  tr {
+    background: $black-dark;
+  }
+
+  tbody {
+    tr {
+      &:nth-child(odd) {
+        background: $black-gray;
+      }
+    }
+  }
+
+  td, th {
+    padding: 0.25em 0.5em;
+  }
+}

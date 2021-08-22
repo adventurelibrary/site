@@ -25,10 +25,23 @@ export function getRouteQueryPage(route : Route) : number {
 	}
 })
 export default class PaginationMixin extends Vue {
+	itemsPerPage : number = 0
 	get activePage () : number {
 		const page = getRouteQueryPage(this.$route)
 
 		return page
+	}
+
+	get limit () : number {
+		return this.itemsPerPage
+	}
+
+	get skip () : number {
+		if (this.itemsPerPage) {
+			return (this.activePage - 1) * this.itemsPerPage
+		}
+
+		return 0
 	}
 
 	@Watch('$route')

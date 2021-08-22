@@ -2,9 +2,11 @@ const path = require('path')
 const fs = require('fs');
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
+const useSSR = !!process.env.SSR && process.env.SSR !== '0'
 
 console.log('API', process.env.ADVL_BASE_URL)
 console.log('PORT', process.env.PORT)
+console.log('SSR', useSSR)
 
 let server
 if (process.env.NODE_ENV === 'production') {
@@ -46,6 +48,8 @@ if (!isAdmin) {
 }
 
 export default {
+  ssr: useSSR,
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'Adventure Library',
