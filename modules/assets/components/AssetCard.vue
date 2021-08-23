@@ -37,7 +37,7 @@
 			</template>
 			<slot name="extra-actions"></slot>
 		</figure>
-		
+
 	</li>
 </template>
 <script lang="ts">

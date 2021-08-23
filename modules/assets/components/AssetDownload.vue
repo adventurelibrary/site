@@ -9,6 +9,7 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
+			{{price}}
 			<span @click="clickUnlockAsset">Unlock</span>
 		</template>
 	</div>
@@ -36,6 +37,15 @@ export default class AssetDownload extends Vue {
 	}
 	get mustUnlock () : boolean {
 		return !this.asset.unlocked
+	}
+
+	get price () : string {
+		if (this.asset.unlock_price == 0 || !this.asset.unlock_price) {
+			return "FREE "
+		}
+		else {
+			return this.asset.unlock_price.toString() + ' coins '
+		}
 	}
 
 	async download (e: Event) {

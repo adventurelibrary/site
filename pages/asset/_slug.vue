@@ -24,9 +24,9 @@
 			<div class="description">
 				{{asset.description}}
 			</div>
-			
+
 			<TagList :tags="asset.tags" />
-		
+
 			<div class="control">
 				<AssetArchiveButton :asset="asset" />
 				<AssetReportButton :asset="asset" />

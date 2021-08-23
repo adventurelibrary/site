@@ -273,6 +273,7 @@ export const newAsset = () : Asset => {
 		creator_name: '',
 		description: '',
 		unlocked: false,
+		unlock_price: 0,
 		name: '',
 		slug: '',
 		tags: [],
