@@ -9,7 +9,7 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			{{getPrice()}}
+			{{price}}
 			<span @click="clickUnlockAsset">Unlock</span>
 		</template>
 	</div>
@@ -30,7 +30,6 @@ export default class AssetDownload extends Vue {
 	fileType = 'original'
 
 	@Prop() asset : Asset
-	@Prop() price : string
 
 
 	get canDownload () : boolean {
@@ -40,7 +39,7 @@ export default class AssetDownload extends Vue {
 		return !this.asset.unlocked
 	}
 
-	getPrice () {
+	get price () : string {
 		if (this.asset.unlock_price == 0 || !this.asset.unlock_price) {
 			return "FREE "
 		}
