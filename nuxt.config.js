@@ -26,7 +26,11 @@ const ignore = [
   'pages/**/-components/*'
 ]
 const plugins = [
-  'mixins/global.ts'
+  'mixins/global.ts',
+  {
+    src: './plugins/vue-gtag.ts',
+    mode: 'client'
+  }
 ]
 
 if (!isAdmin) {
