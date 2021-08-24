@@ -151,10 +151,6 @@ export default Vue.extend({
 			Vue.set(this.newAssets[idx], 'file', file)
 		},
 		addFile (file : File) {
-			if (!file) {
-				console.log('file is blank')
-				return
-			}
 			const name = filenameToTitle(file.name)
 
 			this.newAssets.unshift({
