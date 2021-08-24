@@ -21,7 +21,7 @@
 			v-if="!hideVisibility"
 			label="Visibility"
 			:options="visOptions"
-			v-model="copy.visibility"
+			v-model="copy.visibility"/>
 	</section>
 </template>
 
