@@ -93,9 +93,7 @@ import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 import {newSearchOptions, stringToSortDirection} from "~/modules/assets/asset-helpers";
 import {Category} from "~/modules/categories/categories-types";
-import SearchUpdateMixin from "~/mixins/SearchUpdateMixin.vue"
 
-//console.log('State passed tag', this.$store.getters.)
 const actions = ['category', 'creator', 'tag']
 
 @Component({
@@ -115,7 +113,6 @@ class AssetSearch extends Vue {
 	bus : Vue = new Vue()
 	inputFocused = false;
 	inputFocusTimeout : NodeJS.Timeout
-	updateMixin : SearchUpdateMixin = new SearchUpdateMixin()
 
 	// The index of the active highlighted item from the child component
 	activeChildActiveItem : number
@@ -189,13 +186,20 @@ class AssetSearch extends Vue {
 		this.bus.$on('setActiveItem', (idx: number) => {
 			this.activeChildActiveItem = idx
 		})
+	}
 
-		// watch for tags and categories added from SearchUpdateMixin.vue
-		//this.bus.$on('pushTag', (tag: AssetTag) => {
-		this.updateMixin.$on('pushTag', (tag: AssetTag) => {
-			console.log('AssetSearch, tag received:', JSON.stringify(tag))
-			this.tagClicked(tag)
-		})
+	mounted () {
+		this.$root.$on('addCategoryToSearch', this.onAddCategoryToSearch);
+		this.$root.$on('addTagToSearch', this.onAddTagToSearch);
+	}
+
+	onAddTagToSearch(tag: AssetTag) {
+		this.tagClicked(tag)
+	}
+
+	onAddCategoryToSearch(cat: Category) {
+
+		this.categoryClicked(cat)
 	}
 
 	get showDropdown () : boolean {

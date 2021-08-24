@@ -16,9 +16,8 @@ export default class SearchUpdateMixin extends Vue {
     //this.$emit('tag')
     try {
       console.log("dispatch attempt inside");
-      this.$store.dispatch("handleTagForSearch", {
-        tag: this.tag,
-      });
+      this.$root.$emit("addSearchTag", { tag: this.tag })
+      console.log("dispatch attempt inside 2");
     } catch (ex) {
       console.log("Adding tag to search failed.", ex);
       return;

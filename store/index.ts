@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import {User} from "~/modules/users/user-types";
 import {UserTracking} from "~/modules/users/user-tracking";
 import {getSession, logout} from "~/lib/auth/auth-api";
-import {Asset, AssetTag} from "~/modules/assets/asset-types";
+import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
 import {Category} from "~/modules/categories/categories-types";
@@ -22,7 +22,6 @@ type State = {
 		working: boolean,
 		error: string
 	},
-	tagToSearch: AssetTag | null,
 	categoryToSearch: Category | null,
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
@@ -93,7 +92,6 @@ export const state = () : State => {
 			working: false,
 			error: ''
 		},
-		tagToSearch: null,
 		categoryToSearch: null,
 		modals: {
 			archiveAsset: false,
@@ -167,13 +165,6 @@ export const mutations = {
 		state.toasts = state.toasts.filter((t => {
 			return t.id != id
 		}))
-	},
-	addTagToSearch (state: State, tag: AssetTag) {
-		console.log('addTagToSearch mutation')
-		state.tagToSearch = tag
-	},
-	removeTagsForSearch (state: State) {
-		state.tagToSearch = null
 	},
 	user (state: State, pl: User | null) {
 		state.user = pl
@@ -361,12 +352,6 @@ export const actions = {
 		console.log('result of unlock', result)
 		commit('userCoins', result.numCoins)
 		return 'unlocked'
-	},
-	// updates state tagToSearch, adds a passed tag, then removes it
-	handleTagForSearch ({commit} : ActionParams, tag : AssetTag) {
-		console.log('handleTagForSearch action')
-		commit('addTagToSearch', tag)
-		// commit('removeTagsForSearch')
 	}
 }
 
@@ -390,9 +375,5 @@ export const getters = {
 			}
 		}
 		return false
-	},
-	// pass tag entry to search, from non-child components
-	addSearchTag (state: State, tag: AssetTag) : AssetTag {
-		return tag
 	}
 }
