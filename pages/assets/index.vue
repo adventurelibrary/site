@@ -68,7 +68,7 @@ class AssetsIndexPage extends Vue {
 
 	async fetch () {
 		this.assetsResponse = await searchAssets(this.search);
-		this.$gtag.evet('view_search_results', {
+		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query
 		})
 	}
