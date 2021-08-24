@@ -9,8 +9,8 @@
 				<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
 			</div>
 			<AssetFields
-				:asset="newAsset.asset"
-				v-on:assetChanged="assetChanged"
+				v-model="newAsset.asset"
+				@change="assetChanged"
 				:hide-visibility="true"
 			/>
 		</form>
