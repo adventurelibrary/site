@@ -80,6 +80,14 @@ export default class AssetDownload extends Vue {
 		if (result === 'unlocked') {
 			this.notifySuccess(`Unlocked ${this.asset.name}`)
 			this.asset.unlocked = true
+			this.$gtag.event('purchase', {
+				'items': [{
+					'id': this.asset.id,
+					'name': this.asset.name,
+					'brand': this.asset.creator_name,
+					'category': this.asset.category,
+				}]
+			});
 		}
 	}
 

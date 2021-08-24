@@ -136,6 +136,14 @@ class AssetPage extends Vue {
 		this.asset = await getAssetBySlug(this.$nuxt.context.params.slug)
 		const relatedRes = await getRelatedAssetsByTags(this.asset)
 		this.relatedAssets = relatedRes.assets
+		this.$gtag.event('view_item', {
+			'items': [{
+				'id': this.asset.id,
+				'name': this.asset.name,
+				'brand': this.asset.creator_name,
+				'category': this.asset.category,
+			}]
+		});
 	}
 
 	// fetching asset data and related assets array
