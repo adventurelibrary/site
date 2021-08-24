@@ -338,14 +338,21 @@ export const actions = {
 			commit('userCoins', 0)
 		}
 	},
-	async unlockAsset ({commit, getters, dispatch} : ActionParams, {asset} : {asset: Asset}) : Promise<'unlocked' | 'login'> {
+	async unlockAsset ({commit, getters, dispatch} : ActionParams, {asset} : {asset: Asset}) : Promise<'unlocked' | 'login' | 'needscoins'> {
 		if (!getters.isLoggedIn) {
 			dispatch('openLoginModal')
 			return 'login'
 		}
-		const result = await unlockAsset(asset.id)
-		commit('userCoins', result.numCoins)
-		return 'unlocked'
+
+		if (getters.getUserCoins < asset.unlock_price && asset.unlock_price != 0) {
+			return 'needscoins'
+		}
+		else {
+			const result = await unlockAsset(asset.id)
+			commit('userCoins', result.numCoins)
+			return 'unlocked'
+		}
+
 	}
 }
 
@@ -369,5 +376,11 @@ export const getters = {
 			}
 		}
 		return false
+	},
+	getUserCoins (state: State) : number {
+		if (!!state.user == true) {
+			return state.userCoins
+		}
+		else return 0
 	}
 }
