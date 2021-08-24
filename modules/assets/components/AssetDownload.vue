@@ -9,8 +9,10 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			{{price}}
-			<span @click="clickUnlockAsset">Unlock</span>
+			<button class="asset-action" @click="clickUnlockAsset" type="button">
+				{{price}} Unlock
+			</button>
+			<!--<span @click="clickUnlockAsset" class='asset-unlock'>{{price}} Unlock</span>-->
 		</template>
 	</div>
 </template>
@@ -61,6 +63,7 @@ export default class AssetDownload extends Vue {
 
 	async clickUnlockAsset () {
 		let result
+
 		try {
 			result = await this.$store.dispatch('unlockAsset', {
 				asset: this.asset
@@ -68,6 +71,11 @@ export default class AssetDownload extends Vue {
 		} catch (ex) {
 			this.notifyError(ex.toString())
 			return
+		}
+		if (result === 'needscoins') {
+			this.notifyError(`You need more coins (${this.asset.unlock_price} coins) to unlock '${this.asset.name}'. Redirecting you to the coins purchase page.`)
+			this.asset.unlocked = false
+			this.$router.push('/buy/coins')
 		}
 		if (result === 'unlocked') {
 			this.notifySuccess(`Unlocked ${this.asset.name}`)
