@@ -96,12 +96,11 @@
 }
 
 
-.category, .tag {
+.category, .tag, .creator {
 	font-size: .75em;
 	padding: .3em .7em;
 	border-radius: .3em;
 	white-space: nowrap;
-
 }
 
 .tag {
@@ -117,6 +116,14 @@
 
 	&.active {
 		background-color: $filter-cat-dark;
+	}
+}
+
+.creator {
+	background-color: $filter-creator-light;
+
+	&.active {
+		background-color: $filter-creator-dark;
 	}
 }
 
@@ -139,18 +146,11 @@
 		display: none;
 	}
 
-	.search-filter {
+	.tag, .category, .creator {
 		display: block;
-		font-size: .75em;
 		padding: .3em .7em;
 		border-radius: .3em;
 		white-space: nowrap;
-
-		&.creator {
-			// TODO: @Josh, pick a real color
-			// Should this be a global color on all .creator elements?
-			background: lightseagreen;
-		}
 	}
 
 	.filter-type {

@@ -46,6 +46,9 @@ $search-filter-background-dark: $black6;
 $filter-tag-light: $cta-blue-light;
 $filter-tag-dark: $cta-blue-dark;
 
+$filter-creator-light: darken(lightseagreen, 10%);
+$filter-creator-dark: darken(lightseagreen, 20%);
+
 $filter-cat-light: $black-teal;
 $filter-cat-dark: darken($black-teal, 5%);
 
@@ -65,7 +68,7 @@ $asset-card-background: rgba(255, 255, 255, 0.07);
 
 $action-bg: rgba(0, 0, 0, 0.4);
 
-$button-light:  $cta-blue-light; 
+$button-light:  $cta-blue-light;
 $button-dark:  $cta-blue-dark;
 $button-text: $white;
 
