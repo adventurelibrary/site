@@ -87,6 +87,30 @@
 				.currency {
 					text-transform: uppercase;
 				}
+				&:hover .icon:before {
+					content: "lock_open";
+					color: $cta-blue-dark;
+				}
+			}
+
+			.amount::after {
+				position: relative;
+				top: .3em;
+				content: url(~/assets/two-coins.svg);
+				height: 1.5em;
+				width: 1.5em;
+				display: inline-grid;
+				margin-left: .2ch;
+			}
+
+			.icon { font-size: 1.2em; }
+			.icon:before {
+				position: relative;
+				top: .15em;
+				content: "lock";
+				color: $cta-blue-light;
+			}
+
 			}
 		}
 		.description {
