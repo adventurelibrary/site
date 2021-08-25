@@ -3,6 +3,6 @@ import VueGtag from 'vue-gtag';
 
 export default ({ app }: { app: any }) => {
 	Vue.use(VueGtag, {
-		config: { id: 'UA-204701992-1' },
+		config: { id: 'UA-204701992-2' },
 	}, app.router);
 }
