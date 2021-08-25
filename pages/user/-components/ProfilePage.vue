@@ -31,12 +31,6 @@
 				My Assets
 			</nuxt-link>
 			<nuxt-link
-					:to="{name: 'user-info'}"
-					class="tab-control"
-					:class="{active: activeTab === 'info'}">
-				Information
-			</nuxt-link>
-			<nuxt-link
 					:to="{name: 'user-purchases'}"
 					class="tab-control"
 					:class="{active: activeTab === 'purchases'}">
