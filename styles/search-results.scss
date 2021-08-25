@@ -48,18 +48,17 @@
 		grid-area: meta;
 		background-color: $asset-card-meta;
 		box-shadow: 0px 0px 5px 5px $asset-card-meta;
-		padding: .3em 1.25em;
+		padding: .5em 1.25em;
 		display: grid;
 		align-items: center;
 		align-content: start;
 		row-gap: .5em;
-		grid-template-rows: auto auto 1fr;
+		column-gap: .5ch;
+		grid-template-rows: auto auto;
 		grid-template-columns: auto auto;
 		grid-template-areas:
 			"title title"
-			"author price"
-			"description description"
-			"tags tags";
+			"author price";
 
 		.title {
 			grid-area: title;
@@ -79,7 +78,12 @@
 			margin: 0;
 			grid-area: price;
 			justify-self: end;
+			align-self: end;
 			white-space: nowrap;
+			text-align: center;
+			font-size: .9em;
+			display: grid;
+			gap: .5em;
 
 			h4 { margin: 0 }
 			.coin-price {
@@ -87,6 +91,37 @@
 				.currency {
 					text-transform: uppercase;
 				}
+				&:hover .icon:before {
+					content: "lock_open";
+					color: $cta-blue-dark;
+				}
+			}
+
+			.amount::after {
+				position: relative;
+				top: .3em;
+				content: url(~/assets/two-coins.svg);
+				height: 1.5em;
+				width: 1.5em;
+				display: inline-grid;
+				margin-left: .2ch;
+			}
+
+			.icon { font-size: 1.2em; }
+			.icon:before {
+				position: relative;
+				top: .15em;
+				content: "lock";
+				color: $cta-blue-light;
+			}
+
+			.asset-download button {
+				margin: 0;
+				padding: 0;
+				background-color: unset;
+				display: inline;
+				text-shadow: none;
+				&:hover { text-shadow: none; }			
 			}
 		}
 		.description {
@@ -113,29 +148,39 @@
 		grid-auto-flow: column;
 		gap: .2em;
 	}
-
+	
 	.asset-action {
-		$action-bg: rgba(0, 0, 0, 0.4);
 		background-color: $action-bg;
 		border-radius: .3em;
 		padding: .3em;
 		line-height: 1em;
+	}
 
+	.asset-download {
 		.download-format {
 			display: none;
+			visibility: hidden;
 			background: none;
 			border: none;
 			color: currentColor;
 			padding: 0px;
+			cursor: pointer;
 
 			option {
 				background: $action-bg;
 			}
 		}
 		&:hover .download-format {
-			display: inline-grid;
+			visibility: visible;
 		}
 		.button {
+			color: $cta-blue-light;
+			font-size: 1.2em;
+			&:hover {
+				color: $cta-blue-dark;
+			}
+		}
+		.button, &:hover .button {
 			padding: 0;
 			background-color: unset;
 		}
@@ -143,17 +188,26 @@
 
 	&:hover {
 		grid-template-rows: 1fr auto;
-
+		
 		.meta {
-			padding: 1em 1.25em;
+			//padding: 1em 1.25em;
 			background-color: $asset-card-meta-dark;
 			box-shadow: 0px 0px 2px 2px $asset-card-meta-dark;
+			grid-template-rows: auto auto 1fr;
+			grid-template-areas:
+				"title title"
+				"author author"
+				"description description"
+				"tags price";
 		}
 		.description {
 			display: grid;
 		}
 		.search-meta {
 			display: grid;
+		}
+		.asset-download .download-format {
+			display: inline-grid;
 		}
 	}
 }
