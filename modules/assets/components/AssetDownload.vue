@@ -80,6 +80,18 @@ export default class AssetDownload extends Vue {
 		if (result === 'unlocked') {
 			this.notifySuccess(`Unlocked ${this.asset.name}`)
 			this.asset.unlocked = true
+
+			// This isn't working correctly, but that might be a setting problem in Google?
+			// However, I'm not sure we even want this here? Or do we just want to track purchases of coins?
+			this.$gtag.purchase({
+				'transaction_id': "",
+				'items': [{
+					'id': this.asset.id,
+					'name': this.asset.name,
+					'brand': this.asset.creator_name,
+					'category': this.asset.category,
+				}]
+			});
 		}
 	}
 

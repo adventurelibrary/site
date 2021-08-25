@@ -49,7 +49,7 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	register () {
-		this.$emit('register')
+		this.$emit('register');
 	}
 
 	mounted () {
@@ -70,6 +70,9 @@ export default class LoginForm extends mixins(FormMixin) {
 		// Individual pages can then decide if they need to refetch their content or not
 		console.log('emit global logged in')
 		this.$root.$emit('loggedIn')
+
+		// Tell Google Analytics that the user has logged in
+		this.$gtag.event('login');
 	}
 }
 </script>

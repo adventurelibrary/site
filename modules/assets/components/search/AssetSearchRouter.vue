@@ -26,6 +26,9 @@ export default class AssetSearchRouter extends Vue {
 			name: 'assets',
 			query: assetSearchOptionsToQuery(options)
 		})
+		this.$gtag.event('search', {
+			'search_term': options.query
+		})
 	}
 }
 </script>
