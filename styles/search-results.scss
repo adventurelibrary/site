@@ -120,6 +120,8 @@
 				padding: 0;
 				background-color: unset;
 				display: inline;
+				text-shadow: none;
+				&:hover { text-shadow: none; }			
 			}
 		}
 		.description {
