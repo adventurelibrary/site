@@ -5,7 +5,7 @@
 		</Fragment>
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
 			<div>Showing {{purchases.length}}. Total: {{purchasesResponse.total}}</div>
-			<table class="table">
+			<table>
 				<thead>
 					<tr>
 						<th>Price</th>
