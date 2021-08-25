@@ -146,29 +146,39 @@
 		grid-auto-flow: column;
 		gap: .2em;
 	}
-
+	
 	.asset-action {
-		$action-bg: rgba(0, 0, 0, 0.4);
 		background-color: $action-bg;
 		border-radius: .3em;
 		padding: .3em;
 		line-height: 1em;
+	}
 
+	.asset-download {
 		.download-format {
 			display: none;
+			visibility: hidden;
 			background: none;
 			border: none;
 			color: currentColor;
 			padding: 0px;
+			cursor: pointer;
 
 			option {
 				background: $action-bg;
 			}
 		}
 		&:hover .download-format {
-			display: inline-grid;
+			visibility: visible;
 		}
 		.button {
+			color: $cta-blue-light;
+			font-size: 1.2em;
+			&:hover {
+				color: $cta-blue-dark;
+			}
+		}
+		.button, &:hover .button {
 			padding: 0;
 			background-color: unset;
 		}
@@ -193,6 +203,9 @@
 		}
 		.search-meta {
 			display: grid;
+		}
+		.asset-download .download-format {
+			display: inline-grid;
 		}
 	}
 }
