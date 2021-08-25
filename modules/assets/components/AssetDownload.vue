@@ -1,5 +1,5 @@
 <template>
-	<div class="asset-action asset-download">
+	<div class="asset-download">
 		<template v-if="canDownload">
 			<select v-model="fileType" class="download-format">
 				<option v-for="option in fileOptions" :key="option.value" :value="option.value">{{option.label}}</option>
@@ -9,8 +9,9 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			<button class="asset-action" @click="clickUnlockAsset" type="button">
-				{{price}} Unlock
+			<button @click="clickUnlockAsset">
+				<span class="icon material-icons"></span>
+				<span class="amount">{{asset.unlock_price}}</span>
 			</button>
 			<!--<span @click="clickUnlockAsset" class='asset-unlock'>{{price}} Unlock</span>-->
 		</template>
