@@ -50,7 +50,6 @@ export default class LoginForm extends mixins(FormMixin) {
 
 	register () {
 		this.$emit('register');
-		this.$gtag.event('sign_up');
 	}
 
 	mounted () {

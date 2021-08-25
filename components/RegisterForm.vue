@@ -83,6 +83,7 @@ export default class RegisterForm extends mixins(FormMixin) {
 		await signUp(data)
 		this.needsConfirmation = true
 		this.$emit('success')
+		this.$gtag.event('sign_up');
 	}
 }
 </script>
