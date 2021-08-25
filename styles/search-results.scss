@@ -117,6 +117,11 @@
 				color: $cta-blue-light;
 			}
 
+			.asset-download button {
+				margin: 0;
+				padding: 0;
+				background-color: unset;
+				display: inline;
 			}
 		}
 		.description {
