@@ -7,7 +7,7 @@
 		</section>
 		<section class="upload-controls">
 			<label class="button add-file basic" for="add-file">+Add Upload</label>
-			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
+			<button type="button" :disabled="newAssets.length === 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
 
 		<FormErrors :error="error" class="upload-errors" />
@@ -159,9 +159,9 @@ export default Vue.extend({
 					tagObjects: [],
 					description: '',
 					name: name,
+					creator_id: this.getCreatorId(),
           visibility: 'PENDING',
 					category: filenameGuessCategory(file.name),
-					creator_id: this.getCreatorId()
 				},
 				file: file,
 			})
