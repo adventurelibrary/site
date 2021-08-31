@@ -36,7 +36,9 @@ type State = {
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
 	user: User | null,
-	userTracking: UserTracking
+	userTracking: UserTracking,
+	selectableAssets: Asset[],
+	lastSelectedAssetIndex: number
 }
 
 type ToastType = 'success' | 'danger' | 'info'
@@ -70,6 +72,10 @@ function newToastId () : number {
 
 export const state = () : State => {
 	return {
+		selectableAssets: [],
+		lastSelectedAssetIndex: -1,
+
+
 		archiveAsset: null,
 		addToBundleAsset: null,
 		breadcrumbs: [],
@@ -211,6 +217,37 @@ export const mutations = {
 			const key = keys[i]
 			state.modals[<ModalKeys>key] = false
 		}
+	},
+	setSelectableAssets (state: State, assets: Asset[]) {
+		console.log('set to assets', assets)
+		state.selectableAssets = assets.map((a) => {
+			return {
+				...a,
+				selected: false
+			}
+		})
+	},
+	clearSelectableAssets (state: State) {
+		state.selectableAssets = []
+	},
+	clearLastSelectedAssetIndex (state: State) {
+		state.lastSelectedAssetIndex = -1
+	},
+	lastSelectedAssetIndex (state: State, idx: number) {
+		state.lastSelectedAssetIndex = idx
+	},
+	toggleAssetSelected (state: State, idx: number) {
+		state.selectableAssets[idx].selected = !state.selectableAssets[idx].selected
+	},
+	selectAsset (state: State, idx: number) {
+		state.selectableAssets[idx].selected = true
+	},
+	setSelectedAssetsFromTo (state: State, {from, to, selected} : {from: number, to: number, selected: boolean}) {
+		const min = Math.min(from, to)
+		const max = Math.max(from, to)
+		for (let i = min; i <= max; i++) {
+			state.selectableAssets[i].selected = selected
+		}
 	}
 }
 
@@ -351,7 +388,30 @@ export const actions = {
 			commit('userCoins', result.numCoins)
 			return 'unlocked'
 		}
-
+	},
+	// Toggle a single asset.
+	toggleAssetSelected ({commit, getters} : ActionParams, asset: Asset) {
+		const idx = getters.assetSelectedIndex(asset)
+		console.log('idx', idx)
+		console.log('asset', asset)
+		if (idx < 0) {
+			throw new Error(`Could not find index for asset`)
+		}
+		commit('toggleAssetSelected', idx)
+		commit('lastSelectedAssetIndex', idx)
+	},
+	// Select all assets from one index
+	// @ts-ignore
+	selectAssetsUntil ({state, commit, dispatch} : ActionParams, asset: Asset) {
+		console.warn('I havent done shift clicking yet')
+	},
+	clearSelectableAssets({commit}: ActionParams) {
+		commit('clearSelectableAssets')
+	},
+	setSelectableAssets({commit}: ActionParams, assets: Asset[]) {
+		console.log('assets in the thing', JSON.stringify(assets))
+		commit('setSelectableAssets', assets)
+		commit('clearLastSelectedAssetIndex')
 	}
 }
 
@@ -381,5 +441,21 @@ export const getters = {
 			return state.userCoins
 		}
 		else return 0
+	},
+	isAssetSelected (state: State) {
+		return (asset: Asset) : boolean => {
+			return !!state.selectableAssets.find(a => a.id === asset.id)
+		}
+	},
+	assetSelectedIndex (state: State) {
+		return (asset: Asset) : number => {
+			console.log('better find it', asset)
+			console.log('len of seles', state.selectableAssets.length)
+			console.log('selectables', state.selectableAssets)
+			return state.selectableAssets.findIndex(a => a.id === asset.id)
+		}
+	},
+	numSelectedAssets (state: State) : number {
+		return state.selectableAssets.filter(x => x.selected).length
 	}
 }

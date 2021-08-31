@@ -1,6 +1,6 @@
 <template>
-	<li class="asset-card">
-		<AssetLink :asset="asset" class="link">
+	<li class="asset-card" :class="{selected: isSelected}">
+		<AssetLink @linkClick="clickLink" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
 		<AssetThumbnail :asset="asset" />
@@ -30,6 +30,11 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
+      <template v-if="!selectable">
+        <button :title="isSelected ? 'Deselect' : 'Select'" class="asset-action action-select" @click="toggleSelected" type="button">
+          <i :class="{'ci-checkbox': !isSelected, 'ci-checkbox_checked': isSelected}"></i>
+        </button>
+      </template>
 			<template v-if="!hideDefaultActions">
 				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			</template>
@@ -65,9 +70,11 @@ class AssetCard extends Vue {
 	category : CategoryType | null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
+  @Getter('numSelectedAssets') numSelectedAssets: number
 
 	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
+  @Prop() selectable : boolean
 
 	@Watch('asset.type', {
 		immediate: true
@@ -75,6 +82,32 @@ class AssetCard extends Vue {
 	typeChanged () {
 		this.category = getCategory(this.asset.category)
 	}
+
+  toggleSelected () {
+    this.$store.dispatch('toggleAssetSelected', this.asset)
+  }
+
+  clickLink (e: Event) {
+    console.log('e', e)
+    // If you ctrl+click on a link within this card, we check
+    // to see if you are currently selecting assets
+    // If you are, then we just select that asset instead of
+    // This overrides the default behaviour of the link opening in a new tab
+    if (e.ctrlKey || e.metaKey) {
+      if (this.numSelectedAssets >= 1) {
+        e.preventDefault()
+        this.toggleSelected()
+      }
+      return
+    }
+    if (e.shiftClick) {
+      this.$store.dispatch('selectAssetsUntil', this.asset)
+    }
+  }
+
+	get isSelected () : boolean {
+    return this.asset.selected
+  }
 }
 export default AssetCard
 </script>
