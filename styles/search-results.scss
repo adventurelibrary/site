@@ -55,7 +55,7 @@
 		row-gap: .5em;
 		column-gap: .5ch;
 		grid-template-rows: auto auto;
-		grid-template-columns: auto auto;
+		grid-template-columns: 1fr auto;
 		grid-template-areas:
 			"title title"
 			"author price";
@@ -73,6 +73,13 @@
 		}
 		.author {
 			grid-area: author;
+			overflow: hidden;
+			
+			.author-name {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
 		}
 		.pricing {
 			margin: 0;

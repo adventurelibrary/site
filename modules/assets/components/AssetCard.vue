@@ -11,7 +11,7 @@
 			<h4 class="author">
 				<Category :category="asset.category" />
 				<span class="author-label">by</span>
-				<span>
+				<span class="author-name">
 					<!-- Should be a profile link -->
 					{{asset.creator_name}}
 				</span>
