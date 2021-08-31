@@ -5,7 +5,7 @@
 			title="Create Bundle"
 			@close="closeModal">
 		<slot>
-			<CreateBundleForm :asset="asset" @success="onSuccess" />
+			<CreateBundleForm :assets="assets" @success="onSuccess" />
 		</slot>
 	</Modal>
 </template>
@@ -23,10 +23,9 @@ import CreateBundleForm from "~/modules/bundles/components/CreateBundleForm.vue"
 	}
 })
 export default class CreateBundleModal extends Vue {
-	@State('createBundleAsset') asset : Asset | null
+	@State('createBundleAssets') assets : Asset[]
 
 	closeModal () {
-		console.log('close em')
 		this.$store.dispatch('closeAllModals')
 	}
 

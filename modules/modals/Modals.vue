@@ -18,7 +18,7 @@ import Vue from "vue"
 import {Component, Getter, State, Watch} from "nuxt-property-decorator";
 import LoginModal from "~/modules/modals/LoginModal.vue";
 import RegisterModal from "~/modules/modals/RegisterModal.vue";
-import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetToBundleModal.vue";
+import AddAssetToBundleModal from "~/modules/bundles/components/AddAssetsToBundleModal.vue";
 import CreateBundleModal from "~/modules/bundles/components/CreateBundleModal.vue";
 import EditBundleModal from "~/modules/bundles/components/EditBundleModal.vue";
 import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsModal.vue";

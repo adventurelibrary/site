@@ -81,6 +81,13 @@ export const actions = {
 			selected: false
 		})
 	},
+	openAddToBundle ({dispatch, getters, state} : ActionParams) {
+		console.log('all selectable assets', state.assets)
+		console.log('selected ones', getters.selectedAssets)
+		dispatch('openAddToBundleModal', {
+			assets: getters.selectedAssets
+		}, {root: true})
+	},
 	shiftClick ({commit, dispatch, state, getters} : ActionParams, asset: Asset) {
 		// If the first thing you do is shift click something, we just treat that like a normal click
 		if (state.shiftClickAnchorIndex === -1) {
@@ -164,5 +171,8 @@ export const getters = {
 	},
 	numSelectedAssets (state: State) : number {
 		return state.assets.filter(x => x.selected).length
+	},
+	selectedAssets (state: State) : Asset[] {
+		return state.assets.filter(x => x.selected)
 	}
 }

@@ -16,6 +16,7 @@
 				<h3 class="results-count">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
 					<br />Shift Anchor {{shiftAnchor}} | Last Shift: {{lastShift}} <a @click="resetSelects">Reset</a>
+					<a @click="addSelectedToBundle" :disabled="numAssetsSelected <= 0">Add {{numAssetsSelected}} Assets to Bundle</a>
 				</h3>
 				<ul class="search-results">
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
@@ -30,7 +31,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch, State} from "nuxt-property-decorator"
+import {Component, Watch, State, Getter} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
@@ -63,13 +64,13 @@ class AssetsIndexPage extends Vue {
   @State('assets', {
   	namespace: 'assets'
 	}) assets : Asset[]
-
 	@State('shiftClickAnchorIndex', {
 		namespace: 'assets'
 	}) shiftAnchor : number
 	@State('lastShiftClickedIndex', {
 		namespace: 'assets'
 	}) lastShift : number
+	@Getter('assets/numSelectedAssets') numAssetsSelected : number
 
 	head () {
 		return {
@@ -178,13 +179,16 @@ class AssetsIndexPage extends Vue {
 		return title
 	}
 
-
 	submit (options: AssetSearchOptions) {
 		const query = assetSearchOptionsToQuery(options)
 		this.$router.push({
 			name: 'assets',
 			query: query
 		})
+	}
+
+	addSelectedToBundle () {
+		this.$store.dispatch('assets/openAddToBundle')
 	}
 
 	resetSelects () {

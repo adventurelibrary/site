@@ -85,7 +85,7 @@ class AssetCard extends Vue {
 		this.category = getCategory(this.asset.category)
 	}
 
-  toggleSelected (e?: Event) {
+  toggleSelected (e?: KeyboardEvent) {
 		if (e && e.shiftKey) {
 			e.preventDefault()
 			this.$store.dispatch('assets/shiftClick', this.asset)
@@ -98,8 +98,7 @@ class AssetCard extends Vue {
 	// to see if you are currently selecting assets
 	// If you are, then we just select that asset instead of allowing the default click
 	// behaviour
-  clickEventSelectCheck (e: Event) {
-		console.log('e', e)
+  clickEventSelectCheck (e: KeyboardEvent) {
     if (e.ctrlKey || e.metaKey) {
       if (this.numSelectedAssets >= 1) {
         e.preventDefault()

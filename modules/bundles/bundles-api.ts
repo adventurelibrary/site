@@ -71,9 +71,10 @@ export async function removeAssetsFromBundle(bundleId: string, assetIds: string[
 	})
 }
 
-export async function addAssetToBundles (assetId: string, bundleIds: string[]) {
+export async function addAssetsToBundles (assetIds: string[], bundleIds: string[]) {
+	// TODO: Run these in parallel
 	for (let i = 0; i < bundleIds.length; i++) {
-		await addAssetsToBundle(bundleIds[i], [assetId])
+		await addAssetsToBundle(bundleIds[i], assetIds)
 	}
 }
 
