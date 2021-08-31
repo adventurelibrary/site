@@ -29,18 +29,18 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch} from "nuxt-property-decorator"
+import {Component, Watch, State} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
-import { searchAssets} from "~/modules/assets/asset-api";
+import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
-import {commaAndJoin, getElOffset, sleep} from "~/lib/helpers";
+import {commaAndJoin, getElOffset} from "~/lib/helpers";
 
 @Component({
 	components: {
@@ -60,6 +60,8 @@ class AssetsIndexPage extends Vue {
 	loadingMore = false
 	scrollTimeout : NodeJS.Timeout
 
+  @State('selectableAssets') assets : Asset[]
+
 	head () {
 		return {
 			title: this.getPageTitle()
@@ -67,7 +69,10 @@ class AssetsIndexPage extends Vue {
 	}
 
 	async fetch () {
+    this.$store.dispatch('clearSelectableAssets')
 		this.assetsResponse = await searchAssets(this.search);
+    console.log('done loading')
+    this.$store.dispatch('setSelectableAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query
 		})
@@ -138,10 +143,6 @@ class AssetsIndexPage extends Vue {
 			this.notifyError(ex.toString())
 		}
 		this.loadingMore = false
-	}
-
-	get assets () : any[] {
-		return this.assetsResponse.assets || []
 	}
 
 	get totalAssets () : number {

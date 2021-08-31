@@ -7,7 +7,7 @@
 		<slot>
 			<h1>Add to Bundle</h1>
 			<button @click="createNewBundle" type="button" class="create">Create New Bundle</button>
-			<MyBundleSelector v-model="bundleIds" />
+			<MyBundleSelector v-model="bundleIds" @loaded="onBundlesLoaded" />
 			<button @click="addToBundles" :disabled="bundleIds.length == 0" class="add">
 				<span v-show="bundleIds.length">Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
 				<span v-show="!bundleIds.length">Select Bundle(s)</span>
@@ -22,6 +22,7 @@ import Vue from "vue";
 import {Asset} from "~/modules/assets/asset-types";
 import MyBundleSelector from "~/modules/bundles/components/MyBundleSelector.vue";
 import {addAssetToBundles} from "~/modules/bundles/bundles-api";
+import {BundlesResponse} from "~/modules/bundles/bundle-types";
 
 @Component({
 	components: {
@@ -57,5 +58,18 @@ export default class AddAssetToBundleModal extends Vue {
 			this.notifyError(ex.toString())
 		}
 	}
+
+	// This event fires when the child component MyBundlesSelector has
+  // finished making its ajax request to the server to get the user's
+  // list of bundles
+  // Here we can check to see if they have no bundles, in which case
+  // we can automatically skip this selector modal and go to the
+  // creation modal
+  onBundlesLoaded (data: BundlesResponse) {
+	  console.log('data', data)
+    if (data.total === 0) {
+      this.createNewBundle()
+    }
+  }
 }
 </script>

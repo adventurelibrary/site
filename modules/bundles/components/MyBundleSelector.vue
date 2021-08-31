@@ -2,21 +2,22 @@
 	<fragment>
 		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
-			<div>
-				<ul class="bundle-selector">
-					<li v-for="bundle in bundles"
-							:key="bundle.id"
-							@click="() => toggleBundle(bundle)"
-							:class="{active: bundle.active}"
-							class="bundle">
-						<div class="circle"></div>
-						<h4 class="title">{{bundle.name}}</h4>
-						<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
-						<p class="description">{{bundle.description || "Filler text"}}</p>
-						<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
-					</li>
-				</ul>
-			</div>
+      <div>
+        <ul class="bundle-selector">
+          <li>Bundle Len: {{bundles.length}}</li>
+          <li v-for="bundle in bundles"
+              :key="bundle.id"
+              @click="() => toggleBundle(bundle)"
+              :class="{active: bundle.active}"
+              class="bundle">
+            <div class="circle"></div>
+            <h4 class="title">{{bundle.name}}</h4>
+            <nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
+            <p class="description">{{bundle.description || "Filler text"}}</p>
+            <img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
+          </li>
+        </ul>
+      </div>
 		</LoadingContainer>
 	</fragment>
 </template>
