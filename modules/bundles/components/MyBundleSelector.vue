@@ -1,25 +1,30 @@
 <template>
 	<fragment>
 		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
-		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
-			<ul class="bundle-selector">
-				<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
-					<div class="circle"></div>
-					<h4 class="title">{{bundle.name}}</h4>
-					<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
-					<p class="description">{{bundle.description || "Filler text"}}</p>
-					<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
-				</li>
-			</ul>
+		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+			<div>
+				<ul class="bundle-selector">
+					<li v-for="bundle in bundles"
+							:key="bundle.id"
+							@click="() => toggleBundle(bundle)"
+							:class="{active: bundle.active}"
+							class="bundle">
+						<div class="circle"></div>
+						<h4 class="title">{{bundle.name}}</h4>
+						<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
+						<p class="description">{{bundle.description || "Filler text"}}</p>
+						<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
+					</li>
+				</ul>
+			</div>
 		</LoadingContainer>
 	</fragment>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
-import {computeAjaxList, doAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
-import {getMyBundles, newBundlesAjax} from "~/modules/bundles/bundles-api";
+import {getMyBundles} from "~/modules/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
 
@@ -39,7 +44,10 @@ type BundleItem = Bundle & {
 })
 export default class MyBundleSelector extends Vue {
 	filter : string = ''
-	bundlesAjax = newBundlesAjax()
+	bundlesResponse : BundlesResponse = {
+		total: 0,
+		bundles: []
+	}
 
 
 	@Model('changed',  {
@@ -47,14 +55,9 @@ export default class MyBundleSelector extends Vue {
 	})
 	readonly selectedIds! : string[]
 
-	async created () {
-		await this.loadBundles()
-	}
-
-	async loadBundles () {
-		await doAjax<BundlesResponse>(this.bundlesAjax, async () => {
-			return await getMyBundles()
-		})
+	async fetch () {
+		this.bundlesResponse = await getMyBundles()
+		this.$emit('loaded', this.bundlesResponse)
 	}
 
 	toggleBundle (bundle: Bundle) {
@@ -72,15 +75,13 @@ export default class MyBundleSelector extends Vue {
 	}
 
 	get bundles () : BundleItem[] {
-		console.log('get bundles')
-		const list = computeAjaxList(this.bundlesAjax, 'bundles')
+		const list = this.bundlesResponse.bundles
 		const filter = this.filter.trim().toLowerCase()
 		const filtered = list.filter((bundle: Bundle) => {
 			return bundle.name.toLowerCase().indexOf(filter) >= 0
 		})
 		return filtered.map((bundle : Bundle) : BundleItem => {
 			const active = this.selectedIds.indexOf(bundle.id) >= 0
-			console.log('active', active)
 			return Object.assign({
 				active: active,
 			}, bundle)
