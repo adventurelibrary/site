@@ -15,6 +15,7 @@
 			<section v-show="!$fetchState.pending">
 				<h3 class="results-count">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
+					<br />Shift Anchor {{shiftAnchor}} | Last Shift: {{lastShift}} <a @click="resetSelects">Reset</a>
 				</h3>
 				<ul class="search-results">
 					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
@@ -33,7 +34,7 @@ import {Component, Watch, State} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
-import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
 import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
@@ -55,12 +56,20 @@ class AssetsIndexPage extends Vue {
 		total: 0,
 		assets: []
 	}
-	skip = 0
 	perPage = 20
 	loadingMore = false
 	scrollTimeout : NodeJS.Timeout
 
-  @State('selectableAssets') assets : Asset[]
+  @State('assets', {
+  	namespace: 'assets'
+	}) assets : Asset[]
+
+	@State('shiftClickAnchorIndex', {
+		namespace: 'assets'
+	}) shiftAnchor : number
+	@State('lastShiftClickedIndex', {
+		namespace: 'assets'
+	}) lastShift : number
 
 	head () {
 		return {
@@ -69,13 +78,13 @@ class AssetsIndexPage extends Vue {
 	}
 
 	async fetch () {
-    this.$store.dispatch('clearSelectableAssets')
 		this.assetsResponse = await searchAssets(this.search);
     console.log('done loading')
-    this.$store.dispatch('setSelectableAssets', this.assetsResponse.assets)
+    this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query
 		})
+		console.log('this store', this.$store.state)
 	}
 
 	mounted () {
@@ -84,6 +93,7 @@ class AssetsIndexPage extends Vue {
 
 	destroyed () {
 		window.removeEventListener('scroll', this.onScroll)
+		this.$store.dispatch('assets/clearAssets')
 	}
 
 	onScroll () {
@@ -175,6 +185,10 @@ class AssetsIndexPage extends Vue {
 			name: 'assets',
 			query: query
 		})
+	}
+
+	resetSelects () {
+		this.$store.dispatch('assets/resetSelects')
 	}
 }
 export default AssetsIndexPage
