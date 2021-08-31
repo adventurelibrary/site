@@ -1,10 +1,10 @@
 <template>
 	<li class="asset-card" :class="{selected: isSelected}">
-		<AssetLink @linkClick="clickLink" :asset="asset" class="link">
+		<AssetLink @linkClick="clickEventSelectCheck" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
 		<AssetThumbnail :asset="asset" />
-		<div class="meta">
+		<div class="meta" @click="clickEventSelectCheck">
 			<h3 class="title">
 				<AssetLink :asset="asset">{{asset.name}}</AssetLink>
 			</h3>
@@ -70,7 +70,9 @@ class AssetCard extends Vue {
 	category : CategoryType | null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
-  @Getter('numSelectedAssets') numSelectedAssets: number
+  @Getter('numSelectedAssets', {
+  	namespace: 'assets'
+	}) numSelectedAssets: number
 
 	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
@@ -83,16 +85,21 @@ class AssetCard extends Vue {
 		this.category = getCategory(this.asset.category)
 	}
 
-  toggleSelected () {
-    this.$store.dispatch('toggleAssetSelected', this.asset)
+  toggleSelected (e?: Event) {
+		if (e && e.shiftKey) {
+			e.preventDefault()
+			this.$store.dispatch('assets/shiftClick', this.asset)
+			return
+		}
+    this.$store.dispatch('assets/toggleAsset', this.asset)
   }
 
-  clickLink (e: Event) {
-    console.log('e', e)
-    // If you ctrl+click on a link within this card, we check
-    // to see if you are currently selecting assets
-    // If you are, then we just select that asset instead of
-    // This overrides the default behaviour of the link opening in a new tab
+	// If you ctrl+click on a link within this card, or on the card itself, we check
+	// to see if you are currently selecting assets
+	// If you are, then we just select that asset instead of allowing the default click
+	// behaviour
+  clickEventSelectCheck (e: Event) {
+		console.log('e', e)
     if (e.ctrlKey || e.metaKey) {
       if (this.numSelectedAssets >= 1) {
         e.preventDefault()
@@ -100,13 +107,14 @@ class AssetCard extends Vue {
       }
       return
     }
-    if (e.shiftClick) {
-      this.$store.dispatch('selectAssetsUntil', this.asset)
+    if (e && e.shiftKey) {
+    	e.preventDefault()
+      this.$store.dispatch('assets/shiftClick', this.asset)
     }
   }
 
 	get isSelected () : boolean {
-    return this.asset.selected
+    return !!this.asset.selected
   }
 }
 export default AssetCard
