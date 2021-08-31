@@ -4,7 +4,6 @@
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
       <div>
         <ul class="bundle-selector">
-          <li>Bundle Len: {{bundles.length}}</li>
           <li v-for="bundle in bundles"
               :key="bundle.id"
               @click="() => toggleBundle(bundle)"

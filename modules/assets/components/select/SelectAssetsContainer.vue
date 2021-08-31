@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      {{numSelected}} Selected
+			{{numSelected}} Selected
       <button @click="clickToggleAll">{{toggleAllLabel}}</button>
       <button @click="clickAddToBundle">Add to Bundle</button>
     </div>
@@ -17,8 +17,7 @@ import Vue from "vue";
 
 @Component
 export default class SelectAssetsContainer extends Vue {
-  @Getter('numSelectedAssets') numSelected : number
-  @Prop() numAssets : number
+  @Getter('assets/numSelectedAssets') numSelected : number
 
   clickToggleAll () {
     if (this.numSelected < this.numAssets) {
@@ -26,9 +25,9 @@ export default class SelectAssetsContainer extends Vue {
     }
   }
 
-  clickAddToBundle () {
-
-  }
+	clickAddToBundle () {
+		this.$store.dispatch('assets/openAddToBundle')
+	}
 
   get toggleAllLabel () : string {
     return 'Select All'

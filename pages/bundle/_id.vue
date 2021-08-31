@@ -60,15 +60,17 @@ import {Bundle} from "~/modules/bundles/bundle-types";
 	}
 })
 class BundlePage extends Vue {
-	bundle : Bundle
+	bundle : Bundle | null = null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
 
 	async fetch () {
 		const res = await getBundle(this.$nuxt.context.params.id)
+		console.log('res', res)
 		if (res) {
 			this.bundle = res
 		}
+		console.log('this bundle', this.bundle)
 	}
 
 	// setting header meta tags

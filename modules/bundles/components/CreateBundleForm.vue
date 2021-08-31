@@ -2,7 +2,7 @@
 	<form @submit="submit">
 		<FormErrors :error="form.error" />
 		<BundleFields v-model="form.data" />
-		<div v-if="asset">
+		<div v-for="asset in assets" :key="asset.id">
 			<div class="create-bundle-asset-item">
 				<AssetThumbnail :asset="asset" />
 				<div>
@@ -30,17 +30,14 @@ import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 	}
 })
 export default class CreateBundleForm extends mixins(FormMixin) {
-	@Prop() asset : Asset | null
+	@Prop() assets : Asset[]
 
 	created () {
 		this.form.data.public = true
 	}
 
 	async formAction () {
-		const assetIds : string[] = []
-		if (this.asset) {
-			assetIds.push(this.asset.id)
-		}
+		const assetIds : string[] = this.assets.map(x => x.id)
 		await createBundle(this.form.data, assetIds)
 		this.$emit('success')
 	}
