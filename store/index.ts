@@ -6,7 +6,6 @@ import {getSession, logout} from "~/lib/auth/auth-api";
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
-import {Category} from "~/modules/categories/categories-types";
 Vue.use(Vuex)
 
 type State = {
@@ -22,7 +21,6 @@ type State = {
 		working: boolean,
 		error: string
 	},
-	categoryToSearch: Category | null,
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
@@ -92,7 +90,6 @@ export const state = () : State => {
 			working: false,
 			error: ''
 		},
-		categoryToSearch: null,
 		modals: {
 			archiveAsset: false,
 			addToBundle: false,
