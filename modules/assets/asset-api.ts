@@ -60,7 +60,7 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 		query.tags = tags.join(',')
 	}
 	if (categories.length) {
-		query.category = categories.join(',')
+		query.categories = categories.join(',')
 	}
 	if (creatorSlugs.length) {
 		query.creator_slugs = creatorSlugs.join(',')
