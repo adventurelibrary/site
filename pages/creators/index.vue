@@ -9,7 +9,7 @@
 			<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
 				<ul>
 					<li v-for="creator in creators" :key="creator.id">
-						<nuxt-link :to="{name: 'creators', params: {id: creator.id}}">{{creator.name}}</nuxt-link>
+						<nuxt-link :to="{name: 'creators-id-assets', params: {id: creator.id}}">{{creator.name}}</nuxt-link>
 					</li>
 				</ul>
 			</LoadingContainer>

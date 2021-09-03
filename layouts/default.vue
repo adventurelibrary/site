@@ -38,7 +38,7 @@
 				<li><nuxt-link :to="{name: 'info-about-us'}">About Us</nuxt-link></li>
 				<li><nuxt-link :to="{name: 'buy-coins'}">Buy Coins</nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user-bundles'}">My Bundles</nuxt-link></li>
-				<li v-if="isCreator"><nuxt-link :to="{name: 'user-assets'}">My Assets</nuxt-link></li>
+				<li v-if="isCreator"><nuxt-link :to="{name: 'creators'}">Creators</nuxt-link></li>
 			</ul>
 		</header>
 		<main class="site-body">
