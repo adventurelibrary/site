@@ -1,5 +1,5 @@
 <template>
-	<li class="asset-card" :class="{selected: isSelected}">
+	<li :data-selectable-asset-id="asset.id" class="asset-card" :class="{selected: isSelected}">
 		<AssetLink @linkClick="clickEventSelectCheck" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>

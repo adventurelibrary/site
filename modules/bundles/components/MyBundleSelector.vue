@@ -49,7 +49,6 @@ export default class MyBundleSelector extends Vue {
 		bundles: []
 	}
 
-
 	@Model('changed',  {
 		type: Array as PropType<string[]>
 	})
