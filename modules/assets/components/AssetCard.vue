@@ -1,5 +1,5 @@
 <template>
-	<li class="asset-card" :class="{selected: isSelected}">
+	<li :data-selectable-asset-id="asset.id" class="asset-card" :class="{selected: isSelected}">
 		<AssetLink @linkClick="clickEventSelectCheck" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
@@ -11,7 +11,7 @@
 			<h4 class="author">
 				<Category :category="asset.category" />
 				<span class="author-label">by</span>
-				<span>
+				<span class="author-name">
 					<!-- Should be a profile link -->
 					{{asset.creator_name}}
 				</span>

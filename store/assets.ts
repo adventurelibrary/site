@@ -50,6 +50,17 @@ export const mutations = {
 	selectAsset (state: State, idx: number) {
 		state.assets[idx].selected = true
 	},
+	selectAssetByIdx (state: State, idx: number) {
+		state.assets[idx].selected = true
+	},
+	setSelectAssetsByIds (state: State, {assetIds, selected} : {assetIds: string[], selected: boolean}) {
+		state.assets = state.assets.map((a) => {
+			if (assetIds.includes(a.id)) {
+				a.selected = selected
+			}
+			return a
+		})
+	},
 	setSelectedAssetsFromTo (state: State, {from, to, selected} : {from: number, to: number, selected: boolean}) {
 		if (from < 0) {
 			throw new Error(`from is < 0`)
@@ -71,6 +82,27 @@ export const actions = {
 		const idx = getters.assetIndex(asset)
 		commit('toggleAsset', idx)
 		commit('shiftClickAnchorIndex', idx)
+	},
+	selectAssetIds ({commit}: ActionParams, assetIds: string[]) {
+		commit('setSelectAssetsByIds', {
+			assetIds,
+			selected: true
+		})
+	},
+	deselectAssetIds ({commit}: ActionParams, assetIds: string[]) {
+		commit('setSelectAssetsByIds', {
+			assetIds,
+			selected: false
+		})
+	},
+	toggleAll ({commit, getters, state} : ActionParams) {
+		const allSelected = getters.numSelectedAssets === state.assets.length
+		const selected = !allSelected
+		commit('setSelectedAssetsFromTo', {
+			from: 0,
+			to: state.assets.length-1,
+			selected: selected
+		})
 	},
 	resetSelects ({commit, state} : ActionParams) {
 		commit('shiftClickAnchorIndex', -1)
@@ -174,5 +206,17 @@ export const getters = {
 	},
 	selectedAssets (state: State) : Asset[] {
 		return state.assets.filter(x => x.selected)
+	},
+	areAllAssetIdsSelected (state: State) {
+		return (ids: string[], selected: boolean) : boolean => {
+			for (let i = 0; i < state.assets.length; i++) {
+				const asset = state.assets[i]
+				if (ids.includes(asset.id) && asset.selected != selected) {
+					return false
+				}
+			}
+
+			return true
+		}
 	}
 }

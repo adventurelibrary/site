@@ -49,16 +49,15 @@ export default class MyBundleSelector extends Vue {
     bundles: []
   }
 
-
 	@Model('changed',  {
 		type: Array as PropType<string[]>
 	})
 	readonly selectedIds! : string[]
 
-  async fetch () {
-    this.bundlesResponse = await getMyBundles()
-    this.$emit('loaded', this.bundlesResponse)
-  }
+	async fetch () {
+		this.bundlesResponse = await getMyBundles()
+		this.$emit('loaded', this.bundlesResponse)
+	}
 
 	toggleBundle (bundle: Bundle) {
 		const index = this.selectedIds.indexOf(bundle.id)

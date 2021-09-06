@@ -38,13 +38,17 @@ $blue: #2218C3;
 $cta-blue-light: #1AA9C9;
 $cta-blue-dark: #138BA6;
 
+$red: hsl(6deg 77% 45%);
+
+$error: $red;
+
 $search-background-light: $light-gray;
 $search-filter-background-light: $black4;
 $search-filter-background-med: $black5;
 $search-filter-background-dark: $black6;
 
-$filter-tag-light: $cta-blue-light;
-$filter-tag-dark: $cta-blue-dark;
+$filter-tag-light: darken($cta-blue-light, 10%);
+$filter-tag-dark: darken($cta-blue-dark, 10%);
 
 $filter-creator-light: darken(lightseagreen, 10%);
 $filter-creator-dark: darken(lightseagreen, 20%);
