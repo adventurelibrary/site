@@ -18,7 +18,7 @@
 		</section>
 		<section class="control-row login-controls">
 			<SubmitButton classes="login-button" :submitting="form.submitting" idle-text="Login to Account" />
-			<nuxt-link class="password-reset" :to="{name: 'forgot-password'}">Forgot Password</nuxt-link>
+			<nuxt-link class="password-reset" :to="{name: 'account-forgot-password'}">Forgot Password</nuxt-link>
 		</section>
 	</form>
 </template>

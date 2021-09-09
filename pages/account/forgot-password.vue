@@ -25,7 +25,7 @@ export default class ForgotPassword extends Vue {
 		this.done = true
 		this.notifySuccess('Check your email')
 		this.$router.push({
-			name: 'reset-password',
+			name: 'account-reset-password',
 			query: {
 				username: username
 			}

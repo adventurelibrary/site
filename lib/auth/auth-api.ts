@@ -103,7 +103,7 @@ export async function changePassword (username: string, oldPassword: string, new
 
 export async function forgotPassword (username: string) {
 	try {
-		return Auth.forgotPassword(username)
+		await Auth.forgotPassword(username)
 	} catch (ex) {
 		throw new Error(convertErr(ex))
 	}
