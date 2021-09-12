@@ -4,6 +4,10 @@
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
 		</div>
+		<SignOfLife :visible="true">
+			<!-- This is here as a test -->
+			Adventure Library
+		</SignOfLife>
 		<header class="site-header">
 			<NuxtLink class="branding" :to="{name: 'index'}">
 				<h1 class="site-name">Adventure Library</h1>
@@ -110,12 +114,14 @@ import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/modules/users/user-types"
 import {UserTracking} from "~/modules/users/user-tracking"
 import UserCoins from "~/modules/users/components/UserCoins.vue";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
 		Modals: Modals,
-		UserCoins: UserCoins
+		UserCoins: UserCoins,
+		SignOfLife
 	}
 })
 export default class Default extends Vue {
