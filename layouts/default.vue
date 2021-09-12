@@ -47,7 +47,7 @@
 		<footer class="site-footer">
 			<!--h1 class="footer-heading">Adventure Library</h1-->
 			<img class="footer-heading"
-				src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+				src="~/assets/AL_white_logo_1line.svg">
 			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
 				<ul>
