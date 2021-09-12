@@ -97,11 +97,11 @@ body {
 		display: grid;
 		
 		background-position: left;
-		background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
+		background-image: url(~/assets/AL_white_logo_1line.svg);
 	
 		@include medium {
 			background-position: center;
-			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
+			background-image: url(~/assets/AL_white_logo_2line.svg);
 		}
 
 		background-repeat: no-repeat;
@@ -269,7 +269,7 @@ body {
 	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
-	padding: 0 2em 2em 2em;
+	padding: 2em;
 	row-gap: 2em;
 
 	.copyright-notice {
