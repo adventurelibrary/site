@@ -1,6 +1,8 @@
 import {Context} from "@nuxt/types";
 import {setJWT} from "~/lib/api"
 
+let fetchedSession = false
+
 // This middleware fetches the session data for the currently logged in user
 // when doing SSR
 export default async function (ctx: Context) {
@@ -26,11 +28,21 @@ export default async function (ctx: Context) {
 	}
 
 	// For the client we don't handle that here, the lib/api file can detect
-	// clientside cookies just find with the getCookie function, so that's done there
+	// clientside cookies just fine with the getCookie function, so that's done there
 	const user = ctx.store.state.user
 	if (!user) {
-		await ctx.store.dispatch('fetchSession')
-
+		// If we're on client, we only check for their session the once, not on every route
+		if (process.client) {
+			console.log('client')
+			if (!fetchedSession) {
+				console.log('not already fetched')
+				fetchedSession = true
+				await ctx.store.dispatch('fetchSession')
+			}
+		} else {
+			console.log('not client')
+			await ctx.store.dispatch('fetchSession')
+		}
 	}
 	return null
 }

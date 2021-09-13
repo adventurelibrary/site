@@ -32,6 +32,7 @@ class HomePage extends Vue {
 	public featured: Asset[] = []
 
 	async fetch () {
+		console.log('hello')
 		const assetsRes = await getFeaturedAssets()
 		this.featured = assetsRes.assets
 	}

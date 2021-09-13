@@ -86,10 +86,11 @@ export async function signUp (fields : SignUpFields) : Promise<CognitoUser> {
 export async function logout () {
 	try {
 		await Auth.signOut()
+		setJWT('')
+		Cookies.remove('jwt')
 	} catch (ex) {
 		throw new Error(convertErr(ex))
 	}
-	Cookies.remove('jwt')
 }
 
 export async function changePassword (username: string, oldPassword: string, newPassword: string) {

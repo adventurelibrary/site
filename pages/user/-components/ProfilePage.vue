@@ -1,5 +1,5 @@
 <template>
-	<article class="user-profile">
+	<article class="user-profile" v-if="user">
 		<section class="profile-details">
 			<img src="~/assets/coolicons/svg/user/user.svg" class="profile-image">
 			<h1 class="username">{{user.username}}</h1>
@@ -60,7 +60,7 @@ import {User} from "~/modules/users/user-types"
 })
 export default class ProfilePage extends Vue {
 	@Getter('isCreator') isCreator : boolean
-	@State('user') user : User
+	@State('user') user : User | null
 	@State('userCoins') numCoins : number
 	@Prop() activeTab : string
 }

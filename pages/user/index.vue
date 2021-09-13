@@ -17,7 +17,7 @@
 		</div>
 
 		<!-- Admin Settings -->
-		<div v-if="user.admin==true">
+		<div v-if="user && user.admin==true">
 			<h3>Administrator Settings</h3>
 			User to Creator<br/>
 			Creator to User<br/>
@@ -44,12 +44,13 @@ export default class UserSettings extends Vue {
 	@State('user') user : User
 	@Getter('isCreator') isCreator : boolean
 
-
-
 	async logout () {
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
-		this.$router.push('/')
+		this.$root.$emit('loggedOut')
+		console.log('pushing route home')
+		await this.$store.$router.push('/info/about-us')
+		console.log('done on home')
 	}
 }
 </script>
