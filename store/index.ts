@@ -163,6 +163,7 @@ export const mutations = {
 		}))
 	},
 	user (state: State, pl: User | null) {
+		console.log('chaning user to', pl)
 		state.user = pl
 	},
 	'login.working' (state: State, working: boolean) {
@@ -242,7 +243,7 @@ export const actions = {
 		})
 	},
 	async logout ({commit}: ActionParams) {
-		await logout()
+		await logout() // Send logout request to AWS
 		commit('user', null)
 	},
 	openLoginModal ({commit} : ActionParams) {
@@ -357,7 +358,9 @@ export const actions = {
 
 export const getters = {
 	isLoggedIn (state: State) : boolean {
-		return !!state.user
+		const isLoggedIn = !!state.user
+		console.log('state user', JSON.stringify(state.user))
+		return isLoggedIn
 	},
 	isCreator (state: State) : boolean {
 		if (!state.user) {
