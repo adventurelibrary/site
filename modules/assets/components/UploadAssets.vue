@@ -9,9 +9,8 @@
 			<label class="button add-file basic" for="add-file">+Add Upload</label>
 			<button type="button" :disabled="newAssets.length === 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
-
-		<FormErrors :error="error" class="upload-errors" />
 		<section v-show="stage === 'adding'" class="upload-form">
+			<FormErrors :error="error" class="upload-errors" />
 			<div v-if="asAdmin">
 				<div>Upload as creator</div>
 				<CreatorSelector v-model="creator" />
