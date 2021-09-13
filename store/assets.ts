@@ -83,11 +83,24 @@ export const actions = {
 		commit('toggleAsset', idx)
 		commit('shiftClickAnchorIndex', idx)
 	},
-	selectAssetIds ({commit}: ActionParams, assetIds: string[]) {
+	async selectOnlyAssetIds ({dispatch} : ActionParams, assetIds: string[]) {
+		await dispatch('resetSelects')
+		await dispatch('selectAssetIds', assetIds)
+	},
+	selectAssetIds ({commit, getters}: ActionParams, assetIds: string[]) {
 		commit('setSelectAssetsByIds', {
 			assetIds,
 			selected: true
 		})
+		// If at least one was selected, we will set the last selected one
+		// as the anchor
+		// This is so a user can click and drag over three items, then shift
+		// click the 10th item and it will select all items from 4 to 9
+		if (assetIds.length > 0) {
+			const idx = getters.assetIdIndex(assetIds[assetIds.length-1])
+			console.log('idx', idx)
+			commit('shiftClickAnchorIndex', idx)
+		}
 	},
 	deselectAssetIds ({commit}: ActionParams, assetIds: string[]) {
 		commit('setSelectAssetsByIds', {
@@ -183,10 +196,13 @@ export const actions = {
 	},
 	setAssets({commit}: ActionParams, assets: Asset[]) {
 		const copy = [...assets]
+
+		// This is just for testing so that there are more things to select
 		assets.forEach((asset) => {
 			copy.push({
 				...asset,
 				id: asset.id + '1',
+				slug: asset.slug + '1',
 				name: asset.name + ' (Clone)'
 			})
 		})
@@ -199,6 +215,11 @@ export const getters = {
 	assetIndex (state: State) {
 		return (asset: Asset): number => {
 			return state.assets.findIndex(a => a.id === asset.id)
+		}
+	},
+	assetIdIndex (state: State) {
+		return (assetId: string): number => {
+			return state.assets.findIndex(a => a.id === assetId)
 		}
 	},
 	numSelectedAssets (state: State) : number {

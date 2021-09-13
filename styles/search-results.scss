@@ -40,6 +40,13 @@
 		}
     }
 
+    /* A user is click-dragging over an area and his higlighting
+     * this asset card. If they let go now this card will be selected.
+     */
+    &.ds-hover {
+      box-shadow: 0px 0px 3px $main-teal;
+    }
+
 	.link {
 		grid-area: thumbnail;
 	}
@@ -82,7 +89,7 @@
 		.author {
 			grid-area: author;
 			overflow: hidden;
-			
+
 			.author-name {
 				overflow: hidden;
 				white-space: nowrap;

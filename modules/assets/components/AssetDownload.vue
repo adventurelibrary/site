@@ -9,7 +9,7 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			<button @click="clickUnlockAsset">
+			<button @click="clickUnlockAsset" @mousedown="stopPropagation">
 				<span class="icon material-icons"></span>
 				<span class="amount">{{asset.unlock_price}}</span>
 			</button>
@@ -18,14 +18,14 @@
 	</div>
 </template>
 <script lang="ts">
-import Vue from "vue"
-import {Component, Prop} from "nuxt-property-decorator";
+import {Component, mixins, Prop} from "nuxt-property-decorator";
 import {Asset, AssetDownloadOptions} from "~/modules/assets/asset-types";
 import {SelectOption} from "~/lib/helpers";
 import {getAssetDownloadLink} from "~/modules/assets/asset-api";
+import StopPropagation from "~/mixins/StopPropagation.vue";
 
 @Component
-export default class AssetDownload extends Vue {
+export default class AssetDownload extends mixins(StopPropagation) {
 	fileOptions : SelectOption[] = [
 		{value: 'webp', label: 'WebP'},
 		{value: 'original', label: 'Original'}

@@ -115,7 +115,7 @@ class BundlePage extends Vue {
 	}
 
 	get isOwner () : boolean {
-		if (!this.isLoggedIn) {
+		if (!this.isLoggedIn || !this.bundle) {
 			return false
 		}
 

@@ -56,30 +56,37 @@ export default class SelectAssetsContainer extends Vue {
 		}
 		const sels = document.querySelectorAll('[data-selectable-asset-id]')
 		console.log('sels', sels)
+    const body = document.querySelector('.site-body')
+    if (!body) {
+      return
+    }
+		//@ts-ignore
 		this.ds = new DragSelect({
+      //@ts-ignore
 			selectables: sels,
-			area: document.querySelector('.site-body')
+      //@ts-ignore
+			area: body,
+      customStyles: true
 		});
-		this.ds.subscribe('callback', (evt) => {
+		this.ds.subscribe('callback', (evt:any) => {
 			const {items} = evt
-			console.log('evt', evt)
-			console.log('items', items)
 			const ids : string[] = []
-			items.forEach((item) => {
+			items.forEach((item : HTMLElement) => {
 				const id = item.dataset.selectableAssetId
-				ids.push(id)
-				console.log('id', id)
+        if (id) {
+          ids.push(id)
+        }
 			})
 
-			// Check if all those IDS are selected
-			console.log('this.$store.getters', this.$store.getters)
+			// Check if all those IDS are selected. They are then we actually
+      // DEselect them
+      // Otherwise we'll add everything highlighted that is new to the list
 			if (this.$store.getters['assets/areAllAssetIdsSelected'](ids, true)) {
-				console.log('yah those are all selected')
 				this.$store.dispatch('assets/deselectAssetIds', ids)
 				return
 			}
 
-			this.$store.dispatch('assets/selectAssetIds', ids)
+			this.$store.dispatch('assets/selectOnlyAssetIds', ids)
 		})
 	}
 

@@ -1,15 +1,15 @@
 <template>
-	<button class="asset-action action-add-asset-to-bundle" @click="openModal" type="button">
+	<button class="asset-action action-add-asset-to-bundle" @mousedown="stopPropagation" @click="openModal" type="button">
 		<i class="ci-plus"></i>
 	</button>
 </template>
 <script lang="ts">
-import Vue from "vue"
-import {Component, Prop, Getter} from "nuxt-property-decorator";
+import {Component, Prop, Getter, mixins} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
+import StopPropagation from "~/mixins/StopPropagation.vue";
 
 @Component
-export default class AssetDownload extends Vue {
+export default class AssetDownload extends mixins(StopPropagation) {
 	@Prop() asset : Asset
 	@Getter('isLoggedIn') isLoggedIn : boolean
 

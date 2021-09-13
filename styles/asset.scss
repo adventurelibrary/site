@@ -70,3 +70,8 @@
 	user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+
+.ds-selector {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid #eee;
+}
