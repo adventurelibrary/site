@@ -42,6 +42,16 @@ export default class MyBundles extends mixins(PaginationMixin) {
 		total: 0
 	}
 
+	// TODO: Find a way to deal with the slight delay of ElasticSearch not having
+  // this newly created item until a little bit after it exists
+  created () {
+    this.$root.$on('bundleCreated', this.$fetch)
+  }
+
+  destroyed () {
+    this.$root.$off('bundleCreated', this.$fetch)
+  }
+
 	// This function fires client side when the ?page query parameter is changed
 	// Nuxt won't do a full route change cycle (which would call asyncData) if only
 	// the query params change. So, we watch the query params ourselves with the PaginationMixin
@@ -69,7 +79,7 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	}
 
 	createBundle () {
-		alert('Not implemented')
+		this.$store.dispatch('openCreateBundle')
 	}
 }
 </script>

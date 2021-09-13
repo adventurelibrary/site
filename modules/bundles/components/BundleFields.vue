@@ -38,5 +38,5 @@ export default class BundleFields extends Vue {
 		type: Object as PropType<any>
 	})
 	readonly copy! : any
-}
+ }
 </script>

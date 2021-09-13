@@ -48,6 +48,7 @@
 			<slot></slot>
 		</section>
 	</article>
+  <div v-else>You must be logged in to see this page. <nuxt-link to="/">Back to home page</nuxt-link> or <nuxt-link :to="{name: 'login'}">login</nuxt-link></div>
 </template>
 <script lang="ts">
 import {Component, State, Vue, Prop, Getter} from "nuxt-property-decorator";

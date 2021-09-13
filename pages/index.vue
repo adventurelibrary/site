@@ -15,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {Component} from "nuxt-property-decorator";
+import {Component, mixins} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import {getFeaturedAssets} from "~/modules/assets/asset-api";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -28,11 +28,10 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 		AssetCard:AssetCard,
 	}
 })
-class HomePage extends Vue {
+class HomePage extends mixins(LoggedInFetchMixin) {
 	public featured: Asset[] = []
 
 	async fetch () {
-		console.log('hello')
 		const assetsRes = await getFeaturedAssets()
 		this.featured = assetsRes.assets
 	}
