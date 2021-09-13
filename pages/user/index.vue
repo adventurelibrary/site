@@ -47,10 +47,7 @@ export default class UserSettings extends Vue {
 	async logout () {
 		await this.$store.dispatch('logout')
 		this.notifySuccess('Logged out')
-		this.$root.$emit('loggedOut')
-		console.log('pushing route home')
-		await this.$store.$router.push('/info/about-us')
-		console.log('done on home')
+		this.$router.push('/')
 	}
 }
 </script>

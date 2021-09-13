@@ -319,6 +319,14 @@ export const actions = {
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')
 	},
+	async openCreateBundle ({dispatch, commit}: ActionParams) {
+		await dispatch('closeAllModals')
+		commit('modal', {
+			key: 'createBundle',
+			value: true
+		})
+		commit('createBundleAsset', null)
+	},
 	async openCreateBundleWithAsset ({dispatch, commit} : ActionParams, {asset} : {asset: Asset | null}) {
 		await dispatch('closeAllModals')
 		commit('modal', {

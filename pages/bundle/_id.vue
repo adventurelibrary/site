@@ -1,44 +1,45 @@
 <template>
 	<article class="bundle-page item-page">
-		<fragment v-if="bundle">
-			<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
-				<!-- Empty -->
-			</section>
-			<section class="info">
-				<h1 class="title">{{bundle.name}}</h1>
-				<div class="description">
-					{{bundle.description}}
-				</div>
-			</section>
-			<section class="actions">
-				<Fragment v-if="isOwner">
-					<button type="button" @click="clickDeleteBundle">Delete</button>
-					<button type="button" @click="clickEditBundle">Edit</button>
-				</Fragment>
-			</section>
+    <LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+      <fragment v-if="bundle">
+        <section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
+          <!-- Empty -->
+        </section>
+        <section class="info">
+          <h1 class="title">{{bundle.name}}</h1>
+          <div class="description">
+            {{bundle.description}}
+          </div>
+        </section>
+        <section class="actions">
+          <Fragment v-if="isOwner">
+            <button type="button" @click="clickDeleteBundle">Delete</button>
+            <button type="button" @click="clickEditBundle">Edit</button>
+          </Fragment>
+        </section>
 
-			<section class="bundle-assets">
-				<ul class="search-results">
-					<li v-if="!assets.length">No assets.</li>
-					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
-					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-						<Fragment slot="extra-actions">
-							<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
-								<i class="ci-off_close"></i>
-							</button>
-						</Fragment>
-					</AssetCard>
-				</ul>
-			</section>
-		</fragment>
-		<fragment v-else>
-			Could not find that bundle.
-		</fragment>
-	</article>
+        <section class="bundle-assets">
+          <ul class="search-results">
+            <li v-if="!assets.length">No assets.</li>
+            <!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
+            <AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
+              <Fragment slot="extra-actions">
+                <button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
+                  <i class="ci-off_close"></i>
+                </button>
+              </Fragment>
+            </AssetCard>
+          </ul>
+        </section>
+      </fragment>
+      <fragment v-else>
+        Could not find that bundle.
+      </fragment>
+    </LoadingContainer>
+  </article>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import {Component, Getter} from "nuxt-property-decorator";
+import {Component, Getter, mixins} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
@@ -50,6 +51,7 @@ import {
 	removeAssetFromBundle,
 } from "~/modules/bundles/bundles-api";
 import {Bundle} from "~/modules/bundles/bundle-types";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -59,8 +61,8 @@ import {Bundle} from "~/modules/bundles/bundle-types";
 		Fragment
 	}
 })
-class BundlePage extends Vue {
-	bundle : Bundle
+class BundlePage extends mixins(LoggedInFetchMixin) {
+	bundle : Bundle | null = null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
 

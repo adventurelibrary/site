@@ -31,19 +31,20 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch} from "nuxt-property-decorator"
+import {Component, mixins, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
 import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
-import { searchAssets} from "~/modules/assets/asset-api";
+import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
-import {commaAndJoin, getElOffset, sleep} from "~/lib/helpers";
+import {commaAndJoin, getElOffset} from "~/lib/helpers";
 import SignOfLife from "~/components/SignOfLife.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -53,7 +54,7 @@ import SignOfLife from "~/components/SignOfLife.vue";
 	},
 	mixins: [PaginationMixin]
 })
-class AssetsIndexPage extends Vue {
+class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	public search : AssetSearchOptions
 	assetsResponse : AssetsResponse = {
 		total: 0,
