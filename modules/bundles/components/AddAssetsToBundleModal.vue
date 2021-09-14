@@ -9,10 +9,12 @@
 				<button @click="createNewBundle" type="button" class="create">Create New Bundle</button>
 			</div>
 			<MyBundleSelector v-model="bundleIds" @loaded="onBundlesLoaded" />
-			<button @click="addToBundles" :disabled="bundleIds.length == 0" class="add">
-				<span v-show="bundleIds.length">Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
-				<span v-show="!bundleIds.length">Select Bundle(s)</span>
-			</button>
+			<div>
+				<button @click="addToBundles" :disabled="bundleIds.length == 0" class="add">
+					<span v-show="bundleIds.length">Add to {{bundleIds.length}} Bundle<S :num="bundleIds.length"></S></span>
+					<span v-show="!bundleIds.length">Select Bundle(s)</span>
+				</button>
+			</div>
 		</slot>
 	</Modal>
 </template>

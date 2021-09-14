@@ -1,14 +1,13 @@
 <template>
   <div class="select-assets-container">
-    <div>
-			{{numSelected}} Selected
+    <div class="select-assets-actions body-width">
       <button @click="clickToggleAll">{{toggleAllLabel}}</button>
-      <button @click="clickAddToBundle">Add to Bundle</button>
+      <button @click="clickAddToBundle" :disabled="numSelected === 0">Add to Bundle</button>
+			<slot name="actions"></slot>
+			{{numSelected}} Selected
     </div>
-    <div>
-      <slot></slot>
-    </div>
-  </div>
+		<slot></slot>
+	</div>
 </template>
 <script lang="ts">
 import {Component, Getter, State, Watch} from "nuxt-property-decorator";
@@ -55,7 +54,6 @@ export default class SelectAssetsContainer extends Vue {
 			this.ds.stop()
 		}
 		const sels = document.querySelectorAll('[data-selectable-asset-id]')
-		console.log('sels', sels)
     const body = document.querySelector('.site-body')
     if (!body) {
       return

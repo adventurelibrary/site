@@ -1,9 +1,9 @@
 <template>
 	<fragment>
-		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
-		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+		<input type="text" class="filter" v-model="filterText" placeholder="Filter bundles" />
+		<div v-if="!$fetchState.pending">
 			<div class="bundle-sel-wrapper">
-        <ul class="bundle-selector">
+        <ul class="bundle-selector" v-if="bundles.length">
           <li v-for="bundle in bundles"
               :key="bundle.id"
               @click="() => toggleBundle(bundle)"
@@ -13,11 +13,16 @@
             <h4 class="title">{{bundle.name}}</h4>
             <nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
             <p class="description">{{bundle.description || "Filler text"}}</p>
-            <img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
+            <img v-if="bundle.cover_thumbnail" style="object-fit: contain;" :src="bundle.cover_thumbnail" />
           </li>
         </ul>
+				<div v-else>No bundles found.</div>
       </div>
-		</LoadingContainer>
+		</div>
+		<div v-else>
+			<SignOfLife>
+			</SignOfLife>
+		</div>
 	</fragment>
 </template>
 <script lang="ts">
@@ -27,6 +32,7 @@ import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
 import {getMyBundles} from "~/modules/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 type BundleItem = Bundle & {
 	active: boolean
@@ -39,11 +45,12 @@ type BundleItem = Bundle & {
 @Component({
 	components: {
 		LoadingContainer,
-		Fragment
+		Fragment,
+		SignOfLife: SignOfLife
 	}
 })
 export default class MyBundleSelector extends Vue {
-	filter : string = ''
+	filterText : string = ''
 	bundlesResponse : BundlesResponse = {
     total: 0,
     bundles: []
@@ -74,17 +81,19 @@ export default class MyBundleSelector extends Vue {
 	}
 
 	get bundles () : BundleItem[] {
-		const list = this.bundlesResponse.bundles
-		const filter = this.filter.trim().toLowerCase()
+		const list = [...this.bundlesResponse.bundles]
+		const filter = this.filterText.trim().toLowerCase()
 		const filtered = list.filter((bundle: Bundle) => {
 			return bundle.name.toLowerCase().indexOf(filter) >= 0
 		})
-		return filtered.map((bundle : Bundle) : BundleItem => {
+		const mapped = filtered.map((bundle : Bundle) : BundleItem => {
 			const active = this.selectedIds.indexOf(bundle.id) >= 0
 			return Object.assign({
 				active: active,
 			}, bundle)
 		})
+
+		return mapped
 	}
 }
 </script>

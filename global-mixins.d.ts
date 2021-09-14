@@ -9,6 +9,5 @@ declare module 'vue/types/vue' {
 	interface Vue {
 		notifySuccess (arg: string) : void
 		notifyError (arg: string) : void
-		$gtag (arg: string) : VueGtag
 	}
 }

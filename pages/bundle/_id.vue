@@ -1,44 +1,48 @@
 <template>
-	<article class="bundle-page item-page">
-		<fragment v-if="bundle">
-			<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
-				<!-- Empty -->
-			</section>
-			<section class="info">
-				<h1 class="title">{{bundle.name}}</h1>
-				<div class="description">
-					{{bundle.description}}
-				</div>
-			</section>
-			<section class="actions">
-				<Fragment v-if="isOwner">
-					<button type="button" @click="clickDeleteBundle">Delete</button>
-					<button type="button" @click="clickEditBundle">Edit</button>
-				</Fragment>
-			</section>
+	<LoadingContainer :loading="$fetchState.loading" :error="$fetchState.error">
+		<article class="bundle-page item-page">
+			<fragment v-if="bundle">
+				<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
+					<!-- Empty -->
+				</section>
+				<section class="info">
+					<h1 class="title">{{bundle.name}}</h1>
+					<div class="description">
+						{{bundle.description}}
+					</div>
+				</section>
+				<section class="actions">
+					<Fragment v-if="isOwner">
+						<button type="button" @click="clickDeleteBundle">Delete</button>
+						<button type="button" @click="clickEditBundle">Edit</button>
+					</Fragment>
+				</section>
 
-			<section class="bundle-assets">
-				<ul class="search-results">
-					<li v-if="!assets.length">No assets.</li>
-					<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
-					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-						<Fragment slot="extra-actions">
-							<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
-								<i class="ci-off_close"></i>
-							</button>
-						</Fragment>
-					</AssetCard>
-				</ul>
-			</section>
-		</fragment>
-		<fragment v-else>
-			Could not find that bundle.
-		</fragment>
-	</article>
+				<section class="bundle-assets">
+					<SelectAssetsContainer>
+						<fragment slot="actions">
+							<button type="button" @click="clickRemoveSelectedAssets">Remove From Bundle</button>
+						</fragment>
+						<ul class="search-results">
+							<li v-if="!assets.length">No assets.</li>
+							<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
+							<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
+								<Fragment slot="extra-actions">
+									<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
+										<i class="ci-off_close"></i>
+									</button>
+								</Fragment>
+							</AssetCard>
+						</ul>
+					</SelectAssetsContainer>
+				</section>
+			</fragment>
+		</article>
+	</LoadingContainer>
 </template>
 <script lang="ts">
 import Vue from 'vue'
-import {Component, Getter} from "nuxt-property-decorator";
+import {Component, Getter, State} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
@@ -47,30 +51,34 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import {
 	deleteBundle,
 	getBundle,
-	removeAssetFromBundle,
+	removeAssetFromBundle, removeAssetsFromBundle,
 } from "~/modules/bundles/bundles-api";
 import {Bundle} from "~/modules/bundles/bundle-types";
+import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
 
 @Component({
 	components: {
 		AssetDownload: AssetDownload,
 		TagList: TagList,
 		AssetCard,
-		Fragment
+		Fragment,
+		SelectAssetsContainer: SelectAssetsContainer
 	}
 })
 class BundlePage extends Vue {
 	bundle : Bundle | null = null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
+	@State('assets', {
+		namespace: 'assets'
+	}) assets : Asset[]
 
 	async fetch () {
 		const res = await getBundle(this.$nuxt.context.params.id)
-		console.log('res', res)
 		if (res) {
 			this.bundle = res
+			this.$store.dispatch('assets/setAssets', res.assets)
 		}
-		console.log('this bundle', this.bundle)
 	}
 
 	// setting header meta tags
@@ -107,13 +115,6 @@ class BundlePage extends Vue {
 		}
 	}
 
-	get assets () : Asset[] {
-		if (!this.bundle || !this.bundle.assets) {
-			return []
-		}
-		return this.bundle.assets
-	}
-
 	get isOwner () : boolean {
 		if (!this.isLoggedIn || !this.bundle) {
 			return false
@@ -127,11 +128,17 @@ class BundlePage extends Vue {
 			return
 		}
 		await removeAssetFromBundle(this.bundle.id, asset.id)
-		if (this.bundle  && this.bundle.assets) {
-			this.bundle.assets = this.bundle.assets.filter((a: any) => {
-					return a.id !== asset.id
-			})
+		this.$store.dispatch('assets/removeAssets', [asset.id])
+	}
+
+	async clickRemoveSelectedAssets () {
+		const ids = this.$store.getters['assets/selectedAssetIds']
+		if (!ids.length) {
+			return
 		}
+
+		await removeAssetsFromBundle(this.bundle.id, ids)
+		this.$store.dispatch('assets/removeAssets', ids)
 	}
 
 	async clickDeleteBundle () {

@@ -15,13 +15,13 @@ export default class AssetDownload extends mixins(StopPropagation) {
 
 	openModal () {
 		// TODO: Remove && false when we want to actually check for a user
-		if (!this.isLoggedIn && false) {
+		if (!this.isLoggedIn) {
 			this.$store.dispatch('openLoginModal')
 			return
 		}
 
 		this.$store.dispatch('openAddToBundleModal', {
-			asset: this.asset
+			assets: [this.asset]
 		})
 	}
 }

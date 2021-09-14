@@ -34,6 +34,11 @@ export const mutations = {
 	clearAssets (state: State) {
 		state.assets = []
 	},
+	removeAssets (state: State, assetIds: string[]) {
+		state.assets = state.assets.filter((a) => {
+			return !assetIds.includes(a.id)
+		})
+	},
 	clearSelectionMarkers (state: State) {
 		state.lastShiftClickedIndex = -1
 		state.shiftClickAnchorIndex = -1
@@ -127,8 +132,6 @@ export const actions = {
 		})
 	},
 	openAddToBundle ({dispatch, getters, state} : ActionParams) {
-		console.log('all selectable assets', state.assets)
-		console.log('selected ones', getters.selectedAssets)
 		dispatch('openAddToBundleModal', {
 			assets: getters.selectedAssets
 		}, {root: true})
@@ -194,9 +197,12 @@ export const actions = {
 	clearAssets({commit}: ActionParams) {
 		commit('clearAssets')
 	},
+	removeAssets ({commit}: ActionParams, assetIds: string[]) {
+		commit('removeAssets', assetIds)
+	},
 	setAssets({commit}: ActionParams, assets: Asset[]) {
 		const copy = [...assets]
-
+/*
 		// This is just for testing so that there are more things to select
 		assets.forEach((asset) => {
 			copy.push({
@@ -205,7 +211,7 @@ export const actions = {
 				slug: asset.slug + '1',
 				name: asset.name + ' (Clone)'
 			})
-		})
+		})*/
 		commit('setAssets', copy)
 		commit('clearSelectionMarkers')
 	}
@@ -227,6 +233,9 @@ export const getters = {
 	},
 	selectedAssets (state: State) : Asset[] {
 		return state.assets.filter(x => x.selected)
+	},
+	selectedAssetIds (state: State) : string[] {
+		return state.assets.filter(x => x.selected).map(x => x.id)
 	},
 	areAllAssetIdsSelected (state: State) {
 		return (ids: string[], selected: boolean) : boolean => {

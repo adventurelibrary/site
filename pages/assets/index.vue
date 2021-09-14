@@ -1,6 +1,6 @@
 <template>
 	<div class="page-content search-page">
-		<header class="page-header">
+		<header class="page-header body-width">
 			<h1>Search Assets</h1>
 			<!--div v-if="search">
 				Search for: "{{search.query}}"
@@ -15,14 +15,14 @@
 				<SignOfLife>Searching...</SignOfLife>
 			</section>
 			<section v-show="!$fetchState.pending">
-				<h3 class="results-count">
+				<div class="results-count body-width">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
-					<br />Shift Anchor {{shiftAnchor}} | Last Shift: {{lastShift}} <a @click="resetSelects">Reset</a>
-					<a @click="addSelectedToBundle" :disabled="numAssetsSelected <= 0">Add {{numAssetsSelected}} Assets to Bundle</a>
-				</h3>
-				<ul class="search-results">
-					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-				</ul>
+				</div>
+				<SelectAssetsContainer>
+					<ul class="search-results">
+						<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
+					</ul>
+				</SelectAssetsContainer>
 				<div v-if="assets.length < totalAssets">
 					<div v-if="loadingMore">Loading more...</div>
 					<a v-else @click="loadMore">Load More</a>
@@ -46,11 +46,13 @@ import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
 import SignOfLife from "~/components/SignOfLife.vue";
+import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
 
 @Component({
 	components: {
 		AssetSearch,
 		AssetCard,
+		SelectAssetsContainer: SelectAssetsContainer,
 		SignOfLife
 	},
 	mixins: [PaginationMixin]
@@ -63,7 +65,7 @@ class AssetsIndexPage extends Vue {
 	}
 	perPage = 20
 	loadingMore = false
-	scrollTimeout : NodeJS.Timeout
+	scrollTimeout : number
 
   @State('assets', {
   	namespace: 'assets'
@@ -84,7 +86,6 @@ class AssetsIndexPage extends Vue {
 
 	async fetch () {
 		this.assetsResponse = await searchAssets(this.search);
-    console.log('done loading')
     this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query
@@ -151,6 +152,7 @@ class AssetsIndexPage extends Vue {
 			const newResults = current.concat(res.assets)
 			if (this.assetsResponse) {
 				Vue.set(this.assetsResponse, 'assets', newResults)
+				this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 			} else {
 				throw new Error('Cannot set new results on empty data')
 			}
@@ -189,14 +191,6 @@ class AssetsIndexPage extends Vue {
 			name: 'assets',
 			query: query
 		})
-	}
-
-	addSelectedToBundle () {
-		this.$store.dispatch('assets/openAddToBundle')
-	}
-
-	resetSelects () {
-		this.$store.dispatch('assets/resetSelects')
 	}
 }
 export default AssetsIndexPage

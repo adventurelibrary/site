@@ -49,14 +49,14 @@ export default class LoadingContainer extends Vue {
 
   	mounted () {
 
-		// display Nuxt loading		
+		// display Nuxt loading
 		/*
 		this.$nextTick(() => {
 			console.log('display Nuxt loading bar, from LoadingContainer')
 			this.$nuxt.$loading.start()
 			setTimeout(() => this.$nuxt.$loading.finish(), 500)
 		})
-		*/	
+		*/
 	}
 }
 </script>
