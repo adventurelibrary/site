@@ -28,7 +28,8 @@
     "nuxt-property-decorator": "^2.9.1",
     "sass": "^1.32.11",
     "vue-fragment": "1.5.1",
-    "vue-gtag": "^1.16.1"
+    "vue-gtag": "^1.16.1",
+    "vue-inline-svg": "^2.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "7.12.17",
