@@ -93,17 +93,17 @@ export async function logout () {
 }
 
 export async function changePassword (username: string, oldPassword: string, newPassword: string) {
-	try {
-		const user = Auth.currentAuthenticatedUser()
-		return Auth.changePassword(user, oldPassword, newPassword)
-	} catch (ex) {
-		throw new Error(convertErr(ex))
-	}
+    try {
+        const user = await Auth.currentAuthenticatedUser()
+        await Auth.changePassword(user, oldPassword, newPassword)
+    } catch (ex) {
+        throw new Error(convertErr(ex))
+    }
 }
 
 export async function forgotPassword (username: string) {
 	try {
-		return Auth.forgotPassword(username)
+		await Auth.forgotPassword(username)
 	} catch (ex) {
 		throw new Error(convertErr(ex))
 	}

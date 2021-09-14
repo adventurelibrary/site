@@ -4,6 +4,10 @@
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
 		</div>
+		<SignOfLife :visible="false" class="main-sol">
+			<!-- This is here as a test -->
+			Adventure Library
+		</SignOfLife>
 		<header class="site-header">
 			<NuxtLink class="branding" :to="{name: 'index'}">
 				<h1 class="site-name">Adventure Library</h1>
@@ -47,7 +51,7 @@
 		<footer class="site-footer">
 			<!--h1 class="footer-heading">Adventure Library</h1-->
 			<img class="footer-heading"
-				src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+				src="~/assets/AL_white_logo_1line.svg">
 			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
 				<ul>
@@ -110,12 +114,14 @@ import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/modules/users/user-types"
 import {UserTracking} from "~/modules/users/user-tracking"
 import UserCoins from "~/modules/users/components/UserCoins.vue";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
 		Modals: Modals,
-		UserCoins: UserCoins
+		UserCoins: UserCoins,
+		SignOfLife
 	}
 })
 export default class Default extends Vue {

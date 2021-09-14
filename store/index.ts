@@ -20,7 +20,7 @@ type State = {
 	login: {
 		working: boolean,
 		error: string
-	}
+	},
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search

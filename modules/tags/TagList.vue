@@ -12,9 +12,11 @@ import {Component, Vue, Prop} from "nuxt-property-decorator";
 import {AssetTag} from "~/modules/assets/asset-types";
 import {getTagById} from "~/modules/tags/tags-api";
 
+
 // This component displays a nice readable list of tag names, given a list of tags which might not be as readable
 // So something like `["science_fiction", "fantasy"]` would look like "Science Fiction, Fantasy"
-@Component
+@Component ({
+})
 export default class TagList extends Vue {
 	@Prop() tags : string[]
 
@@ -33,8 +35,7 @@ export default class TagList extends Vue {
 	}
 
 	addTagToSearch(tag: AssetTag) {
-		alert('Implement, add tag to search bar on top on click. Tag passed: '+ tag.label)
-		// AssetSearch.tagClicked (tag)
+		this.$root.$emit('addTagToSearch', tag)
 	}
 }
 </script>

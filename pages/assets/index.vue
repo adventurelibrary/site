@@ -11,7 +11,9 @@
 			</div-->
 		</header>
 		<main class="page-body">
-			<section v-show="$fetchState.pending">LOADING</section>
+			<section v-show="$fetchState.pending">
+				<SignOfLife>Searching...</SignOfLife>
+			</section>
 			<section v-show="!$fetchState.pending">
 				<h3 class="results-count">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
@@ -43,11 +45,13 @@ import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 @Component({
 	components: {
 		AssetSearch,
 		AssetCard,
+		SignOfLife
 	},
 	mixins: [PaginationMixin]
 })
