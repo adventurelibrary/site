@@ -2,7 +2,7 @@
 	<fragment>
 		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
-			<div>
+			<div class="bundle-sel-wrapper">
 				<ul class="bundle-selector">
 					<li v-for="bundle in bundles"
 							:key="bundle.id"
