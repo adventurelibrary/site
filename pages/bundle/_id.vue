@@ -1,6 +1,6 @@
 <template>
-	<LoadingContainer :loading="$fetchState.loading" :error="$fetchState.error">
-		<article class="bundle-page item-page">
+	<article class="bundle-page item-page">
+		<LoadingContainer :loading="$fetchState.loading" :error="$fetchState.error">
 			<fragment v-if="bundle">
 				<section class="preview" :style="`background-image: url(${bundle.cover_thumbnail});`">
 					<!-- Empty -->
@@ -37,24 +37,20 @@
 					</SelectAssetsContainer>
 				</section>
 			</fragment>
-		</article>
-	</LoadingContainer>
+		</LoadingContainer>
+	</article>
 </template>
 <script lang="ts">
-import Vue from 'vue'
-import {Component, Getter, State} from "nuxt-property-decorator";
+import {Component, Getter, mixins, State} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import TagList from "~/modules/tags/TagList.vue";
 import {Fragment} from "vue-fragment";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
-import {
-	deleteBundle,
-	getBundle,
-	removeAssetFromBundle, removeAssetsFromBundle,
-} from "~/modules/bundles/bundles-api";
+import {deleteBundle, getBundle, removeAssetFromBundle, removeAssetsFromBundle,} from "~/modules/bundles/bundles-api";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -65,7 +61,7 @@ import SelectAssetsContainer from "~/modules/assets/components/select/SelectAsse
 		SelectAssetsContainer: SelectAssetsContainer
 	}
 })
-class BundlePage extends Vue {
+class BundlePage extends mixins(LoggedInFetchMixin) {
 	bundle : Bundle | null = null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean

@@ -40,6 +40,13 @@ export default class CreateBundleForm extends mixins(FormMixin) {
 		this.form.data.public = true
 	}
 
+	mounted () {
+		const input = this.$el.querySelector('input')
+		if (input) {
+			input.focus()
+		}
+	}
+
 	async formAction () {
 		const assetIds : string[] = this.assets.map(x => x.id)
 		await createBundle(this.form.data, assetIds)

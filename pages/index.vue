@@ -17,13 +17,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {Component, State} from "nuxt-property-decorator";
+import {Component, mixins, State} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import {getFeaturedAssets} from "~/modules/assets/asset-api";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
 import AssetCard from "~/modules/assets/components/AssetCard.vue";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -32,7 +32,7 @@ import SelectAssetsContainer from "~/modules/assets/components/select/SelectAsse
 		AssetCard:AssetCard,
 	}
 })
-class HomePage extends Vue {
+export default class HomePage extends mixins(LoggedInFetchMixin) {
 	@State('assets', {
 		namespace: 'assets'
 	}) featured : Asset[]

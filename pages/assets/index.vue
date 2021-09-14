@@ -33,7 +33,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch, State, Getter} from "nuxt-property-decorator"
+import {Component, Getter, mixins, State, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
@@ -47,6 +47,7 @@ import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
 import SignOfLife from "~/components/SignOfLife.vue";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
@@ -57,7 +58,7 @@ import SelectAssetsContainer from "~/modules/assets/components/select/SelectAsse
 	},
 	mixins: [PaginationMixin]
 })
-class AssetsIndexPage extends Vue {
+class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	public search : AssetSearchOptions
 	assetsResponse : AssetsResponse = {
 		total: 0,

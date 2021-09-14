@@ -32,6 +32,7 @@ export default class CreateBundleModal extends Vue {
 	onSuccess () {
 		this.notifySuccess('Bundle created')
 		this.$store.dispatch('closeAllModals')
+		this.$root.$emit('bundleCreated')
 	}
 }
 </script>
