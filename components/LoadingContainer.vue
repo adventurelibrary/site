@@ -1,10 +1,9 @@
 <template>
 	<Fragment role="loading-container" class="loading-container">
 		<template v-if="loading">
-			<slot name="loading">
-				<div class="loading-bar"></div>
-				<div class="loading-message">Loading...</div>
-			</slot>
+			<SignOfLife>
+				<slot name="loading">Loading...</slot>
+			</SignOfLife>
 		</template>
 		<template v-if="!loading && errorMessage">
 			<slot name="error">
@@ -23,9 +22,12 @@
 import Vue from "vue"
 import {Component, Prop} from "nuxt-property-decorator";
 import {Fragment} from "vue-fragment"
+import SignOfLife from "~/components/SignOfLife.vue";
+
 @Component({
 	components: {
-		Fragment: Fragment
+		Fragment: Fragment,
+		SignOfLife
 	}
 })
 export default class LoadingContainer extends Vue {

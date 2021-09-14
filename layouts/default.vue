@@ -4,7 +4,7 @@
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
 		</div>
-		<SignOfLife :visible="true">
+		<SignOfLife :visible="false" class="main-sol">
 			<!-- This is here as a test -->
 			Adventure Library
 		</SignOfLife>
