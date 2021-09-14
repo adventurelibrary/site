@@ -95,3 +95,52 @@
 .category, .tag {
 	display: inline-grid;
 }
+
+.sign-of-life {
+	display: none;
+
+	&[visible] {
+		display: grid;
+	}
+
+	opacity: .85;
+
+	place-items: center;
+
+	$size: 16em;
+
+	position: fixed;
+	z-index: 10;
+	width: $size;
+	height: $size;
+	top: calc(50vh - #{$size / 2});
+	left: calc(50vw - #{$size / 2});
+	border-radius: 50%;
+
+	$padding: $size / 5;
+	padding: $padding;
+
+	$inner-size: $size - $padding * 2;
+
+	grid-template-rows: $inner-size 1em;
+	gap: .5em;
+	
+	background: black;
+	box-shadow: 
+		0 0 10em black,
+		0 0 10em black,
+		0 0 10em black,
+		0 0 10em black,
+		0 0 10em black;
+
+	cursor: progress;
+
+	figcaption {
+		width: $inner-size;
+		font-size: .8em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: center;
+	}
+}
