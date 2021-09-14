@@ -1,6 +1,6 @@
 <template>
 	<li :data-selectable-asset-id="asset.id" class="asset-card" :class="{'selected': isSelected}">
-    <div class="select-backdrop" style="position: absolute; z-index: -1; width: 100%; height: 100%;"></div>
+		<div class="select-backdrop" style="position: absolute; z-index: -1; width: 100%; height: 100%;"></div>
 		<AssetLink @mousedown="stopPropagation" @click="clickToggleSelected" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
@@ -31,11 +31,9 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
-			<template v-if="!selectable">
-				<button @mousedown="stopPropagation" @click="clickToggleSelected" :title="isSelected ? 'Deselect' : 'Select'" class="asset-action action-select" type="button">
-					<i :class="{'ci-checkbox': !isSelected, 'ci-checkbox_checked': isSelected}"></i>
-				</button>
-			</template>
+			<button @mousedown="stopPropagation" @click="clickToggleSelected" :title="isSelected ? 'Deselect' : 'Select'" class="asset-action action-select" type="button">
+				<i :class="{'ci-checkbox': !isSelected, 'ci-checkbox_checked': isSelected}"></i>
+			</button>
 			<template v-if="!hideDefaultActions">
 				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			</template>
@@ -78,7 +76,6 @@ class AssetCard extends mixins(StopPropagation) {
 
 	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
-	@Prop() selectable : boolean
 
 	@Watch('asset.type', {
 		immediate: true
@@ -93,34 +90,13 @@ class AssetCard extends mixins(StopPropagation) {
 			this.$store.dispatch('assets/shiftClick', this.asset)
 			return
 		}
-    this.toggleSelected()
+		this.toggleSelected()
 		return
 	}
 
 	toggleSelected () {
 		this.$store.dispatch('assets/toggleAsset', this.asset)
   }
-
-	// If you ctrl+click on a link within this card, or on the card itself, we check
-	// to see if you are currently selecting assets
-	// If you are, then we just select that asset instead of allowing the default click
-	// behaviour
-	clickEventSelectCheck (e: KeyboardEvent) {
-		console.log('ignore click')
-    e.stopPropagation()
-		return
-		if (e.ctrlKey || e.metaKey) {
-			if (this.numSelectedAssets >= 1) {
-				e.preventDefault()
-				this.toggleSelected()
-			}
-			return
-		}
-		if (e && e.shiftKey) {
-			e.preventDefault()
-			this.$store.dispatch('assets/shiftClick', this.asset)
-		}
-	}
 
 	get isSelected () : boolean {
 		return !!this.asset.selected

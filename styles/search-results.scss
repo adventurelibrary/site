@@ -32,20 +32,20 @@
 	overflow: hidden;
 	box-shadow: 0 0 5px black;
 
-    &.selected {
+	&.selected {
 		box-shadow: 0px 0px 15px $main-teal;
 
 		.meta, &:hover .meta {
 			background: $main-teal;
 		}
-    }
+	}
 
-    /* A user is click-dragging over an area and his higlighting
-     * this asset card. If they let go now this card will be selected.
-     */
-    &.ds-hover {
-      box-shadow: 0px 0px 3px $main-teal;
-    }
+	/* A user is click-dragging over an area and his higlighting
+	 * this asset card. If they let go now this card will be selected.
+	 */
+	&.ds-hover {
+		box-shadow: 0px 0px 3px $main-teal;
+	}
 
 	.link {
 		grid-area: thumbnail;

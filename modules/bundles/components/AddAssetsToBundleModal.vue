@@ -65,19 +65,18 @@ export default class AddAssetToBundleModal extends Vue {
 	}
 
 	// This event fires when the child component MyBundlesSelector has
-  // finished making its ajax request to the server to get the user's
-  // list of bundles
-  // Here we can check to see if they have no bundles, in which case
-  // we can automatically skip this selector modal and go to the
-  // creation modal
-  onBundlesLoaded (data: BundlesResponse) {
-	  console.log('data', data)
-    if (data.total === 0) {
-      this.createNewBundle()
-    }
-  }
+	// finished making its ajax request to the server to get the user's
+	// list of bundles
+	// Here we can check to see if they have no bundles, in which case
+	// we can automatically skip this selector modal and go to the
+	// creation modal
+	onBundlesLoaded (data: BundlesResponse) {
+		if (data.total === 0) {
+			this.createNewBundle()
+		}
+	}
 
-  get title () : string {
+	get title () : string {
 		if (this.assets.length === 1) {
 			return `Add ${this.assets[0].name} to Bundles`
 		}

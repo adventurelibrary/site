@@ -68,8 +68,8 @@ class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	loadingMore = false
 	scrollTimeout : number
 
-  @State('assets', {
-  	namespace: 'assets'
+	@State('assets', {
+		namespace: 'assets'
 	}) assets : Asset[]
 	@State('shiftClickAnchorIndex', {
 		namespace: 'assets'
@@ -87,7 +87,7 @@ class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 
 	async fetch () {
 		this.assetsResponse = await searchAssets(this.search);
-    this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
+		this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query
 		})
@@ -136,7 +136,7 @@ class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 		}
 	}
 
-	async loadMore ()  {
+	async loadMore ()	{
 		const newFrom = this.search.from + this.search.size
 		if (newFrom > this.assetsResponse.total) {
 			return

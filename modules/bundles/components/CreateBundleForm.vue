@@ -31,8 +31,8 @@ import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 	}
 })
 export default class CreateBundleForm extends mixins(FormMixin) {
-  numAssetsLimit = 4
-  numAssetsCutoff = 2
+	numAssetsLimit = 4
+	numAssetsCutoff = 2
 
 	@Prop() assets : Asset[]
 
@@ -53,19 +53,19 @@ export default class CreateBundleForm extends mixins(FormMixin) {
 		this.$emit('success')
 	}
 
-  get andMore () : number {
-    if (this.assets.length > this.numAssetsLimit) {
-      return this.assets.length - this.numAssetsCutoff
-    }
+	get andMore () : number {
+		if (this.assets.length > this.numAssetsLimit) {
+			return this.assets.length - this.numAssetsCutoff
+		}
 
-    return 0
-  }
+		return 0
+	}
 
 	get visibleAssets () : Asset[] {
-    if (this.assets.length > this.numAssetsLimit) {
+		if (this.assets.length > this.numAssetsLimit) {
 			return this.assets.slice(0, this.assets.length - this.numAssetsCutoff)
-    }
-    return this.assets
-  }
+		}
+		return this.assets
+	}
 }
 </script>
