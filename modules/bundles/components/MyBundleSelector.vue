@@ -1,28 +1,21 @@
 <template>
 	<fragment>
 		<input type="text" class="filter" v-model="filterText" placeholder="Filter bundles"/>
-		<template v-if="!$fetchState.pending">
-			<div class="bundle-sel-wrapper">
-				<ul class="bundle-selector" v-if="bundles.length">
-					<li v-for="bundle in bundles"
-							:key="bundle.id"
-							@click="() => toggleBundle(bundle)"
-							:class="{active: bundle.active}"
-							class="bundle">
-						<div class="circle"></div>
-						<h4 class="title">{{ bundle.name }}</h4>
-						<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
-						<p class="description">{{ bundle.description || "Filler text" }}</p>
-						<img v-if="bundle.cover_thumbnail" style="object-fit: contain;" :src="bundle.cover_thumbnail"/>
-					</li>
-				</ul>
-				<div v-else>No bundles found.</div>
-			</div>
-		</template>
-		<template v-else>
-			<SignOfLife>
-			</SignOfLife>
-		</template>
+		<SignOfLife v-if="$fetchState.pending" class="bundle-sel-result" />
+		<ul v-else-if="bundles.length" class="bundle-selector bundle-sel-result">
+			<li v-for="bundle in bundles"
+					:key="bundle.id"
+					@click="() => toggleBundle(bundle)"
+					:class="{active: bundle.active}"
+					class="bundle">
+				<div class="circle"></div>
+				<h4 class="title">{{ bundle.name }}</h4>
+				<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
+				<p class="description">{{ bundle.description || "Filler text" }}</p>
+				<img v-if="bundle.cover_thumbnail" style="object-fit: contain;" :src="bundle.cover_thumbnail"/>
+			</li>
+		</ul>
+		<div v-else class="bundle-sel-result">No bundles found.</div>
 	</fragment>
 </template>
 <script lang="ts">
