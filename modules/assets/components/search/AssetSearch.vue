@@ -200,6 +200,20 @@ class AssetSearch extends Vue {
 		})
 	}
 
+	mounted () {
+		this.$root.$on('addCategoryToSearch', this.onAddCategoryToSearch);
+		this.$root.$on('addTagToSearch', this.onAddTagToSearch);
+	}
+
+	onAddTagToSearch(tag: AssetTag) {
+		this.tagClicked(tag)
+	}
+
+	onAddCategoryToSearch(cat: Category) {
+
+		this.categoryClicked(cat)
+	}
+
 	get showDropdown () : boolean {
 		return this.inputFocused && (this.showActionSuggestions || this.action !== null)
 	}

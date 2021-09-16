@@ -1,5 +1,7 @@
 <template>
-	<span class="category tag">{{name}}</span>
+	<a class="category tag" v-on:click="addCategoryToSearch(category)">
+		{{name}}
+	</a>
 </template>
 <script lang="ts">
 import Vue from "vue"
@@ -23,6 +25,11 @@ export default class Category extends Vue {
 		}
 
 		return cat.singular
+	}
+
+	addCategoryToSearch(catName: string) {
+		let cat =  getCategory(catName)
+		this.$root.$emit('addCategoryToSearch', cat)
 	}
 }
 </script>

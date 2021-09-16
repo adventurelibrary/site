@@ -1,27 +1,31 @@
 <template>
 	<fragment>
-		<input type="text" class="filter" v-model="filter" placeholder="Filter bundles" />
-		<LoadingContainer :loading="bundlesAjax.loading" :error="bundlesAjax.error">
-			<ul class="bundle-selector">
-				<li v-for="bundle in bundles" :key="bundle.id" @click="() => toggleBundle(bundle)" :class="{active: bundle.active}" class="bundle">
-					<div class="circle"></div>
-					<h4 class="title">{{bundle.name}}</h4>
-					<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
-					<p class="description">{{bundle.description || "Filler text"}}</p>
-					<img style="object-fit: contain;" src="~/assets/coolicons/svg/file/folder.svg">
-				</li>
-			</ul>
-		</LoadingContainer>
+		<input type="text" class="filter" v-model="filterText" placeholder="Filter bundles"/>
+		<SignOfLife v-if="$fetchState.pending" class="bundle-sel-result" />
+		<ul v-else-if="bundles.length" class="bundle-selector bundle-sel-result">
+			<li v-for="bundle in bundles"
+					:key="bundle.id"
+					@click="() => toggleBundle(bundle)"
+					:class="{active: bundle.active}"
+					class="bundle">
+				<div class="circle"></div>
+				<h4 class="title">{{ bundle.name }}</h4>
+				<nuxt-link :to="{name: 'bundle-id', params: {id: bundle.id}}" class="link">Go to Bundle</nuxt-link>
+				<p class="description">{{ bundle.description || "Filler text" }}</p>
+				<img v-if="bundle.cover_thumbnail" style="object-fit: contain;" :src="bundle.cover_thumbnail"/>
+			</li>
+		</ul>
+		<div v-else class="bundle-sel-result">No bundles found.</div>
 	</fragment>
 </template>
 <script lang="ts">
 import Vue, {PropType} from "vue"
 import {Component, Model} from "nuxt-property-decorator";
-import {computeAjaxList, doAjax} from "~/lib/ajax";
 import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
-import {getMyBundles, newBundlesAjax} from "~/modules/bundles/bundles-api";
+import {getMyBundles} from "~/modules/bundles/bundles-api";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 type BundleItem = Bundle & {
 	active: boolean
@@ -34,30 +38,28 @@ type BundleItem = Bundle & {
 @Component({
 	components: {
 		LoadingContainer,
-		Fragment
+		Fragment,
+		SignOfLife: SignOfLife
 	}
 })
 export default class MyBundleSelector extends Vue {
-	filter : string = ''
-	bundlesAjax = newBundlesAjax()
+	filterText: string = ''
+	bundlesResponse: BundlesResponse = {
+		total: 0,
+		bundles: []
+	}
 
-
-	@Model('changed',  {
+	@Model('changed', {
 		type: Array as PropType<string[]>
 	})
-	readonly selectedIds! : string[]
+	readonly selectedIds!: string[]
 
-	async created () {
-		await this.loadBundles()
+	async fetch() {
+		this.bundlesResponse = await getMyBundles()
+		this.$emit('loaded', this.bundlesResponse)
 	}
 
-	async loadBundles () {
-		await doAjax<BundlesResponse>(this.bundlesAjax, async () => {
-			return await getMyBundles()
-		})
-	}
-
-	toggleBundle (bundle: Bundle) {
+	toggleBundle(bundle: Bundle) {
 		const index = this.selectedIds.indexOf(bundle.id)
 		if (index == -1) {
 			this.selectedIds.push(bundle.id)
@@ -67,24 +69,24 @@ export default class MyBundleSelector extends Vue {
 		this.emitChanged()
 	}
 
-	emitChanged () {
+	emitChanged() {
 		this.$emit('changed', this.selectedIds)
 	}
 
-	get bundles () : BundleItem[] {
-		console.log('get bundles')
-		const list = computeAjaxList(this.bundlesAjax, 'bundles')
-		const filter = this.filter.trim().toLowerCase()
+	get bundles(): BundleItem[] {
+		const list = [...this.bundlesResponse.bundles]
+		const filter = this.filterText.trim().toLowerCase()
 		const filtered = list.filter((bundle: Bundle) => {
 			return bundle.name.toLowerCase().indexOf(filter) >= 0
 		})
-		return filtered.map((bundle : Bundle) : BundleItem => {
+		const mapped = filtered.map((bundle: Bundle): BundleItem => {
 			const active = this.selectedIds.indexOf(bundle.id) >= 0
-			console.log('active', active)
 			return Object.assign({
 				active: active,
 			}, bundle)
 		})
+
+		return mapped
 	}
 }
 </script>

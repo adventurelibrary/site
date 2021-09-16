@@ -83,7 +83,7 @@ export default {
   },
 
   router: {
-    middleware: 'auth'
+    middleware: 'auth',
   },
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

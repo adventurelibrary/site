@@ -2,7 +2,7 @@
 	<form @submit="submit">
 		<FormErrors :error="form.error" />
 		<BundleFields v-model="form.data" />
-		<div v-if="asset">
+		<div v-for="asset in visibleAssets" :key="asset.id">
 			<div class="create-bundle-asset-item">
 				<AssetThumbnail :asset="asset" />
 				<div>
@@ -10,6 +10,7 @@
 				</div>
 			</div>
 		</div>
+		<div v-if="andMore">And {{andMore}} more will be added</div>
 		<SubmitButton idle-text="Create Bundle" :submitting="form.submitting"></SubmitButton>
 	</form>
 </template>
@@ -30,19 +31,41 @@ import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 	}
 })
 export default class CreateBundleForm extends mixins(FormMixin) {
-	@Prop() asset : Asset | null
+	numAssetsLimit = 4
+	numAssetsCutoff = 2
+
+	@Prop() assets : Asset[]
 
 	created () {
 		this.form.data.public = true
 	}
 
-	async formAction () {
-		const assetIds : string[] = []
-		if (this.asset) {
-			assetIds.push(this.asset.id)
+	mounted () {
+		const input = this.$el.querySelector('input')
+		if (input) {
+			input.focus()
 		}
+	}
+
+	async formAction () {
+		const assetIds : string[] = this.assets.map(x => x.id)
 		await createBundle(this.form.data, assetIds)
 		this.$emit('success')
+	}
+
+	get andMore () : number {
+		if (this.assets.length > this.numAssetsLimit) {
+			return this.assets.length - this.numAssetsCutoff
+		}
+
+		return 0
+	}
+
+	get visibleAssets () : Asset[] {
+		if (this.assets.length > this.numAssetsLimit) {
+			return this.assets.slice(0, this.assets.length - this.numAssetsCutoff)
+		}
+		return this.assets
 	}
 }
 </script>

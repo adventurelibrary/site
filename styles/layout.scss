@@ -2,7 +2,7 @@
 	--search-width: 100vw;
 	--header-height: 4.5em;
 	--logo-width: 1fr;
-	
+
 	--body-width: 92vw;
 
 	--search-tag-column-max: 1;
@@ -65,21 +65,21 @@ body {
 	display: grid;
 	justify-content: center;
 	align-items: center;
-	
+
 	grid-template-rows: 1fr;
 	grid-template-columns: var(--logo-width) 3em 3em;
-	grid-template-areas: 
+	grid-template-areas:
 		"branding search-button menu-button";
-		
+
 	padding: .5em 2.5em;
 
 	@include medium {
 		grid-template-rows: auto auto;
 		grid-template-columns: var(--logo-width) minmax(auto, var(--search-width));
-		grid-template-areas: 
+		grid-template-areas:
 			"branding navigation"
 			"branding search    ";
-		
+
 		padding: 1em 2.5em;
 	}
 
@@ -95,13 +95,13 @@ body {
 		margin: 0;
 		grid-area: branding;
 		display: grid;
-		
+
 		background-position: left;
-		background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg");
-	
+		background-image: url(~/assets/AL_white_logo_1line.svg);
+
 		@include medium {
 			background-position: center;
-			background-image: url("https://cdn.discordapp.com/attachments/808965286915997726/833745231920103424/logo_wip_2line.svg");
+			background-image: url(~/assets/AL_white_logo_2line.svg);
 		}
 
 		background-repeat: no-repeat;
@@ -165,7 +165,7 @@ body {
 			border-radius: 50%;
 			background-color: $main-teal;
 			overflow: hidden;
-			grid-template: 
+			grid-template:
 				"icon" 2.65em / 2.65em;
 
 			.ci-user {
@@ -196,7 +196,7 @@ body {
 
 		grid-auto-flow: row;
 		align-items: center;
-		
+
 		column-gap: 2em;
 		row-gap: 1em;
 		margin: 0;
@@ -269,7 +269,7 @@ body {
 	grid-template-columns: auto;
 	justify-content: center;
 	text-align: center;
-	padding: 0 2em 2em 2em;
+	padding: 2em;
 	row-gap: 2em;
 
 	.copyright-notice {
@@ -296,4 +296,9 @@ body {
 	.social-media {
 		font-size: 1.5em;
 	}
+}
+
+.body-width {
+	width: var(--body-width);
+	margin: 0 auto;
 }

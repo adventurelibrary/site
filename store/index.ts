@@ -12,15 +12,15 @@ type State = {
 	archiveAsset: Asset | null,
 	reportAsset: Asset | null,
 	editAsset: Asset | null
-	addToBundleAsset: Asset | null,
+	addToBundleAssets: Asset[],
 	breadcrumbs: any[],
-	createBundleAsset: Asset | null
+	createBundleAssets: Asset[]
 	editBundle: Bundle | null,
 	userCoins: number,
 	login: {
 		working: boolean,
 		error: string
-	}
+	},
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
@@ -36,7 +36,7 @@ type State = {
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
 	user: User | null,
-	userTracking: UserTracking
+	userTracking: UserTracking,
 }
 
 type ToastType = 'success' | 'danger' | 'info'
@@ -71,10 +71,10 @@ function newToastId () : number {
 export const state = () : State => {
 	return {
 		archiveAsset: null,
-		addToBundleAsset: null,
+		addToBundleAssets:[],
 		breadcrumbs: [],
 		bundleAddAssetsBundle: null,
-		createBundleAsset: null,
+		createBundleAssets: [],
 		editBundle: null,
 		reportAsset: null,
 		editAsset: null,
@@ -163,6 +163,7 @@ export const mutations = {
 		}))
 	},
 	user (state: State, pl: User | null) {
+		console.log('chaning user to', pl)
 		state.user = pl
 	},
 	'login.working' (state: State, working: boolean) {
@@ -183,8 +184,8 @@ export const mutations = {
 	reportAsset (state: State, asset: Asset | null) {
 		state.reportAsset = asset
 	},
-	addToBundleAsset (state: State, asset: Asset | null) {
-		state.addToBundleAsset = asset
+	addToBundleAssets (state: State, assets: Asset[]) {
+		state.addToBundleAssets = assets
 		// update asset visible to hidden
 		// v1/assets/{assetID}/update  POST
 		// API: lib/assets.ts updateAsset, updates.visibility
@@ -202,8 +203,8 @@ export const mutations = {
 	editAsset (state: State, asset: Asset | null) {
 		state.editAsset = asset
 	},
-	createBundleAsset (state: State, asset: Asset | null) {
-		state.createBundleAsset = asset
+	createBundleAssets (state: State, assets: Asset[]) {
+		state.createBundleAssets = assets
 	},
 	closeAllModals(state: State) {
 		const keys = Object.keys(state.modals)
@@ -211,7 +212,7 @@ export const mutations = {
 			const key = keys[i]
 			state.modals[<ModalKeys>key] = false
 		}
-	}
+	},
 }
 
 export const actions = {
@@ -242,7 +243,7 @@ export const actions = {
 		})
 	},
 	async logout ({commit}: ActionParams) {
-		await logout()
+		await logout() // Send logout request to AWS
 		commit('user', null)
 	},
 	openLoginModal ({commit} : ActionParams) {
@@ -251,7 +252,7 @@ export const actions = {
 			value: true
 		})
 	},
-	openAddToBundleModal ({commit, dispatch, getters} : ActionParams, {asset} : {asset: Asset}) {
+	openAddToBundleModal ({commit, dispatch, getters} : ActionParams, {assets} : {assets: Asset[]}) {
 		if (!getters.isLoggedIn) {
 			dispatch('notifyError', 'You must be logged in')
 			return
@@ -260,14 +261,7 @@ export const actions = {
 			key: 'addToBundle',
 			value: true
 		})
-		commit('addToBundleAsset', asset)
-	},
-	openBundleAddAssetsModal({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
-		commit('modal', {
-			key: 'bundleAddAssets',
-			value: true
-		})
-		commit('bundleAddAssetsBundle', bundle)
+		commit('addToBundleAssets', assets)
 	},
 	openEditBundleModal ({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
 		commit('modal', {
@@ -318,13 +312,21 @@ export const actions = {
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')
 	},
-	async openCreateBundleWithAsset ({dispatch, commit} : ActionParams, {asset} : {asset: Asset | null}) {
+	async openCreateBundle ({dispatch, commit}: ActionParams) {
 		await dispatch('closeAllModals')
 		commit('modal', {
 			key: 'createBundle',
 			value: true
 		})
-		commit('createBundleAsset', asset)
+		commit('createBundleAsset', null)
+	},
+	async openCreateBundleWithAssets ({dispatch, commit} : ActionParams, {assets} : {assets: Asset[]}) {
+		await dispatch('closeAllModals')
+		commit('modal', {
+			key: 'createBundle',
+			value: true
+		})
+		commit('createBundleAssets', assets)
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
@@ -351,13 +353,14 @@ export const actions = {
 			commit('userCoins', result.numCoins)
 			return 'unlocked'
 		}
-
-	}
+	},
 }
 
 export const getters = {
 	isLoggedIn (state: State) : boolean {
-		return !!state.user
+		const isLoggedIn = !!state.user
+		console.log('state user', JSON.stringify(state.user))
+		return isLoggedIn
 	},
 	isCreator (state: State) : boolean {
 		if (!state.user) {
@@ -381,5 +384,5 @@ export const getters = {
 			return state.userCoins
 		}
 		else return 0
-	}
+	},
 }

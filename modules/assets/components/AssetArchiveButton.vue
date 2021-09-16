@@ -7,7 +7,6 @@
 import Vue from "vue"
 import {Component, Prop, Getter, State} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
-import { state } from "~/store";
 
 @Component
 export default class AssetArchiveButton extends Vue {

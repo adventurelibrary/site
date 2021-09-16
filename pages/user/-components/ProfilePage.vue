@@ -1,5 +1,5 @@
 <template>
-	<article class="user-profile">
+	<article class="user-profile" v-if="user">
 		<section class="profile-details">
 			<img src="~/assets/coolicons/svg/user/user.svg" class="profile-image">
 			<h1 class="username">{{user.username}}</h1>
@@ -48,6 +48,7 @@
 			<slot></slot>
 		</section>
 	</article>
+  <div v-else>You must be logged in to see this page. <nuxt-link to="/">Back to home page</nuxt-link> or <nuxt-link :to="{name: 'login'}">login</nuxt-link></div>
 </template>
 <script lang="ts">
 import {Component, State, Vue, Prop, Getter} from "nuxt-property-decorator";
@@ -60,7 +61,7 @@ import {User} from "~/modules/users/user-types"
 })
 export default class ProfilePage extends Vue {
 	@Getter('isCreator') isCreator : boolean
-	@State('user') user : User
+	@State('user') user : User | null
 	@State('userCoins') numCoins : number
 	@Prop() activeTab : string
 }

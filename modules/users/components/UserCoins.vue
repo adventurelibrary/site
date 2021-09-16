@@ -1,5 +1,5 @@
 <template>
-	<span class="user-coins">{{numCoins}} {{label}}</span>
+	<a href="/buy/coins/"><span class="user-coins">{{numCoins}} {{label}}</span></a>
 </template>
 <script lang="ts">
 import {Component, State} from "nuxt-property-decorator";
