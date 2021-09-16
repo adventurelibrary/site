@@ -1,4 +1,8 @@
+@use "sass:color";
+
 $main-teal: #106466;
+$main-teal-trans1: color.adjust($main-teal, $alpha: -.33);
+$main-teal-trans2: color.adjust($main-teal, $alpha: -.1);
 
 $gray: #808080;
 $gray2: #6C6C6C;

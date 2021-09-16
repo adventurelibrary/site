@@ -86,10 +86,7 @@
 	@include medium { width: 45em; }
 
 	.modal-body {
-		display: block; /* This is temprorary, it's just so I can see it be rendered*/
-
-		/* This needs to be revisited, the content was being cut off so I couldn't click thing */
-/*		grid-template-rows: 2em 2em auto 2em;
+		grid-template-rows: 2em 2em auto 2em;
 		grid-template-columns: auto auto;
 		grid-template-areas:
 			"heading create"
@@ -101,13 +98,13 @@
 		h1 {
 			grid-area: heading;
 			font-size: 1.5em;
-		}*/
+		}
 	}
 
 	.filter {
 		grid-area: filter;
 	}
-	.bundle-sel-wrapper {
+	.bundle-sel-result {
 		grid-area: list;
 	}
 	button {
@@ -152,6 +149,11 @@
 	user-select: none;
 	max-height: 50vh;
 	overflow-y: auto;
+	box-shadow: 
+		0 .3em .3em -.3em #000A inset,
+		0 -.3em .3em -.3em #000A inset;
+
+	padding: .5em .1em;
 
 	.bundle {
 		display: grid;
