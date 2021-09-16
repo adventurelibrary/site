@@ -13,7 +13,7 @@
 
 	--columns: auto-fill;
 	--col-width: 22em;
-	
+
 	grid-template-columns: repeat(var(--columns), var(--col-width));
 	grid-auto-rows: calc(var(--col-width) * 1.05);
 }
@@ -31,6 +31,21 @@
 	border-radius: .8em;
 	overflow: hidden;
 	box-shadow: 0 0 5px black;
+
+	&.selected {
+		box-shadow: 0px 0px 15px $main-teal;
+
+		.meta, &:hover .meta {
+			background: $main-teal;
+		}
+	}
+
+	/* A user is click-dragging over an area and his higlighting
+	 * this asset card. If they let go now this card will be selected.
+	 */
+	&.ds-hover {
+		box-shadow: 0px 0px 3px $main-teal;
+	}
 
 	.link {
 		grid-area: thumbnail;
@@ -74,7 +89,7 @@
 		.author {
 			grid-area: author;
 			overflow: hidden;
-			
+
 			.author-name {
 				overflow: hidden;
 				white-space: nowrap;
@@ -128,7 +143,7 @@
 				background-color: unset;
 				display: inline;
 				text-shadow: none;
-				&:hover { text-shadow: none; }			
+				&:hover { text-shadow: none; }
 			}
 		}
 		.description {
@@ -155,7 +170,7 @@
 		grid-auto-flow: column;
 		gap: .2em;
 	}
-	
+
 	.asset-action {
 		background-color: $action-bg;
 		border-radius: .3em;
@@ -195,7 +210,7 @@
 
 	&:hover {
 		grid-template-rows: 1fr auto;
-		
+
 		.meta {
 			//padding: 1em 1.25em;
 			background-color: $asset-card-meta-dark;

@@ -24,6 +24,7 @@ export type Asset = AssetFields & {
 	unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
 	slug: string
 	thumbnail: string
+	selected?: boolean // For our frontend code to perform actions on multiple assets at once
 }
 
 // This is created when a user drags and drops a file or selects files

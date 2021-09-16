@@ -60,3 +60,17 @@
 		background-size: contain;
 	}
 }
+
+.select-assets-container {
+	user-select: none;
+
+	.select-assets-actions {
+		margin-bottom: 1em;
+	}
+}
+
+.ds-selector {
+	background: rgba(255, 255, 255, 0.25);
+	border: 1px solid #eee;
+	display: none;
+}

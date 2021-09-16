@@ -1,6 +1,7 @@
 <template>
-	<li class="asset-card">
-		<AssetLink :asset="asset" class="link">
+	<li :data-selectable-asset-id="asset.id" class="asset-card" :class="{'selected': isSelected}">
+		<div class="select-backdrop" style="position: absolute; z-index: -1; width: 100%; height: 100%;"></div>
+		<AssetLink @mousedown="stopPropagation" @click="clickToggleSelected" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->
 		</AssetLink>
 		<AssetThumbnail :asset="asset" />
@@ -30,6 +31,9 @@
 			</div>
 		</div>
 		<figure class="asset-actions">
+			<button @mousedown="stopPropagation" @click="clickToggleSelected" :title="isSelected ? 'Deselect' : 'Select'" class="asset-action action-select" type="button">
+				<i :class="{'ci-checkbox': !isSelected, 'ci-checkbox_checked': isSelected}"></i>
+			</button>
 			<template v-if="!hideDefaultActions">
 				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			</template>
@@ -39,7 +43,7 @@
 	</li>
 </template>
 <script lang="ts">
-import {Component, Prop, Getter, Watch} from "nuxt-property-decorator";
+import {Component, Prop, Getter, Watch, mixins} from "nuxt-property-decorator";
 import Vue from "vue";
 import {Asset} from "~/modules/assets/asset-types";
 import AssetLink from "~/modules/assets/components/AssetLink.vue";
@@ -50,6 +54,7 @@ import {Category as CategoryType} from "~/modules/categories/categories-types"
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetAddToBundleButton from "~/modules/assets/components/AssetAddToBundleButton.vue";
 import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
+import StopPropagation from "~/mixins/StopPropagation.vue";
 
 @Component({
 	components: {
@@ -61,10 +66,13 @@ import AssetThumbnail from "~/modules/assets/components/AssetThumbnail.vue";
 		AssetThumbnail: AssetThumbnail
 	}
 })
-class AssetCard extends Vue {
+class AssetCard extends mixins(StopPropagation) {
 	category : CategoryType | null
 
 	@Getter('isLoggedIn') isLoggedIn : boolean
+	@Getter('numSelectedAssets', {
+		namespace: 'assets'
+	}) numSelectedAssets: number
 
 	@Prop() hideDefaultActions : boolean
 	@Prop() asset : Asset
@@ -74,6 +82,24 @@ class AssetCard extends Vue {
 	})
 	typeChanged () {
 		this.category = getCategory(this.asset.category)
+	}
+
+	clickToggleSelected (e?: KeyboardEvent) {
+		if (e && e.shiftKey) {
+			e.preventDefault()
+			this.$store.dispatch('assets/shiftClick', this.asset)
+			return
+		}
+		this.toggleSelected()
+		return
+	}
+
+	toggleSelected () {
+		this.$store.dispatch('assets/toggleAsset', this.asset)
+  }
+
+	get isSelected () : boolean {
+		return !!this.asset.selected
 	}
 }
 export default AssetCard

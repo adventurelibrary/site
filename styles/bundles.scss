@@ -86,7 +86,10 @@
 	@include medium { width: 45em; }
 
 	.modal-body {
-		grid-template-rows: 2em 2em auto 2em;
+		display: block; /* This is temprorary, it's just so I can see it be rendered*/
+
+		/* This needs to be revisited, the content was being cut off so I couldn't click thing */
+/*		grid-template-rows: 2em 2em auto 2em;
 		grid-template-columns: auto auto;
 		grid-template-areas:
 			"heading create"
@@ -98,7 +101,7 @@
 		h1 {
 			grid-area: heading;
 			font-size: 1.5em;
-		}
+		}*/
 	}
 
 	.filter {
