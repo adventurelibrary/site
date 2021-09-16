@@ -19,6 +19,7 @@ import {Asset} from "~/modules/assets/asset-types";
 export default class SelectAssetsContainer extends Vue {
 	ds : any
 
+	@Getter('isLoggedIn') isLoggedIn : boolean
 	@Getter('assets/numSelectedAssets') numSelected : number
 	@State('assets', {
 		namespace: 'assets'
@@ -34,18 +35,18 @@ export default class SelectAssetsContainer extends Vue {
 		if (this.assets.length) {
 			// Do next tick so Vue will have the list rendered
 			this.$nextTick(() => {
-				this.startDragSelectd()
+				this.startDragSelected()
 			})
 		}
 	}
 
 	mounted () {
 		setTimeout(() => {
-			this.startDragSelectd()
+			this.startDragSelected()
 		}, 100)
 	}
 
-	startDragSelectd () {
+	startDragSelected () {
 		if (process.server) {
 			return
 		}
@@ -99,6 +100,10 @@ export default class SelectAssetsContainer extends Vue {
 	}
 
 	clickAddToBundle () {
+		if (!this.isLoggedIn) {
+			this.$store.dispatch('openLoginModal')
+			return
+		}
 		this.$store.dispatch('assets/openAddToBundle')
 	}
 

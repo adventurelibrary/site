@@ -1,7 +1,7 @@
 <template>
 	<fragment>
 		<input type="text" class="filter" v-model="filterText" placeholder="Filter bundles"/>
-		<div v-if="!$fetchState.pending">
+		<template v-if="!$fetchState.pending">
 			<div class="bundle-sel-wrapper">
 				<ul class="bundle-selector" v-if="bundles.length">
 					<li v-for="bundle in bundles"
@@ -18,11 +18,11 @@
 				</ul>
 				<div v-else>No bundles found.</div>
 			</div>
-		</div>
-		<div v-else>
+		</template>
+		<template v-else>
 			<SignOfLife>
 			</SignOfLife>
-		</div>
+		</template>
 	</fragment>
 </template>
 <script lang="ts">

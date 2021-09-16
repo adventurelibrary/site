@@ -46,6 +46,4 @@ export default class HomePage extends mixins(LoggedInFetchMixin) {
 		this.$store.dispatch('assets/clearAssets')
 	}
 }
-
-export default HomePage
 </script>
