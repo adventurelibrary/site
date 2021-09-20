@@ -3,6 +3,7 @@ import {AssetFormData, NewAsset} from "./asset-types";
 export type UploadStatus = 'waiting' | 'signing' | 'signed' | 'uploading' | 'error' | 'complete'
 
 export type ActiveUpload = {
+	creator_id: string,
 	title: string,
 	status: UploadStatus,
 	progress: number,
@@ -22,6 +23,7 @@ export type ActiveUpload = {
 export function convertNewAssetToActiveUploads (newAssets: NewAsset[], creatorId: string) : ActiveUpload[] {
 	return newAssets.map((na: NewAsset, idx: number) : ActiveUpload => {
 		const au = {
+			creator_id: creatorId,
 			title: na.asset.name,
 			status: <UploadStatus>'waiting',
 			progress: 0,
@@ -30,7 +32,6 @@ export function convertNewAssetToActiveUploads (newAssets: NewAsset[], creatorId
 			key: idx,
 			asset: {
 				...na.asset,
-				creator_id: creatorId
 			},
 			file: na.file,
 			params: {}
