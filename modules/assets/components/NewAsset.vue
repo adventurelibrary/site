@@ -5,8 +5,8 @@
 				<div class="preview">
 					<AssetFilePreview :file="newAsset.file" />
 				</div>
-				<h4>Drag &amp; drop replacement file here.</h4>
-				<input type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
+				<label :for="fileInputId" class="file-input-label">Drag &amp; drop replacement file here.</label>
+				<input :id="fileInputId" type="file" :accept="acceptedImageTypes" multiple @change="fileInputChanged" />
 			</div>
 			<AssetFields
 				v-model="newAsset.asset"
@@ -38,7 +38,8 @@ export default Vue.extend({
 	},
 	data () {
 		return {
-			acceptedImageTypes: ACCEPTED_IMAGE_TYPES
+			acceptedImageTypes: ACCEPTED_IMAGE_TYPES,
+			fileInputId: 'file-' + new Date().getTime().toString()
 		}
 	},
 	mounted () {
