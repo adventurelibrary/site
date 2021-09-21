@@ -83,6 +83,39 @@ export async function signUp (fields : SignUpFields) : Promise<CognitoUser> {
 	}
 }
 
+/* returns true if the email is already registered in the db for an active user */
+export async function checkEmailInUse (email: string) : Promise<boolean> {
+	let emailInUse = false
+
+	const url = '/users/emailexists/' + email
+	const res = await api.get(url)
+
+	// convert string return to boolean value (res.data returned is string, either 'true' | 'false'
+	if (res.data === 'true')
+		emailInUse = true
+	if (res.data === 'false')
+		emailInUse = false
+
+	return emailInUse
+}
+
+/* returns true if the username is already registered in the db for an active user */
+export async function checkUsernameInUse (username: string) : Promise<boolean> {
+	let usernameInUse = false
+
+	const url = '/users/usernameexists/' + username
+	const res = await api.get(url)
+	usernameInUse = res.data
+
+	// convert string return to boolean value (res.data returned is string, either 'true' | 'false'
+	if (res.data === 'true')
+		usernameInUse = true
+	if (res.data === 'false')
+		usernameInUse = false
+
+	return usernameInUse
+}
+
 export async function logout () {
 	try {
 		await Auth.signOut()
