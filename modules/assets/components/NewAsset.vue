@@ -11,7 +11,6 @@
 			<AssetFields
 				v-model="newAsset.asset"
 				@change="assetChanged"
-				:hide-visibility="true"
 			/>
 		</form>
 	</li>

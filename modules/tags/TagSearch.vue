@@ -31,7 +31,9 @@ export default class TagSearch extends SearchArrowNavMixin {
 	@Prop()
 	exclude : string[];
 
-	@Watch('query')
+	@Watch('query', {
+		immediate: true
+	})
 	queryWatch () {
 		if (!this.active) {
 			return
