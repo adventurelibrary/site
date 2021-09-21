@@ -57,7 +57,7 @@
 
 			@include medium {
 				grid-template-columns: 24em minmax(24em, auto);
-				grid-template-rows: 24em;
+				grid-template-rows: auto;
 			}
 		}
 
