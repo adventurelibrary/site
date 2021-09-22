@@ -39,7 +39,6 @@ export async function getSession () : Promise<User | null> {
 	let res
 	try {
 		await refreshSession()
-		await Auth.currentSession()
 		res = await api.get('/users')
 	} catch (ex) {
 		return null
