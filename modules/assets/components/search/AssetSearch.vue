@@ -24,17 +24,18 @@
 			@focus="onInputFocus"
 			@blur="onInputBlur"
 		/>
-		<figure class="order-select" title="Sort Order">
-			<button class="ascend"
+		<figure class="order-select">
+			<button class="ascend" title="Sort Ascending"
 				@click="sortDirection = 'asc'">
 				<i class="ci-chevron_big_up"></i>
 			</button>
-			<button class="descend"
+			<button class="descend" title="Sort Descending"
 				@click="sortDirection = 'desc'">
 				<i class="ci-chevron_big_down"></i>
 			</button>
 		</figure>
-		<select v-model="sortField" class="filter-select sort-select">
+		<select v-model="sortField" class="filter-select sort-select" @change="sortFieldChanged">
+			<option :value="'relevance'">Relevance</option>
 			<option :value="'name'">Name</option>
 			<option :value="'date'">Date</option>
 		</select>
@@ -159,6 +160,10 @@ class AssetSearch extends Vue {
 
 	emitSubmit () {
 		this.$emit('submit', this.getSearchOptions())
+	}
+
+	sortFieldChanged () {
+		this.emitSubmit()
 	}
 
 	getSearchOptions () : AssetSearchOptions {

@@ -59,7 +59,7 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	const query : Record<string, string> = {}
 
 	query.sort = getSearchOptionsSortField(opts)
-	query.sort_type = getSearchOptionsSortDirection(opts)
+	query.sort_direction = getSearchOptionsSortDirection(opts)
 
 	if (search && search.length) {
 		query.text = search
