@@ -163,7 +163,6 @@ export const mutations = {
 		}))
 	},
 	user (state: State, pl: User | null) {
-		console.log('chaning user to', pl)
 		state.user = pl
 	},
 	'login.working' (state: State, working: boolean) {
@@ -359,7 +358,6 @@ export const actions = {
 export const getters = {
 	isLoggedIn (state: State) : boolean {
 		const isLoggedIn = !!state.user
-		console.log('state user', JSON.stringify(state.user))
 		return isLoggedIn
 	},
 	isCreator (state: State) : boolean {
