@@ -30,6 +30,28 @@ export const mutations = {
 				selected: false
 			}
 		})
+
+		// This is just here for testing and development purposes
+		// If you want to display a lot of assets somewhere, you can increase this
+		// variable and it'll duplicate them
+		// Doing things with the clones will break since their ids and slugs aren't real
+		const fakeOnesToAdd = 10
+		let toCloneIdx = 0;
+		const maxIdx = assets.length - 1
+		for (let i = 1; i <= fakeOnesToAdd; i++) {
+			const toClone = assets[toCloneIdx]
+			state.assets.push({
+				...toClone,
+				selected: false,
+				id: toClone.id + i,
+				slug: toClone.slug + i,
+				name: toClone.name + ' (Clone #' + i + ')',
+			})
+			toCloneIdx++
+			if (toCloneIdx > maxIdx) {
+				toCloneIdx = 0
+			}
+		}
 	},
 	clearAssets (state: State) {
 		state.assets = []
