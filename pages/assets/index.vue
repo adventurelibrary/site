@@ -19,9 +19,7 @@
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
 				</div>
 				<SelectAssetsContainer>
-					<ul class="search-results">
-						<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-					</ul>
+					<AssetList :assets="assets" />
 				</SelectAssetsContainer>
 				<div v-if="assets.length < totalAssets">
 					<div v-if="loadingMore">Loading more...</div>
@@ -41,7 +39,7 @@ import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
 import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
-import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetList from "~/modules/assets/components/AssetList.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
@@ -52,7 +50,7 @@ import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 @Component({
 	components: {
 		AssetSearch,
-		AssetCard,
+		AssetList,
 		SelectAssetsContainer: SelectAssetsContainer,
 		SignOfLife
 	},
