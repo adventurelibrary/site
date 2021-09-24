@@ -1,6 +1,6 @@
 <template>
 	<div class="select-assets-container">
-		<div class="select-assets-actions body-width">
+		<div class="select-assets-actions body-width" v-if="numSelected >= 1">
 			<button @click="clickToggleAll">{{toggleAllLabel}}</button>
 			<button @click="clickAddToBundle" :disabled="numSelected === 0">Add to Bundle</button>
 			<slot name="actions"></slot>
@@ -25,34 +25,39 @@ export default class SelectAssetsContainer extends Vue {
 		namespace: 'assets'
 	}) assets : Asset[]
 
-	@Watch('assets.length', {
+	@Watch('numSelected', {
 		immediate: true,
 	})
 	watchAssetsLength () {
 		if (!this.assets) {
 			return
 		}
-		if (this.assets.length) {
+		if (this.numSelected) {
 			// Do next tick so Vue will have the list rendered
 			this.$nextTick(() => {
 				this.startDragSelected()
 			})
+		} else {
+			this.stopDS()
 		}
 	}
 
-	mounted () {
-		setTimeout(() => {
-			this.startDragSelected()
-		}, 100)
+	stopDS () {
+		if (!this.ds) {
+			return
+		}
+		try {
+			this.ds.stop()
+		} catch (ex) {
+			console.log(ex)
+		}
 	}
 
 	startDragSelected () {
 		if (process.server) {
 			return
 		}
-		if (this.ds) {
-			this.ds.stop()
-		}
+		this.stopDS()
 		const sels = document.querySelectorAll('[data-selectable-asset-id]')
 		const body = document.querySelector('.site-body')
 		if (!body) {

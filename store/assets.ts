@@ -103,7 +103,6 @@ export const actions = {
 		// click the 10th item and it will select all items from 4 to 9
 		if (assetIds.length > 0) {
 			const idx = getters.assetIdIndex(assetIds[assetIds.length-1])
-			console.log('idx', idx)
 			commit('shiftClickAnchorIndex', idx)
 		}
 	},
