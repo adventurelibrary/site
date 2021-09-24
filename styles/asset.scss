@@ -13,6 +13,7 @@
 
 .asset-thumbnail {
 	background-size: cover;
+	transition: opacity 0.75s ease;
 }
 
 .tags-input {
