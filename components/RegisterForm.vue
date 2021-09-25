@@ -73,14 +73,13 @@ export default class RegisterForm extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		console.log('submit register')
 		const data = {
 			email: this.email,
 			password: this.password,
 			passwordConfirm: this.passwordConfirm,
 			username: this.username
 		}
-		await signUp(data)
+		await this.$store.dispatch('signUp', data)
 		this.needsConfirmation = true
 		this.$emit('success')
 		this.$gtag.event('sign_up');
