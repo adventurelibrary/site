@@ -2,11 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/modules/users/user-types";
 import {UserTracking} from "~/modules/users/user-tracking";
-import {getSession, logout} from "~/lib/auth/auth-api";
+import {getSession, logout, signIn, signUp, SignUpFields} from "~/lib/auth/auth-api";
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
 Vue.use(Vuex)
+
+export type PostSignOnAction = {action: string, payload: any} | null
 
 type State = {
 	archiveAsset: Asset | null,
@@ -21,6 +23,13 @@ type State = {
 		working: boolean,
 		error: string
 	},
+
+	// This is a Vuex action that we store for when a user tries to do something
+	// while they aren't logged in
+	// This data can be passed directly to Vuex's dispatch function after the user
+	// has finished signin in
+	// Sign On = Login or Register
+	postSignOnAction: PostSignOnAction
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
@@ -38,6 +47,7 @@ type State = {
 	user: User | null,
 	userTracking: UserTracking,
 }
+
 
 type ToastType = 'success' | 'danger' | 'info'
 
@@ -90,6 +100,7 @@ export const state = () : State => {
 			working: false,
 			error: ''
 		},
+		postSignOnAction: null,
 		modals: {
 			archiveAsset: false,
 			addToBundle: false,
@@ -212,6 +223,9 @@ export const mutations = {
 			state.modals[<ModalKeys>key] = false
 		}
 	},
+	postSignOnAction (state: State, postSignOn: PostSignOnAction) {
+		state.postSignOnAction = postSignOn
+	}
 }
 
 export const actions = {
@@ -244,6 +258,10 @@ export const actions = {
 	async logout ({commit}: ActionParams) {
 		await logout() // Send logout request to AWS
 		commit('user', null)
+	},
+	async openLoginWithPostAction ({dispatch, commit}, post: PostSignOnAction)  {
+		commit('postSignOnAction', post)
+		await dispatch('openLoginModal')
 	},
 	openLoginModal ({commit} : ActionParams) {
 		commit('modal', {
@@ -327,6 +345,28 @@ export const actions = {
 		})
 		commit('createBundleAssets', assets)
 	},
+	async signIn (
+		{dispatch, state} : ActionParams,
+		{
+			identifier,
+			password
+		} : {
+			identifier: string,
+			password: string
+		}
+	) {
+		console.log('state', JSON.stringify(state))
+		await signIn(identifier.trim(), password)
+		await dispatch('fetchSession')
+		if (state.postSignOnAction) {
+			console.log('dispatch the post sign on', state.postSignOnAction)
+			await dispatch(state.postSignOnAction.action, state.postSignOnAction.payload)
+		}
+	},
+	async signUp ({commit}, data : SignUpFields) {
+		await signUp(data)
+		commit('postSignOnAction', null)
+	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
 		commit('user', user)
@@ -338,10 +378,14 @@ export const actions = {
 			commit('userCoins', 0)
 		}
 	},
-	async unlockAsset ({commit, getters, dispatch} : ActionParams, {asset} : {asset: Asset}) : Promise<'unlocked' | 'login' | 'needscoins'> {
+	async unlockAsset ({commit, getters, dispatch} : ActionParams, pl : {asset: Asset}) : Promise<'unlocked' | 'needscoins' | 'signon'> {
+		const {asset} = pl
 		if (!getters.isLoggedIn) {
-			dispatch('openLoginModal')
-			return 'login'
+			dispatch('openLoginWithPostAction', {
+				action: 'unlockAsset',
+				payload: pl
+			})
+			return 'signon'
 		}
 
 		if (getters.getUserCoins < asset.unlock_price && asset.unlock_price != 0) {
@@ -350,6 +394,7 @@ export const actions = {
 		else {
 			const result = await unlockAsset(asset.id)
 			commit('userCoins', result.numCoins)
+			dispatch('notifySuccess', `Unlocked ${asset.name} for ${asset.unlock_price} coin${asset.unlock_price === 1 ? '' : 's'}`)
 			return 'unlocked'
 		}
 	},
