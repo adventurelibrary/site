@@ -75,8 +75,9 @@
 }
 
 .form-errors {
-	border: 2px solid red;
-	background: $white2;
-	padding: 0.5em;
-	color: $black8;
+	border: 1px solid lighten($red, 5%);
+	border-radius: 0.5em;
+	background: darken($red, 5%);
+	padding: 0.75em 1em;
+	color: $text-color;
 }

@@ -22,9 +22,6 @@ import Login from "~/components/LoginForm.vue";
 	}
 })
 export default class LoginModal extends Vue {
-	identifier = ''
-	password = ''
-
 	@Prop() show : boolean
 
 	closeModal () {
