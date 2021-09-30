@@ -48,7 +48,7 @@ export default class AssetThumbnail extends Vue {
 		this.src = this.asset.thumbnail
 
 		console.log('Remove this, it is for testing')
-		this.src = 'https://advl-thumbs.s3.us-west-000.backblazeb2.com/HEOLDCcFXhY7Ty7gZ7RKwO0EGSjctBNG/q7KHcNoetjwGsFIh9gyTdEabo4itv35B.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=000379815001f7c0000000003%2F20210929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210929T032851Z&X-Amz-Expires=3600&X-Amz-Signature=8360a883b84c875571e6a29277b852a8ec40b802372b2b375c07f633c8b8cf4e&X-Amz-SignedHeaders=host'
+		this.src = 'https://i.imgur.com/fbS4iU2.png'
 
 		let img = document.createElement('img')
 		img.onload = () => {

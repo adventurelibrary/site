@@ -6,6 +6,7 @@ import {getSession, logout, signIn, signUp, SignUpFields} from "~/lib/auth/auth-
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
+import {ConfirmPaymentIntentResponse, confirmStripeIntent} from "../lib/stripe";
 
 Vue.use(Vuex)
 
@@ -346,6 +347,11 @@ export const actions = {
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')
 	},
+	async confirmStripePayment ({dispatch, commit} : ActionParams, paymentIntentId: string) : Promise<ConfirmPaymentIntentResponse> {
+		const res = await confirmStripeIntent(paymentIntentId)
+		commit('userCoins', res.coins)
+		return res
+	},
 	async openCreateBundle ({dispatch, commit}: ActionParams) {
 		await dispatch('closeAllModals')
 		commit('modal', {
@@ -411,6 +417,7 @@ export const actions = {
 		else {
 			const result = await unlockAsset(asset.id)
 			commit('userCoins', result.numCoins)
+			commit('assets/unlockAsset', asset.id)
 			dispatch('notifySuccess', `Unlocked ${asset.name} for ${asset.unlock_price} coin${asset.unlock_price === 1 ? '' : 's'}`)
 			return 'unlocked'
 		}

@@ -23,7 +23,7 @@ import FormErrors from "~/components/forms/FormErrors.vue";
 import SubmitButton from "~/components/forms/SubmitButton.vue";
 import {COIN_PURCHASE_OPTIONS} from "../buy-consts";
 import FormMixin from "~/mixins/Forms.vue";
-import {confirmStripeIntent, createStripeIntent, loadStripe} from "~/lib/stripe";
+import {ConfirmPaymentIntentResponse, confirmStripeIntent, createStripeIntent, loadStripe} from "~/lib/stripe";
 
 @Component({
 	components: {
@@ -46,24 +46,37 @@ export default class BuyCoinsForm extends mixins(FormMixin) {
 		const purchase = COIN_PURCHASE_OPTIONS[this.selectedOptionIdx]
 		const stripe = await loadStripe()
 		const clientSecret = await createStripeIntent(purchase.coins)
-		stripe.confirmCardPayment(clientSecret, {
-			payment_method: {
-				card: this.stripeCard,
-			}
-		}).then(async (result) => {
-			if (result.error) {
-				// Show error to your customer (e.g., insufficient funds)
-				console.log(result.error.message);
-				this.form.error = result.error.message
-			} else {
-				// The payment has been processed!
-				if (result.paymentIntent.status === 'succeeded') {
-					const res = await confirmStripeIntent(result.paymentIntent.id)
-					console.log('res')
-					this.notifySuccess('You have bought some coins')
+		let stripeConfirmResult
+		try {
+			stripeConfirmResult = await stripe.confirmCardPayment(clientSecret, {
+				payment_method: {
+					card: this.stripeCard,
 				}
+			})
+		} catch (ex) {
+			console.error('Error confirming through stripe API', ex)
+			throw ex
+		}
+		if (stripeConfirmResult.error) {
+			// Show error to your customer (e.g., insufficient funds)
+			console.log(stripeConfirmResult.error.message);
+			this.form.error = stripeConfirmResult.error.message
+		} else {
+			// The payment has been processed!
+			if (stripeConfirmResult.paymentIntent.status === 'succeeded') {
+				const response = await this.$store.dispatch('confirmStripePayment', stripeConfirmResult.paymentIntent.id)
+				console.log('confirm response', response)
+				if (response.result === 'complete' || response.result === 'skipped') {
+					this.$emit('success', {
+						purchase: response.purchase
+					})
+				} else if (response.result === 'error') {
+					this.form.error = 'An error occurred trying to verify your purchase'
+				}
+			} else {
+				this.form.error = `Intent status is "${stripeConfirmResult.paymentIntent.status}"`
 			}
-		});
+		}
 	}
 
 	async mounted () {
