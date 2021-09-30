@@ -59,6 +59,9 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	mounted () {
+		if (!this.$el || !this.$el.querySelector) {
+			return
+		}
 		const emailInput = this.$el.querySelector<HTMLInputElement>('input[type=text]')
 		if (emailInput) {
 			emailInput.focus()
@@ -66,16 +69,13 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		console.log('do the sign in')
 		await this.$store.dispatch('signIn', {
 			identifier: this.identifier,
 			password: this.password
 		})
-		console.log('emit success')
 		this.$emit('success') //
 		// Tell the whole site the user is now logged in
 		// Individual pages can then decide if they need to refetch their content or not
-		console.log('emit global logged in')
 		this.$root.$emit('loggedIn')
 
 		// Tell Google Analytics that the user has logged in
@@ -83,6 +83,9 @@ export default class LoginForm extends mixins(FormMixin) {
 	}
 
 	get postSignOnMessage () : string {
+		if (!this.postSignOnAction) {
+			return ''
+		}
 		if (this.postSignOnAction.action === 'unlockAsset') {
 			return `Login to unlock ${this.postSignOnAction.payload.asset.name}`
 		}
