@@ -172,7 +172,7 @@ export default class Default extends Vue {
 	}
 
 	get creatorsLink () : object {
-		if (this.user && this.user.creators.length === 1) {
+		if (this.user && this.user.creators && this.user.creators.length === 1) {
 			return {
 				name: 'creators-id',
 				params: {
