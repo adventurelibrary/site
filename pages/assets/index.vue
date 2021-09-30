@@ -14,7 +14,8 @@
 			<section v-show="$fetchState.pending">
 				<SignOfLife>Searching...</SignOfLife>
 			</section>
-			<section v-show="!$fetchState.pending">
+			<FormErrors v-show="!$fetchState.pending && $fetchState.error" :error="$fetchState.error" />
+			<section v-show="!$fetchState.pending && !$fetchState.error">
 				<div class="results-count body-width">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
 				</div>
@@ -46,9 +47,11 @@ import {commaAndJoin, getElOffset} from "~/lib/helpers";
 import SignOfLife from "~/components/SignOfLife.vue";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
 import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
+import FormErrors from "../../components/forms/FormErrors.vue";
 
 @Component({
 	components: {
+		FormErrors,
 		AssetSearch,
 		AssetList,
 		SelectAssetsContainer: SelectAssetsContainer,
@@ -84,7 +87,8 @@ class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	}
 
 	async fetch () {
-		this.assetsResponse = await searchAssets(this.search);
+		const res = await searchAssets(this.search);
+		this.assetsResponse = res
 		this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query

@@ -67,7 +67,7 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	let sortDirection = SORT_DIR_DEFAULT
 	const querySort = $route.query.sort
 	if (querySort) {
-		if (querySort.substr(0, 1)) {
+		if (querySort.substr(0, 1) === '-') {
 			sortDirection = 'desc'
 			sortField = querySort.substr(1)
 		} else {
