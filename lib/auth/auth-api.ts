@@ -116,6 +116,17 @@ export async function checkUsernameInUse (username: string) : Promise<boolean> {
 	return usernameInUse
 }
 
+
+/* returns stringified JSON object, with {emailCount, usernameCount}, of instances of those already registered in the db for an active user */
+// expected results between 0 and 1, ex {1,0}
+export async function checkRegisterValidate (email: string, username: string) : Promise<string> {
+	const url = '/users/registervalidate/' + email + '/' + username
+	const res = await api.get(url)
+	const resCount = res.data
+
+	return resCount
+}
+
 export async function logout () {
 	try {
 		await Auth.signOut()

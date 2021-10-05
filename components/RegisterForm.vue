@@ -38,7 +38,7 @@
 <script lang="ts">
 import {Component, mixins} from "nuxt-property-decorator";
 import FormMixin from "~/mixins/Forms.vue";
-import {signUp, checkEmailInUse, checkUsernameInUse} from "~/lib/auth/auth-api";
+import {signUp, checkEmailInUse, checkUsernameInUse, checkRegisterValidate} from "~/lib/auth/auth-api";
 import InputGroup from "~/components/forms/InputGroup.vue";
 import FormErrors from "~/components/forms/FormErrors.vue";
 
@@ -81,30 +81,34 @@ export default class RegisterForm extends mixins(FormMixin) {
 			username: this.username
 		}
 
-		// verify email not in use before signup
-		let emailInUse: boolean = false
-		emailInUse = await checkEmailInUse(this.email)
-
 		// verify username not in use before signup
-		let usernameInUse: boolean = false
-		usernameInUse = await checkUsernameInUse(this.username)
+		let registerValidate: string
+		let registerValidateJSON : JSON
+		registerValidate = await checkRegisterValidate(this.email, this.username)
 
-		// notify user of errors
-		if (emailInUse == true) {
-			this.$store.dispatch('notifyError', 'Email already in use.')
-			throw new Error('Email already in use.')
-		}
-		if (usernameInUse == true) {
-			this.$store.dispatch('notifyError', 'Username already in use.')
-			throw new Error('Username already in use.')
-		}
+		try {
+			registerValidateJSON = JSON.parse(registerValidate)		
 
-		// attempt to register new user if new email and username
-		// this will only execute if neither the emailInUse or usernameInUse above throw an error
-		await signUp(data)
-		this.needsConfirmation = true
-		this.$emit('success')
-		this.$gtag.event('sign_up');
+			// notify user of errors
+			let errorMessage : string = ''
+			if (registerValidateJSON.emailcount > 0) errorMessage = 'Email already in use. '
+			if (registerValidateJSON.usernamecount > 0) errorMessage += 'Username already in use. '
+
+			if (errorMessage.length > 0) {
+				this.$store.dispatch('notifyError', errorMessage)
+				throw new Error(errorMessage)
+			}
+
+			// attempt to register new user if new email and username
+			// this will only execute if neither the email or username already exists in the db			
+			await signUp(data)
+			this.needsConfirmation = true
+			this.$emit('success')
+			this.$gtag.event('sign_up');			
+		}
+		catch (e) {
+			console.log('Error occured while attempting to register new user. ' + e)
+		}
 	}
 
 }
