@@ -100,8 +100,8 @@ export default class RegisterForm extends mixins(FormMixin) {
 			}
 
 			// attempt to register new user if new email and username
-			// this will only execute if neither the email or username already exists in the db			
-			await signUp(data)
+			// this will only execute if neither the email or username already exists in the db						
+			await this.$store.dispatch('signUp', data)
 			this.needsConfirmation = true
 			this.$emit('success')
 			this.$gtag.event('sign_up');			
