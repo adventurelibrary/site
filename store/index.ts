@@ -6,6 +6,8 @@ import {getSession, logout, signIn, signUp, SignUpFields} from "~/lib/auth/auth-
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
+import {ConfirmPaymentIntentResponse, confirmStripeIntent} from "../lib/stripe";
+
 Vue.use(Vuex)
 
 export type PostSignOnAction = {action: string, payload: any} | null
@@ -13,7 +15,8 @@ export type PostSignOnAction = {action: string, payload: any} | null
 type State = {
 	archiveAsset: Asset | null,
 	reportAsset: Asset | null,
-	editAsset: Asset | null
+	editAsset: Asset | null,
+	buyUnlockAsset: Asset | null,
 	addToBundleAssets: Asset[],
 	breadcrumbs: any[],
 	createBundleAssets: Asset[]
@@ -41,6 +44,7 @@ type State = {
 		archiveAsset: boolean
 		reportAsset: boolean
 		editAsset: boolean
+		buyCoins: boolean
 	}
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
@@ -52,7 +56,7 @@ type State = {
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset' | 'editAsset'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset' | 'editAsset' | 'buyCoins'
 
 export type Toast = {
 	id: number
@@ -84,6 +88,7 @@ export const state = () : State => {
 		addToBundleAssets:[],
 		breadcrumbs: [],
 		bundleAddAssetsBundle: null,
+		buyUnlockAsset: null,
 		createBundleAssets: [],
 		editBundle: null,
 		reportAsset: null,
@@ -110,7 +115,8 @@ export const state = () : State => {
 			login: false,
 			register: false,
 			reportAsset: false,
-			editAsset: false
+			editAsset: false,
+			buyCoins: false
 		},
 	}
 }
@@ -193,6 +199,9 @@ export const mutations = {
 	},
 	reportAsset (state: State, asset: Asset | null) {
 		state.reportAsset = asset
+	},
+	buyUnlockAsset (state: State, asset: Asset | null) {
+		state.buyUnlockAsset = asset
 	},
 	addToBundleAssets (state: State, assets: Asset[]) {
 		state.addToBundleAssets = assets
@@ -326,8 +335,22 @@ export const actions = {
 		})
 		commit('reportAsset', asset)
 	},
+	openBuyCoinsModal ({commit} : ActionParams, args? : {asset?: Asset | null}) {
+		args = args || {}
+		const {asset} = args
+		commit('modal', {
+			key: 'buyCoins',
+			value: true
+		})
+		commit('buyUnlockAsset', asset)
+	},
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')
+	},
+	async confirmStripePayment ({dispatch, commit} : ActionParams, paymentIntentId: string) : Promise<ConfirmPaymentIntentResponse> {
+		const res = await confirmStripeIntent(paymentIntentId)
+		commit('userCoins', res.coins)
+		return res
 	},
 	async openCreateBundle ({dispatch, commit}: ActionParams) {
 		await dispatch('closeAllModals')
@@ -394,6 +417,7 @@ export const actions = {
 		else {
 			const result = await unlockAsset(asset.id)
 			commit('userCoins', result.numCoins)
+			commit('assets/unlockAsset', asset.id)
 			dispatch('notifySuccess', `Unlocked ${asset.name} for ${asset.unlock_price} coin${asset.unlock_price === 1 ? '' : 's'}`)
 			return 'unlocked'
 		}

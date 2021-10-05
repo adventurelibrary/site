@@ -1,29 +1,108 @@
-ul.buy-coins-packages {
-  list-style: inside none;
-  margin: 0;
-  padding: 0;
+ol.coin-purchase-options {
+	list-style: inside none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-rows: 14em;
+	grid-template-columns: repeat(3, minmax(auto, 17em));
+	grid-column-gap: 2em;
+	justify-content: center;
 
-  &.buying {
-    opacity: 0.75;
-  }
+	&.buying {
+		opacity: 0.75;
+	}
 
-  li {
-    background: $black4;
-    border-radius: 0.4em;
-    text-align: center;
-    margin: 0.5em;
-    padding: 1em 0;
+	li {
+		background: $black4;
+		border-radius: 0.4em;
+		text-align: center;
+		margin: 0em;
+		padding: 1em 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-around;
+		cursor: pointer;
+		user-select: none;
 
-    p {
-      margin: 0 0 1em 0;
-    }
+		&.active, &.active:hover {
+			background: $main-teal;
+		}
 
-    img {
-      max-width: 10em;
-    }
+		&:hover {
+			background: darken($main-teal, 10%);
+		}
 
-    h4 {
-      font-size: 2em;
-    }
-  }
+		p {
+			margin: 0 0 1em 0;
+		}
+
+		img {
+			max-width: 5em;
+		}
+
+		h4 {
+			font-size: 1.75em;
+		}
+	}
+}
+
+.modal.buy-coins-modal {
+	ol.coin-purchase-options {
+		grid-column-gap: 1em;
+		align-content: space-between;
+		grid-template-rows: 10em;
+
+		li {
+			h4 {
+				font-size: 1.25em;
+			}
+
+			img {
+				max-height: 4em;
+				max-width: 4em;
+			}
+		}
+	}
+}
+
+.buy-unlock-msg {
+	$thumbSize: 60px;
+
+	margin-bottom: 1em;
+	display: grid;
+	grid-template-rows: $thumbSize;
+	grid-template-columns: $thumbSize 1fr;
+	grid-column-gap: 0.5em;
+
+	.asset-thumbnail-container {
+		grid-column-start: 1;
+		grid-column-end: 2;
+		background: $black4;
+		display: grid;
+		grid-template: 1fr / 1fr;
+		border-radius: 0.25em;
+		overflow: hidden;
+
+		.asset-thumbnail {
+
+		}
+	}
+
+	.msg {
+		display: flex;
+		align-content: center;
+
+		small {
+			color: $white4;
+		}
+	}
+}
+
+#stripe-card {
+	background-color: #171717;
+	border: 2px solid #333333;
+	color: #808080;
+	padding: 0.5em 1em;
+	border-radius: 0.25em;
 }

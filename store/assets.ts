@@ -22,6 +22,13 @@ export const state = () : State => {
 }
 
 export const mutations = {
+	unlockAsset (state: State, assetId: string) {
+		for (let i = 0; i < state.assets.length; i++) {
+			if (state.assets[i].id === assetId) {
+				state.assets[i].unlocked = true
+			}
+		}
+	},
 	setAssets (state: State, assets: Asset[]) {
 		// TODO: Maybe we need to check for ones that are already in here and are selected?
 		state.assets = assets.map((a) => {

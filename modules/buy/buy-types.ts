@@ -8,6 +8,8 @@ export type CheckoutLinksResponse = {
 	links: CheckoutLink[]
 }
 
+type CoinPurchaseStatus = 'pending' | 'complete' | 'error'
+
 export type CoinPurchase = {
 	id: number
 	created_date: Date
@@ -15,6 +17,8 @@ export type CoinPurchase = {
 	cents: number
 	provider: string
 	coins: number
+	status: CoinPurchaseStatus
+
 }
 export type CoinPurchasesResponse =  {
 	total: number

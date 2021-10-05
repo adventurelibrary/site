@@ -33,10 +33,7 @@ export default class AssetThumbnail extends Vue {
 	onScroll () {
 		const rect = this.$el.getBoundingClientRect()
 		const cutoff = document.documentElement.clientHeight + 100
-		console.log('cutoff', cutoff)
-		console.log('rect', rect)
 		if (rect.top <= cutoff) {
-			console.log('cutoff yes', this.asset.name)
 			this.loadImage()
 			window.removeEventListener('scroll', this.onScroll)
 		}
@@ -49,6 +46,14 @@ export default class AssetThumbnail extends Vue {
 		}
 		this.loading = true
 		this.src = this.asset.thumbnail
+
+		/**
+		 * This is if you want to ensure thumbnail images show up
+		 * if the test data isn't working
+		 * /
+		console.log('Remove this, it is for testing')
+		this.src = 'https://i.imgur.com/fbS4iU2.png'*/
+
 		let img = document.createElement('img')
 		img.onload = () => {
 			this.loaded = true
