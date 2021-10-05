@@ -5,7 +5,7 @@
 		</Fragment>
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
 			<div>Showing {{bundles.length}}. Total: {{bundlesResponse.total}}</div>
-      <ol class="bundles-list">
+      <ol class="card-list bundles-list">
         <BundleCard v-for="bundle in bundles" :key="bundle.id" :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)" />
       </ol>
 			<Pagination
