@@ -95,17 +95,20 @@
 			color: $cta-blue-light;
 		}
 	}
+
 	.tab {
 		grid-area: body;
 		background: $black4;
 		display: none;
 		padding: 1em;
 
+		&.active { display: grid; }
+	}
+
+	.tab-settings {
 		a, a[href], a:visited {
 			color: $cta-blue-light;
 		}
-
-		&.active { display: grid; }
 	}
 
 	.inventory {
