@@ -10,19 +10,19 @@
 		</Fragment>
 
 		<!-- Creator Settings  -->
-		<div v-if="isCreator">
+		<Fragment v-if="isCreator">
 			<h3>Creator Settings</h3>
 			<nuxt-link :to="{name: 'upload'}">Upload Asset</nuxt-link>
-		</div>
+		</Fragment>
 
 		<!-- Admin Settings -->
-		<div v-if="user && user.admin==true">
+		<Fragment v-if="user && user.admin==true">
 			<h3>Administrator Settings</h3>
 			User to Creator<br/>
 			Creator to User<br/>
 			Creator to Admin<br/>
 			Admin to Creator<br/>
-		</div>
+		</Fragment>
 
 	</ProfilePage>
 </template>

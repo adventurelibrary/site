@@ -101,6 +101,10 @@
 		display: none;
 		padding: 1em;
 
+		a, a[href], a:visited {
+			color: $cta-blue-light;
+		}
+
 		&.active { display: grid; }
 	}
 
