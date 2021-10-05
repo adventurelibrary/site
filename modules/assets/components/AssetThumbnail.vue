@@ -47,8 +47,12 @@ export default class AssetThumbnail extends Vue {
 		this.loading = true
 		this.src = this.asset.thumbnail
 
+		/**
+		 * This is if you want to ensure thumbnail images show up
+		 * if the test data isn't working
+		 * /
 		console.log('Remove this, it is for testing')
-		this.src = 'https://i.imgur.com/fbS4iU2.png'
+		this.src = 'https://i.imgur.com/fbS4iU2.png'*/
 
 		let img = document.createElement('img')
 		img.onload = () => {

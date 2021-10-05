@@ -74,7 +74,7 @@ export default class BuyCoinsForm extends mixins(FormMixin) {
 					this.form.error = 'An error occurred trying to verify your purchase'
 				}
 			} else {
-				this.form.error = `Intent status is "${stripeConfirmResult.paymentIntent.status}"`
+				this.form.error = `Payment status on Stripe is "${stripeConfirmResult.paymentIntent.status}" instead of "succeeded"`
 			}
 		}
 	}
