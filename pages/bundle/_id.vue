@@ -23,17 +23,13 @@
 						<fragment slot="actions">
 							<button type="button" @click="clickRemoveSelectedAssets">Remove From Bundle</button>
 						</fragment>
-						<ul class="search-results">
-							<li v-if="!assets.length">No assets.</li>
-							<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
-							<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset">
-								<Fragment slot="extra-actions">
-									<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
-										<i class="ci-off_close"></i>
-									</button>
-								</Fragment>
-							</AssetCard>
-						</ul>
+						<AssetList :assets="assets">
+							<template v-slot:extra-actions="{asset}">
+								<button @click="() => clickRemoveAsset(asset)" class="asset-action action-remove-asset-from-bundle">
+									<i class="ci-off_close"></i>
+								</button>
+							</template>
+						</AssetList>
 					</SelectAssetsContainer>
 				</section>
 			</fragment>
@@ -51,9 +47,11 @@ import {deleteBundle, getBundle, removeAssetFromBundle, removeAssetsFromBundle,}
 import {Bundle} from "~/modules/bundles/bundle-types";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
 import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
+import AssetList from "../../modules/assets/components/AssetList.vue";
 
 @Component({
 	components: {
+		AssetList,
 		AssetDownload: AssetDownload,
 		TagList: TagList,
 		AssetCard,
@@ -125,6 +123,7 @@ class BundlePage extends mixins(LoggedInFetchMixin) {
 		}
 		await removeAssetFromBundle(this.bundle.id, asset.id)
 		this.$store.dispatch('assets/removeAssets', [asset.id])
+		this.notifySuccess(`${asset.name} removed`)
 	}
 
 	async clickRemoveSelectedAssets () {
@@ -135,6 +134,11 @@ class BundlePage extends mixins(LoggedInFetchMixin) {
 
 		await removeAssetsFromBundle(this.bundle.id, ids)
 		this.$store.dispatch('assets/removeAssets', ids)
+		if (ids.length === 1) {
+			this.notifySuccess('One asset removed')
+		} else {
+			this.notifySuccess(`${ids.length} assets removed`)
+		}
 	}
 
 	async clickDeleteBundle () {

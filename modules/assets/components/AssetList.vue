@@ -1,6 +1,10 @@
 <template>
 	<ul class="search-results">
-		<AssetCard v-for="asset in assets" :asset="asset" :key="asset.slug" />
+		<AssetCard v-for="asset in assets" :asset="asset" :key="asset.slug">
+			<template slot="extra-actions" :asset="{asset}">
+				<slot name="extra-actions" :asset="asset"></slot>
+			</template>
+		</AssetCard>
 	</ul>
 </template>
 <script lang="ts">

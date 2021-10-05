@@ -37,7 +37,7 @@
 			<template v-if="!hideDefaultActions">
 				<AssetAddToBundle v-if="isLoggedIn" :asset="asset" />
 			</template>
-			<slot name="extra-actions"></slot>
+			<slot name="extra-actions" :asset="asset"></slot>
 		</figure>
 
 	</li>

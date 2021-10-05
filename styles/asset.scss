@@ -62,6 +62,15 @@
 	}
 }
 
+.home-page,
+.search-page {
+	.select-assets-container .select-assets-actions {
+		width: var(--body-width);
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
 .select-assets-container {
 	user-select: none;
 

@@ -1,6 +1,6 @@
 <template>
 	<div class="select-assets-container">
-		<div class="select-assets-actions body-width" v-if="numSelected >= 1">
+		<div class="select-assets-actions" v-if="numSelected >= 1">
 			<button @click="clickToggleAll">{{toggleAllLabel}}</button>
 			<button @click="clickAddToBundle" :disabled="numSelected === 0">Add to Bundle</button>
 			<slot name="actions"></slot>
