@@ -1,7 +1,8 @@
 import {AssetSearchFilter} from "./search-filters";
 import {Creator} from "~/modules/creators/creator-types";
 
-export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
+export type AssetVisibility = 'HIDDEN' | 'PUBLIC'
+export type UploadStatus = 'PENDING' | 'COMPLETE' | 'FAILED'
 
 // These fields exist on assets that are in our db AND in assets
 // that the user is about to upload
@@ -24,6 +25,7 @@ export type Asset = AssetFields & {
 	unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
 	slug: string
 	thumbnail: string
+	upload_status: UploadStatus,
 	selected?: boolean // For our frontend code to perform actions on multiple assets at once
 }
 

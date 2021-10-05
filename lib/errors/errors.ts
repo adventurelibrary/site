@@ -7,5 +7,5 @@ export function convertAPIException (ex: any) : string {
 			}).join(' & ')
 		}
 	}
-	return 'err'
+	return ex.toString()
 }

@@ -302,3 +302,9 @@ body {
 	width: var(--body-width);
 	margin: 0 auto;
 }
+
+.just-a-regular-page {
+	width: var(--body-width);
+	margin: 0 auto;
+	display: block;
+}

@@ -11,7 +11,7 @@ export const api = axios.create({
 api.interceptors.response.use((response) => {
 	return response
 }, (err) => {
-	let msg = 'A server error occured'
+	let msg
 	if (err.response && err.response.data && err.response.data.error) {
 		if (err.response.data.error.message) {
 			msg = err.response.data.error.message

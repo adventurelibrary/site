@@ -11,6 +11,7 @@
 		<BundleAddAssetsModal v-if="showBundleAddAssets" />
 		<AssetArchiveModal v-if="showArchiveAsset" />
 		<AssetReportModal v-if="showReportAsset" />
+		<BuyCoinsModal v-if="showBuyCoins" />
 	</div>
 </template>
 <script lang="ts">
@@ -25,9 +26,11 @@ import BundleAddAssetsModal from "~/modules/bundles/components/BundleAddAssetsMo
 import AssetArchiveModal from "~/modules/modals/AssetArchiveModal.vue";
 import AssetReportModal from "~/modules/modals/AssetReportModal.vue";
 import EditAssetModal from "~/modules/assets/components/EditAssetModal.vue";
+import BuyCoinsModal from "../buy/components/BuyCoinsModal.vue";
 
 @Component({
 	components: {
+		BuyCoinsModal,
 		EditAssetModal,
 		BundleAddAssetsModal,
 		EditBundleModal,
@@ -50,6 +53,7 @@ export default class Modals extends Vue {
 	@State(state => state.modals.bundleAddAssets)  showBundleAddAssets : boolean
 	@State(state => state.modals.archiveAsset)  showArchiveAsset : boolean
 	@State(state => state.modals.reportAsset)  showReportAsset : boolean
+	@State(state => state.modals.buyCoins)  showBuyCoins : boolean
 
 	@Watch('$route')
 	routeWatcer () {

@@ -4,24 +4,23 @@
 			label="Title"
 			v-model="copy.name"
 		/>
-		<Textarea
-			label="Description"
-			v-model="copy.description"
+		<Select
+			label="Visibility"
+			:options="visOptions"
+			v-model="copy.visibility"/>
+		<CategorySelect
+			label="Type"
+			v-model="copy.category"
 		/>
 		<FormGroup label="Tags" class="advanced">
 			<TagsInput
 				v-model="copy.tagObjects"
 				/>
 		</FormGroup>
-		<CategorySelect
-			label="Type"
-			v-model="copy.category"
+		<Textarea
+			label="Description"
+			v-model="copy.description"
 		/>
-		<Select
-			v-if="!hideVisibility"
-			label="Visibility"
-			:options="visOptions"
-			v-model="copy.visibility"/>
 	</section>
 </template>
 
@@ -57,7 +56,5 @@ export default class AssetFields extends Vue {
 		type: Object as PropType<AssetFormData>
 	})
 	readonly copy! : AssetFormData
-
-	@Prop() hideVisibility : boolean
 }
 </script>

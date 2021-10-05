@@ -14,14 +14,13 @@
 			<section v-show="$fetchState.pending">
 				<SignOfLife>Searching...</SignOfLife>
 			</section>
-			<section v-show="!$fetchState.pending">
+			<FormErrors v-show="!$fetchState.pending && $fetchState.error" :error="$fetchState.error" />
+			<section v-show="!$fetchState.pending && !$fetchState.error">
 				<div class="results-count body-width">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
 				</div>
 				<SelectAssetsContainer>
-					<ul class="search-results">
-						<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-					</ul>
+					<AssetList :assets="assets" />
 				</SelectAssetsContainer>
 				<div v-if="assets.length < totalAssets">
 					<div v-if="loadingMore">Loading more...</div>
@@ -41,18 +40,20 @@ import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
 import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
-import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetList from "~/modules/assets/components/AssetList.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
 import {commaAndJoin, getElOffset} from "~/lib/helpers";
 import SignOfLife from "~/components/SignOfLife.vue";
 import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
 import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
+import FormErrors from "../../components/forms/FormErrors.vue";
 
 @Component({
 	components: {
+		FormErrors,
 		AssetSearch,
-		AssetCard,
+		AssetList,
 		SelectAssetsContainer: SelectAssetsContainer,
 		SignOfLife
 	},
@@ -86,7 +87,8 @@ class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	}
 
 	async fetch () {
-		this.assetsResponse = await searchAssets(this.search);
+		const res = await searchAssets(this.search);
+		this.assetsResponse = res
 		this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 		this.$gtag.event('view_search_results', {
 			'search_term': this.search.query

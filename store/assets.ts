@@ -22,6 +22,13 @@ export const state = () : State => {
 }
 
 export const mutations = {
+	unlockAsset (state: State, assetId: string) {
+		for (let i = 0; i < state.assets.length; i++) {
+			if (state.assets[i].id === assetId) {
+				state.assets[i].unlocked = true
+			}
+		}
+	},
 	setAssets (state: State, assets: Asset[]) {
 		// TODO: Maybe we need to check for ones that are already in here and are selected?
 		state.assets = assets.map((a) => {
@@ -30,6 +37,28 @@ export const mutations = {
 				selected: false
 			}
 		})
+
+		// This is just here for testing and development purposes
+		// If you want to display a lot of assets somewhere, you can increase this
+		// variable and it'll duplicate them
+		// Doing things with the clones will break since their ids and slugs aren't real
+		const fakeOnesToAdd = 0
+		let toCloneIdx = 0;
+		const maxIdx = assets.length - 1
+		for (let i = 1; i <= fakeOnesToAdd; i++) {
+			const toClone = assets[toCloneIdx]
+			state.assets.push({
+				...toClone,
+				selected: false,
+				id: toClone.id + i,
+				slug: toClone.slug + i,
+				name: toClone.name + ' (Clone #' + i + ')',
+			})
+			toCloneIdx++
+			if (toCloneIdx > maxIdx) {
+				toCloneIdx = 0
+			}
+		}
 	},
 	clearAssets (state: State) {
 		state.assets = []
@@ -103,7 +132,6 @@ export const actions = {
 		// click the 10th item and it will select all items from 4 to 9
 		if (assetIds.length > 0) {
 			const idx = getters.assetIdIndex(assetIds[assetIds.length-1])
-			console.log('idx', idx)
 			commit('shiftClickAnchorIndex', idx)
 		}
 	},

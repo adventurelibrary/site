@@ -1,7 +1,7 @@
 <template>
 	<figure class="sign-of-life">
 		<!--img src="~/assets/AL_icon_only_white-anim.svg"-->
-		<inline-svg src="/_nuxt/assets/AL_icon_only_white-anim.svg" />
+		<inline-svg :src="require('../assets/AL_icon_only_white-anim.svg')" />
 		<figcaption class="loading-message">
 			<slot></slot>
 		</figcaption>

@@ -1,7 +1,7 @@
 import {AssetSearchOptions, SortDirection} from "./asset-types";
 import {AssetSearchFilter} from "./search-filters";
 
-export const SORT_FIELD_DEFAULT = 'uploaded'
+export const SORT_FIELD_DEFAULT = 'relevance'
 export const SORT_DIR_DEFAULT : SortDirection = 'desc'
 export const SORT_DEFAULT_SIZE = 10 // how many assets to show on a page
 

@@ -73,13 +73,18 @@ export default class AssetDownload extends mixins(StopPropagation) {
 			this.notifyError(ex.toString())
 			return
 		}
+
 		if (result === 'needscoins') {
+			this.$store.dispatch('openBuyCoinsModal', {
+				asset: this.asset
+			})
+			return
 			this.notifyError(`You need more coins (${this.asset.unlock_price} coins) to unlock '${this.asset.name}'. Redirecting you to the coins purchase page.`)
 			this.asset.unlocked = false
 			this.$router.push('/buy/coins')
+			return
 		}
 		if (result === 'unlocked') {
-			this.notifySuccess(`Unlocked ${this.asset.name}`)
 			this.asset.unlocked = true
 
 			// This isn't working correctly, but that might be a setting problem in Google?
