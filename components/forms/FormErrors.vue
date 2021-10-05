@@ -9,7 +9,7 @@ import {Component, Prop} from "nuxt-property-decorator";
 
 @Component
 export default class FormErrors extends Vue {
-	@Prop() error : string
+	@Prop() error : any
 
 	get showError () : boolean {
 		return this.messages && this.messages.length > 0
@@ -23,6 +23,10 @@ export default class FormErrors extends Vue {
 	get messages () : string[] {
 		if (!this.error) {
 			return []
+		}
+
+		if (this.error.message) {
+			return [this.error.message]
 		}
 
 		return [this.error.toString()]

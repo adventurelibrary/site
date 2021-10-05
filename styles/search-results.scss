@@ -39,7 +39,7 @@
 			background-color: $main-teal-trans1;
 			box-shadow: 0px 0px 5px 5px $main-teal-trans1;
 		}
-		
+
 		&:hover .meta {
 			background: $main-teal-trans2;
 			box-shadow: 0px 0px 5px 5px $main-teal-trans2;
@@ -80,6 +80,7 @@
 		grid-template-areas:
 			"title title"
 			"author price";
+		z-index: 10;
 
 		.title {
 			grid-area: title;

@@ -42,7 +42,9 @@
 				<li><nuxt-link :to="{name: 'info-about-us'}">About Us</nuxt-link></li>
 				<li><nuxt-link :to="{name: 'buy-coins'}">Buy Coins</nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user-bundles'}">My Bundles</nuxt-link></li>
-				<li v-if="isCreator"><nuxt-link :to="{name: 'creators'}">Creators</nuxt-link></li>
+				<li v-if="isCreator">
+					<nuxt-link :to="creatorsLink">Creators</nuxt-link>
+				</li>
 			</ul>
 		</header>
 		<main class="site-body">
@@ -169,6 +171,17 @@ export default class Default extends Vue {
 		return Object.values(this.overlays).some(o => o);
 	}
 
+	get creatorsLink () : object {
+		if (this.user && this.user.creators && this.user.creators.length === 1) {
+			return {
+				name: 'creators-id',
+				params: {
+					id: this.user.creators[0].id
+				}
+			}
+		}
+		return {name: 'creators'}
+	}
 
 	hideOverlays() {
 		Object.keys(this.overlays).forEach(o => this.overlays[o] = false);

@@ -73,7 +73,6 @@ export default class RegisterForm extends mixins(FormMixin) {
 	}
 
 	async formAction () {
-		console.log('submit register')
 		const data = {
 			email: this.email,
 			password: this.password,
@@ -109,6 +108,7 @@ export default class RegisterForm extends mixins(FormMixin) {
 		catch (e) {
 			console.log('Error occured while attempting to register new user. ' + e)
 		}
+
 	}
 
 }

@@ -17,7 +17,7 @@
 			</div>
 			<form ref="startform" class="startform">
 				<div class="drop-files start">
-					<h4>Drag &amp; drop new files here</h4>
+					<label for="add-file">Drag &amp; drop new files here</label>
 					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
 				</div>
 			</form>
@@ -32,7 +32,7 @@
 				/>
 			</ul>
 			<div v-show="newAssets.length">
-				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
+				<button type="button" @click="beginUploads" class="upload-all">Upload {{numFiles}}</button>
 			</div>
 		</section>
 		<section v-show="stage === 'uploading'" class="upload-status">
@@ -98,6 +98,11 @@ export default Vue.extend({
       }
 		})
 	},
+	computed: {
+		numFiles ()  : string {
+			return `${this.newAssets.length} File${this.newAssets.length == 1 ? '' : 's'}`
+		}
+	},
 	methods: {
 		async beginUploads () {
 			if (this.asAdmin) {
@@ -159,7 +164,7 @@ export default Vue.extend({
 					description: '',
 					name: name,
 					creator_id: this.getCreatorId(),
-          visibility: 'PENDING',
+          visibility: 'HIDDEN',
 					category: filenameGuessCategory(file.name),
 				},
 				file: file,

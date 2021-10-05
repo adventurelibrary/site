@@ -47,6 +47,11 @@ export default class CreatorAssets extends mixins(CreatorsManage) {
 
 	async fetch () {
 		const search = newSearchOptions()
+
+		// These are hardcoded for now, but in the future we could let the creators sort by different things
+		search.sortField = 'uploaded'
+		search.sortDirection = 'desc'
+
 		const res = await getManageCreatorAssets(this.creatorId, search)
 		this.response = res
 		this.creator = res.creator

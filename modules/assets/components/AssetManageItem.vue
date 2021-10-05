@@ -1,6 +1,7 @@
 <template>
 	<AssetCard :key="asset.id" :asset="asset" hide-default-actions="true">
 		<div class="extra-details" slot="extra-details">
+			<template v-if="asset.upload_status === 'PENDING'">Upload Processing...<br /></template>
 			{{asset.visibility}}
 		</div>
 		<Fragment slot="extra-actions">

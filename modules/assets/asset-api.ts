@@ -1,9 +1,17 @@
 import {
-	Asset, AssetDownloadOptions, AssetDownloadResponse,
+	Asset,
+	AssetDownloadOptions,
+	AssetDownloadResponse,
 	AssetFormData,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection, UnlockAssetResponse
+	AssetsResponse,
+	AssetTag,
+	AssetUpdate,
+	AssetUploadResponse,
+	AssetVisibility,
+	SortDirection,
+	UnlockAssetResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../../lib/ajax";
 import {ActiveUpload} from "~/modules/assets/asset-uploads";
@@ -51,7 +59,7 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	const query : Record<string, string> = {}
 
 	query.sort = getSearchOptionsSortField(opts)
-	query.sort_type = getSearchOptionsSortDirection(opts)
+	query.sort_direction = getSearchOptionsSortDirection(opts)
 
 	if (search && search.length) {
 		query.text = search
@@ -154,16 +162,16 @@ export function transformAsset (asset: Asset) : Asset {
 // Gets the signature for an ActiveUpload and then updates
 // the active upload object with the signature and related data
 export const signActiveUpload = async (au : ActiveUpload) => {
-	const res = await createAssetSignature(au.file.name, au.asset)
+	const res = await createAssetSignature(au.creator_id, au.file.name, au.asset)
 	au.signature = res.signature
 	au.status = 'signed'
 	au.params = res.params
 }
 
 // Gets a signature from our API that will be used when we send the file directly to transloadit
-export const createAssetSignature = async (filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
+export const createAssetSignature = async (creatorId: string, filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
 	const data = assetFormDataToPayload(fields)
-	const res = await api.post<AssetSignatureResponse>('assets/get_signature', data)
+	const res = await api.post<AssetSignatureResponse>(`manage/creator/${creatorId}/upload-signature`, data)
 	return res.data
 }
 
@@ -287,7 +295,8 @@ export const newAsset = () : Asset => {
 		tags: [],
 		tagObjects: [],
 		thumbnail: '',
-		visibility: 'HIDDEN'
+		visibility: 'HIDDEN',
+		upload_status: 'PENDING'
 	}
 }
 
