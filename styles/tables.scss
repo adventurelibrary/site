@@ -1,21 +1,30 @@
 table {
 	width: 100%;
-	border-spacing: 1px;
-	background: #ccc;
+	border-collapse: collapse;
 
-	tr {
-		background: $black-dark;
-	}
+	td, th {
+		padding: 0.5em 1em;
 
-	tbody {
-		tr {
-			&:nth-child(odd) {
-				background: $black-gray;
-			}
+		&:not(:last-of-type) {
+			border-right: 1px solid $gray-trans2;
 		}
 	}
 
-	td, th {
-		padding: 0.25em 0.5em;
+	th {
+		background: $table-header-background;
+	}
+	
+	td {
+		background: $table-row-background-a;
+	}
+
+	thead, tr:not(:last-of-type) {
+		border-bottom: 1px solid $gray3;
+	}
+
+	tr:nth-child(odd) {
+		td {
+			background: $table-row-background-b;
+		}
 	}
 }
