@@ -335,7 +335,7 @@ export const actions = {
 			key: 'createBundle',
 			value: true
 		})
-		commit('createBundleAsset', null)
+		commit('createBundleAssets', [])
 	},
 	async openCreateBundleWithAssets ({dispatch, commit} : ActionParams, {assets} : {assets: Asset[]}) {
 		await dispatch('closeAllModals')
