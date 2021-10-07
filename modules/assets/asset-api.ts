@@ -2,7 +2,7 @@ import {
 	Asset,
 	AssetDownloadOptions,
 	AssetDownloadResponse,
-	AssetFormData,
+	AssetFormData, AssetResponse,
 	AssetSearchOptions,
 	AssetSignatureResponse,
 	AssetsResponse,
@@ -206,29 +206,11 @@ export async function getAssetByField(field: string, value: string) : Promise<As
 	return res.data
 }
 
-export const getAssetBySlug = async (slug: string) : Promise<Asset> => {
-	const parts = slug.split('-')
-	const id = parts[parts.length-1]
-	const path = `/assets/${id}`
+export const getAssetBySlugs = async (creatorSlug, assetSlug: string) : Promise<AssetResponse> => {
+	const path = `/creators/${creatorSlug}/asset/${assetSlug}`
 	const res = await api.get(path)
-	return transformAsset(res.data)
-	//return getAssetById(id)
-}
-
-// Queries for an asset, and does wraps the process in an Ajax object
-// The Ajax part will add loading boolean, error string, and data interface
-// data will hold the response from the api
-export const getAssetAjax = async(slug: string) : Promise<Ajax<Asset>> => {
-	const ajax = newAssetAjax()
-	try {
-		const asset = await getAssetBySlug(slug)
-		ajax.data = asset
-	} catch (ex) {
-		ajax.error = ex.toString()
-	}
-
-	ajax.loading = false
-	return ajax
+	res.data.asset = transformAsset(res.data.asset)
+	return res.data
 }
 
 export const getAssetAjaxById = async(id: string) : Promise<Ajax<Asset>> => {
