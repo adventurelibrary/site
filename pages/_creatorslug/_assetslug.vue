@@ -57,7 +57,7 @@ import Vue from 'vue'
 import {Component} from "nuxt-property-decorator";
 
 import {Asset} from "~/modules/assets/asset-types";
-import {getAssetBySlug} from "~/modules/assets/asset-api";
+import {getAssetBySlug, getAssetBySlugs} from "~/modules/assets/asset-api";
 import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
 import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue";
@@ -133,7 +133,9 @@ class AssetPage extends Vue {
 	}
 
 	async fetch () {
-		this.asset = await getAssetBySlug(this.$nuxt.context.params.slug)
+		const {creatorslug, assetslug} = this.$nuxt.context.params
+		const response = await getAssetBySlugs(creatorslug, assetslug)
+		this.asset = response.asset
 		const relatedRes = await getRelatedAssetsByTags(this.asset)
 		this.relatedAssets = relatedRes.assets
 		this.$gtag.event('view_item', {
