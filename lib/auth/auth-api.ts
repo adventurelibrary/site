@@ -1,8 +1,8 @@
 import {User} from "~/modules/users/user-types";
-import {getCookie, setCookie} from "~/lib/helpers";
+import {setCookie} from "~/lib/helpers";
 import {Auth} from 'aws-amplify'
 import {CognitoUser} from "amazon-cognito-identity-js";
-import api, {getJWT, setJWT} from "~/lib/api";
+import api, {setJWT} from "~/lib/api";
 import Cookies from "js-cookie";
 
 const userPoolId = <string>process.env.COGNITO_USER_POOL_ID
@@ -35,17 +35,10 @@ function convertErr(err : any) : string {
 	return err.message || err.toString()
 }
 
-export async function getSessionFromClient() : Promise<User | null> {
-	const jwt = getCookie('jwt')
-	if (jwt === null) {
-		return null
-	}
-	return getSession()
-}
-
 export async function getSession () : Promise<User | null> {
 	let res
 	try {
+		await refreshSession()
 		res = await api.get('/users')
 	} catch (ex) {
 		return null
@@ -54,17 +47,24 @@ export async function getSession () : Promise<User | null> {
 	return res.data
 }
 
-// Login as a user and get the user's jwt
-export async function signIn (identifier: string, password: string) {
-	try {
-		await Auth.signIn(identifier, password)
-	} catch (ex) {
-		throw new Error(convertErr(ex))
-	}
+// This will call AWS Amplify's refresh code so that the token is refreshed
+// This is to prevent the session ending after a short period of time
+// This will also update our jwt cookies
+export async function refreshSession () {
 	const sess = await Auth.currentSession()
 	const jwt = sess.getIdToken().getJwtToken()
 	setJWT(jwt) // Update it in memory so our Axios interceptors use it
 	setCookie('jwt', jwt, 31) // Save it for future sessions
+}
+
+// Login as a user and get the user's jwt
+export async function signIn (identifier: string, password: string) {
+	try {
+		await Auth.signIn(identifier, password)
+		await refreshSession()
+	} catch (ex) {
+		throw new Error(convertErr(ex))
+	}
 }
 
 
