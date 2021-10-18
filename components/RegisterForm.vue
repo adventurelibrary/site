@@ -98,7 +98,6 @@ export default class RegisterForm extends mixins(FormMixin) {
 
 				// throw error if any
 				if (errorMessage.length > 0) {
-					console.log('errorMessage', errorMessage)
 					throw new Error(errorMessage)
 				}
 			}
