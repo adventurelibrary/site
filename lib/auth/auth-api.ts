@@ -117,9 +117,9 @@ export async function checkUsernameInUse (username: string) : Promise<boolean> {
 }
 
 
-/* returns stringified JSON object, with {emailCount, usernameCount}, of instances of those already registered in the db for an active user */
-// expected results between 0 and 1, ex {1,0}
-export async function checkRegisterValidate (email: string, username: string) : Promise<string> {
+/* returns APIError object class from backend, if an error occured during validation */
+// return APIError | undefined
+export async function checkRegisterValidate (email: string, username: string) : Promise<JSON> {
 	const url = '/users/registervalidate/' + email + '/' + username
 	const res = await api.get(url)
 	const resCount = res.data

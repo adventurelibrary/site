@@ -57,13 +57,13 @@ export default class RegisterForm extends mixins(FormMixin) {
 
 	validateForm () : string {
 		if (this.username == '') {
-			return 'Username is required'
+			return 'Username is required.'
 		}
 		if (this.password == '') {
-			return 'Password is required'
+			return 'Password is required.'
 		}
 		if (this.passwordConfirm !== this.password) {
-			return 'Passwords do not match'
+			return 'Passwords do not match.'
 		}
 		return ''
 	}
@@ -81,29 +81,37 @@ export default class RegisterForm extends mixins(FormMixin) {
 		}
 
 		// verify username not in use before signup
-		let registerValidate: string
-		let registerValidateJSON : JSON
+		let registerValidate: JSON
 		registerValidate = await checkRegisterValidate(this.email, this.username)
 
 		try {
-			registerValidateJSON = JSON.parse(registerValidate)		
+			if (registerValidate.details != null) {
+				let errorList : []
+				errorList = registerValidate.details
+				let errorMessage = ''
 
-			// notify user of errors
-			let errorMessage : string = ''
-			if (registerValidateJSON.emailcount > 0) errorMessage = 'Email already in use. '
-			if (registerValidateJSON.usernamecount > 0) errorMessage += 'Username already in use. '
+				// post error notifications and form error throwing message
+				errorList.forEach(error => {
+					errorMessage = errorMessage + error.message
+					this.$store.dispatch('notifyError', error.message)
+				});
 
-			if (errorMessage.length > 0) {
-				this.$store.dispatch('notifyError', errorMessage)
-				throw new Error(errorMessage)
+				// throw error if any
+				if (errorMessage.length > 0) {
+					console.log('errorMessage', errorMessage)
+					throw new Error(errorMessage)
+				}
 			}
 
+			//throw new Error('some error')
+
+
 			// attempt to register new user if new email and username
-			// this will only execute if neither the email or username already exists in the db						
+			// this will only execute if neither the email or username already exists in the db
 			await this.$store.dispatch('signUp', data)
 			this.needsConfirmation = true
 			this.$emit('success')
-			this.$gtag.event('sign_up');			
+			this.$gtag.event('sign_up');
 		}
 		catch (e) {
 			console.log('Error occured while attempting to register new user. ' + e)
