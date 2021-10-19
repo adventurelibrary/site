@@ -102,8 +102,6 @@ export default class RegisterForm extends mixins(FormMixin) {
 				}
 			}
 
-			//throw new Error('some error')
-
 
 			// attempt to register new user if new email and username
 			// this will only execute if neither the email or username already exists in the db
