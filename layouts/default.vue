@@ -27,7 +27,7 @@
 			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li class="account-actions">
 					<template v-if="isLoggedIn">
-						<UserCoins />
+						<span @click="clickBuyCoins"><UserCoins /></span>
 						<figure class="member-avatar">
 							<i class="ci-user"></i>
 							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->

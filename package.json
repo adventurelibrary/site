@@ -17,7 +17,7 @@
     "@nuxt/typescript-runtime": "^2.0.0",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/dotenv": "^1.4.1",
-    "@stripe/stripe-js": "^1.18.0",
+    "@stripe/stripe-js": "^1.20.3",
     "amazon-cognito-identity-js": "^4.6.0",
     "aws-amplify": "^3.3.27",
     "aws-sdk": "^2.879.0",
