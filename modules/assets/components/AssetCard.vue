@@ -11,7 +11,8 @@
 			</h3>
 			<h4 class="author">
 				<Category :category="asset.category" />
-				<span class="author-label">by</span>
+				<!--<span class="author-label">by</span>-->
+				<span class="author-avatar" :style="{'background-image': `url(${asset.creator_avatar})`}"></span>
 				<span class="author-name">
 					<!-- Should be a profile link -->
 					{{asset.creator_name}}

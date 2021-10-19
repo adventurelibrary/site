@@ -82,9 +82,21 @@
 	font-size: 1em;
 	font-weight: normal;
 	white-space: nowrap;
+	align-items: center;
 
 	.author-label {
 		color: hsl(0deg, 0%, 87%);
+	}
+
+	.author-avatar {
+		display: inline-block;
+		background: center center no-repeat;
+		background-size: cover;
+		border-radius: 0.15em;
+		overflow: hidden;
+		margin: 0 0.1em;
+		width: 1em;
+		height: 1em;
 	}
 
 	a {
@@ -98,7 +110,7 @@
 
 .sign-of-life {
 	display: grid;
-	
+
 	opacity: .85;
 
 	place-items: center;
@@ -118,7 +130,7 @@
 
 	grid-template-rows: $inner-size 1em;
 	gap: .5em;
-	
+
 	background: rgba(0, 0, 0, 0.5);
 	box-shadow: 0 0 5em black;
 
@@ -135,7 +147,7 @@
 
 		background: black;
 
-		box-shadow: 
+		box-shadow:
 			0 0 10em black,
 			0 0 10em black,
 			0 0 10em black,
