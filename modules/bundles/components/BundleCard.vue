@@ -1,5 +1,5 @@
 <template>
-	<li class="bundle-card">
+	<li class="card bundle-card">
 		<BundleLink :bundle="bundle" :style="{backgroundImage: `url(${bundle.cover_thumbnail})`}">
 			<span>{{bundle.name}}</span>
 		</BundleLink>

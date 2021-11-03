@@ -1,5 +1,5 @@
 <template>
-	<li :data-selectable-asset-id="asset.id" class="asset-card" :class="{'selected': isSelected}">
+	<li :data-selectable-asset-id="asset.id" class="card asset-card" :class="{'selected': isSelected}">
 		<div class="select-backdrop" style="position: absolute; z-index: -1; width: 100%; height: 100%;"></div>
 		<AssetLink @mousedown="stopPropagation" @click="clickToggleSelected" :asset="asset" class="link">
 			<!-- This Element Intentionally Left Empty -->

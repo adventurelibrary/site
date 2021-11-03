@@ -2,7 +2,11 @@
 	<article class="user-profile" v-if="user">
 		<section class="profile-details">
 			<img src="~/assets/coolicons/svg/user/user.svg" class="profile-image">
-			<h1 class="username">{{user.username}}</h1>
+			<h1 class="username">
+				{{user.username}}
+				<a class="logout-button" @click="logout">Sign out</a>
+			</h1>
+			
 			<ul class="user-meta">
 				<li class="join-date">Date Joined: {{user.dateJoined}}</li>
 				<li>My Coins: {{numCoins}}</li>
@@ -64,5 +68,11 @@ export default class ProfilePage extends Vue {
 	@State('user') user : User | null
 	@State('userCoins') numCoins : number
 	@Prop() activeTab : string
+
+	async logout () {
+		await this.$store.dispatch('logout')
+		this.notifySuccess('Logged out')
+		this.$router.push('/')
+	}
 }
 </script>

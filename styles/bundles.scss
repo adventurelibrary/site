@@ -203,12 +203,8 @@
 }
 
 .bundles-list {
-	display: grid;
-	grid-template-columns: repeat(2, 18em);
-	grid-auto-rows: 18em;
+	grid-auto-rows: var(--col-width);
 	gap: 1em;
-
-	@include medium { grid-template-columns: repeat(3, 18em); }
 }
 
 .bundle-card {

@@ -35,7 +35,7 @@
 						<nuxt-link :to="{name: 'user'}" class="account-link">{{user.username}}</nuxt-link>
 					</template>
 					<template v-else>
-						<a @click="openLogin">Login</a>
+						<a @click="openLogin">Sign in</a>
 						<a @click="openRegister">Register</a>
 					</template>
 				</li>

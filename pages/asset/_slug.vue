@@ -43,7 +43,7 @@
 
 		<section class="similar-assets">
 			<!-- Similar assets -->
-			<ul class="search-results">
+			<ul class="card-list">
 				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
 			</ul>
