@@ -4,7 +4,7 @@
 			<CreatorPage active-tab="assets" :creator="creator">
 				<h1>{{creator.name}}'s Assets</h1>
 				<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
-					<ul class="search-results">
+					<ul class="card-list">
 						<AssetManageItem v-for="asset in assets" :key="asset.id" :asset="asset"></AssetManageItem>
 					</ul>
 				</LoadingContainer>

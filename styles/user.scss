@@ -37,6 +37,16 @@
 			grid-area: name;
 			align-self: end;
 			font-size: 2em;
+
+			.logout-button {
+				display: inline-flex;
+				font-size: .4em;
+				position: relative;
+				top: -.3em;
+				line-height: .5em;
+				text-decoration: underline;
+				cursor: pointer;
+			}
 		}
 		.user-meta {
 			grid-area: details;
@@ -85,6 +95,7 @@
 			color: $cta-blue-light;
 		}
 	}
+
 	.tab {
 		grid-area: body;
 		background: $black4;
@@ -92,6 +103,12 @@
 		padding: 1em;
 
 		&.active { display: grid; }
+	}
+
+	.tab-settings {
+		a, a[href], a:visited {
+			color: $cta-blue-light;
+		}
 	}
 
 	.inventory {

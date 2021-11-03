@@ -1,8 +1,12 @@
 <template>
 	<AssetCard :key="asset.id" :asset="asset" hide-default-actions="true">
 		<div class="extra-details" slot="extra-details">
-			<template v-if="asset.upload_status === 'PENDING'">Upload Processing...<br /></template>
-			{{asset.visibility}}
+			<template v-if="asset.upload_status === 'PENDING'">
+				Upload Processing...
+			</template>
+			<template v-else>
+				{{asset.visibility}}
+			</template>
 		</div>
 		<Fragment slot="extra-actions">
 			<button type="button" @click="clickDeleteAsset" class="asset-action action-delete-asset" title="Delete Asset">
