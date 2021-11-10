@@ -1,7 +1,8 @@
 import {AssetSearchFilter} from "./search-filters";
 import {Creator} from "~/modules/creators/creator-types";
 
-export type AssetVisibility = 'PENDING' | 'HIDDEN' | 'PUBLIC'
+export type AssetVisibility = 'HIDDEN' | 'PUBLIC'
+export type UploadStatus = 'PENDING' | 'COMPLETE' | 'FAILED'
 
 // These fields exist on assets that are in our db AND in assets
 // that the user is about to upload
@@ -18,11 +19,15 @@ export type AssetFields = {
 // This is an asset that the server gives us
 export type Asset = AssetFields & {
 	id: string
-	creator_name: string
+	creator_avatar: string
 	creator_id: string
-	is_unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
+	creator_name: string
+	selected?: boolean // For our frontend code to perform actions on multiple assets at once
 	slug: string
 	thumbnail: string
+	upload_status: UploadStatus,
+	unlock_price: number
+	unlocked: boolean // True for users who have bought it. False for those who haven't. False if not logged in
 }
 
 // This is created when a user drags and drops a file or selects files
@@ -65,8 +70,7 @@ export type AssetSearchOptions = {
 	sortDirection: SortDirection
 	from: number
 	size: number
-	mine?: boolean
-	visibility?: string
+	creator_id?: string
 }
 
 export type AssetsResponse = {

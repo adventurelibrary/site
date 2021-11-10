@@ -6,36 +6,42 @@
 		</header-->
 		<section class="featured-assets search-page">
 			<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
-				<ul class="search-results">
-					<AssetCard v-for="asset in featured" :asset="asset" :key="asset.slug" />
-				</ul>
+        <SelectAssetsContainer num-assets="featured.length">
+					<AssetList :assets="featured" />
+        </SelectAssetsContainer>
 			</LoadingContainer>
 		</section>
 	</div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import {Component} from "nuxt-property-decorator";
+import {Component, mixins, State} from "nuxt-property-decorator";
 import {Asset} from "~/modules/assets/asset-types";
 import {getFeaturedAssets} from "~/modules/assets/asset-api";
 import FeaturedAsset from "~/modules/assets/components/FeaturedAsset.vue";
-import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetList from "~/modules/assets/components/AssetList.vue";
+import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
 
 @Component({
 	components: {
+    SelectAssetsContainer,
 		FeaturedAsset,
-		AssetCard:AssetCard,
+		AssetList
 	}
 })
-class HomePage extends Vue {
-	public featured: Asset[] = []
+export default class HomePage extends mixins(LoggedInFetchMixin) {
+	@State('assets', {
+		namespace: 'assets'
+	}) featured : Asset[]
 
 	async fetch () {
 		const assetsRes = await getFeaturedAssets()
-		this.featured = assetsRes.assets
+		this.$store.dispatch('assets/setAssets', assetsRes.assets)
+	}
+
+	destroyed () {
+		this.$store.dispatch('assets/clearAssets')
 	}
 }
-
-export default HomePage
 </script>

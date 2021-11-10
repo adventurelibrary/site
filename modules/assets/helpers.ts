@@ -3,6 +3,12 @@ import {newSearchOptions, SORT_DEFAULT_SIZE, SORT_DIR_DEFAULT, SORT_FIELD_DEFAUL
 import {AssetSearchFilter, stringToFilterType} from "~/modules/assets/search-filters";
 import {ASSET_TAGS} from "~/modules/tags/tags-consts";
 
+/**
+ * Given a Nuxt route, this will construct the AssetSearchOptions from it
+ * These options are used to build the request object that is sent to the server to query for assets
+ * These options are also used to display the search options being used in the SearchBar
+ * @param $route
+ */
 export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	if (!$route) {
 		return newSearchOptions()
@@ -61,7 +67,7 @@ export function getRouteAssetSearchOptions ($route: any) : AssetSearchOptions {
 	let sortDirection = SORT_DIR_DEFAULT
 	const querySort = $route.query.sort
 	if (querySort) {
-		if (querySort.substr(0, 1)) {
+		if (querySort.substr(0, 1) === '-') {
 			sortDirection = 'desc'
 			sortField = querySort.substr(1)
 		} else {

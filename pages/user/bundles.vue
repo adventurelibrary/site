@@ -5,7 +5,7 @@
 		</Fragment>
 		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
 			<div>Showing {{bundles.length}}. Total: {{bundlesResponse.total}}</div>
-      <ol class="bundles-list">
+      <ol class="card-list bundles-list">
         <BundleCard v-for="bundle in bundles" :key="bundle.id" :bundle="bundle" v-on:deleted="() => hideBundle(bundle.id)" />
       </ol>
 			<Pagination
@@ -23,7 +23,7 @@ import {Bundle, BundlesResponse} from "~/modules/bundles/bundle-types";
 import {getMyBundles} from "~/modules/bundles/bundles-api";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import BundleCard from "~/modules/bundles/components/BundleCard.vue";
-import ProfilePage from "~/pages/user/components/ProfilePage.vue";
+import ProfilePage from "~/pages/user/-components/ProfilePage.vue";
 import LoadingContainer from "~/components/LoadingContainer.vue";
 import {Fragment} from "vue-fragment";
 
@@ -41,6 +41,16 @@ export default class MyBundles extends mixins(PaginationMixin) {
 		bundles: [],
 		total: 0
 	}
+
+	// TODO: Find a way to deal with the slight delay of ElasticSearch not having
+  // this newly created item until a little bit after it exists
+  created () {
+    this.$root.$on('bundleCreated', this.$fetch)
+  }
+
+  destroyed () {
+    this.$root.$off('bundleCreated', this.$fetch)
+  }
 
 	// This function fires client side when the ?page query parameter is changed
 	// Nuxt won't do a full route change cycle (which would call asyncData) if only
@@ -69,7 +79,7 @@ export default class MyBundles extends mixins(PaginationMixin) {
 	}
 
 	createBundle () {
-		alert('Not implemented')
+		this.$store.dispatch('openCreateBundle')
 	}
 }
 </script>

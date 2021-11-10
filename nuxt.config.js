@@ -2,9 +2,11 @@ const path = require('path')
 const fs = require('fs');
 
 const isAdmin = !!process.env.ADMIN && process.env.ADMIN !== '0'
+const useSSR = !!process.env.SSR && process.env.SSR !== '0'
 
 console.log('API', process.env.ADVL_BASE_URL)
 console.log('PORT', process.env.PORT)
+console.log('SSR', useSSR)
 
 let server
 if (process.env.NODE_ENV === 'production') {
@@ -22,9 +24,15 @@ const css = [
    // @import and additional .scss files in styles.scss
   'styles/styles.scss'
 ]
-const ignore = []
+const ignore = [
+  'pages/**/-components/*'
+]
 const plugins = [
-  'mixins/global.ts'
+  'mixins/global.ts',
+  {
+    src: './plugins/vue-gtag.ts',
+    mode: 'client'
+  }
 ]
 
 if (!isAdmin) {
@@ -40,6 +48,8 @@ if (!isAdmin) {
 }
 
 export default {
+  ssr: useSSR,
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'Adventure Library',
@@ -73,7 +83,7 @@ export default {
   },
 
   router: {
-    middleware: 'auth'
+    middleware: 'auth',
   },
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

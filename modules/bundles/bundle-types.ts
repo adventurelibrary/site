@@ -16,7 +16,7 @@ export type Bundle = BundleFields & {
 	numAssets: number
 	slug: string
 	assets?: Asset[]
-	user_id: string
+	entity_id: string
 }
 
 export type BundleResponse = Bundle | undefined

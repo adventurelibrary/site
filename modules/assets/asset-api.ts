@@ -1,9 +1,17 @@
 import {
-	Asset, AssetDownloadOptions, AssetDownloadResponse,
+	Asset,
+	AssetDownloadOptions,
+	AssetDownloadResponse,
 	AssetFormData,
 	AssetSearchOptions,
 	AssetSignatureResponse,
-	AssetsResponse, AssetTag, AssetUpdate, AssetUploadResponse, AssetVisibility, SortDirection, UnlockAssetResponse
+	AssetsResponse,
+	AssetTag,
+	AssetUpdate,
+	AssetUploadResponse,
+	AssetVisibility,
+	SortDirection,
+	UnlockAssetResponse
 } from "./asset-types";
 import {Ajax, newAjax} from "../../lib/ajax";
 import {ActiveUpload} from "~/modules/assets/asset-uploads";
@@ -32,6 +40,7 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	const filters = opts.filters
 	const tags : string[] = []
 	const categories : string[] = []
+	const creatorSlugs : string[] = []
 
 	filters.forEach((filter: AssetSearchFilter) => {
 		if (filter.type === 'tag') {
@@ -42,11 +51,15 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 			categories.push(filter.value)
 			return
 		}
+		if (filter.type === 'creator') {
+			creatorSlugs.push(filter.value)
+			return
+		}
 	})
 	const query : Record<string, string> = {}
 
 	query.sort = getSearchOptionsSortField(opts)
-	query.sort_type = getSearchOptionsSortDirection(opts)
+	query.sort_direction = getSearchOptionsSortDirection(opts)
 
 	if (search && search.length) {
 		query.text = search
@@ -55,7 +68,10 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 		query.tags = tags.join(',')
 	}
 	if (categories.length) {
-		query.category = categories.join(',')
+		query.categories = categories.join(',')
+	}
+	if (creatorSlugs.length) {
+		query.creator_slugs = creatorSlugs.join(',')
 	}
 
 	let size = opts.size
@@ -68,13 +84,6 @@ export const assetSearchOptionsToAPIQuery = (opts : AssetSearchOptions) : Record
 	}
 	query.size = size.toString()
 	query.from = from.toString()
-
-	if (opts.mine) {
-		query.mine = '1'
-	}
-	if (opts.visibility) {
-		query.visibility = opts.visibility
-	}
 
 	return query
 }
@@ -91,6 +100,12 @@ export async function queryAssets (opts: Record<string, string>) : Promise<Asset
 
 // returns array of related assets of an asset by tags, excluding the original asset passed
 export async function getRelatedAssetsByTags (asset: Asset) : Promise<AssetsResponse> {
+	if (!asset.tags) {
+		return {
+			assets: [],
+			total: 0
+		}
+	}
 	const opts = {tags: asset.tags.join(',') };
 	const res = await api.get<AssetsResponse>('/assets?' + objectToQueryString(opts))
 	res.data.assets = res.data.assets.map(transformAsset)
@@ -115,19 +130,16 @@ export const searchAssets = async (opts: AssetSearchOptions) : Promise<AssetsRes
 }
 
 // This is to fetch all the assets you have access for, as a creator
-export const getMyAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
-	search.mine = true
-	search.visibility = 'all'
-	return searchAssets(search)
+export const getMyUnlockedAssets = async (search: AssetSearchOptions): Promise<AssetsResponse> => {
+	const res = await api.get('/assets/unlocked')
+	return res.data
 }
 
 // This is the search for our admin area
 // It does all the same stuff as searchAssets AND it also
 // specififes that we want to view ALL assets, not just the visible ones
 export async function searchAdminAssets (opts: AssetSearchOptions) : Promise<AssetsResponse> {
-	const apiQuery = assetSearchOptionsToAPIQuery(opts)
-	apiQuery.visibility = 'all'
-	return await queryAssets(apiQuery)
+	throw new Error(`Not implemented`)
 }
 
 // This function is used to cleanup any data that the server gives us
@@ -144,26 +156,22 @@ export function transformAsset (asset: Asset) : Asset {
 
 	asset.tagObjects = newTags
 
-	// This is just a testing hack so that different assets have different is_unlocked values
-	// that are consistent on page reload
-	asset.is_unlocked = asset.name.length % 2 == 0
-
 	return asset
 }
 
 // Gets the signature for an ActiveUpload and then updates
 // the active upload object with the signature and related data
 export const signActiveUpload = async (au : ActiveUpload) => {
-	const res = await createAssetSignature(au.file.name, au.asset)
+	const res = await createAssetSignature(au.creator_id, au.file.name, au.asset)
 	au.signature = res.signature
 	au.status = 'signed'
 	au.params = res.params
 }
 
 // Gets a signature from our API that will be used when we send the file directly to transloadit
-export const createAssetSignature = async (filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
+export const createAssetSignature = async (creatorId: string, filename: string, fields: AssetFormData) : Promise<AssetSignatureResponse> => {
 	const data = assetFormDataToPayload(fields)
-	const res = await api.post<AssetSignatureResponse>('assets/get_signature', data)
+	const res = await api.post<AssetSignatureResponse>(`manage/creator/${creatorId}/upload-signature`, data)
 	return res.data
 }
 
@@ -201,7 +209,7 @@ export async function getAssetByField(field: string, value: string) : Promise<As
 export const getAssetBySlug = async (slug: string) : Promise<Asset> => {
 	const parts = slug.split('-')
 	const id = parts[parts.length-1]
-	const path = `/assets?id=${id}`
+	const path = `/assets/${id}`
 	const res = await api.get(path)
 	return transformAsset(res.data)
 	//return getAssetById(id)
@@ -257,11 +265,8 @@ export async function syncAssets () {
 // When a user wants to unlock an asset by spending their coins on it, so that they can download
 // the asset
 export async function unlockAsset (assetId: string) : Promise<UnlockAssetResponse> {
-	console.log('unlocking', assetId)
-	return {
-		numCoins: 12
-	}
-	//return await api.post(`/assets/${assetId}/unlock`)
+	const res = await api.post(`/assets/${assetId}/unlock`)
+	return res.data
 }
 
 // This used when a user selects multiple assets and wants to mark them all as
@@ -283,13 +288,15 @@ export const newAsset = () : Asset => {
 		creator_id: '',
 		creator_name: '',
 		description: '',
-		is_unlocked: false,
+		unlocked: false,
+		unlock_price: 0,
 		name: '',
 		slug: '',
 		tags: [],
 		tagObjects: [],
 		thumbnail: '',
-		visibility: 'HIDDEN'
+		visibility: 'HIDDEN',
+		upload_status: 'PENDING'
 	}
 }
 
@@ -308,7 +315,7 @@ export const newAssetAjax = () : Ajax<Asset> => {
 
 // Makes a request to our server to update one or more assets
 export const saveAssets = async (payloads: AssetUpdate[]) => {
-	return await api.put('/assets/update', payloads)
+	return await api.put('/manage/assets/update', payloads)
 }
 
 export const saveAsset = async (id: string, data: AssetFormData) => {
@@ -336,9 +343,13 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 	payload.description = data.description
 	payload.category = data.category
 	//payload.tagIDs = tagListToMap(data.tags)
-	payload.tags = data.tagObjects.map((t) => {
-		return t.label
-	})
+	if (data.tagObjects) {
+		payload.tags = data.tagObjects.map((t) => {
+			return t.label
+		})
+	} else {
+		payload.tags = []
+	}
 	payload.unlock_price = 0
 	payload.revenue_share = {}
 	return payload
@@ -348,7 +359,7 @@ export const assetFormDataToPayload = (data: AssetFormData) : any => {
 // archive it
 // The 'result' prop that is returned will be "deleted" or "hidden"
 export async function archiveAsset (assetId: string) {
-	const res = await api.post(`/assets/${assetId}/delete`)
+	const res = await api.post(`/manage/assets/${assetId}/delete`)
 	return res.data.result
 	/*console.log("asset-api.ts: API archiveAsset called for asset id: ", assetId)
 

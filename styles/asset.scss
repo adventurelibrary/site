@@ -13,6 +13,7 @@
 
 .asset-thumbnail {
 	background-size: cover;
+	transition: opacity 0.75s ease;
 }
 
 .tags-input {
@@ -24,12 +25,13 @@
 		position: relative;
 	}
 
-	.tag-search {
+	.search-typeahead-results {
 		display: none;
 	}
-	&:focus-within {
-		.tag-search {
-			display: grid;
+
+	&.show-search {
+		.search-typeahead-results {
+			display: block;
 		}
 	}
 
@@ -58,4 +60,27 @@
 		background: center center no-repeat;
 		background-size: contain;
 	}
+}
+
+.home-page,
+.search-page {
+	.select-assets-container .select-assets-actions {
+		width: var(--body-width);
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+.select-assets-container {
+	user-select: none;
+
+	.select-assets-actions {
+		margin-bottom: 1em;
+	}
+}
+
+.ds-selector {
+	background: rgba(255, 255, 255, 0.25);
+	border: 1px solid #eee;
+	display: none;
 }

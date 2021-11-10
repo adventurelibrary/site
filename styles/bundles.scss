@@ -104,7 +104,7 @@
 	.filter {
 		grid-area: filter;
 	}
-	.loading-container {
+	.bundle-sel-result {
 		grid-area: list;
 	}
 	button {
@@ -149,6 +149,11 @@
 	user-select: none;
 	max-height: 50vh;
 	overflow-y: auto;
+	box-shadow: 
+		0 .3em .3em -.3em #000A inset,
+		0 -.3em .3em -.3em #000A inset;
+
+	padding: .5em .1em;
 
 	.bundle {
 		display: grid;
@@ -198,12 +203,8 @@
 }
 
 .bundles-list {
-	display: grid;
-	grid-template-columns: repeat(2, 18em);
-	grid-auto-rows: 18em;
+	grid-auto-rows: var(--col-width);
 	gap: 1em;
-
-	@include medium { grid-template-columns: repeat(3, 18em); }
 }
 
 .bundle-card {

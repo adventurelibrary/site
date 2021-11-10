@@ -2,25 +2,37 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {User} from "~/modules/users/user-types";
 import {UserTracking} from "~/modules/users/user-tracking";
-import {getSession, logout} from "~/lib/auth/auth-api";
+import {getSession, logout, signIn, signUp, SignUpFields} from "~/lib/auth/auth-api";
 import {Asset} from "~/modules/assets/asset-types";
 import {Bundle} from "~/modules/bundles/bundle-types";
 import {unlockAsset} from "~/modules/assets/asset-api";
+import {ConfirmPaymentIntentResponse, confirmStripeIntent} from "../lib/stripe";
+
 Vue.use(Vuex)
+
+export type PostSignOnAction = {action: string, payload: any} | null
 
 type State = {
 	archiveAsset: Asset | null,
 	reportAsset: Asset | null,
-	editAsset: Asset | null
-	addToBundleAsset: Asset | null,
+	editAsset: Asset | null,
+	buyUnlockAsset: Asset | null,
+	addToBundleAssets: Asset[],
 	breadcrumbs: any[],
-	createBundleAsset: Asset | null
+	createBundleAssets: Asset[]
 	editBundle: Bundle | null,
 	userCoins: number,
 	login: {
 		working: boolean,
 		error: string
-	}
+	},
+
+	// This is a Vuex action that we store for when a user tries to do something
+	// while they aren't logged in
+	// This data can be passed directly to Vuex's dispatch function after the user
+	// has finished signin in
+	// Sign On = Login or Register
+	postSignOnAction: PostSignOnAction
 	// Keys here need to be also added to the ModalKeys type
 	modals: {
 		addToBundle: boolean, // When you click "add to bundle" from a single asset in search
@@ -32,17 +44,19 @@ type State = {
 		archiveAsset: boolean
 		reportAsset: boolean
 		editAsset: boolean
+		buyCoins: boolean
 	}
 	bundleAddAssetsBundle: Bundle | null, // The bundle they were on when they clicked "Add Assets"
 	toasts: Toast[],
 	user: User | null,
-	userTracking: UserTracking
+	userTracking: UserTracking,
 }
+
 
 type ToastType = 'success' | 'danger' | 'info'
 
 // Each key here needs to be added to the `modals` prop of the state
-type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset' | 'editAsset'
+type ModalKeys = 'login' | 'register' | 'addToBundle' | 'createBundle' | 'editBundle' | 'bundleAddAssets' | 'archiveAsset' | 'reportAsset' | 'editAsset' | 'buyCoins'
 
 export type Toast = {
 	id: number
@@ -71,10 +85,11 @@ function newToastId () : number {
 export const state = () : State => {
 	return {
 		archiveAsset: null,
-		addToBundleAsset: null,
+		addToBundleAssets:[],
 		breadcrumbs: [],
 		bundleAddAssetsBundle: null,
-		createBundleAsset: null,
+		buyUnlockAsset: null,
+		createBundleAssets: [],
 		editBundle: null,
 		reportAsset: null,
 		editAsset: null,
@@ -90,6 +105,7 @@ export const state = () : State => {
 			working: false,
 			error: ''
 		},
+		postSignOnAction: null,
 		modals: {
 			archiveAsset: false,
 			addToBundle: false,
@@ -99,7 +115,8 @@ export const state = () : State => {
 			login: false,
 			register: false,
 			reportAsset: false,
-			editAsset: false
+			editAsset: false,
+			buyCoins: false
 		},
 	}
 }
@@ -112,7 +129,6 @@ export const mutations = {
 		state.userTracking.activePath = path
 	},
 	userCoins (state: State, numCoins: number) {
-		console.log('numCoins to set to', numCoins)
 		state.userCoins = numCoins
 	},
 	breadcrumbs (state: State, crumbs: any[]) {
@@ -184,8 +200,11 @@ export const mutations = {
 	reportAsset (state: State, asset: Asset | null) {
 		state.reportAsset = asset
 	},
-	addToBundleAsset (state: State, asset: Asset | null) {
-		state.addToBundleAsset = asset
+	buyUnlockAsset (state: State, asset: Asset | null) {
+		state.buyUnlockAsset = asset
+	},
+	addToBundleAssets (state: State, assets: Asset[]) {
+		state.addToBundleAssets = assets
 		// update asset visible to hidden
 		// v1/assets/{assetID}/update  POST
 		// API: lib/assets.ts updateAsset, updates.visibility
@@ -203,8 +222,8 @@ export const mutations = {
 	editAsset (state: State, asset: Asset | null) {
 		state.editAsset = asset
 	},
-	createBundleAsset (state: State, asset: Asset | null) {
-		state.createBundleAsset = asset
+	createBundleAssets (state: State, assets: Asset[]) {
+		state.createBundleAssets = assets
 	},
 	closeAllModals(state: State) {
 		const keys = Object.keys(state.modals)
@@ -212,6 +231,9 @@ export const mutations = {
 			const key = keys[i]
 			state.modals[<ModalKeys>key] = false
 		}
+	},
+	postSignOnAction (state: State, postSignOn: PostSignOnAction) {
+		state.postSignOnAction = postSignOn
 	}
 }
 
@@ -243,8 +265,12 @@ export const actions = {
 		})
 	},
 	async logout ({commit}: ActionParams) {
-		await logout()
+		await logout() // Send logout request to AWS
 		commit('user', null)
+	},
+	async openLoginWithPostAction ({dispatch, commit}, post: PostSignOnAction)  {
+		commit('postSignOnAction', post)
+		await dispatch('openLoginModal')
 	},
 	openLoginModal ({commit} : ActionParams) {
 		commit('modal', {
@@ -252,7 +278,7 @@ export const actions = {
 			value: true
 		})
 	},
-	openAddToBundleModal ({commit, dispatch, getters} : ActionParams, {asset} : {asset: Asset}) {
+	openAddToBundleModal ({commit, dispatch, getters} : ActionParams, {assets} : {assets: Asset[]}) {
 		if (!getters.isLoggedIn) {
 			dispatch('notifyError', 'You must be logged in')
 			return
@@ -261,14 +287,7 @@ export const actions = {
 			key: 'addToBundle',
 			value: true
 		})
-		commit('addToBundleAsset', asset)
-	},
-	openBundleAddAssetsModal({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
-		commit('modal', {
-			key: 'bundleAddAssets',
-			value: true
-		})
-		commit('bundleAddAssetsBundle', bundle)
+		commit('addToBundleAssets', assets)
 	},
 	openEditBundleModal ({commit} : ActionParams, {bundle} : {bundle: Bundle}) {
 		commit('modal', {
@@ -316,36 +335,99 @@ export const actions = {
 		})
 		commit('reportAsset', asset)
 	},
+	openBuyCoinsModal ({commit} : ActionParams, args? : {asset?: Asset | null}) {
+		args = args || {}
+		const {asset} = args
+		commit('modal', {
+			key: 'buyCoins',
+			value: true
+		})
+		commit('buyUnlockAsset', asset)
+	},
 	closeAllModals ({commit} : ActionParams) {
 		commit('closeAllModals')
 	},
-	async openCreateBundleWithAsset ({dispatch, commit} : ActionParams, {asset} : {asset: Asset | null}) {
+	async confirmStripePayment ({dispatch, commit} : ActionParams, paymentIntentId: string) : Promise<ConfirmPaymentIntentResponse> {
+		const res = await confirmStripeIntent(paymentIntentId)
+		commit('userCoins', res.coins)
+		return res
+	},
+	async openCreateBundle ({dispatch, commit}: ActionParams) {
 		await dispatch('closeAllModals')
 		commit('modal', {
 			key: 'createBundle',
 			value: true
 		})
-		commit('createBundleAsset', asset)
+		commit('createBundleAssets', [])
+	},
+	async openCreateBundleWithAssets ({dispatch, commit} : ActionParams, {assets} : {assets: Asset[]}) {
+		await dispatch('closeAllModals')
+		commit('modal', {
+			key: 'createBundle',
+			value: true
+		})
+		commit('createBundleAssets', assets)
+	},
+	async signIn (
+		{dispatch, state} : ActionParams,
+		{
+			identifier,
+			password
+		} : {
+			identifier: string,
+			password: string
+		}
+	) {
+		console.log('state', JSON.stringify(state))
+		await signIn(identifier.trim(), password)
+		await dispatch('fetchSession')
+		if (state.postSignOnAction) {
+			console.log('dispatch the post sign on', state.postSignOnAction)
+			await dispatch(state.postSignOnAction.action, state.postSignOnAction.payload)
+		}
+	},
+	async signUp ({commit}, data : SignUpFields) {
+		await signUp(data)
+		commit('postSignOnAction', null)
 	},
 	async fetchSession ({commit} : ActionParams) {
 		const user = await getSession()
-		console.log('user', user)
 		commit('user', user)
 		if (user) {
+			commit('user', user)
 			commit('userCoins', user.num_coins)
 		} else {
+			commit('user', null)
 			commit('userCoins', 0)
 		}
 	},
-	async unlockAsset ({commit} : ActionParams, {asset} : {asset: Asset}) {
-		const result = await unlockAsset(asset.id)
-		commit('userCoins', result.numCoins)
-	}
+	async unlockAsset ({commit, getters, dispatch} : ActionParams, pl : {asset: Asset}) : Promise<'unlocked' | 'needscoins' | 'signon'> {
+		const {asset} = pl
+		if (!getters.isLoggedIn) {
+			dispatch('openLoginWithPostAction', {
+				action: 'unlockAsset',
+				payload: pl
+			})
+			return 'signon'
+		}
+
+		if (getters.getUserCoins < asset.unlock_price && asset.unlock_price != 0) {
+			return 'needscoins'
+		}
+		else {
+			const result = await unlockAsset(asset.id)
+			commit('userCoins', result.numCoins)
+			commit('assets/unlockAsset', asset.id)
+			dispatch('notifySuccess', `Unlocked ${asset.name} for ${asset.unlock_price} coin${asset.unlock_price === 1 ? '' : 's'}`)
+			return 'unlocked'
+		}
+	},
 }
 
 export const getters = {
 	isLoggedIn (state: State) : boolean {
-		return !!state.user
+		const isLoggedIn = !!state.user
+		return isLoggedIn
 	},
 	isCreator (state: State) : boolean {
 		if (!state.user) {
@@ -363,5 +445,11 @@ export const getters = {
 			}
 		}
 		return false
-	}
+	},
+	getUserCoins (state: State) : number {
+		if (!!state.user == true) {
+			return state.userCoins
+		}
+		else return 0
+	},
 }

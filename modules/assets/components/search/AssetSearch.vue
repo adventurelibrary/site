@@ -24,17 +24,18 @@
 			@focus="onInputFocus"
 			@blur="onInputBlur"
 		/>
-		<figure class="order-select" title="Sort Order">
-			<button class="ascend"
+		<figure class="order-select">
+			<button class="ascend" title="Sort Ascending"
 				@click="sortDirection = 'asc'">
 				<i class="ci-chevron_big_up"></i>
 			</button>
-			<button class="descend"
+			<button class="descend" title="Sort Descending"
 				@click="sortDirection = 'desc'">
 				<i class="ci-chevron_big_down"></i>
 			</button>
 		</figure>
-		<select v-model="sortField" class="filter-select sort-select">
+		<select v-model="sortField" class="filter-select sort-select" @change="sortFieldChanged">
+			<option :value="'relevance'">Relevance</option>
 			<option :value="'name'">Name</option>
 			<option :value="'date'">Date</option>
 		</select>
@@ -69,6 +70,15 @@
 					:active="action === 'tag'"
 					@clickTag="tagClicked" />
 			</div>
+			<div class="filter-container" v-show="action === 'creator'">
+				<h3>Creators</h3>
+				<CreatorSearch
+						:bus="bus"
+						:filters="searchFilters"
+						:query="actionQuery"
+						:active="action === 'creator'"
+						@clickCreator="creatorClicked" />
+			</div>
 		</div>
 		<!-- This is here for easier debugging. It will be removed before launch. -->
 		<div v-if="false">
@@ -87,18 +97,21 @@ import Vue from "vue"
 import {Component, Prop, Watch} from "nuxt-property-decorator"
 import {AssetSearchAction, AssetSearchOptions, AssetTag} from "~/modules/assets/asset-types";
 import TagSearch from "~/modules/tags/TagSearch.vue";
-import {AssetSearchFilter, assetCategoryToFilter, tagToFilter} from "~/modules/assets/search-filters";
+import {AssetSearchFilter, assetCategoryToFilter, tagToFilter, creatorToFilter} from "~/modules/assets/search-filters";
 import SearchCategorySelector from "~/modules/assets/components/search/SearchCategorySelector.vue";
 import SearchFilter from "~/modules/assets/components/search/SearchFilter.vue";
 import SearchActions from "~/modules/assets/components/search/SearchActions.vue";
 import {newSearchOptions, stringToSortDirection} from "~/modules/assets/asset-helpers";
 import {Category} from "~/modules/categories/categories-types";
+import {Creator} from "~/modules/creators/creator-types";
+import CreatorSearch from "~/modules/creators/components/CreatorSearch.vue";
 
 const actions = ['category', 'creator', 'tag']
 
 @Component({
 	components: {
 		TagSearch,
+		CreatorSearch: CreatorSearch,
 		CategorySelector: SearchCategorySelector,
 		SearchFilter: SearchFilter,
 		SearchActions: SearchActions,
@@ -149,6 +162,10 @@ class AssetSearch extends Vue {
 		this.$emit('submit', this.getSearchOptions())
 	}
 
+	sortFieldChanged () {
+		this.emitSubmit()
+	}
+
 	getSearchOptions () : AssetSearchOptions {
 		// TODO: Figure out if from/size are set here. They might be set in the parent component
 		return {
@@ -186,6 +203,20 @@ class AssetSearch extends Vue {
 		this.bus.$on('setActiveItem', (idx: number) => {
 			this.activeChildActiveItem = idx
 		})
+	}
+
+	mounted () {
+		this.$root.$on('addCategoryToSearch', this.onAddCategoryToSearch);
+		this.$root.$on('addTagToSearch', this.onAddTagToSearch);
+	}
+
+	onAddTagToSearch(tag: AssetTag) {
+		this.tagClicked(tag)
+	}
+
+	onAddCategoryToSearch(cat: Category) {
+
+		this.categoryClicked(cat)
 	}
 
 	get showDropdown () : boolean {
@@ -262,6 +293,15 @@ class AssetSearch extends Vue {
 			throw new Error('Bad category')
 		}
 		const filter = assetCategoryToFilter(cat)
+		this.toggleFilter(filter)
+	}
+
+	creatorClicked (creator: Creator) {
+		if (!creator) {
+			console.error(`Falsy creator clicked`)
+			return
+		}
+		const filter = creatorToFilter(creator)
 		this.toggleFilter(filter)
 	}
 

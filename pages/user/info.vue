@@ -5,7 +5,7 @@
 			<div v-if="user">
 				<ul>
 					<li><nuxt-link :to="{name: 'account-purchase-history'}">Purchase History</nuxt-link></li>
-				</ul>			
+				</ul>
 			</div>
 		</Fragment>
 	</ProfilePage>
@@ -15,7 +15,7 @@
 <script lang="ts">
 import {Component, State, Vue} from "nuxt-property-decorator";
 import {User} from "~/modules/users/user-types"
-import ProfilePage from "@/pages/user/components/ProfilePage.vue";
+import ProfilePage from "@/pages/user/-components/ProfilePage.vue";
 import {Fragment} from "vue-fragment";
 @Component({
 	middleware: ['require_auth'],

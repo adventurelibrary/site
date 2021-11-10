@@ -3,6 +3,7 @@
 // that our classes that extend Vue have these functions
 // So anything global, we have to add here
 import Vue from 'vue'
+import { VueGtag } from 'vue-gtag';
 
 declare module 'vue/types/vue' {
 	interface Vue {

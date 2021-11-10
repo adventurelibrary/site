@@ -1,6 +1,6 @@
 <template>
 	<div class="page-content search-page">
-		<header class="page-header">
+		<header class="page-header body-width">
 			<h1>Search Assets</h1>
 			<!--div v-if="search">
 				Search for: "{{search.query}}"
@@ -11,14 +11,17 @@
 			</div-->
 		</header>
 		<main class="page-body">
-			<section v-show="$fetchState.pending">LOADING</section>
-			<section v-show="!$fetchState.pending">
-				<h3 class="results-count">
+			<section v-show="$fetchState.pending">
+				<SignOfLife>Searching...</SignOfLife>
+			</section>
+			<FormErrors v-show="!$fetchState.pending && $fetchState.error" :error="$fetchState.error" />
+			<section v-show="!$fetchState.pending && !$fetchState.error">
+				<div class="results-count body-width">
 					Showing {{assets.length}} asset<span v-if="assets.length != 1">s</span> of {{totalAssets}}
-				</h3>
-				<ul class="search-results">
-					<AssetCard v-for="asset in assets" :key="asset.id" :asset="asset"></AssetCard>
-				</ul>
+				</div>
+				<SelectAssetsContainer>
+					<AssetList :assets="assets" />
+				</SelectAssetsContainer>
 				<div v-if="assets.length < totalAssets">
 					<div v-if="loadingMore">Loading more...</div>
 					<a v-else @click="loadMore">Load More</a>
@@ -29,36 +32,53 @@
 </template>
 <script lang="ts">
 import Vue from "vue"
-import {Component, Watch} from "nuxt-property-decorator"
+import {Component, Getter, mixins, State, Watch} from "nuxt-property-decorator"
 import AssetSearch from "~/modules/assets/components/search/AssetSearch.vue";
 import {getRouteAssetSearchOptions} from "~/modules/assets/helpers";
 import {Context} from "@nuxt/types";
-import {AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
+import {Asset, AssetSearchOptions, AssetsResponse} from "~/modules/assets/asset-types";
 import {assetSearchOptionsToQuery} from "~/modules/assets/asset-helpers";
-import { searchAssets} from "~/modules/assets/asset-api";
+import {searchAssets} from "~/modules/assets/asset-api";
 import {Route} from "vue-router"
-import AssetCard from "~/modules/assets/components/AssetCard.vue";
+import AssetList from "~/modules/assets/components/AssetList.vue";
 import PaginationMixin from "~/mixins/PaginationMixin.vue";
 import {AssetSearchFilter} from "~/modules/assets/search-filters";
-import {commaAndJoin, getElOffset, sleep} from "~/lib/helpers";
+import {commaAndJoin, getElOffset} from "~/lib/helpers";
+import SignOfLife from "~/components/SignOfLife.vue";
+import SelectAssetsContainer from "~/modules/assets/components/select/SelectAssetsContainer.vue";
+import LoggedInFetchMixin from "~/mixins/LoggedInFetchMixin.vue";
+import FormErrors from "../../components/forms/FormErrors.vue";
 
 @Component({
 	components: {
+		FormErrors,
 		AssetSearch,
-		AssetCard,
+		AssetList,
+		SelectAssetsContainer: SelectAssetsContainer,
+		SignOfLife
 	},
 	mixins: [PaginationMixin]
 })
-class AssetsIndexPage extends Vue {
+class AssetsIndexPage extends mixins(LoggedInFetchMixin) {
 	public search : AssetSearchOptions
 	assetsResponse : AssetsResponse = {
 		total: 0,
 		assets: []
 	}
-	skip = 0
 	perPage = 20
 	loadingMore = false
-	scrollTimeout : NodeJS.Timeout
+	scrollTimeout : number
+
+	@State('assets', {
+		namespace: 'assets'
+	}) assets : Asset[]
+	@State('shiftClickAnchorIndex', {
+		namespace: 'assets'
+	}) shiftAnchor : number
+	@State('lastShiftClickedIndex', {
+		namespace: 'assets'
+	}) lastShift : number
+	@Getter('assets/numSelectedAssets') numAssetsSelected : number
 
 	head () {
 		return {
@@ -67,7 +87,13 @@ class AssetsIndexPage extends Vue {
 	}
 
 	async fetch () {
-		this.assetsResponse = await searchAssets(this.search)
+		const res = await searchAssets(this.search);
+		this.assetsResponse = res
+		this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
+		this.$gtag.event('view_search_results', {
+			'search_term': this.search.query
+		})
+		console.log('this store', this.$store.state)
 	}
 
 	mounted () {
@@ -76,6 +102,7 @@ class AssetsIndexPage extends Vue {
 
 	destroyed () {
 		window.removeEventListener('scroll', this.onScroll)
+		this.$store.dispatch('assets/clearAssets')
 	}
 
 	onScroll () {
@@ -111,7 +138,7 @@ class AssetsIndexPage extends Vue {
 		}
 	}
 
-	async loadMore ()  {
+	async loadMore ()	{
 		const newFrom = this.search.from + this.search.size
 		if (newFrom > this.assetsResponse.total) {
 			return
@@ -128,6 +155,7 @@ class AssetsIndexPage extends Vue {
 			const newResults = current.concat(res.assets)
 			if (this.assetsResponse) {
 				Vue.set(this.assetsResponse, 'assets', newResults)
+				this.$store.dispatch('assets/setAssets', this.assetsResponse.assets)
 			} else {
 				throw new Error('Cannot set new results on empty data')
 			}
@@ -137,12 +165,8 @@ class AssetsIndexPage extends Vue {
 		this.loadingMore = false
 	}
 
-	get assets () : any[] {
-		return this.assetsResponse.assets || []
-	}
-
 	get totalAssets () : number {
-		return (this.assetsResponse.total || 0) + 100
+		return (this.assetsResponse.total || 0)
 	}
 
 	getPageTitle () {
@@ -163,7 +187,6 @@ class AssetsIndexPage extends Vue {
 		title += searchingFor
 		return title
 	}
-
 
 	submit (options: AssetSearchOptions) {
 		const query = assetSearchOptionsToQuery(options)

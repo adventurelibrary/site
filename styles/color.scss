@@ -1,4 +1,8 @@
+@use "sass:color";
+
 $main-teal: #106466;
+$main-teal-trans1: color.adjust($main-teal, $alpha: -.33);
+$main-teal-trans2: color.adjust($main-teal, $alpha: -.1);
 
 $gray: #808080;
 $gray2: #6C6C6C;
@@ -38,13 +42,23 @@ $blue: #2218C3;
 $cta-blue-light: #1AA9C9;
 $cta-blue-dark: #138BA6;
 
+$red: hsl(6deg 77% 45%);
+
+$error: $red;
+
 $search-background-light: $light-gray;
 $search-filter-background-light: $black4;
 $search-filter-background-med: $black5;
 $search-filter-background-dark: $black6;
 
-$filter-light: $cta-blue-light;
-$filter-dark: $cta-blue-dark;
+$filter-tag-light: darken($cta-blue-light, 10%);
+$filter-tag-dark: darken($cta-blue-dark, 10%);
+
+$filter-creator-light: darken(lightseagreen, 10%);
+$filter-creator-dark: darken(lightseagreen, 20%);
+
+$filter-cat-light: $black-teal;
+$filter-cat-dark: darken($black-teal, 5%);
 
 $shadow-light: $black-trans2;
 
@@ -60,7 +74,9 @@ $asset-card-meta: $gray-trans;
 $asset-card-meta-dark: $gray-trans2;
 $asset-card-background: rgba(255, 255, 255, 0.07);
 
-$button-light:  $cta-blue-light; 
+$action-bg: rgba(0, 0, 0, 0.4);
+
+$button-light:  $cta-blue-light;
 $button-dark:  $cta-blue-dark;
 $button-text: $white;
 
@@ -76,3 +92,7 @@ $modal-header: $black7;
 $modal-text: $white;
 
 $a-href: $cta-blue-light;
+
+$table-header-background: $black-teal;
+$table-row-background-a: $dark-gray;
+$table-row-background-b: $black3;

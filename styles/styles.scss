@@ -1,3 +1,5 @@
+@use "sass:math";
+
 * {
 	margin: 0;
 	padding: 0;
@@ -7,9 +9,12 @@
 
 @import "media-queries";
 
+@import "material-icons";
+
 @import "buy";
 @import "base-page";
 @import "upload";
+@import "card-list";
 @import "search";
 @import "modal";
 @import "controls";
@@ -17,10 +22,12 @@
 @import "asset";
 @import "bundle";
 @import "bundles";
+@import "tables";
 @import "toasts";
 @import "layout";
 @import "asset";
 @import "user";
+@import "loading-bar";
 
 /* SCSS */
 
@@ -61,4 +68,102 @@
 
 [role="loading-container"] {
 	display: grid;
+}
+
+.tag-list {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	column-gap: 0.25em;
+	row-gap: 0.2em;
+}
+
+.author {
+	display: flex;
+	gap: .4ch;
+	margin: 0;
+	font-size: 1em;
+	font-weight: normal;
+	white-space: nowrap;
+	align-items: center;
+
+	.author-label {
+		color: hsl(0deg, 0%, 87%);
+	}
+
+	.author-avatar {
+		display: inline-block;
+		background: center center no-repeat;
+		background-size: cover;
+		border-radius: 0.15em;
+		overflow: hidden;
+		margin: 0 0.1em;
+		width: 1em;
+		height: 1em;
+	}
+
+	a {
+		color: $a-href;
+		text-decoration: none;
+	}
+}
+.category, .tag {
+	display: inline-grid;
+}
+
+.sign-of-life {
+	display: grid;
+
+	opacity: .85;
+
+	place-items: center;
+
+	$size: 16em;
+
+	width: $size;
+	height: $size;
+	top: calc(50vh - #{math.div($size, 2)});
+	left: calc(50vw - #{math.div($size, 2)});
+	border-radius: 50%;
+
+	$padding: math.div($size, 5);
+	padding: $padding;
+
+	$inner-size: $size - $padding * 2;
+
+	grid-template-rows: $inner-size 1em;
+	gap: .5em;
+
+	background: rgba(0, 0, 0, 0.5);
+	box-shadow: 0 0 5em black;
+
+	margin: 2em auto;
+	place-self: center;
+
+	cursor: progress;
+
+	&.main-sol {
+		&:not([visible]) { display: none; }
+
+		position: fixed;
+		z-index: 10;
+
+		background: black;
+
+		box-shadow:
+			0 0 10em black,
+			0 0 10em black,
+			0 0 10em black,
+			0 0 10em black,
+			0 0 10em black;
+	}
+
+	figcaption {
+		width: $inner-size;
+		font-size: .8em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-align: center;
+	}
 }

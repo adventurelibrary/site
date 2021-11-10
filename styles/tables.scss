@@ -1,0 +1,30 @@
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	td, th {
+		padding: 0.5em 1em;
+
+		&:not(:last-of-type) {
+			border-right: 1px solid $gray-trans2;
+		}
+	}
+
+	th {
+		background: $table-header-background;
+	}
+	
+	td {
+		background: $table-row-background-a;
+	}
+
+	thead, tr:not(:last-of-type) {
+		border-bottom: 1px solid $gray3;
+	}
+
+	tr:nth-child(odd) {
+		td {
+			background: $table-row-background-b;
+		}
+	}
+}

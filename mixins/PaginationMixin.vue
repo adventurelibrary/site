@@ -6,9 +6,9 @@ import {Route} from "vue-router";
 
 // Returns the current page name, taken from the `?page=32` query param
 // If none is set, it assumes you're on page `
-export function getRouteQueryPage(route : Route) : number {
+export function getRouteQueryPage (route : Route) : number {
   let page = route.query.page ? parseInt(route.query.page.toString()) : 1
-  if (isNaN(page) || !page) {
+  if (isNaN(page) || !page || page < 1) {
     return 1
   }
 
@@ -25,10 +25,23 @@ export function getRouteQueryPage(route : Route) : number {
 	}
 })
 export default class PaginationMixin extends Vue {
+	itemsPerPage : number = 0
 	get activePage () : number {
 		const page = getRouteQueryPage(this.$route)
 
 		return page
+	}
+
+	get limit () : number {
+		return this.itemsPerPage
+	}
+
+	get skip () : number {
+		if (this.itemsPerPage) {
+			return (this.activePage - 1) * this.itemsPerPage
+		}
+
+		return 0
 	}
 
 	@Watch('$route')

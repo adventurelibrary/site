@@ -1,5 +1,5 @@
 <template>
-	<div class="asset-action asset-download">
+	<div class="asset-download">
 		<template v-if="canDownload">
 			<select v-model="fileType" class="download-format">
 				<option v-for="option in fileOptions" :key="option.value" :value="option.value">{{option.label}}</option>
@@ -9,19 +9,23 @@
 			</a>
 		</template>
 		<template v-if="mustUnlock">
-			<span @click="clickUnlockAsset">Unlock</span>
+			<button @click="clickUnlockAsset" @mousedown="stopPropagation">
+				<span class="icon material-icons"></span>
+				<span class="amount">{{asset.unlock_price}}</span>
+			</button>
+			<!--<span @click="clickUnlockAsset" class='asset-unlock'>{{price}} Unlock</span>-->
 		</template>
 	</div>
 </template>
 <script lang="ts">
-import Vue from "vue"
-import {Component, Prop} from "nuxt-property-decorator";
+import {Component, mixins, Prop} from "nuxt-property-decorator";
 import {Asset, AssetDownloadOptions} from "~/modules/assets/asset-types";
 import {SelectOption} from "~/lib/helpers";
 import {getAssetDownloadLink} from "~/modules/assets/asset-api";
+import StopPropagation from "~/mixins/StopPropagation.vue";
 
 @Component
-export default class AssetDownload extends Vue {
+export default class AssetDownload extends mixins(StopPropagation) {
 	fileOptions : SelectOption[] = [
 		{value: 'webp', label: 'WebP'},
 		{value: 'original', label: 'Original'}
@@ -30,11 +34,21 @@ export default class AssetDownload extends Vue {
 
 	@Prop() asset : Asset
 
+
 	get canDownload () : boolean {
-		return this.asset.is_unlocked
+		return this.asset.unlocked
 	}
 	get mustUnlock () : boolean {
-		return !this.asset.is_unlocked
+		return !this.asset.unlocked
+	}
+
+	get price () : string {
+		if (this.asset.unlock_price == 0 || !this.asset.unlock_price) {
+			return "FREE "
+		}
+		else {
+			return this.asset.unlock_price.toString() + ' coins '
+		}
 	}
 
 	async download (e: Event) {
@@ -49,16 +63,42 @@ export default class AssetDownload extends Vue {
 	}
 
 	async clickUnlockAsset () {
+		let result
+
 		try {
-			await this.$store.dispatch('unlockAsset', {
+			result = await this.$store.dispatch('unlockAsset', {
 				asset: this.asset
 			})
 		} catch (ex) {
 			this.notifyError(ex.toString())
 			return
 		}
-		this.notifySuccess(`Unlocked ${this.asset.name}`)
-		this.asset.is_unlocked = true
+
+		if (result === 'needscoins') {
+			this.$store.dispatch('openBuyCoinsModal', {
+				asset: this.asset
+			})
+			return
+			this.notifyError(`You need more coins (${this.asset.unlock_price} coins) to unlock '${this.asset.name}'. Redirecting you to the coins purchase page.`)
+			this.asset.unlocked = false
+			this.$router.push('/buy/coins')
+			return
+		}
+		if (result === 'unlocked') {
+			this.asset.unlocked = true
+
+			// This isn't working correctly, but that might be a setting problem in Google?
+			// However, I'm not sure we even want this here? Or do we just want to track purchases of coins?
+			this.$gtag.purchase({
+				'transaction_id': "",
+				'items': [{
+					'id': this.asset.id,
+					'name': this.asset.name,
+					'brand': this.asset.creator_name,
+					'category': this.asset.category,
+				}]
+			});
+		}
 	}
 
 	getDownloadOptions () : AssetDownloadOptions {

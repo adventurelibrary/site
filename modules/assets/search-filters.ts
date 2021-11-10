@@ -1,5 +1,6 @@
 import {AssetTag} from "./asset-types";
 import {Category} from "~/modules/categories/categories-types";
+import {Creator} from "~/modules/creators/creator-types";
 
 export type FilterType = 'tag' | 'creator' | 'price' | 'category'
 
@@ -22,18 +23,26 @@ export interface AssetSearchFilter {
 }
 
 // Converts a given category (map, scene, character, token) into a Filter
-export function assetCategoryToFilter(category: Category) : AssetSearchFilter {
+export function assetCategoryToFilter (category: Category) : AssetSearchFilter {
 	return  {
 		type: 'category',
 		label: category.plural,
 		value: category.id
 	}
 }
-export function tagToFilter(tag: AssetTag) : AssetSearchFilter {
+export function tagToFilter (tag: AssetTag) : AssetSearchFilter {
 	return {
 		type: 'tag',
 		label: tag.label,
 		value: tag.id
+	}
+}
+
+export function creatorToFilter (creator: Creator) : AssetSearchFilter {
+	return {
+		type: 'creator',
+		label: creator.slug,
+		value: creator.slug
 	}
 }
 

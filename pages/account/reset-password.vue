@@ -6,6 +6,7 @@
 		</div>
 		<div>
 			<div>Hello <strong>{{username}}</strong>, please check your email for a <strong>verification code</strong>. Enter it and your new password below.</div>
+			<br/>
 			<div v-if="done">
 				Done! Logging you in.
 			</div>

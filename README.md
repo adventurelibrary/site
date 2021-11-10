@@ -65,10 +65,12 @@ The following scripts need to exist in the same directory as the Nuxt folder. Fo
 ### `deploy.sh`
 
 ```bash
+#!/bin/bash
+cd /home/ec2-user/site
 git pull origin master
 npm install
 npm run build
-sudo systemctl restart testing.adventurelibrary.art.service`
+sudo systemctl restart testing.adventurelibrary.art.service
 ```
 
 ### `deploy-checker.sh`
@@ -99,7 +101,8 @@ else
         echo "Saving current log to prev-log.txt"
         cp ./curr-log.txt ./prev-log.txt
         echo "Running redeploy script"
-        ./deploy.sh
+        sh ./deploy.sh
+        echo "Done running deploy script"
 fi
 ```
 

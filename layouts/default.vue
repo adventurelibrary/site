@@ -4,6 +4,10 @@
 			:visible="this.shade"
 			v-on:click="hideOverlays()">
 		</div>
+		<SignOfLife :visible="false" class="main-sol">
+			<!-- This is here as a test -->
+			Adventure Library
+		</SignOfLife>
 		<header class="site-header">
 			<NuxtLink class="branding" :to="{name: 'index'}">
 				<h1 class="site-name">Adventure Library</h1>
@@ -23,8 +27,7 @@
 			<ul class="main-navigation" :visible="this.overlays.menu">
 				<li class="account-actions">
 					<template v-if="isLoggedIn">
-						<UserCoins />
-						<a class="logout-button" @click="logout">Logout</a>
+						<span @click="clickBuyCoins"><UserCoins /></span>
 						<figure class="member-avatar">
 							<i class="ci-user"></i>
 							<!--img src="https://avatars.githubusercontent.com/u/1721836?v=4" alt="User Avatar"-->
@@ -32,14 +35,16 @@
 						<nuxt-link :to="{name: 'user'}" class="account-link">{{user.username}}</nuxt-link>
 					</template>
 					<template v-else>
-						<a @click="openLogin">Login</a>
+						<a @click="openLogin">Sign in</a>
 						<a @click="openRegister">Register</a>
 					</template>
 				</li>
 				<li><nuxt-link :to="{name: 'info-about-us'}">About Us</nuxt-link></li>
-				<li><nuxt-link :to="{name: 'buy-coins'}">Buy Coins</nuxt-link></li>
+				<li><nuxt-link :to="{name: 'buy-coins'}"><span @click="clickBuyCoins">Buy Coins</span></nuxt-link></li>
 				<li v-if="isLoggedIn"><nuxt-link :to="{name: 'user-bundles'}">My Bundles</nuxt-link></li>
-				<li v-if="isCreator"><nuxt-link :to="{name: 'user-assets'}">My Assets</nuxt-link></li>
+				<li v-if="isCreator">
+					<nuxt-link :to="creatorsLink">Creators</nuxt-link>
+				</li>
 			</ul>
 		</header>
 		<main class="site-body">
@@ -48,7 +53,7 @@
 		<footer class="site-footer">
 			<!--h1 class="footer-heading">Adventure Library</h1-->
 			<img class="footer-heading"
-				src="https://cdn.discordapp.com/attachments/808965286915997726/833745227872337960/logo_wip_1line.svg">
+				src="~/assets/AL_white_logo_1line.svg">
 			<p class="copyright-notice">Copyright ©{{new Date().getFullYear()}} Adventure Library</p>
 			<nav class="footer-links">
 				<ul>
@@ -111,12 +116,14 @@ import Modals from "~/modules/modals/Modals.vue";
 import {User} from "~/modules/users/user-types"
 import {UserTracking} from "~/modules/users/user-tracking"
 import UserCoins from "~/modules/users/components/UserCoins.vue";
+import SignOfLife from "~/components/SignOfLife.vue";
 
 @Component({
 	components: {
 		AssetSearchRouter: AssetSearchRouter,
 		Modals: Modals,
-		UserCoins: UserCoins
+		UserCoins: UserCoins,
+		SignOfLife
 	}
 })
 export default class Default extends Vue {
@@ -164,6 +171,17 @@ export default class Default extends Vue {
 		return Object.values(this.overlays).some(o => o);
 	}
 
+	get creatorsLink () : object {
+		if (this.user && this.user.creators && this.user.creators.length === 1) {
+			return {
+				name: 'creators-id',
+				params: {
+					id: this.user.creators[0].id
+				}
+			}
+		}
+		return {name: 'creators'}
+	}
 
 	hideOverlays() {
 		Object.keys(this.overlays).forEach(o => this.overlays[o] = false);
@@ -186,12 +204,22 @@ export default class Default extends Vue {
 		this.$store.dispatch('openRegisterModal')
 	}
 
+	clickBuyCoins (e: MouseEvent) {
+		// Let them open in new tab
+		if (e.ctrlKey) {
+			return
+		}
 
-	async logout () {
-		this.setTrackingPath()
+		// Don't open the modal on the buy page
+		if (this.$router.currentRoute.name === 'buy-coins') {
+			return
+		}
 
-		await this.$store.dispatch('logout')
-		this.notifySuccess('Logged out')
+		e.preventDefault()
+		e.stopPropagation()
+		this.$store.dispatch('openBuyCoinsModal')
+		console.log('open it')
+		return false
 	}
 }
 </script>

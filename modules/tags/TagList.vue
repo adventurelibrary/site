@@ -1,16 +1,22 @@
 <template>
-	<span class="tag-list">
-		<span class="tag" v-for="tag in tagObjs" :key="tag.key">{{tag.label}}</span>
-	</span>
+	<ul class="tag-list">
+		<li class="tag" v-for="tag in tagObjs" :key="tag.key">
+			<a class="filter-value" v-on:click="addTagToSearch(tag)">
+				{{tag.label}}
+			</a>
+		</li>
+	</ul>
 </template>
 <script lang="ts">
 import {Component, Vue, Prop} from "nuxt-property-decorator";
 import {AssetTag} from "~/modules/assets/asset-types";
 import {getTagById} from "~/modules/tags/tags-api";
 
+
 // This component displays a nice readable list of tag names, given a list of tags which might not be as readable
 // So something like `["science_fiction", "fantasy"]` would look like "Science Fiction, Fantasy"
-@Component
+@Component ({
+})
 export default class TagList extends Vue {
 	@Prop() tags : string[]
 
@@ -27,13 +33,9 @@ export default class TagList extends Vue {
 		})
 		return atags
 	}
+
+	addTagToSearch(tag: AssetTag) {
+		this.$root.$emit('addTagToSearch', tag)
+	}
 }
 </script>
-<style>
-.tag-list .tag:before {
-	content: ", "
-}
-.tag-list .tag:nth-child(1):before {
-	content: ""
-}
-</style>

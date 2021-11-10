@@ -4,11 +4,19 @@
 			<!-- Empty -->
 		</section>
 
-		<section class="info">
-			<h1 class="title">{{asset.name}}</h1>			
+		<LoadingContainer :loading="$fetchState.pending" :error="$fetchState.error">
+		</LoadingContainer>
 
-			<h3 class="author">				
-				By<a href=""><i class="author-icon ci-user"></i>{{asset.creator_name}}</a>
+		<section class="info">
+			<h1 class="title">{{asset.name}}</h1>
+
+			<h3 class="author">
+				<Category :category="asset.category" />
+				<span class="author-label">by</span>
+				<span>
+					<!-- Should be a profile link -->
+					{{asset.creator_name}}
+				</span>
 				<!-- By<i class="author-icon ci-user"><nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}">{{asset.creator_name}}</nuxt-link></i> -->
 				<!--<nuxt-link :to="{name: 'creator-about', params: {creatorId: asset.creator_id}}"><i class="author-icon ci-user">{{asset.creator_name}}</i></nuxt-link>-->
 			</h3>
@@ -35,7 +43,7 @@
 
 		<section class="similar-assets">
 			<!-- Similar assets -->
-			<ul class="search-results">
+			<ul class="card-list">
 				<!-- <li v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset">{{asset.name}}</li> -->
 				<AssetCard v-for="asset in relatedAssets.assets" :key="asset.id" :asset="asset"/>
 			</ul>
@@ -54,6 +62,8 @@ import AssetDownload from "~/modules/assets/components/AssetDownload.vue";
 import AssetArchiveButton from "~/modules/assets/components/AssetArchiveButton.vue";
 import AssetReportButton from "~/modules/assets/components/AssetReportButton.vue";
 import TagList from "~/modules/tags/TagList.vue";
+import {Category as CategoryType} from "~/modules/categories/categories-types"
+import Category from "~/modules/categories/components/Category.vue";
 
 // related assets and search modules
 import {AssetsResponse} from "~/modules/assets/asset-types";
@@ -68,6 +78,7 @@ import {Fragment} from "vue-fragment";
 		AssetDownload: AssetDownload,
 		TagList: TagList,
 		AssetCard,
+		Category: Category,
 		Modals: Modals,
 		AssetArchiveButton: AssetArchiveButton,
 		AssetReportButton: AssetReportButton,
@@ -78,6 +89,7 @@ class AssetPage extends Vue {
 	relatedAssets : Asset[]
 	asset : null | Asset
 	slug: string
+	category : CategoryType | null
 
 	// setting header meta tags
 	head () {
@@ -124,6 +136,14 @@ class AssetPage extends Vue {
 		this.asset = await getAssetBySlug(this.$nuxt.context.params.slug)
 		const relatedRes = await getRelatedAssetsByTags(this.asset)
 		this.relatedAssets = relatedRes.assets
+		this.$gtag.event('view_item', {
+			'items': [{
+				'id': this.asset.id,
+				'name': this.asset.name,
+				'brand': this.asset.creator_name,
+				'category': this.asset.category,
+			}]
+		});
 	}
 
 	// fetching asset data and related assets array

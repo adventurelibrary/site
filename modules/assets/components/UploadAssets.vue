@@ -7,18 +7,17 @@
 		</section>
 		<section class="upload-controls">
 			<label class="button add-file basic" for="add-file">+Add Upload</label>
-			<button type="button" :disabled="newAssets.length == 0" @click="beginUploads" class="upload-all">Submit All</button>
+			<button type="button" :disabled="newAssets.length === 0" @click="beginUploads" class="upload-all">Submit All</button>
 		</section>
-
-		<FormErrors :error="error" class="upload-errors" />
 		<section v-show="stage === 'adding'" class="upload-form">
+			<FormErrors :error="error" class="upload-errors" />
 			<div v-if="asAdmin">
 				<div>Upload as creator</div>
 				<CreatorSelector v-model="creator" />
 			</div>
 			<form ref="startform" class="startform">
 				<div class="drop-files start">
-					<h4>Drag &amp; drop new files here</h4>
+					<label for="add-file">Drag &amp; drop new files here</label>
 					<input id="add-file" class="file" type="file" ref="file" multiple @change="fileInputChanged" :accept="acceptedImageTypes" />
 				</div>
 			</form>
@@ -33,7 +32,7 @@
 				/>
 			</ul>
 			<div v-show="newAssets.length">
-				<button type="button" @click="beginUploads" class="upload-all">Upload {{newAssets.length}} File(s)</button>
+				<button type="button" @click="beginUploads" class="upload-all">Upload {{numFiles}}</button>
 			</div>
 		</section>
 		<section v-show="stage === 'uploading'" class="upload-status">
@@ -99,6 +98,11 @@ export default Vue.extend({
       }
 		})
 	},
+	computed: {
+		numFiles ()  : string {
+			return `${this.newAssets.length} File${this.newAssets.length == 1 ? '' : 's'}`
+		}
+	},
 	methods: {
 		async beginUploads () {
 			if (this.asAdmin) {
@@ -159,9 +163,9 @@ export default Vue.extend({
 					tagObjects: [],
 					description: '',
 					name: name,
-          visibility: 'PENDING',
+					creator_id: this.getCreatorId(),
+          visibility: 'HIDDEN',
 					category: filenameGuessCategory(file.name),
-					creator_id: this.getCreatorId()
 				},
 				file: file,
 			})
